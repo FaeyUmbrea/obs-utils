@@ -1,6 +1,6 @@
 {
-  "id": "module",
-  "title": "New Module",
+  "id": "foundry-obs-utils",
+  "title": "OBS Utils",
   "description": "",
   "version": "This is auto replaced",
   "library": "false",
@@ -12,20 +12,26 @@
   },
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "Faey Umbrea",
+      "url": "https://github.com/FaeyUmbrea",
+      "discord": "Faey#0001"
     }
   ],
   "relationships": {
     "systems": [],
-    "requires": []
+    "requires": [{
+      "id": "lib-wrapper"
+    },
+    {
+      "id": "socketlib"
+    }]
   },
   "esmodules": [
-    "scripts/module.js"
+    "scripts/main.js"
   ],
   "scripts": [
-    "scripts/lib/lib.js"
+    "scripts/utils/obs.js",
+    "scripts/utils/foundry.js"
   ],
   "styles": [
     "styles/module.css"
