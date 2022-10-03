@@ -56,6 +56,9 @@ function hook(){
 	Hooks.on("combatStart", startCombat);
 	Hooks.on("combatTurn", passTurn);
 	Hooks.on("combatEnd", stopCombat);
+
+	$("section#ui-left img#logo").remove()
+
 	}
 }
 
