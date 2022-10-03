@@ -29,10 +29,6 @@
   "esmodules": [
     "scripts/main.js"
   ],
-  "scripts": [
-    "scripts/utils/obs.js",
-    "scripts/utils/foundry.js"
-  ],
   "styles": [
     "styles/module.css"
   ],
@@ -44,6 +40,7 @@
     }
   ],
   "url": "This is auto replaced",
+  "socket": true,
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
   "license": "LICENSE",

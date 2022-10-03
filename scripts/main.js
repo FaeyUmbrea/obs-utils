@@ -1,8 +1,9 @@
-(function(){
-const { isOBS } = require('./utils/obs');
-const { hideApplication, hideTokenBorder, trackToken, untrackToken, recalculateViewport,startCombat,passTurn,stopCombat } = require('./utils/foundry');
+import  { isOBS } from './utils/obs.mjs';
+import  { hideApplication, hideTokenBorder, trackToken, untrackToken, recalculateViewport,startCombat,passTurn,stopCombat } from './utils/foundry.mjs';
 
-const ID = "obs-utils"
+(function(){
+
+const ID = "foundry-obs-utils"
 
 
 
@@ -11,6 +12,10 @@ function updateSettings(settings){
 	if(isOBS())	location.reload();
 }
 
+function changeViewport(viewport){
+
+};
+
 
 function hook(){	
 	Hooks.once('init', async function() {
@@ -18,15 +23,16 @@ function hook(){
 	});
 	
 	Hooks.once('ready', async function() {
-	
+		
 	});
 	
 	Hooks.once("socketlib.ready", () => {
-		socket = socketlib.registerModule("obs-utils");
+		var socket = socketlib.registerModule(ID);
 	
 		socket.register("settings", updateSettings);
+		socket.register("viewport", changeViewport);
 	});
-
+	
 	if(isOBS()){
 
 	Hooks.on("renderSidebar", hideApplication);

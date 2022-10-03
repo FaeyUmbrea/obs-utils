@@ -1,21 +1,21 @@
 const trackedTokens = [];
 
-function hideApplication(_, html){
+export function hideApplication(_, html){
     html.hide();
 }
-function hideTokenBorder(token){
+export function hideTokenBorder(token){
     if(token?._object?.border?.alpha){
         token._object.border.alpha = 0;
     }
 }
 
-function trackToken(token){
+export function trackToken(token){
     if(token?.document?._actor?.ownership[getCurrentUser()] >= 2){
         trackedTokens.push(token);
     }
 }
 
-function untrackToken(token){
+export function untrackToken(token){
     const index = trackedTokens.indexOf(token);
     if (index > -1) {
       trackedTokens.splice(index, 1);
@@ -26,7 +26,7 @@ function getCurrentUser(){
     return game.userid;
 }
 
-function recalculateViewport(token){
+export function recalculateViewport(token){
     if(trackedTokens.indexOf(token)>-1){
         var coordinates = [];
         var sumX = 0;
@@ -67,29 +67,18 @@ function calculateBoundsOfCoodinates(coordSet){
     return {minX:minX, minY:minY, maxX:maxX, maxY:maxY}
 }
 
-function startCombat(combat){
+export function startCombat(combat){
     if(combat.combatant.isOwner){
         combat.combatant.token.control({releaseOthers: true});
     }
 }
 
-function passTurn(combat){
+export function passTurn(combat){
     if(combat.combatant.isOwner){
         combat.combatant.token.control({releaseOthers: true});
     }
 }
 
-function stopCombat(combat){
+export function stopCombat(combat){
     canvas.tokens.controlledObjects.forEach((token) => token.release())
-}
-
-module.exports = {
-    hideApplication: hideApplication,
-    hideTokenBorder: hideTokenBorder,
-    untrackToken: untrackToken,
-    trackToken: trackToken,
-    recalculateViewport: recalculateViewport,
-    startCombat:startCombat,
-    passTurn:passTurn,
-    stopCombat,stopCombat
 }
