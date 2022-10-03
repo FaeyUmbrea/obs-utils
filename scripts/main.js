@@ -1,3 +1,4 @@
+(function(){
 const { isOBS } = require('./utils/obs');
 const { hideApplication, hideTokenBorder } = require('./utils/foundry');
 
@@ -7,7 +8,7 @@ const ID = "obs-utils"
 
 
 function updateSettings(settings){
-
+	if(isOBS())	location.reload();
 }
 
 
@@ -44,4 +45,4 @@ function hook(){
 	}
 }
 
-hook();
+hook();})();
