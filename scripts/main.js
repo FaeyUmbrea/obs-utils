@@ -51,7 +51,7 @@ function hook(){
 
 	Hooks.on("drawToken", trackToken);
 	Hooks.on("destroyToken", untrackToken);
-	Hooks.on("refreshToken", recalculateViewport);
+	Hooks.on("updateToken", recalculateViewport);
 
 	Hooks.on("combatStart", startCombat);
 	Hooks.on("combatTurn", passTurn);
