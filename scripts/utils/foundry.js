@@ -67,10 +67,29 @@ function calculateBoundsOfCoodinates(coordSet){
     return {minX:minX, minY:minY, maxX:maxX, maxY:maxY}
 }
 
+function startCombat(combat){
+    if(combat.combatant.isOwner){
+        combat.combatant.token.control({releaseOthers: true});
+    }
+}
+
+function passTurn(combat){
+    if(combat.combatant.isOwner){
+        combat.combatant.token.control({releaseOthers: true});
+    }
+}
+
+function stopCombat(combat){
+    canvas.tokens.controlledObjects.forEach((token) => token.release())
+}
+
 module.exports = {
     hideApplication: hideApplication,
     hideTokenBorder: hideTokenBorder,
     untrackToken: untrackToken,
     trackToken: trackToken,
-    recalculateViewport: recalculateViewport
+    recalculateViewport: recalculateViewport,
+    startCombat:startCombat,
+    passTurn:passTurn,
+    stopCombat,stopCombat
 }

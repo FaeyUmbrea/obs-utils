@@ -1,6 +1,6 @@
 (function(){
 const { isOBS } = require('./utils/obs');
-const { hideApplication, hideTokenBorder, trackToken, untrackToken, recalculateViewport } = require('./utils/foundry');
+const { hideApplication, hideTokenBorder, trackToken, untrackToken, recalculateViewport,startCombat,passTurn,stopCombat } = require('./utils/foundry');
 
 const ID = "obs-utils"
 
@@ -46,6 +46,10 @@ function hook(){
 	Hooks.on("drawToken", trackToken);
 	Hooks.on("destroyToken", untrackToken);
 	Hooks.on("refreshToken", recalculateViewport);
+
+	Hooks.on("combatStart", startCombat);
+	Hooks.on("combatTurn", passTurn);
+	Hooks.on("combatEnd", stopCombat);
 	}
 }
 
