@@ -1,5 +1,5 @@
 export function registerSettings(){
-    var moduleID = "obs-utils";
+    var moduleID = "foundry-obs-utils";
 
     game.settings.register(moduleID, "minScale", {
         name: moduleID+'.settings.minScale.Name',
@@ -20,5 +20,5 @@ export function registerSettings(){
 }
 
 export function getSetting(settingName){
-    return game.settings.get('obs-utils',settingName)
+    return game.settings.get('foundry-obs-utils',settingName)
 }
