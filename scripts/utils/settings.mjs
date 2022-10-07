@@ -1,4 +1,4 @@
-export function registerSettings(){
+export function registerSettings(socketReload){
     var moduleID = "foundry-obs-utils";
 
     game.settings.register(moduleID, "minScale", {
@@ -7,7 +7,8 @@ export function registerSettings(){
         type: Number,
         scope: 'world',
         config: true,
-        hint: moduleID+'.settings.minScale.Hint'
+        hint: moduleID+'.settings.minScale.Hint',
+        onChange: socketReload
     });
     game.settings.register(moduleID, "maxScale", {
         name: moduleID+'.settings.maxScale.Name',
@@ -15,7 +16,8 @@ export function registerSettings(){
         type: Number,
         scope: 'world',
         config: true,
-        hint: moduleID+'.settings.maxScale.Hint'
+        hint: moduleID+'.settings.maxScale.Hint',
+        onChange: socketReload
     })
 }
 

@@ -1,49 +1,30 @@
 import  './utils/obs.mjs';
 import  './utils/foundry.mjs';
-import { isOBS } from './utils/obs.mjs';
+import 	'./utils/settings.mjs';
+import 	'./utils/socket.mjs';
 
 const ID = "foundry-obs-utils";
 
-function updateSettings(settings){
-	if(isOBS())	location.reload();
-}
-
-function changeViewport(viewport){
-	if(isOBS()) updateViewport(viewport)
-};
-
-
 function start(){	
 
-	let socket;
-
 	Hooks.once('init', async function() {
-
-	});
-	
-	Hooks.once('ready', async function() {
 		
 	});
 	
-	Hooks.once("socketlib.ready", () => {
-		socket = socketlib.registerModule(ID);
-	
-		socket.register("settings", updateSettings);
-		socket.register("viewport", changeViewport);		
+	Hooks.once('ready', async function() {
+		registerSettings(socketReload);
 	});
 	
 	if(isOBS()){
 
-		if(game.view == "stream" && isOBS()){
+		if(game.view == "stream"){
 			Hooks.once("ready", async function() {
 				$('body.stream').css('background-color', 'transparent');
 			})
 		}
 
 		if(game.view == "game"){
-		Hooks.on("canvasPan", (_canvas, position) => {
-			socket.executeForEveryone("viewport", position);
-		});
+		Hooks.on("canvasPan", socketCanvas);
 
 		Hooks.on("renderSidebar", hideApplication);
 		Hooks.on("renderSceneNavigation", hideApplication);
