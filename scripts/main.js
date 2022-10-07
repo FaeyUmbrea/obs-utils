@@ -1,23 +1,22 @@
-import  { isOBS } from './utils/obs.mjs';
-import  { hideApplication, hideTokenBorder, trackToken, untrackToken, recalculateViewport,startCombat,passTurn,stopCombat } from './utils/foundry.mjs';
+import  './utils/obs.mjs';
+import  './utils/foundry.mjs';
+import { isOBS } from './utils/obs.mjs';
 
-(function(){
-
-const ID = "foundry-obs-utils"
-
-
-
+const ID = "foundry-obs-utils";
 
 function updateSettings(settings){
 	if(isOBS())	location.reload();
 }
 
 function changeViewport(viewport){
-
+	if(isOBS()) updateViewport(viewport)
 };
 
 
-function hook(){	
+function start(){	
+
+	let socket;
+
 	Hooks.once('init', async function() {
 
 	});
@@ -27,39 +26,52 @@ function hook(){
 	});
 	
 	Hooks.once("socketlib.ready", () => {
-		var socket = socketlib.registerModule(ID);
+		socket = socketlib.registerModule(ID);
 	
 		socket.register("settings", updateSettings);
-		socket.register("viewport", changeViewport);
+		socket.register("viewport", changeViewport);		
 	});
 	
 	if(isOBS()){
 
-	Hooks.on("renderSidebar", hideApplication);
-	Hooks.on("renderSceneNavigation", hideApplication);
-	Hooks.on("renderMainMenu", hideApplication);
-	Hooks.on("renderSceneControls", hideApplication);
-	Hooks.on("renderTokenHUD", hideApplication);
-	Hooks.on("renderSidebarTab", hideApplication);
-	Hooks.on("renderUserConfig", hideApplication);
-	Hooks.on("renderCameraViews", hideApplication);
-	Hooks.on("renderPlayerList", hideApplication);
-	Hooks.on("renderHotbar", hideApplication);
+		if(game.view == "stream" && isOBS()){
+			Hooks.once("ready", async function() {
+				$('body.stream').css('background-color', 'transparent');
+			})
+		}
 
-	Hooks.on("drawToken", hideTokenBorder);
-	Hooks.on("refreshToken", hideTokenBorder);
+		if(game.view == "game"){
+		Hooks.on("canvasPan", (_canvas, position) => {
+			socket.executeForEveryone("viewport", position);
+		});
 
-	Hooks.on("drawToken", trackToken);
-	Hooks.on("destroyToken", untrackToken);
-	Hooks.on("updateToken", recalculateViewport);
+		Hooks.on("renderSidebar", hideApplication);
+		Hooks.on("renderSceneNavigation", hideApplication);
+		Hooks.on("renderMainMenu", hideApplication);
+		Hooks.on("renderSceneControls", hideApplication);
+		Hooks.on("renderTokenHUD", hideApplication);
+		Hooks.on("renderSidebarTab", hideApplication);
+		Hooks.on("renderUserConfig", hideApplication);
+		Hooks.on("renderCameraViews", hideApplication);
+		Hooks.on("renderPlayerList", hideApplication);
+		Hooks.on("renderHotbar", hideApplication);
 
-	Hooks.on("combatStart", startCombat);
-	Hooks.on("combatTurn", passTurn);
-	Hooks.on("combatEnd", stopCombat);
+		$("section#ui-left img#logo").remove()
 
-	$("section#ui-left img#logo").remove()
+		Hooks.on("drawToken", hideTokenBorder);
+		Hooks.on("refreshToken", hideTokenBorder);
+
+		Hooks.on("drawToken", trackToken);
+		Hooks.on("destroyToken", untrackToken);
+		Hooks.on("updateToken", recalculateViewport);
+
+		Hooks.on("combatStart", startCombat);
+		Hooks.on("combatTurn", passTurn);
+		Hooks.on("combatEnd", stopCombat);
+	}
+
 
 	}
 }
 
-hook();})();
+start();

@@ -35,12 +35,12 @@ export function recalculateViewport(token){
     console.log("Moving");
     console.log(token);
 
-
     if(trackedTokens.indexOf(token)>-1){
         var coordinates = [];
-        trackedTokens.forEach(token => {
+        if(combat.isActive()) return;
+        else trackedTokens.forEach(token => {
             coordinates.push({x:token.x,y:token.y,width:token.object.w,height:token.object.h});
-        })
+        });
 
         var bounds = calculateBoundsOfCoodinates(coordinates);
 
@@ -86,4 +86,8 @@ export function passTurn(combat){
 
 export function stopCombat(combat){
     canvas.tokens.controlledObjects.forEach((token) => token.release())
+}
+
+export function updateViewport(viewport){
+    canvas.animatePan(viewport);
 }

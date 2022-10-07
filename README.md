@@ -16,6 +16,7 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 
 - Automatically follow Tokens based on Spectator or Owner permission
 - Automatically detect OBS
+- Automatically remove /stream Background
 - Hide all UI
 
 - Levels Support (in Combat)
@@ -28,13 +29,15 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 - Birds-Eye Mode: Fit Map to Screen
 - Mode Select both in and out of Combat
 
-- Modify the /stream Page (Background Color, Information Overlays etc.)
+- Modify the /stream Page (Information Overlays etc.)
 
 - Levels Support (out of Combat)
 - Trigger OBS Scenes from Foundry
 
 - Twitch Chat Integration (Patron Only)
 - YouTube Chat Integration (Patron Only)
+
+- Discord Integration (Patron Only)
 
 ## TODO (Smaller improvements that aren't Full Features)
 - Add configuration for automatic camera
