@@ -1,0 +1,15 @@
+{
+    "obs-utils":
+    {
+        "settings": {
+            "minScale":{
+                "Name": "Minimum Scale",
+                "Hint": "The lowest that the screen can zoom to"
+            },
+            "maxScale":{
+                "Name": "Maximum Scale",
+                "Hint": "The highest that the screen can zoom to"
+            }
+        }
+    }
+}
