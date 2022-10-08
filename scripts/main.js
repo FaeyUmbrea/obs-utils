@@ -15,14 +15,13 @@ function start(){
 		registerSettings(socketReload);
 	});
 	
+	Hooks.on("canvasPan", socketCanvas);
+
 	if(isOBS()){
 
 		Hooks.once("ready", async function() {
 			if(game.view == "stream") $('body.stream').css('background-color', 'transparent');
 		})
-
-
-		Hooks.on("canvasPan", socketCanvas);
 
 		Hooks.on("renderSidebar", hideApplication);
 		Hooks.on("renderSceneNavigation", hideApplication);

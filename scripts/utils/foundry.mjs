@@ -10,16 +10,12 @@ export function hideTokenBorder(token){
 }
 
 export function trackToken(token){
-    console.log("Tracking ");
-    console.log(token.document);
     if(token?.document?._actor?.ownership[getCurrentUser()] >= 2){
         trackedTokens.push(token.document);
     }
 }
 
 export function untrackToken(token){
-    console.log("Un-Tracking ");
-    console.log(token.document);
 
     const index = trackedTokens.indexOf(token.document);
     if (index > -1) {
@@ -32,12 +28,10 @@ function getCurrentUser(){
 }
 
 export function recalculateViewport(token){
-    console.log("Moving");
-    console.log(token);
 
     if(trackedTokens.indexOf(token)>-1){
         var coordinates = [];
-        if(combat.isActive()) return;
+        if(game.combat?.started) return;
         else trackedTokens.forEach(token => {
             coordinates.push({x:token.x,y:token.y,width:token.object.w,height:token.object.h});
         });

@@ -1,4 +1,4 @@
-import { updateViewport } from "./foundry.mjs";
+import { updateViewport, getCurrentUser } from "./foundry.mjs";
 import { isOBS } from "./obs.mjs";
 
 const ID = "foundry-obs-utils";
@@ -26,5 +26,5 @@ export function socketReload(){
 	socket.executeForEveryone("settings");
 }
 export function socketCanvas(_canvas, position){
-    socket.executeForEveryone("viewport", position);
+    socket.executeForOthers("viewport", position, getCurrentUser());
 }
