@@ -2,6 +2,11 @@ import { getSetting } from "./settings.mjs";
 
 const trackedTokens = [];
 
+export const mode = {
+    combat: "trackall",
+    normal: "trackall"
+}
+
 export function hideApplication(_, html){
     html.hide();
 }
@@ -29,31 +34,52 @@ export function getCurrentUser(){
     return game.userId;
 }
 
-export function recalculateViewport(token){
+function trackAll(){
+    trackTokenList(trackedTokens);
+}
 
-    if(trackedTokens.indexOf(token)>-1){
-        var coordinates = [];
-        if(game.combat?.started) return;
-        else trackedTokens.forEach(token => {
-            coordinates.push({x:token.x,y:token.y,width:token.object.w,height:token.object.h});
-        });
+function trackCombatant(){
+    if(trackedTokens.indexOf(game.combat?.combatant) > -1) trackTokenList([game.comabt.combatant])
+}
 
-        var bounds = calculateBoundsOfCoodinates(coordinates);
+function trackTokenList(tokens){
+    var coordinates = [];
+    
+    tokens.forEach(token => {
+        coordinates.push({x:token.x,y:token.y,width:token.object.w,height:token.object.h});
+    });
 
-        if(!bounds) return;
+    var bounds = calculateBoundsOfCoodinates(coordinates);
 
-        var screenDimensions = canvas.screenDimensions;
+    if(!bounds) return;
 
-        var scaleX = (screenDimensions[0] / (bounds.maxX - bounds.minX + 300));
-        var scaleY = (screenDimensions[1] / (bounds.maxY - bounds.minY + 300)); 
+    var screenDimensions = canvas.screenDimensions;
 
-        var scale = Math.min(scaleX, scaleY)
-        scale = Math.min(scale,getSetting("maxScale"));
-        scale = Math.max(scale,getSetting("minScale"));
+    var scaleX = (screenDimensions[0] / (bounds.maxX - bounds.minX + 300));
+    var scaleY = (screenDimensions[1] / (bounds.maxY - bounds.minY + 300)); 
 
-        canvas.animatePan({x: bounds.center.x, y: bounds.center.y, scale: scale});
+    var scale = Math.min(scaleX, scaleY)
+    scale = Math.min(scale,getSetting("maxScale"));
+    scale = Math.max(scale,getSetting("minScale"));
 
+    canvas.animatePan({x: bounds.center.x, y: bounds.center.y, scale: scale});
+}
+
+export function tokenMoved(token){
+    if(game.combat?.started){
+        switch(mode.combat){
+            case "trackall": trackAll(); break;
+            case "trackOne": trackCombatant(); break;
+            default: break;
+        }
     }
+    else{
+        switch(mode.normal){
+            case "trackall": trackAll(); break;
+            default: break;
+        }
+    }
+
 }
 
 function calculateBoundsOfCoodinates(coordSet){
@@ -88,6 +114,18 @@ export function stopCombat(combat){
     canvas.tokens.controlledObjects.forEach((token) => token.release())
 }
 
-export function updateViewport(viewport){
-    canvas.animatePan(viewport);
+export function viewportChanged(viewport, userId){
+    if(game.combat?.started){
+        switch(mode.combat){
+            case "cloneDM": if(game.users.get(user).isGM)canvas.animatePan(viewport); break;
+            default: break; 
+        }
+    }
+    else{
+        switch(mode.normal){
+            case "cloneDM": if(game.users.get(user).isGM)canvas.animatePan(viewport); break;
+            default: break;
+        }
+    }
+    
 }

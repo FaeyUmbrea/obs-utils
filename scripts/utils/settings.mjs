@@ -29,7 +29,7 @@ export function registerSettings(){
     })
     game.settings.register(moduleID, "defaultOutOfCombat", {
         name: `${moduleID}.settings.defaultOutOfCombat.Name`,
-        default: 2,
+        default: "trackall",
         type: String,
         choices: {
             "trackall": "Track all Tokens",
@@ -43,7 +43,7 @@ export function registerSettings(){
     })
     game.settings.register(moduleID, "defaultInCombat", {
         name: `${moduleID}.settings.defaultInCombat.Name`,
-        default: 2,
+        default: "trackall",
         type: String,
         choices: {
             "trackall": "Track all Tokens",

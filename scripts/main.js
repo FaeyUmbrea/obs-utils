@@ -1,18 +1,18 @@
 import {isOBS} from './utils/obs.mjs';
-import { socketCanvas} from './utils/socket.mjs';
-import { hideApplication, hideTokenBorder,trackToken,untrackToken,recalculateViewport,startCombat,passTurn,stopCombat } from './utils/foundry.mjs';
-import { registerSettings } from './utils/settings.mjs';
+import { hideApplication,hideTokenBorder,trackToken,untrackToken,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode } from './utils/foundry.mjs';
+import { getSetting, registerSettings } from './utils/settings.mjs';
 
 const ID = "foundry-obs-utils";
 
 let socket;
 
-function changeViewport(viewport){
-	if(isOBS()) updateViewport(viewport)
+function changeViewport(viewport, userId){
+	if(isOBS()) viewportChanged(viewport, userId)
 };
 
-function changeMode(mode){
-
+function changeMode(combatMode,normalMode){
+	mode.combat = combatMode;
+	mode.normal = normalMode;
 }
 
 Hooks.once("socketlib.ready", () => {
@@ -35,6 +35,7 @@ function start(){
 	
 	Hooks.once('ready', async function() {
 		registerSettings();
+		changeMode(getSetting("defaultOutOfCombat"),getSetting("defaultInCombat"));
 	});
 	
 	Hooks.on("canvasPan", socketCanvas);
@@ -63,7 +64,7 @@ function start(){
 
 		Hooks.on("drawToken", trackToken);
 		Hooks.on("destroyToken", untrackToken);
-		Hooks.on("updateToken", recalculateViewport);
+		Hooks.on("updateToken", tokenMoved);
 
 		Hooks.on("combatStart", startCombat);
 		Hooks.on("combatTurn", passTurn);
