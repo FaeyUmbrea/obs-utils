@@ -1,7 +1,7 @@
-import  './utils/obs.mjs';
-import  './utils/foundry.mjs';
-import 	'./utils/settings.mjs';
-import 	'./utils/socket.mjs';
+import {isOBS} from './utils/obs.mjs';
+import { socketCanvas, socketReload } from './utils/socket.mjs';
+import { hideApplication, hideTokenBorder,trackToken,untrackToken,recalculateViewport,startCombat,passTurn,stopCombat } from './utils/foundry.mjs';
+import { registerSettings } from './utils/settings.mjs';
 
 const ID = "foundry-obs-utils";
 
@@ -17,13 +17,11 @@ function start(){
 	
 	if(isOBS()){
 
-		if(game.view == "stream"){
-			Hooks.once("ready", async function() {
-				$('body.stream').css('background-color', 'transparent');
-			})
-		}
+		Hooks.once("ready", async function() {
+			if(game.view == "stream") $('body.stream').css('background-color', 'transparent');
+		})
 
-		if(game.view == "game"){
+
 		Hooks.on("canvasPan", socketCanvas);
 
 		Hooks.on("renderSidebar", hideApplication);
@@ -49,7 +47,6 @@ function start(){
 		Hooks.on("combatStart", startCombat);
 		Hooks.on("combatTurn", passTurn);
 		Hooks.on("combatEnd", stopCombat);
-	}
 
 
 	}

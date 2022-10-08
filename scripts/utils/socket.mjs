@@ -1,3 +1,9 @@
+import { updateViewport } from "./foundry.mjs";
+import { isOBS } from "./obs.mjs";
+
+const ID = "foundry-obs-utils";
+
+
 let socket;
 
 function updateSettings(){
