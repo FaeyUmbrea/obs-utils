@@ -9,6 +9,14 @@
             "maxScale":{
                 "Name": "Maximum Scale",
                 "Hint": "The highest that the screen can zoom to"
+            },
+            "defaultOutOfCombat":{
+                "Name": "Out Of Combat Mode",
+                "Hint": "The out of Combat Camera Mode"
+            },
+            "defaultInCombat":{
+                "Name": "In Combat Mode",
+                "Hint": "The in Combat Camera Mode"
             }
         }
     }

@@ -1,3 +1,5 @@
+import { getSetting } from "./settings.mjs";
+
 const trackedTokens = [];
 
 export function hideApplication(_, html){
@@ -23,7 +25,7 @@ export function untrackToken(token){
     }
 }
 
-function getCurrentUser(){
+export function getCurrentUser(){
     return game.userId;
 }
 
@@ -45,7 +47,11 @@ export function recalculateViewport(token){
         var scaleX = (screenDimensions[0] / (bounds.maxX - bounds.minX + 300));
         var scaleY = (screenDimensions[1] / (bounds.maxY - bounds.minY + 300)); 
 
-        canvas.animatePan({x: bounds.center.x, y: bounds.center.y, scale: Math.min(scaleX, scaleY)});
+        var scale = Math.min(scaleX, scaleY)
+        scale = Math.min(scale,getSetting("maxScale"));
+        scale = Math.max(scale,getSetting("minScale"));
+
+        canvas.animatePan({x: bounds.center.x, y: bounds.center.y, scale: scale});
 
     }
 }
