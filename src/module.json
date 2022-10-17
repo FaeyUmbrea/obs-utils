@@ -11,9 +11,9 @@
   ],
   "url": "This is auto replaced",
   "license": "GNU AGPLv3",
-  "readme": "<optionally the URL to your readme>",
-  "bugs": "<optionally the URL to your issue list>",
-  "changelog": "<optionally the URL to your changelog>",
+  "readme": "https://github.com/FaeyUmbrea/foundry-obs-utils/blob/master/README.md",
+  "bugs": "https://github.com/FaeyUmbrea/foundry-obs-utils/issues",
+  "changelog": "https://github.com/FaeyUmbrea/foundry-obs-utils/blob/master/CHANGELOG.md",
   "version": "This is auto replaced",
   "compatibility": {
     "minimum": "10",
@@ -32,10 +32,19 @@
   ],
   "relationships": {
     "systems": [],
-    "requires": [],
-    "conflicts": []
+    "requires": [
+      {
+        "id": "lib-wrapper"
+      },
+      {
+        "id": "socketlib"
+      },
+      {
+        "id": "tagger"
+      }
+    ]
   },
-  "socket": false,
+  "socket": true,
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
   "library": false
