@@ -19,15 +19,17 @@
   ],
   "relationships": {
     "systems": [],
-    "requires": [{
-      "id": "lib-wrapper"
-    },
-    {
-      "id": "socketlib"
-    },
-    {
-      "id": "tagger"
-    }]
+    "requires": [
+      {
+        "id": "lib-wrapper"
+      },
+      {
+        "id": "socketlib"
+      },
+      {
+        "id": "tagger"
+      }
+    ]
   },
   "esmodules": [
     "obs-utils.mjs"

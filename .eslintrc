@@ -7,7 +7,6 @@
  {
     "parserOptions":{
         "ecmaVersion": 2020,
-        "extraFileExtentions": [".mjs"],
         "sourceType": "module"
     },
     "env": {
@@ -21,6 +20,11 @@
     // feature.
     //
     // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
+    "plugins":[
+        "json-format",
+        "html"
+    ],
+
     "rules": {
       "no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }]
     }

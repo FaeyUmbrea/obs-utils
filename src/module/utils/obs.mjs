@@ -1,4 +1,3 @@
-export function isOBS(){
-    return !!window.obsstudio;
+export function isOBS() {
+  return !!window.obsstudio;
 }
-
