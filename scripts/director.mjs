@@ -1,4 +1,4 @@
-const DICECTOR_TEMPLATE = "modules/foundry-obs-utils/templates/director.html";
+const DICECTOR_TEMPLATE = "modules/obs-utils/templates/director.html";
 
 Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
     return (arg1 == arg2) ? options.fn(this) : options.inverse(this);

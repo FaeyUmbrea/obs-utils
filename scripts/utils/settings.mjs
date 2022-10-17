@@ -2,17 +2,28 @@ const ICCHOICES = {
   "trackall": "Track all Owned Tokens",
   "trackone": "Track the currently active Owned Token",
   "clonePlayer":"Clone the Turn Player's Viewport",
-  "cloneDM": "Clone the DM's Viewport"
+  "cloneDM": "Clone the DM's Viewport",
+  "birdseye": "Fit Map to Screen"
 }
 const OOCCHOICES = {
   "trackall": "Track all Owned Tokens",
   "trackmanual": "Track a manual List of Tokens",
   "clonePlayer":"Clone a Player's Viewport",
-  "cloneDM": "Clone the DM's Viewport"
+  "cloneDM": "Clone the DM's Viewport",
+  "birdseye": "Fit Map to Screen"
 }
+const NAME_TO_ICON = {
+  "trackall":"fa-solid fa-users",
+  "trackone":"fa-solid fa-user",
+  "trackmanual":"fa-regular fa-users",
+  "clonePlayer":"fa-regular fa-users-viewfinder",
+  "cloneDM": "fa-solid fa-dice-d20",
+  "birdseye": "fa-solid fa-bird"
+}
+const moduleID = "obs-utils";
+
 
 export function registerSettings(){
-    var moduleID = "obs-utils";
 
     game.settings.register(moduleID, "minScale", {
         name: `obs-utils.settings.minScale.Name`,
@@ -61,11 +72,11 @@ export function registerSettings(){
 }
 
 export function getSetting(settingName){
-    return game.settings.get('foundry-obs-utils',settingName)
+    return game.settings.get('obs-utils',settingName)
 }
 
 export async function setSetting(settingName, value){
-  await game.settings.set('foundry-obs-utils',settingName,value)
+  await game.settings.set('obs-utils',settingName,value)
 }
 
 export function generateDataBlockFromSetting(callback, trackCallback){
@@ -80,12 +91,12 @@ export function generateDataBlockFromSetting(callback, trackCallback){
 
   for (const [key, value] of Object.entries(ICCHOICES)){
     buttonData.ic.push({
-      icon: "fa-solid fa-signal-stream", label: key, id: key
+      icon: NAME_TO_ICON[key], id: key
     });
   }
   for (const [key, value] of Object.entries(OOCCHOICES)){
     buttonData.ooc.push({
-      icon: "fa-solid fa-signal-stream", label: key, id: key
+      icon: NAME_TO_ICON[key], tooltip:value, id: key
     });
   }
   buttonData.players = game.users

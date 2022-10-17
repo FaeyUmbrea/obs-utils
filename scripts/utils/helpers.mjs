@@ -62,7 +62,7 @@ export function tokenMoved(token){
     if(game.combat?.started){
         switch(mode.combat){
             case "trackall": trackAll(); break;
-            case "trackone": if(getAutoTokens().indexOf(game.combat?.combatant) > -1) trackTokenList([game.comabt.combatant]); break;
+            case "trackone": if(getAutoTokens().indexOf(game.combat?.combatant) > -1) trackTokenList([game.combat.combatant]); break;
             default: break;
         }
     }
@@ -135,7 +135,7 @@ export function isGM(){
 }
 export function expandTokenHud(_tokenHud, html, _token){
     if(game.user.isGM){
-        var token = game.canvas.tokens.get(_token._id);
+        var token = canvas.tokens.get(_token._id);
         var rightSide = html.find('div.col.right');
         var isTracked = Tagger.hasTags(token, "obs_manual_track");
         var element = $(`<div class="control-icon ${isTracked ? 'active': ''}"><i title='Track Token' class='fa-solid fa-signal-stream' /></div>`)
@@ -145,4 +145,15 @@ export function expandTokenHud(_tokenHud, html, _token){
         })
         rightSide.append(element);
     }
+}
+
+export function scaleToFit(){
+    if(!((game.combat?.started && mode.combat== "birdseye")||(!game.combat?.started && mode.normal == "birdseye"))) return;
+    var screenDimensions = canvas.screenDimensions;
+    var sceneDimensions = canvas.scene.dimensions;
+
+    var center = {x:sceneDimensions.width/2,y:sceneDimensions.height/2}
+    var scale = Math.min(screenDimensions[0]/sceneDimensions.width,screenDimensions[1]/sceneDimensions.height);
+
+    canvas.animatePan({...center,scale: scale})
 }

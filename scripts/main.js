@@ -1,9 +1,9 @@
 import {isOBS} from './utils/obs.mjs';
-import { hideApplication,hideTokenBorder,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode, isGM, expandTokenHud } from './utils/helpers.mjs';
+import { hideApplication,hideTokenBorder,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode, isGM, expandTokenHud, scaleToFit } from './utils/helpers.mjs';
 import { generateDataBlockFromSetting, getSetting, registerSettings, setSetting } from './utils/settings.mjs';
 import Director from './director.mjs';
 
-const ID = "foundry-obs-utils";
+const ID = "obs-utils";
 
 let socket;
 
@@ -15,7 +15,7 @@ async function changeMode(){
 	//Using an object to avoid reading Settings every time a token moves
 	mode.normal = await getSetting("defaultOutOfCombat");
 	mode.combat = await getSetting("defaultInCombat");
-	console.warn(mode);
+	scaleToFit();
 }
 
 function changeCloneTarget(target){
@@ -94,6 +94,8 @@ function start(){
 			//Simulate a user interaction to start video playback
 			document.dispatchEvent(new KeyboardEvent("keydown", {'key': 'a'}))
 		})
+
+		Hooks.once("canvasReady",scaleToFit);
 
 		Hooks.on("renderSidebar", hideApplication);
 		Hooks.on("renderSceneNavigation", hideApplication);
