@@ -3,9 +3,7 @@
 // SPDX-License-Identifier: MIT
 
 export async function preloadTemplates() {
-  const templatePaths = [
-    // Add paths to "modules/obs-utils/templates"
-  ];
+  const templatePaths = ['modules/obs-utils/templates/director.html'];
 
   return loadTemplates(templatePaths);
 }
