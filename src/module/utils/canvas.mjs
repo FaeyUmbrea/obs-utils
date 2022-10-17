@@ -1,10 +1,6 @@
+import { mode } from "./const.mjs";
 import { getSetting } from "./settings.mjs";
 
-export const mode = {
-    combat: "trackall",
-    normal: "trackall",
-    trackedPlayer: undefined
-}
 
 export function hideApplication(_, html){
     html.hide();

@@ -1,5 +1,3 @@
-/* global socketlib */
-
 import { isOBS } from './utils/obs.mjs';
 import {
   hideApplication,
@@ -8,49 +6,14 @@ import {
   startCombat,
   passTurn,
   stopCombat,
-  getCurrentUser,
-  viewportChanged,
-  mode,
   isGM,
   expandTokenHud,
   scaleToFit,
-} from './utils/helpers.mjs';
-import { generateDataBlockFromSetting, getSetting, registerSettings, setSetting } from './utils/settings.mjs';
+} from './utils/canvas.mjs';
+import { generateDataBlockFromSetting, registerSettings } from './utils/settings.mjs';
 import Director from './applications/director.mjs';
 import '../less/obs-utils.less';
-
-const ID = 'obs-utils';
-
-let modulesocket;
-
-function changeViewport(viewport, userId) {
-  if (isOBS()) viewportChanged(viewport, userId);
-}
-
-async function changeMode() {
-  //Using an object to avoid reading Settings every time a token moves
-  mode.normal = await getSetting('defaultOutOfCombat');
-  mode.combat = await getSetting('defaultInCombat');
-  scaleToFit();
-}
-
-function changeCloneTarget(target) {
-  if (isOBS()) {
-    mode.trackedPlayer = target;
-  }
-}
-
-Hooks.once('socketlib.ready', () => {
-  modulesocket = socketlib.registerModule(ID);
-
-  modulesocket.register('viewport', changeViewport);
-  modulesocket.register('modechange', changeMode);
-  modulesocket.register('cloneTarget', changeCloneTarget);
-});
-
-function socketCanvas(_canvas, position) {
-  modulesocket.executeForOthers('viewport', position, getCurrentUser());
-}
+import { changeMode, sendMode, sendTrack, socketCanvas } from './utils/socket.mjs';
 
 function buildButtons(buttons) {
   if (!game.user.isGM) return;
@@ -65,16 +28,6 @@ function buildButtons(buttons) {
   });
 
   console.warn(buttons);
-}
-
-async function sendMode(isInCombat, newmode) {
-  if (isInCombat) await setSetting('defaultInCombat', newmode);
-  else await setSetting('defaultOutOfCombat', newmode);
-  modulesocket.executeForOthers('modechange');
-}
-
-async function sendTrack(playerID) {
-  if (game.user.isGM) modulesocket.executeForOthers('cloneTarget', playerID);
 }
 
 function openDirector() {
