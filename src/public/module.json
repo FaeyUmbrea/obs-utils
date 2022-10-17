@@ -46,8 +46,8 @@
   "socket": true,
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
-  "license": "LICENSE",
-  "readme": "README.md",
+  "license": "GNU AGPLv3",
+  "readme": "https://github.com/FaeyUmbrea/obs-utils/blob/master/README.md",
   "media": [
     {
       "type": "icon",

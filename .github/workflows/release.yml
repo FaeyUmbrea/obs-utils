@@ -32,7 +32,9 @@ jobs:
     - run: npm run build
 
     # Create a zip file with all files required by the module to add to the release
-    - run: (cd dist && zip -r ../module.zip * ../README.md ../LICENSE)
+    - run: (cd dist && zip -r ../module.zip *)
+    
+    - run: zip -ur module.zip LICENSE README.md
 
     # Create a release for this specific version
     - name: Update Release with Files
