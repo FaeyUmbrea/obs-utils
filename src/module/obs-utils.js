@@ -26,15 +26,15 @@ function buildButtons(buttons) {
     name: 'openStreamDirector',
     title: 'Open Stream Director',
     toggle: true,
-    onClick: () => (openDirector(newButton)),
-  }
+    onClick: () => openDirector(newButton),
+  };
   buttonGroup.tools.push(newButton);
 }
 
 function openDirector(button) {
-	if(!d)d = new Director(generateDataBlockFromSetting(sendMode, sendTrack),button);
-	if(!d.rendered)d.render(true);
-	else d.close();
+  if (!d) d = new Director(generateDataBlockFromSetting(sendMode, sendTrack), button);
+  if (!d.rendered) d.render(true);
+  else d.close();
 }
 
 function start() {

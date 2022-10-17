@@ -5,7 +5,7 @@ Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
 });
 
 export default class Director extends Application {
-  constructor(buttonData,sidebarButton) {
+  constructor(buttonData, sidebarButton) {
     super();
     this.buttonData = buttonData;
     this.sidebarButton = sidebarButton;
@@ -44,9 +44,9 @@ export default class Director extends Application {
     });
   }
 
-  close(){
+  close() {
     super.close();
-    $("[data-tool=openStreamDirector]").removeClass("active")
+    $('[data-tool=openStreamDirector]').removeClass('active');
     this.sidebarButton.active = false;
   }
 }

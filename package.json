@@ -19,9 +19,9 @@
     "lint:fix": "eslint ./** --ext .js,.mjs --fix",
     "prepare": "husky install",
     "preview": "vite preview --help",
-    "watch": "vite build --watch",
     "stylelint": "stylelint \"**/*.less\"",
-    "stylelint:fix": "stylelint \"**/*.less\" --fix"
+    "stylelint:fix": "stylelint \"**/*.less\" --fix",
+    "watch": "vite build --watch"
   },
   "devDependencies": {
     "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
