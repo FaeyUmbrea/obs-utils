@@ -21,6 +21,7 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 - Follow single Token in Combat
 - Custom Selection: Choose which tokens to follow
 - Tracked Mode: Copy another users Viewport
+- Birds-Eye Mode: Fit Map to Screen
 - Mode Select both in and out of Combat
 
 - Make /stream Background Transparent
@@ -29,7 +30,6 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 
 ## Planned Features
 
-- Birds-Eye Mode: Fit Map to Screen
 
 - Modify the /stream Page (Information Overlays etc.)
 
