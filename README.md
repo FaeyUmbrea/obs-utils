@@ -1,3 +1,5 @@
+**THIS MODULE IS STILL IN DEVELOPMENT. EXPECT CHANGES TO DESIGN AND REFACTORING AS IT REACHES FULL FEATURE COMPLETION**
+
 # OBS Utils
 
 This module was developed specifically for using OBS Browsers Sources as a spectator client for your FoundryVTT Game
