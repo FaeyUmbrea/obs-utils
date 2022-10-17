@@ -1,0 +1,42 @@
+{
+  "id": "obs-utils",
+  "title": "OBS Utils",
+  "description": "To make your Streamer Life easier!",
+  "authors": [
+    {
+      "name": "Faey Umbrea",
+      "url": "https://github.com/FaeyUmbrea",
+      "discord": "Faey#0001"
+    }
+  ],
+  "url": "This is auto replaced",
+  "license": "GNU AGPLv3",
+  "readme": "<optionally the URL to your readme>",
+  "bugs": "<optionally the URL to your issue list>",
+  "changelog": "<optionally the URL to your changelog>",
+  "version": "This is auto replaced",
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  "scripts": [],
+  "esmodules": ["module/obs-utils.js"],
+  "styles": ["styles/obs-utils.css"],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "relationships": {
+    "systems": [],
+    "requires": [],
+    "conflicts": []
+  },
+  "socket": false,
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
+  "library": false
+}
