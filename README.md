@@ -18,16 +18,18 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 - Automatically detect OBS
 - Automatically remove /stream Background
 - Hide all UI
+- Follow single Token in Combat
+- Custom Selection: Choose which tokens to follow
+- Tracked Mode: Copy another users Viewport
+- Mode Select both in and out of Combat
+
+- Make /stream Background Transparent
 
 - Levels Support (in Combat)
 
 ## Planned Features
 
-- Follow single Token in Combat
-- Custom Selection: Choose which tokens to follow
-- Tracked Mode: Copy another users Viewport
 - Birds-Eye Mode: Fit Map to Screen
-- Mode Select both in and out of Combat
 
 - Modify the /stream Page (Information Overlays etc.)
 
