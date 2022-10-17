@@ -15,24 +15,26 @@ import Director from './applications/director.mjs';
 import '../less/obs-utils.less';
 import { changeMode, sendMode, sendTrack, socketCanvas } from './utils/socket.mjs';
 
+let d;
+
 function buildButtons(buttons) {
   if (!game.user.isGM) return;
   var buttonGroup = buttons.find((element) => element.name === 'token');
   if (!buttonGroup) return;
-  buttonGroup.tools.push({
+  var newButton = {
     icon: 'fa-solid fa-signal-stream',
     name: 'openStreamDirector',
     title: 'Open Stream Director',
     toggle: true,
-    onClick: openDirector,
-  });
-
-  console.warn(buttons);
+    onClick: () => (openDirector(newButton)),
+  }
+  buttonGroup.tools.push(newButton);
 }
 
-function openDirector() {
-  let d = new Director(generateDataBlockFromSetting(sendMode, sendTrack));
-  d.render(true);
+function openDirector(button) {
+	if(!d)d = new Director(generateDataBlockFromSetting(sendMode, sendTrack),button);
+	if(!d.rendered)d.render(true);
+	else d.close();
 }
 
 function start() {

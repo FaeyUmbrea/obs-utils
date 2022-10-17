@@ -18,7 +18,8 @@
     "lint": "eslint ./** --ext .js,.mjs",
     "lint:fix": "eslint ./** --ext .js,.mjs --fix",
     "prepare": "husky install",
-    "preview": "vite preview",
+    "preview": "vite preview --help",
+    "watch": "vite build --watch",
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix"
   },

@@ -5,9 +5,10 @@ Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
 });
 
 export default class Director extends Application {
-  constructor(buttonData) {
+  constructor(buttonData,sidebarButton) {
     super();
     this.buttonData = buttonData;
+    this.sidebarButton = sidebarButton;
   }
 
   getData() {
@@ -35,10 +36,17 @@ export default class Director extends Application {
     return mergeObject(super.defaultOptions, {
       classes: ['obsdirector'],
       popOut: true,
-      resizable: true,
+      minimizable: true,
+      width: 230,
       template: DICECTOR_TEMPLATE,
       id: 'director-application',
       title: 'Director',
     });
+  }
+
+  close(){
+    super.close();
+    $("[data-tool=openStreamDirector]").removeClass("active")
+    this.sidebarButton.active = false;
   }
 }
