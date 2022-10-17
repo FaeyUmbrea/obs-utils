@@ -1,7 +1,8 @@
 import {isOBS} from './utils/obs.mjs';
 import { hideApplication,hideTokenBorder,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode, isGM, expandTokenHud, scaleToFit } from './utils/helpers.mjs';
 import { generateDataBlockFromSetting, getSetting, registerSettings, setSetting } from './utils/settings.mjs';
-import Director from './director.mjs';
+import Director from './applications/director.mjs';
+import '../less/obs-utils.less';
 
 const ID = "obs-utils";
 

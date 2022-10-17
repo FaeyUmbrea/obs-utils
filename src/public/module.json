@@ -30,10 +30,10 @@
     }]
   },
   "esmodules": [
-    "scripts/main.js"
+    "obs-utils.mjs"
   ],
   "styles": [
-    "styles/module.css"
+    "obs-utils.css"
   ],
   "languages": [
     {
