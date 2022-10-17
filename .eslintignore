@@ -5,6 +5,7 @@ dist
 *.scss
 
 package-lock.json
+node_modules
 
 *.md
 LICENSE
