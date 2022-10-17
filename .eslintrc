@@ -1,0 +1,27 @@
+/**
+ * Loads https://github.com/typhonjs-fvtt/eslint-config-foundry.js/blob/main/0.8.0.js
+ * NPM: https://www.npmjs.com/package/@typhonjs-fvtt/eslint-config-foundry.js
+ *
+ * Note: specific versions are located in /<VERSION>
+ */
+ {
+    "parserOptions":{
+        "ecmaVersion": 2020,
+        "extraFileExtentions": [".mjs"],
+        "sourceType": "module"
+    },
+    "env": {
+        "browser": true,
+        "jquery": true
+    },    
+    "extends": ["eslint:recommended","@typhonjs-fvtt/eslint-config-foundry.js/0.8.0","plugin:prettier/recommended"],
+  
+    // Prevents overwriting any built in globals particularly from `@typhonjs-fvtt/eslint-config-foundry.js`. 
+    // `event / window.event` shadowing is allowed due to being a common variable name and an uncommonly used browser 
+    // feature.
+    //
+    // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
+    "rules": {
+      "no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }]
+    }
+  }

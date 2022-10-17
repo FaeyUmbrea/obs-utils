@@ -4,7 +4,10 @@
   "description": "A foundry module for all your streaming needs!",
   "main": "src/module/obs-util.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "vite build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -17,8 +20,13 @@
   },
   "homepage": "https://github.com/FaeyUmbrea/obs-utils#readme",
   "devDependencies": {
+    "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
     "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.1",
     "less": "^4.1.3",
+    "prettier": "^2.7.1",
     "vite": "^3.1.8"
   }
 }
