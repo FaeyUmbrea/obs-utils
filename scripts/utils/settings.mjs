@@ -13,10 +13,9 @@ const OOCCHOICES = {
 
 export function registerSettings(){
     var moduleID = "foundry-obs-utils";
-    var langID = "FOUNDRY_OBS_UTILS"
 
     game.settings.register(moduleID, "minScale", {
-        name: `${langID}.settings.minScale.Name`,
+        name: `foundry-obs-utils.settings.minScale.Name`,
         default: 0.1,
         type: Number,
         range: {
@@ -26,10 +25,10 @@ export function registerSettings(){
           },
         scope: 'world',
         config: true,
-        hint: `${langID}.settings.minScale.Hint`
+        hint: `foundry-obs-utils.settings.minScale.Hint`
     });
     game.settings.register(moduleID, "maxScale", {
-        name: `${langID}.settings.maxScale.Name`,
+        name: `foundry-obs-utils.settings.maxScale.Name`,
         default: 2,
         type: Number,
         range: {
@@ -39,25 +38,25 @@ export function registerSettings(){
           },
         scope: 'world',
         config: true,
-        hint: `${langID}.settings.maxScale.Hint`
+        hint: `foundry-obs-utils.settings.maxScale.Hint`
     })
     game.settings.register(moduleID, "defaultOutOfCombat", {
-        name: `${langID}.settings.defaultOutOfCombat.Name`,
+        name: `foundry-obs-utils.settings.defaultOutOfCombat.Name`,
         default: "trackall",
         type: String,
         choices: OOCCHOICES,
         scope: 'world',
         config: false,
-        hint: `${langID}.settings.defaultOutOfCombat.Hint`
+        hint: `foundry-obs-utils.settings.defaultOutOfCombat.Hint`
     })
     game.settings.register(moduleID, "defaultInCombat", {
-        name: `${langID}.settings.defaultInCombat.Name`,
+        name: `foundry-obs-utils.settings.defaultInCombat.Name`,
         default: "trackall",
         type: String,
         choices: ICCHOICES,
         scope: 'world',
         config: false,
-        hint: `${langID}.settings.defaultInCombat.Hint`
+        hint: `foundry-obs-utils.settings.defaultInCombat.Hint`
     })
 }
 
