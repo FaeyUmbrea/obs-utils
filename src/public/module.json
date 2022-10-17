@@ -33,7 +33,7 @@
     "obs-utils.mjs"
   ],
   "styles": [
-    "obs-utils.css"
+    "style.css"
   ],
   "languages": [
     {

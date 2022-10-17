@@ -24,6 +24,7 @@ const config = {
     emptyOutDir: true,
     sourcemap: true,
     brotliSize: true,
+    minify: 'terser',
     lib: {
       name: 'obs-utils',
       entry: 'module/obs-utils.js',
