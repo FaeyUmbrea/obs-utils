@@ -2,7 +2,8 @@ import { getSetting } from "./settings.mjs";
 
 export const mode = {
     combat: "trackall",
-    normal: "trackall"
+    normal: "trackall",
+    trackedPlayer: undefined
 }
 
 export function hideApplication(_, html){
@@ -19,15 +20,11 @@ function getAutoTokens(){
 }
 
 function getManualToken(){
-    return Tagger.getByTag("obs_manual_track")
+    return Tagger.getByTag("obs_manual_track").map((document) => (document.object))
 }
 
-export function tagToken(token){
-    Tagger.addTags(token, "obs_manual_track");
-}
-
-export function untagToken(token){
-    Tagger.removeTags(token, "obs_manual_track");
+function toggleToken(token){
+    Tagger.toggleTags(token,"obs_manual_track");
 }
 
 export function getCurrentUser(){
@@ -65,7 +62,7 @@ export function tokenMoved(token){
     if(game.combat?.started){
         switch(mode.combat){
             case "trackall": trackAll(); break;
-            case "trackOne": if(getAutoTokens().indexOf(game.combat?.combatant) > -1) trackTokenList([game.comabt.combatant]); break;
+            case "trackone": if(getAutoTokens().indexOf(game.combat?.combatant) > -1) trackTokenList([game.comabt.combatant]); break;
             default: break;
         }
     }
@@ -126,8 +123,26 @@ export function viewportChanged(viewport, userId){
     else{
         switch(mode.normal){
             case "cloneDM": if(game.users.get(userId).isGM)canvas.animatePan(viewport); break;
+            case "clonePlayer": if(userId == mode.trackedPlayer)canvas.animatePan(viewport); break;
             default: break;
         }
     }
     
+}
+
+export function isGM(){
+    return game.user?.isGM;
+}
+export function expandTokenHud(_tokenHud, html, _token){
+    if(game.user.isGM){
+        var token = game.canvas.tokens.get(_token._id);
+        var rightSide = html.find('div.col.right');
+        var isTracked = Tagger.hasTags(token, "obs_manual_track");
+        var element = $(`<div class="control-icon ${isTracked ? 'active': ''}"><i title='Track Token' class='fa-solid fa-signal-stream' /></div>`)
+        element.click(function (){
+            toggleToken(token);
+            $(this).toggleClass('active');
+        })
+        rightSide.append(element);
+    }
 }

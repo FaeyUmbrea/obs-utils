@@ -12,10 +12,10 @@ const OOCCHOICES = {
 }
 
 export function registerSettings(){
-    var moduleID = "foundry-obs-utils";
+    var moduleID = "obs-utils";
 
     game.settings.register(moduleID, "minScale", {
-        name: `foundry-obs-utils.settings.minScale.Name`,
+        name: `obs-utils.settings.minScale.Name`,
         default: 0.1,
         type: Number,
         range: {
@@ -25,10 +25,10 @@ export function registerSettings(){
           },
         scope: 'world',
         config: true,
-        hint: `foundry-obs-utils.settings.minScale.Hint`
+        hint: `obs-utils.settings.minScale.Hint`
     });
     game.settings.register(moduleID, "maxScale", {
-        name: `foundry-obs-utils.settings.maxScale.Name`,
+        name: `obs-utils.settings.maxScale.Name`,
         default: 2,
         type: Number,
         range: {
@@ -38,25 +38,25 @@ export function registerSettings(){
           },
         scope: 'world',
         config: true,
-        hint: `foundry-obs-utils.settings.maxScale.Hint`
+        hint: `obs-utils.settings.maxScale.Hint`
     })
     game.settings.register(moduleID, "defaultOutOfCombat", {
-        name: `foundry-obs-utils.settings.defaultOutOfCombat.Name`,
+        name: `obs-utils.settings.defaultOutOfCombat.Name`,
         default: "trackall",
         type: String,
         choices: OOCCHOICES,
         scope: 'world',
         config: false,
-        hint: `foundry-obs-utils.settings.defaultOutOfCombat.Hint`
+        hint: `obs-utils.settings.defaultOutOfCombat.Hint`
     })
     game.settings.register(moduleID, "defaultInCombat", {
-        name: `foundry-obs-utils.settings.defaultInCombat.Name`,
+        name: `obs-utils.settings.defaultInCombat.Name`,
         default: "trackall",
         type: String,
         choices: ICCHOICES,
         scope: 'world',
         config: false,
-        hint: `foundry-obs-utils.settings.defaultInCombat.Hint`
+        hint: `obs-utils.settings.defaultInCombat.Hint`
     })
 }
 
@@ -68,13 +68,14 @@ export async function setSetting(settingName, value){
   await game.settings.set('foundry-obs-utils',settingName,value)
 }
 
-export function generateDataBlockFromSetting(callback){
+export function generateDataBlockFromSetting(callback, trackCallback){
   let buttonData = {
     ic: [], 
     ooc: [],
     currentIC: getSetting("defaultInCombat"),
     currentOOC: getSetting("defaultOutOfCombat"),
-    callback: callback
+    callback: callback,
+    trackCallback: trackCallback
   }
 
   for (const [key, value] of Object.entries(ICCHOICES)){
@@ -87,6 +88,6 @@ export function generateDataBlockFromSetting(callback){
       icon: "fa-solid fa-signal-stream", label: key, id: key
     });
   }
-  console.warn(buttonData);
+  buttonData.players = game.users
   return buttonData
 }

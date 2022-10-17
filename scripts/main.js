@@ -1,5 +1,5 @@
 import {isOBS} from './utils/obs.mjs';
-import { hideApplication,hideTokenBorder,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode } from './utils/helpers.mjs';
+import { hideApplication,hideTokenBorder,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode, isGM, expandTokenHud } from './utils/helpers.mjs';
 import { generateDataBlockFromSetting, getSetting, registerSettings, setSetting } from './utils/settings.mjs';
 import Director from './director.mjs';
 
@@ -18,11 +18,18 @@ async function changeMode(){
 	console.warn(mode);
 }
 
+function changeCloneTarget(target){
+	if(isOBS()){
+		mode.trackedPlayer = target;
+	}
+}
+
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule(ID);
 
     socket.register("viewport", changeViewport);	
     socket.register("modechange", changeMode);	
+	socket.register("cloneTarget", changeCloneTarget)
 });
 
 function socketCanvas(_canvas, position){
@@ -51,8 +58,13 @@ async function sendMode(isInCombat, mode){
 	socket.executeForOthers("modechange");
 }
 
+async function sendTrack(playerID){
+	if(game.user.isGM)
+	socket.executeForOthers("cloneTarget", playerID)
+}
+
 function openDirector(){
-	let d = new Director(generateDataBlockFromSetting(sendMode))
+	let d = new Director(generateDataBlockFromSetting(sendMode,sendTrack))
 	d.render(true);
 }
 
@@ -60,16 +72,16 @@ function openDirector(){
 function start(){	
 
 	Hooks.once('init', async function() {
-		
+		registerSettings();
 	});
 	
+
 	Hooks.once('ready', async function() {
-		registerSettings();
-		if(isOBS){
-			//Init Mode Object
-			changeMode();
+		if(isGM()){
+			Hooks.on("renderTokenHUD", expandTokenHud);
 		}
 	});
+
 	
 	Hooks.on("canvasPan", socketCanvas);
 
@@ -77,6 +89,10 @@ function start(){
 
 		Hooks.once("ready", async function() {
 			if(game.view == "stream") $('body.stream').css('background-color', 'transparent');
+			//Init Mode Object
+			changeMode();
+			//Simulate a user interaction to start video playback
+			document.dispatchEvent(new KeyboardEvent("keydown", {'key': 'a'}))
 		})
 
 		Hooks.on("renderSidebar", hideApplication);

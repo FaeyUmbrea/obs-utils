@@ -14,4 +14,12 @@
     <label for="radioooc{{button.id}}"><i class="{{button.icon}}"></i>{{button.label}}</label>
     {{/each}}
 </div>
+<div>
+<b>Tracked Player</b>
+<select name="trackedPlayer">
+    {{#each players as | player |}}
+    <option value="{{player.id}}">{{player.name}}</option>
+    {{/each}}
+</select>
+</div>
 </div>

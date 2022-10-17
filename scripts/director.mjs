@@ -26,6 +26,10 @@ export default class Director extends Application{
             var id = this.value
             buttonData.callback(false,id);
         })
+		html.find("select").change(function (){
+			var id = this.value
+			buttonData.trackCallback(id);
+		})
     }
 
 	static get defaultOptions() {

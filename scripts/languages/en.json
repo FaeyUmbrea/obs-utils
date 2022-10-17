@@ -1,5 +1,5 @@
 {
-    "foundry-obs-utils":
+    "obs-utils":
     {
         "settings": {
             "minScale":{
@@ -19,5 +19,6 @@
                 "Hint": "The in Combat Camera Mode"
             }
         }
-    }
+    },
+    "obs-utils.settings.maxScale.Name": "Test"
 }
