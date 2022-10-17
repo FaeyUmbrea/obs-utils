@@ -1,3 +1,16 @@
+const ICCHOICES = {
+  "trackall": "Track all Owned Tokens",
+  "trackone": "Track the currently active Owned Token",
+  "clonePlayer":"Clone the Turn Player's Viewport",
+  "cloneDM": "Clone the DM's Viewport"
+}
+const OOCCHOICES = {
+  "trackall": "Track all Owned Tokens",
+  "trackmanual": "Track a manual List of Tokens",
+  "clonePlayer":"Clone a Player's Viewport",
+  "cloneDM": "Clone the DM's Viewport"
+}
+
 export function registerSettings(){
     var moduleID = "foundry-obs-utils";
 
@@ -31,12 +44,7 @@ export function registerSettings(){
         name: `${moduleID}.settings.defaultOutOfCombat.Name`,
         default: "trackall",
         type: String,
-        choices: {
-            "trackall": "Track all Tokens",
-            "trackone": "Track one Token",
-            "clonePlayer":"Track specific Player",
-            "cloneDM": "Track DM"
-          },
+        choices: OOCCHOICES,
         scope: 'world',
         config: true,
         hint: `${moduleID}.settings.defaultOutOfCombat.Hint`
@@ -45,12 +53,7 @@ export function registerSettings(){
         name: `${moduleID}.settings.defaultInCombat.Name`,
         default: "trackall",
         type: String,
-        choices: {
-            "trackall": "Track all Tokens",
-            "trackone": "Track one Token",
-            "clonePlayer":"Track Turn Player",
-            "cloneDM": "Track DM"
-          },
+        choices: ICCHOICES,
         scope: 'world',
         config: true,
         hint: `${moduleID}.settings.defaultInCombat.Hint`
@@ -59,4 +62,31 @@ export function registerSettings(){
 
 export function getSetting(settingName){
     return game.settings.get('foundry-obs-utils',settingName)
+}
+
+export async function setSetting(settingName, value){
+  await game.settings.set('foundry-obs-utils',settingName,value)
+}
+
+export function generateDataBlockFromSetting(callback){
+  let buttonData = {
+    ic: [], 
+    ooc: [],
+    currentIC: getSetting("defaultInCombat"),
+    currentOOC: getSetting("defaultOutOfCombat"),
+    callback: callback
+  }
+
+  for (const [key, value] of Object.entries(ICCHOICES)){
+    buttonData.ic.push({
+      icon: "fa-solid fa-signal-stream", label: key, id: key
+    });
+  }
+  for (const [key, value] of Object.entries(OOCCHOICES)){
+    buttonData.ooc.push({
+      icon: "fa-solid fa-signal-stream", label: key, id: key
+    });
+  }
+  console.warn(buttonData);
+  return buttonData
 }

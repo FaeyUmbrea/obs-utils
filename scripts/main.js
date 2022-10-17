@@ -1,6 +1,7 @@
 import {isOBS} from './utils/obs.mjs';
-import { hideApplication,hideTokenBorder,trackToken,untrackToken,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode } from './utils/foundry.mjs';
-import { getSetting, registerSettings } from './utils/settings.mjs';
+import { hideApplication,hideTokenBorder,tokenMoved,startCombat,passTurn,stopCombat,getCurrentUser,viewportChanged,mode } from './utils/helpers.mjs';
+import { generateDataBlockFromSetting, getSetting, registerSettings, setSetting } from './utils/settings.mjs';
+import Director from './director.mjs';
 
 const ID = "foundry-obs-utils";
 
@@ -10,9 +11,11 @@ function changeViewport(viewport, userId){
 	if(isOBS()) viewportChanged(viewport, userId)
 };
 
-function changeMode(combatMode,normalMode){
-	mode.combat = combatMode;
-	mode.normal = normalMode;
+async function changeMode(){
+	//Using an object to avoid reading Settings every time a token moves
+	mode.normal = await getSetting("defaultOutOfCombat");
+	mode.combat = await getSetting("defaultInCombat");
+	console.warn(mode);
 }
 
 Hooks.once("socketlib.ready", () => {
@@ -26,6 +29,33 @@ function socketCanvas(_canvas, position){
     socket.executeForOthers("viewport", position, getCurrentUser());
 }
 
+function buildButtons(buttons){
+	
+	if (!game.user.isGM) return;
+    	var buttonGroup = buttons.find(element => element.name === "token");
+    	if (!buttonGroup) return;
+    	buttonGroup.tools.push({
+        icon: "fa-solid fa-signal-stream",
+        name: "openStreamDirector",
+        title: "Open Stream Director",
+        toggle: true,
+        onClick: openDirector
+    	})
+
+	console.warn(buttons)
+}
+
+async function sendMode(isInCombat, mode){
+	if(isInCombat)await setSetting("defaultInCombat",mode);
+	else await setSetting("defaultOutOfCombat",mode);
+	socket.executeForOthers("modechange");
+}
+
+function openDirector(){
+	let d = new Director(generateDataBlockFromSetting(sendMode))
+	d.render(true);
+}
+
 
 function start(){	
 
@@ -35,7 +65,10 @@ function start(){
 	
 	Hooks.once('ready', async function() {
 		registerSettings();
-		changeMode(getSetting("defaultOutOfCombat"),getSetting("defaultInCombat"));
+		if(isOBS){
+			//Init Mode Object
+			changeMode();
+		}
 	});
 	
 	Hooks.on("canvasPan", socketCanvas);
@@ -62,8 +95,6 @@ function start(){
 		Hooks.on("drawToken", hideTokenBorder);
 		Hooks.on("refreshToken", hideTokenBorder);
 
-		Hooks.on("drawToken", trackToken);
-		Hooks.on("destroyToken", untrackToken);
 		Hooks.on("updateToken", tokenMoved);
 
 		Hooks.on("combatStart", startCombat);
@@ -71,6 +102,9 @@ function start(){
 		Hooks.on("combatEnd", stopCombat);
 
 
+	}
+	else{
+		Hooks.on("getSceneControlButtons", buildButtons);
 	}
 }
 

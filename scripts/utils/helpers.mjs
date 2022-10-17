@@ -1,7 +1,5 @@
 import { getSetting } from "./settings.mjs";
 
-const trackedTokens = [];
-
 export const mode = {
     combat: "trackall",
     normal: "trackall"
@@ -16,18 +14,20 @@ export function hideTokenBorder(token){
     }
 }
 
-export function trackToken(token){
-    if(token?.document?._actor?.ownership[getCurrentUser()] >= 2){
-        trackedTokens.push(token.document);
-    }
+function getAutoTokens(){
+    return game.canvas.tokens.ownedTokens;
 }
 
-export function untrackToken(token){
+function getManualToken(){
+    return Tagger.getByTag("obs_manual_track")
+}
 
-    const index = trackedTokens.indexOf(token.document);
-    if (index > -1) {
-      trackedTokens.splice(index, 1);
-    }
+export function tagToken(token){
+    Tagger.addTags(token, "obs_manual_track");
+}
+
+export function untagToken(token){
+    Tagger.removeTags(token, "obs_manual_track");
 }
 
 export function getCurrentUser(){
@@ -35,18 +35,14 @@ export function getCurrentUser(){
 }
 
 function trackAll(){
-    trackTokenList(trackedTokens);
-}
-
-function trackCombatant(){
-    if(trackedTokens.indexOf(game.combat?.combatant) > -1) trackTokenList([game.comabt.combatant])
+    trackTokenList(getAutoTokens());
 }
 
 function trackTokenList(tokens){
     var coordinates = [];
     
     tokens.forEach(token => {
-        coordinates.push({x:token.x,y:token.y,width:token.object.w,height:token.object.h});
+        coordinates.push({x:token.document.x,y:token.document.y,width:token.w,height:token.h});
     });
 
     var bounds = calculateBoundsOfCoodinates(coordinates);
@@ -69,13 +65,14 @@ export function tokenMoved(token){
     if(game.combat?.started){
         switch(mode.combat){
             case "trackall": trackAll(); break;
-            case "trackOne": trackCombatant(); break;
+            case "trackOne": if(getAutoTokens().indexOf(game.combat?.combatant) > -1) trackTokenList([game.comabt.combatant]); break;
             default: break;
         }
     }
     else{
         switch(mode.normal){
             case "trackall": trackAll(); break;
+            case "trackmanual": trackTokenList(getManualToken());
             default: break;
         }
     }
@@ -94,7 +91,7 @@ function calculateBoundsOfCoodinates(coordSet){
         maxY = Math.max(maxY,coords.y+coords.height);
 
     })
-    if(minX == minY == Number.MAX_VALUE || maxX == maxY == Number.MIN_VALUE ) return undefined;
+    if((minX == minY && minX == Number.MAX_VALUE) || (maxX == maxY && maxX == Number.MIN_VALUE )) return undefined;
     return {minX:minX, minY:minY, maxX:maxX, maxY:maxY, center:{x:minX+(maxX-minX)/2,y:minY+(maxY-minY)/2}}
 }
 
@@ -114,16 +111,21 @@ export function stopCombat(combat){
     canvas.tokens.controlledObjects.forEach((token) => token.release())
 }
 
+function getCurrentCombatants(){
+    return game.combat.combatant.players
+}
+
 export function viewportChanged(viewport, userId){
     if(game.combat?.started){
         switch(mode.combat){
             case "cloneDM": if(game.users.get(user).isGM)canvas.animatePan(viewport); break;
+            case "clonePlayer": if(getCurrentCombatants().indexOf(userId) > -1) canvas.animatePan(viewport); break;
             default: break; 
         }
     }
     else{
         switch(mode.normal){
-            case "cloneDM": if(game.users.get(user).isGM)canvas.animatePan(viewport); break;
+            case "cloneDM": if(game.users.get(userId).isGM)canvas.animatePan(viewport); break;
             default: break;
         }
     }

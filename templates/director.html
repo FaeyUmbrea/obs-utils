@@ -1,0 +1,17 @@
+<div class="obsdirector">
+<b>In Combat Type</b>
+<div>
+    {{#each ic as | button |}}
+    <input type="radio" id="radioic{{button.id}}" name="ic" value="{{button.id}}" {{#ifEquals button.id ../currentIC}} checked {{/ifEquals}} />
+    <label for="radioic{{button.id}}"><i class="{{button.icon}}"></i>{{button.label}}</label>
+    {{/each}}
+</div>
+<hr>
+<b>Out of Combat Type</b>
+<div>
+    {{#each ooc as | button |}}
+    <input type="radio" id="radioooc{{button.id}}" name="ooc" value="{{button.id}}" {{#ifEquals button.id ../currentOOC}} checked {{/ifEquals}}/>
+    <label for="radioooc{{button.id}}"><i class="{{button.icon}}"></i>{{button.label}}</label>
+    {{/each}}
+</div>
+</div>
