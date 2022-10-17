@@ -28,6 +28,16 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 
 - Levels Support (in Combat)
 
+## Requirements
+
+- libWrapper
+- Tagger
+- socketLib
+
+### Optional Requirements
+
+- theripper93's Levels [GitHub](https://github.com/theripper93/Levels)
+
 ## Planned Features
 
 
