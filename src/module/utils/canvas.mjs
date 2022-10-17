@@ -1,4 +1,4 @@
-/* global Tagger user */
+/* global Tagger */
 
 import { mode } from './const.mjs';
 import { getSetting } from './settings.mjs';
@@ -62,7 +62,8 @@ export function tokenMoved() {
         trackAll();
         break;
       case 'trackone':
-        if (getAutoTokens().indexOf(game.combat?.combatant) > -1) trackTokenList([game.combat.combatant]);
+        var trackedToken = getAutoTokens().find((element) => element.id === game.combat.combatant.tokenId);
+        if (trackedToken) trackTokenList([trackedToken]);
         break;
       default:
         break;
@@ -126,7 +127,7 @@ export function viewportChanged(viewport, userId) {
   if (game.combat?.started) {
     switch (mode.combat) {
       case 'cloneDM':
-        if (game.users.get(user).isGM) canvas.animatePan(viewport);
+        if (game.users.get(userId).isGM) canvas.animatePan(viewport);
         break;
       case 'clonePlayer':
         if (getCurrentCombatants().indexOf(userId) > -1) canvas.animatePan(viewport);
