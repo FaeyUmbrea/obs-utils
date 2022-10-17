@@ -1,0 +1,22 @@
+{
+  "name": "obs-utils",
+  "version": "0.0.1",
+  "description": "A foundry module for all your streaming needs!",
+  "main": "src/module/obs-util.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FaeyUmbrea/obs-utils.git"
+  },
+  "author": "Faey Umbrea",
+  "license": "AGPL3.0",
+  "bugs": {
+    "url": "https://github.com/FaeyUmbrea/obs-utils/issues"
+  },
+  "homepage": "https://github.com/FaeyUmbrea/obs-utils#readme",
+  "devDependencies": {
+    "vite": "^3.1.8"
+  }
+}
