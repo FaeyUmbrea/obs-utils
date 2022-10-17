@@ -1,97 +1,58 @@
-<!--
-SPDX-FileCopyrightText: 2022 Johannes Loher
+**THIS MODULE IS STILL IN DEVELOPMENT. EXPECT CHANGES TO DESIGN AND REFACTORING AS IT REACHES FULL FEATURE COMPLETION**
 
-SPDX-License-Identifier: MIT
--->
+# OBS Utils
 
-# obs-utils
+This module was developed specifically for using OBS Browsers Sources as a spectator client for your FoundryVTT Game
 
-Please add your description here.
+It forgoes the usual stream user configuration by simply checking if its running in a browser source.
+Changing any of the settings related to the Browser Source will also force-refresh it in OBS, so no need to do that manually anymore.
 
-## Installation
+This Module was in large parts inspired by Stream View and Stream Utils respectively.
 
-Please add your installation instructions here.
+## Concept
 
-## Development
+This module is supposed to be easy, low config and out of the box. 
+Most importantly its supposed to be as hands off on the OBS Side as possible. 
 
-### Prerequisites
+## Features
 
-In order to build this module, recent versions of `node` and `npm` are
-required. Most likely, using `yarn` also works, but only `npm` is officially
-supported. We recommend using the latest lts version of `node`. If you use `nvm`
-to manage your `node` versions, you can simply run
+- Automatically follow Tokens based on Spectator or Owner permission
+- Automatically detect OBS
+- Automatically remove /stream Background
+- Hide all UI
+- Follow single Token in Combat
+- Custom Selection: Choose which tokens to follow
+- Tracked Mode: Copy another users Viewport
+- Birds-Eye Mode: Fit Map to Screen
+- Mode Select both in and out of Combat
 
-```
-nvm install
-```
+- Make /stream Background Transparent
 
-in the project's root directory.
+- Levels Support (in Combat)
 
-You also need to install the project's dependencies. To do so, run
+## Requirements
 
-```
-npm install
-```
+- libWrapper
+- Tagger
+- socketLib
 
-### Building
+### Optional Requirements
 
-You can build the project by running
+- theripper93's Levels [GitHub](https://github.com/theripper93/Levels)
 
-```
-npm run build
-```
+## Planned Features
 
-Alternatively, you can run
 
-```
-npm run build:watch
-```
+- Modify the /stream Page (Information Overlays etc.)
 
-to watch for changes and automatically build as necessary.
+- Levels Support (out of Combat)
+- Trigger OBS Scenes from Foundry
 
-### Linking the built project to Foundry VTT
+- Twitch Chat Integration (Patron Only)
+- YouTube Chat Integration (Patron Only)
 
-In order to provide a fluent development experience, it is recommended to link
-the built module to your local Foundry VTT installation's data folder. In
-order to do so, first add a file called `foundryconfig.json` to the project root
-with the following content:
+- Discord Integration (Patron Only)
 
-```
-{
-  "dataPath": ["/absolute/path/to/your/FoundryVTT"]
-}
-```
-
-(if you are using Windows, make sure to use `\` as a path separator instead of
-`/`)
-
-Then run
-
-```
-npm run link-project
-```
-
-On Windows, creating symlinks requires administrator privileges, so
-unfortunately you need to run the above command in an administrator terminal for
-it to work.
-
-You can also link to multiple data folders by specifying multiple paths in the
-`dataPath` array.
-
-### Creating a release
-
-The workflow works basically the same as the workflow of the [League Basic JS Module Template], please follow the
-instructions given there.
-
-## Licensing
-
-This project is being developed under the terms of the
-[LIMITED LICENSE AGREEMENT FOR MODULE DEVELOPMENT] for Foundry Virtual Tabletop.
-
-Please add your licensing information here. Add your chosen license as
-`LICENSE` file to the project root and mention it here.  If you don't know which
-license to choose, take a look at [Choose an open source license].
-
-[League Basic JS Module Template]: https://github.com/League-of-Foundry-Developers/FoundryVTT-Module-Template
-[LIMITED LICENSE AGREEMENT FOR MODULE DEVELOPMENT]: https://foundryvtt.com/article/license/
-[Choose an open source license]: https://choosealicense.com/
+## TODO (Smaller improvements that aren't Full Features)
+- Add configuration for automatic camera
+- 
