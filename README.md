@@ -1,7 +1,5 @@
 **THIS MODULE IS STILL IN DEVELOPMENT. EXPECT CHANGES TO DESIGN AND REFACTORING AS IT REACHES FULL FEATURE COMPLETION**
 
-Versions are Compatible-Core.Major.Minor, starting with 0 so 10.0.0 is the first release, compatible with Foundry V10
-
 # OBS Utils
 
 This module was developed specifically for using OBS Browsers Sources as a spectator client for your FoundryVTT Game
