@@ -52,7 +52,6 @@ function start() {
 
   if (isOBS()) {
     Hooks.once('ready', async function () {
-      if (game.view == 'stream') $('body.stream').css('background-color', 'transparent');
       //Init Mode Object
       changeMode();
       //Simulate a user interaction to start video playback
@@ -60,6 +59,7 @@ function start() {
     });
 
     Hooks.once('init', async function () {
+      if (game.view == 'stream') $('body.stream').css('background-color', 'transparent');
       if (game.view != 'game') return;
       Hooks.once('canvasReady', scaleToFit);
 
