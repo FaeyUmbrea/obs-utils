@@ -50,7 +50,7 @@ function start() {
 
   Hooks.on('canvasPan', socketCanvas);
 
-  if (!isOBS()) {
+  if (isOBS()) {
     Hooks.once('ready', async function () {
       //if (game.view == 'stream') $('body.stream').css('background-color', 'transparent');
       //Init Mode Object
