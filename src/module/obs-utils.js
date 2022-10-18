@@ -50,15 +50,17 @@ function start() {
 
   Hooks.on('canvasPan', socketCanvas);
 
-  if (isOBS()) {
+  if (!isOBS()) {
     Hooks.once('ready', async function () {
-      if (game.view == 'stream') $('body.stream').css('background-color', 'transparent');
+      //if (game.view == 'stream') $('body.stream').css('background-color', 'transparent');
       //Init Mode Object
       changeMode();
       //Simulate a user interaction to start video playback
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
     });
 
+    Hooks.once('init', async function (){
+      if(game.view != "game") return;
     Hooks.once('canvasReady', scaleToFit);
 
     Hooks.on('renderSidebar', hideApplication);
@@ -82,6 +84,7 @@ function start() {
     Hooks.on('combatStart', startCombat);
     Hooks.on('combatTurn', passTurn);
     Hooks.on('combatEnd', stopCombat);
+    });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);
   }
