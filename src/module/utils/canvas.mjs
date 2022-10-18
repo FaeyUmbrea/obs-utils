@@ -1,6 +1,7 @@
 /* global Tagger */
 
 import { mode } from './const.mjs';
+import { sleep } from './misc.mjs';
 import { getSetting } from './settings.mjs';
 
 export function hideApplication(_, html) {
@@ -180,4 +181,9 @@ export function scaleToFit() {
   var scale = Math.min(screenDimensions[0] / sceneDimensions.width, screenDimensions[1] / sceneDimensions.height);
 
   canvas.animatePan({ ...center, scale: scale });
+}
+
+export async function closePopupWithDelay(popout) {
+  await sleep(getSetting('popupCloseDelay') * 1000);
+  popout.close();
 }

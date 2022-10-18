@@ -9,6 +9,7 @@ import {
   isGM,
   expandTokenHud,
   scaleToFit,
+  closePopupWithDelay,
 } from './utils/canvas.mjs';
 import { generateDataBlockFromSetting, registerSettings } from './utils/settings.mjs';
 import Director from './applications/director.mjs';
@@ -84,6 +85,10 @@ function start() {
       Hooks.on('combatStart', startCombat);
       Hooks.on('combatTurn', passTurn);
       Hooks.on('combatEnd', stopCombat);
+
+      // Close Popups after configurable Time
+      Hooks.on('renderJournalSheet', closePopupWithDelay);
+      Hooks.on('renderImagePopout', closePopupWithDelay);
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);

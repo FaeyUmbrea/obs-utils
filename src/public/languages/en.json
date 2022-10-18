@@ -16,6 +16,10 @@
       "defaultInCombat": {
         "Name": "In Combat Mode",
         "Hint": "The in Combat Camera Mode"
+      },
+      "popupCloseDelay": {
+        "Name": "Popout Close Delay",
+        "Hint": "Seconds until Popouts are automatically closed"
       }
     }
   },

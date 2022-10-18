@@ -45,6 +45,19 @@ export function registerSettings() {
     config: false,
     hint: `obs-utils.settings.defaultInCombat.Hint`,
   });
+  game.settings.register(moduleID, 'popupCloseDelay', {
+    name: `obs-utils.settings.popupCloseDelay.Name`,
+    default: 10,
+    type: Number,
+    range: {
+      min: 1,
+      max: 300,
+      step: 1,
+    },
+    scope: 'world',
+    config: true,
+    hint: `obs-utils.settings.popupCloseDelay.Hint`,
+  });
 }
 
 export function getSetting(settingName) {
