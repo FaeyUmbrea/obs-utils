@@ -59,31 +59,31 @@ function start() {
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
     });
 
-    Hooks.once('init', async function (){
-      if(game.view != "game") return;
-    Hooks.once('canvasReady', scaleToFit);
+    Hooks.once('init', async function () {
+      if (game.view != 'game') return;
+      Hooks.once('canvasReady', scaleToFit);
 
-    Hooks.on('renderSidebar', hideApplication);
-    Hooks.on('renderSceneNavigation', hideApplication);
-    Hooks.on('renderMainMenu', hideApplication);
-    Hooks.on('renderSceneControls', hideApplication);
-    Hooks.on('renderTokenHUD', hideApplication);
-    Hooks.on('renderSidebarTab', hideApplication);
-    Hooks.on('renderUserConfig', hideApplication);
-    Hooks.on('renderCameraViews', hideApplication);
-    Hooks.on('renderPlayerList', hideApplication);
-    Hooks.on('renderHotbar', hideApplication);
+      Hooks.on('renderSidebar', hideApplication);
+      Hooks.on('renderSceneNavigation', hideApplication);
+      Hooks.on('renderMainMenu', hideApplication);
+      Hooks.on('renderSceneControls', hideApplication);
+      Hooks.on('renderTokenHUD', hideApplication);
+      Hooks.on('renderSidebarTab', hideApplication);
+      Hooks.on('renderUserConfig', hideApplication);
+      Hooks.on('renderCameraViews', hideApplication);
+      Hooks.on('renderPlayerList', hideApplication);
+      Hooks.on('renderHotbar', hideApplication);
 
-    $('section#ui-left img#logo').remove();
+      $('section#ui-left img#logo').remove();
 
-    Hooks.on('drawToken', hideTokenBorder);
-    Hooks.on('refreshToken', hideTokenBorder);
+      Hooks.on('drawToken', hideTokenBorder);
+      Hooks.on('refreshToken', hideTokenBorder);
 
-    Hooks.on('updateToken', tokenMoved);
+      Hooks.on('updateToken', tokenMoved);
 
-    Hooks.on('combatStart', startCombat);
-    Hooks.on('combatTurn', passTurn);
-    Hooks.on('combatEnd', stopCombat);
+      Hooks.on('combatStart', startCombat);
+      Hooks.on('combatTurn', passTurn);
+      Hooks.on('combatEnd', stopCombat);
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);
