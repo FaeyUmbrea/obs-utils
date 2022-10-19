@@ -66,6 +66,14 @@ export function registerSettings() {
     config: true,
     hint: `obs-utils.settings.showTrackerInCombat.Hint`,
   });
+  game.settings.register(moduleID, 'trackedUser', {
+    name: `obs-utils.settings.trackedUser.Name`,
+    default: game.userId,
+    type: String,
+    scope: 'world',
+    config: false,
+    hint: `obs-utils.settings.trackedUser.Hint`,
+  });
 }
 
 export function getSetting(settingName) {
@@ -76,12 +84,10 @@ export async function setSetting(settingName, value) {
   await game.settings.set('obs-utils', settingName, value);
 }
 
-export function generateDataBlockFromSetting(callback, trackCallback) {
+export function generateDataBlockFromSetting() {
   let buttonData = {
     ic: [],
     ooc: [],
-    callback: callback,
-    trackCallback: trackCallback,
   };
 
   for (const [key, value] of Object.entries(ICCHOICES)) {
@@ -98,6 +104,6 @@ export function generateDataBlockFromSetting(callback, trackCallback) {
       id: key,
     });
   }
-  buttonData.players = game.users;
+  buttonData.players = game.users.filter((element) => !element.isGM);
   return buttonData;
 }

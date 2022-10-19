@@ -1,4 +1,5 @@
-import { getSetting } from "../utils/settings.mjs";
+import { getSetting, setSetting } from '../utils/settings.mjs';
+import { updateSettings } from '../utils/socket.mjs';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/director.hbs';
 
@@ -15,34 +16,36 @@ export default class Director extends Application {
 
   activateListeners(html) {
     super.activateListeners();
-    const buttonData = this.buttonData;
-    html.find('input[type=radio][name=ic]').change(function () {
+    html.find('input[type=radio][name=ic]').change(async function () {
       var id = this.value;
-      buttonData.callback(true, id);
+      await setSetting('defaultInCombat', id);
+      updateSettings();
     });
-    html.find('input[type=radio][name=ooc]').change(function () {
+    html.find('input[type=radio][name=ooc]').change(async function () {
       var id = this.value;
-      buttonData.callback(false, id);
+      await setSetting('defaultOutOfCombat', id);
+      updateSettings();
     });
-    html.find('select').change(function () {
+    html.find('select').change(async function () {
       var id = this.value;
-      buttonData.trackCallback(id);
+      await setSetting('trackedUser', id);
+      updateSettings();
     });
   }
 
-  _injectHTML(html){
-    html.find(`input[name=ic][value=${this.buttonData.currentIC}]`).prop("checked", true)
-    html.find(`input[name=ooc][value=${this.buttonData.currentOOC}]`).prop("checked", true)
-
-
-    super._injectHTML(html)
+  _injectHTML(html) {
+    html.find(`input[name=ic][value=${this.buttonData.currentIC}]`).prop('checked', true);
+    html.find(`input[name=ooc][value=${this.buttonData.currentOOC}]`).prop('checked', true);
+    html.find('select[name=trackedPlayer]').val(this.buttonData.currentTrackedPlayer);
+    super._injectHTML(html);
   }
 
-  render(force=false, options={}){
-    this.buttonData.currentIC = getSetting('defaultInCombat'),
-    this.buttonData.currentOOC = getSetting('defaultOutOfCombat'),
-    super.render(force, options)
-    return this
+  render(force = false, options = {}) {
+    this.buttonData.currentIC = getSetting('defaultInCombat');
+    this.buttonData.currentOOC = getSetting('defaultOutOfCombat');
+    this.buttonData.currentTrackedPlayer = getSetting('trackedUser');
+    super.render(force, options);
+    return this;
   }
 
   static get defaultOptions() {
