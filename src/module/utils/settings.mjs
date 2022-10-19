@@ -80,8 +80,6 @@ export function generateDataBlockFromSetting(callback, trackCallback) {
   let buttonData = {
     ic: [],
     ooc: [],
-    currentIC: getSetting('defaultInCombat'),
-    currentOOC: getSetting('defaultOutOfCombat'),
     callback: callback,
     trackCallback: trackCallback,
   };

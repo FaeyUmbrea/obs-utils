@@ -1,8 +1,6 @@
-const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/director.hbs';
+import { getSetting } from "../utils/settings.mjs";
 
-Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-  return arg1 == arg2 ? options.fn(this) : options.inverse(this);
-});
+const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/director.hbs';
 
 export default class Director extends Application {
   constructor(buttonData, sidebarButton) {
@@ -30,6 +28,21 @@ export default class Director extends Application {
       var id = this.value;
       buttonData.trackCallback(id);
     });
+  }
+
+  _injectHTML(html){
+    html.find(`input[name=ic][value=${this.buttonData.currentIC}]`).prop("checked", true)
+    html.find(`input[name=ooc][value=${this.buttonData.currentOOC}]`).prop("checked", true)
+
+
+    super._injectHTML(html)
+  }
+
+  render(force=false, options={}){
+    this.buttonData.currentIC = getSetting('defaultInCombat'),
+    this.buttonData.currentOOC = getSetting('defaultOutOfCombat'),
+    super.render(force, options)
+    return this
   }
 
   static get defaultOptions() {
