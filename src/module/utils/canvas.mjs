@@ -112,7 +112,7 @@ export function viewportChanged(viewport, userId) {
         if (game.users.get(userId).isGM) canvas.animatePan(viewport);
         break;
       case 'clonePlayer':
-        if (getCurrentCombatants().indexOf(userId) > -1) canvas.animatePan(viewport);
+        if (getCurrentCombatants().some((e) => e.id == userId)) canvas.animatePan(viewport);
         break;
       default:
         break;
