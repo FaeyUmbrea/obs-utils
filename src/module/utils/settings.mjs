@@ -58,6 +58,14 @@ export function registerSettings() {
     config: true,
     hint: `obs-utils.settings.popupCloseDelay.Hint`,
   });
+  game.settings.register(moduleID, 'showTrackerInCombat', {
+    name: `obs-utils.settings.showTrackerInCombat.Name`,
+    default: false,
+    type: Boolean,
+    scope: 'world',
+    config: true,
+    hint: `obs-utils.settings.showTrackerInCombat.Hint`,
+  });
 }
 
 export function getSetting(settingName) {

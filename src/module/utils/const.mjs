@@ -27,3 +27,7 @@ export const NAME_TO_ICON = {
   cloneDM: 'fa-solid fa-dice-d20',
   birdseye: 'fa-solid fa-bird',
 };
+
+export const UI_ELEMENTS = {
+  sidebar: undefined,
+};

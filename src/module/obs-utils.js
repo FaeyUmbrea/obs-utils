@@ -3,18 +3,19 @@ import {
   hideApplication,
   hideTokenBorder,
   tokenMoved,
-  startCombat,
-  passTurn,
-  stopCombat,
   isGM,
   expandTokenHud,
   scaleToFit,
   closePopupWithDelay,
+  preserveSideBar,
+  showTracker,
+  hideSidebar,
 } from './utils/canvas.mjs';
 import { generateDataBlockFromSetting, registerSettings } from './utils/settings.mjs';
 import Director from './applications/director.mjs';
 import '../less/obs-utils.less';
 import { changeMode, sendMode, sendTrack, socketCanvas } from './utils/socket.mjs';
+import { handleCombat, stopCombat } from './utils/combat.mjs';
 
 let d;
 
@@ -69,11 +70,12 @@ function start() {
       Hooks.on('renderMainMenu', hideApplication);
       Hooks.on('renderSceneControls', hideApplication);
       Hooks.on('renderTokenHUD', hideApplication);
-      Hooks.on('renderSidebarTab', hideApplication);
       Hooks.on('renderUserConfig', hideApplication);
       Hooks.on('renderCameraViews', hideApplication);
       Hooks.on('renderPlayerList', hideApplication);
       Hooks.on('renderHotbar', hideApplication);
+
+      Hooks.on('renderSidebar', preserveSideBar);
 
       $('section#ui-left img#logo').remove();
 
@@ -82,9 +84,10 @@ function start() {
 
       Hooks.on('updateToken', tokenMoved);
 
-      Hooks.on('combatStart', startCombat);
-      Hooks.on('combatTurn', passTurn);
-      Hooks.on('combatEnd', stopCombat);
+      Hooks.on('updateCombat', handleCombat);
+      Hooks.on('updateCombat', showTracker);
+      Hooks.on('deleteCombat', stopCombat);
+      Hooks.on('deleteCombat', hideSidebar);
 
       // Close Popups after configurable Time
       Hooks.on('renderJournalSheet', closePopupWithDelay);

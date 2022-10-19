@@ -1,6 +1,7 @@
 /* global Tagger */
 
-import { mode } from './const.mjs';
+import { getCurrentCombatants } from './combat.mjs';
+import { mode, UI_ELEMENTS } from './const.mjs';
 import { sleep } from './misc.mjs';
 import { getSetting } from './settings.mjs';
 
@@ -104,26 +105,6 @@ function calculateBoundsOfCoodinates(coordSet) {
   };
 }
 
-export function startCombat(startedCombat) {
-  if (startedCombat.combatant.isOwner) {
-    startedCombat.combatant.token.control({ releaseOthers: true });
-  }
-}
-
-export function passTurn(passedCombat) {
-  if (passedCombat.combatant.isOwner) {
-    passedCombat.combatant.token.control({ releaseOthers: true });
-  }
-}
-
-export function stopCombat() {
-  canvas.tokens.controlledObjects.forEach((token) => token.release());
-}
-
-function getCurrentCombatants() {
-  return game.combat.combatant.players;
-}
-
 export function viewportChanged(viewport, userId) {
   if (game.combat?.started) {
     switch (mode.combat) {
@@ -186,4 +167,19 @@ export function scaleToFit() {
 export async function closePopupWithDelay(popout) {
   await sleep(getSetting('popupCloseDelay') * 1000);
   popout.close();
+}
+
+export async function preserveSideBar(sidebar) {
+  UI_ELEMENTS.sidebar = sidebar;
+}
+
+export async function showTracker() {
+  if (!getSetting('showTrackerInCombat')) return;
+  UI_ELEMENTS.sidebar.element.show();
+  UI_ELEMENTS.sidebar.tabs["combat"].element.show();
+  UI_ELEMENTS.sidebar.activateTab('combat');
+}
+
+export async function hideSidebar() {
+  UI_ELEMENTS.sidebar.element.hide();
 }
