@@ -176,7 +176,7 @@ export async function preserveSideBar(sidebar) {
 export async function showTracker() {
   if (!getSetting('showTrackerInCombat')) return;
   UI_ELEMENTS.sidebar.element.show();
-  UI_ELEMENTS.sidebar.tabs["combat"].element.show();
+  UI_ELEMENTS.sidebar.tabs['combat'].element.show();
   UI_ELEMENTS.sidebar.activateTab('combat');
 }
 
