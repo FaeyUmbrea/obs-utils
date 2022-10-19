@@ -12,7 +12,6 @@ export const ICCHOICES = {
   cloneDM: "Clone the DM's Viewport",
   birdseye: 'Fit Map to Screen',
   cloneTurnPlayer: "Clone the Turn Player's Viewport",
-
 };
 export const OOCCHOICES = {
   trackall: 'Track all Owned Tokens',

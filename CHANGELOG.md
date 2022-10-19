@@ -1,3 +1,10 @@
+## Version 1.1.1
+
+Fixes to the Director Window
+Adding "Track Selected Player" to Combat Mode
+Some Icon Changes to improve consistency
+Director Improvements to workflow and socket usage
+
 ## Version 1.1.0
 
 Adding an option to show combat tracker during combats
