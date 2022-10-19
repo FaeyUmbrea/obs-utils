@@ -111,8 +111,11 @@ export function viewportChanged(viewport, userId) {
       case 'cloneDM':
         if (game.users.get(userId).isGM) canvas.animatePan(viewport);
         break;
-      case 'clonePlayer':
+      case 'cloneTurnPlayer':
         if (getCurrentCombatants().some((e) => e.id == userId)) canvas.animatePan(viewport);
+        break;
+      case 'clonePlayer':
+        if (userId == mode.trackedPlayer) canvas.animatePan(viewport);
         break;
       default:
         break;
