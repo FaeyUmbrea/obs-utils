@@ -1,6 +1,5 @@
 import { generateDataBlockFromSetting, getSetting, setSetting } from '../utils/settings.mjs';
 import DirectorApp from '../svelte/DirectorApp.svelte';
-import { updateSettings } from '../utils/socket.mjs';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/apps.hbs';
 
@@ -14,17 +13,14 @@ export default class Director extends Application {
   async onChangeIC() {
     var id = this.value;
     await setSetting('defaultInCombat', id);
-    updateSettings();
   }
   async onChangeOOC() {
     var id = this.value;
     await setSetting('defaultOutOfCombat', id);
-    updateSettings();
   }
   async onChangePlayer() {
     var id = this.value;
     await setSetting('trackedUser', id);
-    updateSettings();
   }
 
   activateListeners(html) {

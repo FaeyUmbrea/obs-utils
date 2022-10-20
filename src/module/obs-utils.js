@@ -14,7 +14,7 @@ import {
 import { registerSettings } from './utils/settings.mjs';
 import Director from './applications/director.mjs';
 import '../less/obs-utils.less';
-import { changeMode, socketCanvas } from './utils/socket.mjs';
+import { socketCanvas } from './utils/socket.mjs';
 import { handleCombat, stopCombat } from './utils/combat.mjs';
 
 let d;
@@ -49,7 +49,6 @@ function start() {
       Hooks.on('renderTokenHUD', expandTokenHud);
     }
     if (isOBS()) {
-      changeMode();
       //Simulate a user interaction to start video playback
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
     }

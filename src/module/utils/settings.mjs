@@ -1,4 +1,13 @@
+import { scaleToFit, tokenMoved } from './canvas.mjs';
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const.mjs';
+import { isOBS } from './obs.mjs';
+
+async function changeMode() {
+  if (!isOBS()) return;
+  //Using an object to avoid reading Settings every time a token moves
+  scaleToFit();
+  tokenMoved();
+}
 
 export function registerSettings() {
   game.settings.register(moduleID, 'minScale', {
@@ -35,6 +44,7 @@ export function registerSettings() {
     scope: 'world',
     config: false,
     hint: `obs-utils.settings.defaultOutOfCombat.Hint`,
+    onChange: changeMode,
   });
   game.settings.register(moduleID, 'defaultInCombat', {
     name: `obs-utils.settings.defaultInCombat.Name`,
@@ -44,6 +54,7 @@ export function registerSettings() {
     scope: 'world',
     config: false,
     hint: `obs-utils.settings.defaultInCombat.Hint`,
+    onChange: changeMode,
   });
   game.settings.register(moduleID, 'popupCloseDelay', {
     name: `obs-utils.settings.popupCloseDelay.Name`,
@@ -73,6 +84,7 @@ export function registerSettings() {
     scope: 'world',
     config: false,
     hint: `obs-utils.settings.trackedUser.Hint`,
+    onChange: changeMode,
   });
 }
 
