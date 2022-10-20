@@ -23,9 +23,15 @@
     // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
     "plugins":[
         "json-format",
-        "html"
+        "html",
+        "svelte3"
     ],
-
+    "overrides": [
+      {
+        "files": ["*.svelte"],
+        "processor": "svelte3/svelte3"
+      }
+    ],
     "rules": {
       "no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }]
     }

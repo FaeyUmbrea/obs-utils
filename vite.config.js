@@ -1,6 +1,6 @@
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+
 const config = {
-  root: 'src/',
-  publicDir: 'public',
   base: '/modules/obs-utils/',
   resolve: { conditions: ['import', 'browser'] },
   esbuild: {
@@ -18,8 +18,9 @@ const config = {
       },
     },
   },
+  plugins: [svelte()],
   build: {
-    outDir: '../dist',
+    outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
@@ -27,7 +28,7 @@ const config = {
     minify: 'terser',
     lib: {
       name: 'obs-utils',
-      entry: 'module/obs-utils.js',
+      entry: 'src/module/obs-utils.js',
       formats: ['es'],
       fileName: 'obs-utils',
     },

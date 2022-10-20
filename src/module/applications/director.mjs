@@ -1,7 +1,8 @@
 import { getSetting, setSetting } from '../utils/settings.mjs';
 import { updateSettings } from '../utils/socket.mjs';
+import DirectorApp from '../../svelte/DirectorApp.svelte';
 
-const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/director.hbs';
+const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/apps.hbs';
 
 export default class Director extends Application {
   constructor(buttonData, sidebarButton) {
@@ -15,6 +16,7 @@ export default class Director extends Application {
   }
 
   activateListeners(html) {
+    let buttonData = this.buttonData;
     super.activateListeners();
     html.find('input[type=radio][name=ic]').change(async function () {
       var id = this.value;
@@ -30,6 +32,15 @@ export default class Director extends Application {
       var id = this.value;
       await setSetting('trackedUser', id);
       updateSettings();
+    });
+
+    this.component = new DirectorApp({
+      target: html.get(0),
+      props: {
+        ic: buttonData.ic,
+        ooc: buttonData.ooc,
+        players: buttonData.players,
+      },
     });
   }
 
