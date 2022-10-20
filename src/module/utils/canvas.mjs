@@ -115,7 +115,7 @@ export function viewportChanged(viewport, userId) {
         if (getCurrentCombatants().some((e) => e.id == userId)) canvas.animatePan(viewport);
         break;
       case 'clonePlayer':
-        if (userId == getSetting('trackedPlayer')) canvas.animatePan(viewport);
+        if (userId == getSetting('trackedUser')) canvas.animatePan(viewport);
         break;
       default:
         break;
@@ -126,7 +126,7 @@ export function viewportChanged(viewport, userId) {
         if (game.users.get(userId).isGM) canvas.animatePan(viewport);
         break;
       case 'clonePlayer':
-        if (userId == getSetting('trackedPlayer')) canvas.animatePan(viewport);
+        if (userId == getSetting('trackedUser')) canvas.animatePan(viewport);
         break;
       default:
         break;

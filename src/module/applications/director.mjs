@@ -1,18 +1,14 @@
-import { getSetting, setSetting } from '../utils/settings.mjs';
+import { generateDataBlockFromSetting, getSetting, setSetting } from '../utils/settings.mjs';
 import DirectorApp from '../svelte/DirectorApp.svelte';
 import { updateSettings } from '../utils/socket.mjs';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/apps.hbs';
 
 export default class Director extends Application {
-  constructor(buttonData, sidebarButton) {
+  constructor(sidebarButton) {
     super();
-    this.buttonData = buttonData;
+    this.buttonData = generateDataBlockFromSetting();
     this.sidebarButton = sidebarButton;
-  }
-
-  getData() {
-    return this.buttonData;
   }
 
   async onChangeIC() {
