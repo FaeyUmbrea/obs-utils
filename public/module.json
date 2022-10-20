@@ -48,7 +48,7 @@
   "socket": true,
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
-  "license": "GNU AGPLv3",
+  "license": "AGPL-3.0-only",
   "readme": "https://github.com/FaeyUmbrea/obs-utils/blob/master/README.md",
   "media": [
     {
