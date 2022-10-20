@@ -1,4 +1,4 @@
-import { isOBS } from './utils/obs.mjs';
+import { isOBS } from './utils/obs';
 import {
   hideApplication,
   hideTokenBorder,
@@ -10,30 +10,31 @@ import {
   preserveSideBar,
   showTracker,
   hideSidebar,
-} from './utils/canvas.mjs';
-import { registerSettings } from './utils/settings.mjs';
-import Director from './applications/director.mjs';
-import '../less/obs-utils.less';
-import { socketCanvas } from './utils/socket.mjs';
-import { handleCombat, stopCombat } from './utils/combat.mjs';
+} from './utils/canvas.js';
+import { registerSettings } from './utils/settings';
+import Director from './applications/director';
+import './less/obs-utils.less';
+import { socketCanvas } from './utils/socket';
+import { handleCombat, stopCombat } from './utils/combat';
+import { getGame } from './utils/helpers';
 
-let d;
+let d: any;
 
-function buildButtons(buttons) {
-  if (!game.user.isGM) return;
-  var buttonGroup = buttons.find((element) => element.name === 'token');
+function buildButtons(buttons: SceneControl[]) {
+  if (!getGame().user?.isGM) return;
+  const buttonGroup = buttons.find((element) => element.name === 'token');
   if (!buttonGroup) return;
-  var newButton = {
+  const newButton = {
     icon: 'fa-solid fa-signal-stream',
     name: 'openStreamDirector',
     title: 'Open Stream Director',
     toggle: true,
-    onClick: () => openDirector(newButton),
+    onClick: (): void => openDirector(newButton),
   };
   buttonGroup.tools.push(newButton);
 }
 
-function openDirector(button) {
+function openDirector(button: SceneControlTool) {
   if (!d) d = new Director(button);
   if (!d.rendered) d.render(true);
   else d.close();
@@ -58,8 +59,8 @@ function start() {
 
   if (isOBS()) {
     Hooks.once('init', async function () {
-      if (game.view == 'stream') $('body.stream').css('background-color', 'transparent');
-      if (game.view != 'game') return;
+      if (getGame().view == 'stream') $('body.stream').css('background-color', 'transparent');
+      if (getGame().view != 'game') return;
       Hooks.once('canvasReady', scaleToFit);
 
       Hooks.on('renderSidebar', hideApplication);

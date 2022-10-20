@@ -25,6 +25,6 @@ export const NAME_TO_ICON = {
   birdseye: 'fa-solid fa-bird',
 };
 
-export const UI_ELEMENTS = {
+export const UI_ELEMENTS: UiELementsData = {
   sidebar: undefined,
 };

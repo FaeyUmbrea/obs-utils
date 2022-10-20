@@ -1,10 +1,10 @@
 /* global socketlib */
 
-import { getCurrentUser, viewportChanged } from './canvas.mjs';
-import { ID } from './const.mjs';
-import { isOBS } from './obs.mjs';
+import { getCurrentUser, viewportChanged } from './canvas';
+import { ID } from './const';
+import { isOBS } from './obs';
 
-let modulesocket;
+let modulesocket: any;
 
 Hooks.once('socketlib.ready', () => {
   modulesocket = socketlib.registerModule(ID);
@@ -12,11 +12,11 @@ Hooks.once('socketlib.ready', () => {
   modulesocket.register('viewport', changeViewport);
 });
 
-function changeViewport(viewport, userId) {
+function changeViewport(viewport: Canvas.View, userId: string) {
   if (!isOBS()) return;
   viewportChanged(viewport, userId);
 }
 
-export function socketCanvas(_canvas, position) {
+export function socketCanvas(_canvas: Canvas, position: Canvas.View) {
   modulesocket.executeForOthers('viewport', position, getCurrentUser());
 }
