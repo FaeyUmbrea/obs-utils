@@ -1,13 +1,14 @@
-<script>
-    export let ic;
-    export let ooc;
-    export let players;
-    export let currentIC;
-    export let currentOOC;
-    export let currentTrackedPlayer;
-    export let onChangeIC;
-    export let onChangeOOC;
-    export let onChangePlayer;
+<script lang="ts">
+
+    export let ic: Array<DirectorButtonData>;
+    export let ooc: Array<DirectorButtonData>;
+    export let players: StoredDocument<User>[];
+    export let currentIC: string;
+    export let currentOOC: string;
+    export let currentTrackedPlayer: string;
+    export let onChangeIC: any;
+    export let onChangeOOC: any;
+    export let onChangePlayer: any;
 </script>
 
     <b>In Combat Type</b>

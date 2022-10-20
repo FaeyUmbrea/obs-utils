@@ -28,7 +28,7 @@ const config = {
     minify: 'terser',
     lib: {
       name: 'obs-utils',
-      entry: 'src/module/obs-utils.js',
+      entry: 'src/obs-utils.ts',
       formats: ['es'],
       fileName: 'obs-utils',
     },
