@@ -1,10 +1,5 @@
 export const ID = 'obs-utils';
 
-export const mode = {
-  combat: 'trackall',
-  normal: 'trackall',
-  trackedPlayer: undefined,
-};
 export const ICCHOICES = {
   trackall: 'Track all Owned Tokens',
   trackone: 'Track the currently active Owned Token',

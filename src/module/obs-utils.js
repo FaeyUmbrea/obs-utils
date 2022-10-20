@@ -11,7 +11,7 @@ import {
   showTracker,
   hideSidebar,
 } from './utils/canvas.mjs';
-import { generateDataBlockFromSetting, registerSettings } from './utils/settings.mjs';
+import { registerSettings } from './utils/settings.mjs';
 import Director from './applications/director.mjs';
 import '../less/obs-utils.less';
 import { changeMode, socketCanvas } from './utils/socket.mjs';
@@ -34,7 +34,7 @@ function buildButtons(buttons) {
 }
 
 function openDirector(button) {
-  if (!d) d = new Director(generateDataBlockFromSetting(), button);
+  if (!d) d = new Director(button);
   if (!d.rendered) d.render(true);
   else d.close();
 }

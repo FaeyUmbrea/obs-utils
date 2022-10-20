@@ -1,7 +1,7 @@
 /* global Tagger */
 
 import { getCurrentCombatants } from './combat.mjs';
-import { mode, UI_ELEMENTS } from './const.mjs';
+import { UI_ELEMENTS } from './const.mjs';
 import { sleep } from './misc.mjs';
 import { getSetting } from './settings.mjs';
 
@@ -59,7 +59,7 @@ function trackTokenList(tokens) {
 
 export function tokenMoved() {
   if (game.combat?.started) {
-    switch (mode.combat) {
+    switch (getSetting('defaultInCombat')) {
       case 'trackall':
         trackAll();
         break;
@@ -71,7 +71,7 @@ export function tokenMoved() {
         break;
     }
   } else {
-    switch (mode.normal) {
+    switch (getSetting('defaultOutOfCombat')) {
       case 'trackall':
         trackAll();
         break;
@@ -107,7 +107,7 @@ function calculateBoundsOfCoodinates(coordSet) {
 
 export function viewportChanged(viewport, userId) {
   if (game.combat?.started) {
-    switch (mode.combat) {
+    switch (getSetting('defaultInCombat')) {
       case 'cloneDM':
         if (game.users.get(userId).isGM) canvas.animatePan(viewport);
         break;
@@ -115,18 +115,18 @@ export function viewportChanged(viewport, userId) {
         if (getCurrentCombatants().some((e) => e.id == userId)) canvas.animatePan(viewport);
         break;
       case 'clonePlayer':
-        if (userId == mode.trackedPlayer) canvas.animatePan(viewport);
+        if (userId == getSetting('trackedPlayer')) canvas.animatePan(viewport);
         break;
       default:
         break;
     }
   } else {
-    switch (mode.normal) {
+    switch (getSetting('defaultOutOfCombat')) {
       case 'cloneDM':
         if (game.users.get(userId).isGM) canvas.animatePan(viewport);
         break;
       case 'clonePlayer':
-        if (userId == mode.trackedPlayer) canvas.animatePan(viewport);
+        if (userId == getSetting('trackedPlayer')) canvas.animatePan(viewport);
         break;
       default:
         break;
@@ -156,7 +156,12 @@ export function expandTokenHud(_tokenHud, html, token) {
 }
 
 export function scaleToFit() {
-  if (!((game.combat?.started && mode.combat == 'birdseye') || (!game.combat?.started && mode.normal == 'birdseye')))
+  if (
+    !(
+      (game.combat?.started && getSetting('defaultInCombat') == 'birdseye') ||
+      (!game.combat?.started && getSetting('defaultOutOfCombat') == 'birdseye')
+    )
+  )
     return;
   var screenDimensions = canvas.screenDimensions;
   var sceneDimensions = canvas.scene.dimensions;
