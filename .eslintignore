@@ -14,3 +14,7 @@ vite.config.js
 
 *.md
 LICENSE
+
+
+test/*
+coverage/*
