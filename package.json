@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
-    "@rollup/plugin-typescript": "9.0.1",
+    "@rollup/plugin-typescript": "9.0.2",
     "@sveltejs/vite-plugin-svelte": "1.0.9",
     "@tsconfig/svelte": "3.0.0",
     "@types/obs-studio": "2.17.0",
