@@ -5535,10 +5535,9 @@ wcwidth@^1.0.1:
   dependencies:
     defaults "^1.0.3"
 
-wdio-coverage-service@^1.0.2:
+"wdio-coverage-service@https://gitlab.com/Aetheros/wdio-coverage-service.git":
   version "1.0.2"
-  resolved "https://registry.yarnpkg.com/wdio-coverage-service/-/wdio-coverage-service-1.0.2.tgz#9a3a12a56e45b19ab1803d8b6e768ae184a67658"
-  integrity sha512-zXG4lLRhAwii1kexKL03QsjQu5mh3F9x3PIaRZBkUMuLjM/c/G2fiZ8nPOigR9F05XC7cIEeqmekcnSTe8WkOA==
+  resolved "https://gitlab.com/Aetheros/wdio-coverage-service.git#7eae55f7c305d92bd5c6eac6afef0676c0eaaa2e"
 
 webdriver@7.25.1:
   version "7.25.1"

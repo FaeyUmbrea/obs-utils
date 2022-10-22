@@ -68,7 +68,7 @@
     "typescript": "^4.8.4",
     "vite": "3.1.8",
     "vite-plugin-istanbul": "^3.0.1",
-    "wdio-coverage-service": "^1.0.2"
+    "wdio-coverage-service": "https://gitlab.com/Aetheros/wdio-coverage-service.git"
   },
   "volta": {
     "node": "16.18.0",

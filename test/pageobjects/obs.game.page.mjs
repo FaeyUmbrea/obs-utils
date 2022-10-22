@@ -9,11 +9,11 @@ class GamePage extends Page {
      * define selectors using getter methods
      */
     get icon () {
-        return $('li[data-tool=openStreamDirector]');
+        return obsClient.$('li[data-tool=openStreamDirector]');
     }
 
     get director () {
-        return $('div[id=director-application]');
+        return obsClient.$('div[id=director-application]');
     }
 
 
@@ -22,7 +22,7 @@ class GamePage extends Page {
     }
 
     async isReady() {
-        return (await browser.execute(() => JSON.stringify(window.game.ready)) == 'true');
+        return (await obsClient.execute(() => JSON.stringify(window.game.ready)) == 'true');
     }
 }
 

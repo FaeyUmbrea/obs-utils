@@ -8,15 +8,15 @@ class JoinPage extends Page {
      * define selectors using getter methods
      */
     get inputUsername () {
-        return $('select[name=userid]');
+        return gmClient.$('select[name=userid]');
     }
 
     get inputPassword () {
-        return $('input[name=password]');
+        return gmClient.$('input[name=password]');
     }
     
     get btnSubmit () {
-        return $('button[name=join]');
+        return gmClient.$('button[name=join]');
     }
 
     /**
@@ -24,7 +24,6 @@ class JoinPage extends Page {
      * e.g. to login using username and password
      */
     async login (username, password) {
-        //await (await this.inputUsername).setValue(username);
         await await this.inputUsername.selectByVisibleText(username);
         await await this.inputPassword.setValue(password);
         this.btnSubmit.click();
