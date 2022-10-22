@@ -1,15 +1,15 @@
 import Page from './page';
 
 class SetupPage extends Page {
-    public get btnSubmit () {
+    get btnSubmit () {
         return $('button[data-action="launchWorld"]');
     }
 
-    public async setup () {
-        await this.btnSubmit.click();
+    async setup () {
+        this.btnSubmit.click();
     }
 
-    public open () {
+    open () {
         return super.open('setup');
     }
 }
