@@ -16,16 +16,16 @@
   "scripts": {
     "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "coverage": "nyc report",
+    "instrument": "cross-env VITE_COVERAGE=\"true\" vite build",
     "lint": "eslint ./** ",
     "lint:fix": "eslint ./** --fix",
-    "instrument": "cross-env VITE_COVERAGE=\"true\" vite build",
     "prepare": "husky install",
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
+    "test": "yarn instrument && yarn wdio && yarn coverage",
     "watch": "vite build --watch",
-    "wdio": "wdio run wdio.conf.js",
-    "coverage": "nyc report",
-    "test": "yarn instrument && yarn wdio && yarn coverage"
+    "wdio": "wdio run wdio.conf.js"
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
