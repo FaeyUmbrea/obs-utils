@@ -1,0 +1,19 @@
+
+{
+    "all": true,
+    "check-coverage": false,
+    "extension": [
+      "*.ts",
+      "*.mjs",
+      "*.svelte"
+    ],
+    "include": [
+      "src/**/*"
+    ],
+    "reporter": [
+      "json",
+      "text",
+      "lcov"
+    ],
+    "exclude-after-remap": false
+}

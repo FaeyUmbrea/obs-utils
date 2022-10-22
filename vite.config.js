@@ -1,5 +1,5 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import istanbul from 'vite-plugin-istanbul';
+import IstanbulPlugin from 'vite-plugin-istanbul';
 
 const config = {
   base: '/modules/obs-utils/',
@@ -19,12 +19,13 @@ const config = {
       },
     },
   },
-  plugins: [svelte(), istanbul({
+  plugins: [svelte(), IstanbulPlugin({
     include: 'src/*',
     exclude: ['node_modules','test/'],
     extention: ['.ts', '.svelte'],
-    requireEnv: false,
-    forceBuildInstrument: true
+    checkProd: true,
+    forceBuildInstrument: true,
+    requireEnv: true
   })],
   build: {
     outDir: 'dist',

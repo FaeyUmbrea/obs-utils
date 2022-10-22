@@ -18,32 +18,14 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "lint": "eslint ./** ",
     "lint:fix": "eslint ./** --fix",
-    "nyc": "nyc report",
-    "nyc:instrument": "nyc instrument ./dist ./modules/obs-utils --complete-copy --delete",
+    "instrument": "cross-env VITE_COVERAGE=\"true\" vite build",
     "prepare": "husky install",
-    "preview": "vite preview --help",
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
-    "svelte-check": "svelte-check",
     "watch": "vite build --watch",
-    "wdio": "wdio run wdio.conf.js"
-  },
-  "nyc": {
-    "all": true,
-    "check-coverage": false,
-    "extension": [
-      "*.ts",
-      "*.mjs"
-    ],
-    "include": [
-      "src/**",
-      "dist/**"
-    ],
-    "reporter": [
-      "json",
-      "text",
-      "lcov"
-    ]
+    "wdio": "wdio run wdio.conf.js",
+    "coverage": "nyc report",
+    "test": "yarn instrument && yarn wdio && yarn coverage"
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
@@ -59,6 +41,7 @@
     "@wdio/mocha-framework": "^7.25.2",
     "@wdio/selenium-standalone-service": "^7.25.1",
     "@wdio/spec-reporter": "^7.25.1",
+    "cross-env": "^7.0.3",
     "eslint": "8.25.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-html": "7.1.0",
