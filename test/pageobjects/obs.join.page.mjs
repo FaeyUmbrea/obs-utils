@@ -33,7 +33,7 @@ class JoinPage extends Page {
      * overwrite specific options to adapt it to page object
      */
     open () {
-        return super.open('join');
+        return super.open('join',obsClient);
     }
 }
 

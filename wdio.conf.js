@@ -59,7 +59,7 @@ exports.config = {
                 //
                 browserName: 'chrome',
                 "goog:chromeOptions": {
-                    args: ["--headless","--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1930,1090"]
+                    args: [/*"--headless",/*"--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",*/ "--window-size=1930,1090"]
                 },      
                 acceptInsecureCerts: true
                 // If outputDir is provided WebdriverIO can capture driver session logs
@@ -77,7 +77,7 @@ exports.config = {
                 //
                 browserName: 'chrome',
                 "goog:chromeOptions": {
-                    args: ["--headless","--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1930,1090"]
+                    args: [/*"--headless",/*"--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",*/ "--window-size=1930,1090"]
                 },      
                 acceptInsecureCerts: true
                 // If outputDir is provided WebdriverIO can capture driver session logs
@@ -87,6 +87,7 @@ exports.config = {
             }
         }
     },
+    outputDir: "coverage/wdio",
     //
     // ===================
     // Test Configurations

@@ -1,10 +1,14 @@
 import Page from './page.mjs';
+import _ from 'lodash';
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
 class GamePage extends Page {
     
+    lastPosition;
+    currentPosition;
+
     /**
      * define selectors using getter methods
      */
@@ -12,13 +16,12 @@ class GamePage extends Page {
         return obsClient.$('li[data-tool=openStreamDirector]');
     }
 
-    get director () {
-        return obsClient.$('div[id=director-application]');
+    async getViewport(){
+        return (await obsClient.execute(() => JSON.stringify([window.canvas.stage.position.scope.pivot.x,window.canvas.stage.position.scope.pivot.y,window.canvas.stage.position.scope.scale.x,window.canvas.stage.position.scope.scale.y])));
     }
 
-
-    async openDirector() {
-        await this.icon.click();
+    open (){
+        super.open("game",obsClient)
     }
 
     async isReady() {

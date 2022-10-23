@@ -9,8 +9,8 @@ class SetupPage extends Page {
         this.btnSubmit.click();
     }
 
-    open () {
-        return super.open('setup');
+    open (usebrowser) {
+        return super.open('setup',usebrowser);
     }
 }
 

@@ -7,7 +7,7 @@ export default class Page {
     * Opens a sub page of the page
     * @param path path of the sub page (e.g. /path/to/page.html)
     */
-    open (path) {
-        return browser.url(`http://localhost:30000/${path}`)
+    open (path, usebrowser) {
+        return usebrowser.url(`http://localhost:30000/${path}`)
     }
 }
