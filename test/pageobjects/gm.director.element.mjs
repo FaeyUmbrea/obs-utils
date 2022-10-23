@@ -34,7 +34,10 @@ class GMDirector{
     get buttonBirdsEyeOOC () {
         return gmClient.$("div[id=director-application] label[for=radiooocbirdseye]")
     }
-
+    
+    get dropdownCopyPlayer () {
+        return gmClient.$("select[name=trackedPlayer]")
+    }
 }
 
 export default new GMDirector();
