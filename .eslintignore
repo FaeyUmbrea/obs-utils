@@ -10,7 +10,12 @@ yarn.lock
 tsconfig.json
 svelte.config.mjs
 vite.config.js
+wdio.conf.js
 
 
 *.md
 LICENSE
+
+
+test/*
+coverage/*

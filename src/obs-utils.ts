@@ -23,7 +23,6 @@ let d: any;
 function buildButtons(buttons: SceneControl[]) {
   if (!getGame().user?.isGM) return;
   const buttonGroup = buttons.find((element) => element.name === 'token');
-  if (!buttonGroup) return;
   const newButton = {
     icon: 'fa-solid fa-signal-stream',
     name: 'openStreamDirector',
@@ -31,7 +30,7 @@ function buildButtons(buttons: SceneControl[]) {
     toggle: true,
     onClick: (): void => openDirector(newButton),
   };
-  buttonGroup.tools.push(newButton);
+  buttonGroup?.tools.push(newButton);
 }
 
 function openDirector(button: SceneControlTool) {
