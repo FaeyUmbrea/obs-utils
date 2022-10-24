@@ -142,6 +142,22 @@ class GamePage extends Page {
     async isCurrentTokenTagged(){
         return await gmClient.execute(() => JSON.stringify(Tagger.hasTags(canvas.tokens.controlled[0],"obs_manual_track")));
     }
+
+    async changeSetting(settingName, value){
+        return await gmClient.execute(async (settingName, value) => {await window.game.settings.set('obs-utils',settingName,value)} , settingName,value);
+    }
+
+    async getSetting(settingName){
+        return await gmClient.execute((settingName) => JSON.stringify(window.game.settings.get('obs-utils', settingName)),settingName);
+    }
+
+    async showFirstJournalToPlayers(){
+        return await gmClient.execute(() => [...window.game.journal][0].show());
+    }
+
+    async showGenericImageToPlayers(){
+        return await gmClient.execute(() => window.game.journal.constructor.showImage("https://www.w3.org/People/mimasa/test/imgformat/img/w3c_home.png"));
+    }
 }
 
 export default new GamePage();

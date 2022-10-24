@@ -1,15 +1,11 @@
+// These are necessary because Game and Canvas are not always initialized so TypeScript complains
+
 export function getGame(): Game {
-  if (!(game instanceof Game)) {
-    throw new Error('game is not initialized yet!');
-  }
-  return game;
+  return game as Game;
 }
 
 export function getCanvas(): Canvas {
-  if (!(canvas instanceof Canvas)) {
-    throw new Error('canvas is not initialized yet!');
-  }
-  return canvas;
+  return canvas as Canvas;
 }
 
 export function sleep(milliseconds: number) {

@@ -3,6 +3,7 @@ import GMGamePage from '../pageobjects/gm.game.page.mjs';
 import GMLoginPage from '../pageobjects/gm.join.page.mjs';
 import OBSGamePage from '../pageobjects/obs.game.page.mjs';
 import OBSLoginPage from '../pageobjects/obs.join.page.mjs';
+import OBSStreamPage from '../pageobjects/obs.stream.page.mjs';
 import PlayerGamePage from '../pageobjects/player.game.page.mjs';
 import PlayerLoginPage from '../pageobjects/player.join.page.mjs';
 import SetupPage from '../pageobjects/setup.page.mjs';
@@ -72,16 +73,89 @@ describe('DM Client Only', () => {
         await GMGamePage.openTokenHUDOnCurrentSelected();
         await GMGamePage.tokenHudButton.waitForExist();
         var before = await GMGamePage.isCurrentTokenTagged();
+        await sleep(1000);
         await GMGamePage.tokenHudButton.click();
+        await sleep(1000);
         var after = await GMGamePage.isCurrentTokenTagged();
 
         await expect(before).not.toEqual(after);
         await GMGamePage.tokenHudButton.click();
+        await sleep(1000);
+
+    })
+});
+
+describe('OBS Client Only', () => {
+    it('Test Elements Disappearing', async () => {
+        await OBSGamePage.open()
+        await obsClient.waitUntil(OBSGamePage.isReady)
+
+        expect(OBSGamePage.macroHotbar).not.toBeDisplayed();
+        expect(OBSGamePage.navBar).not.toBeDisplayed();
+        expect(OBSGamePage.playerList).not.toBeDisplayed();
+        expect(OBSGamePage.sceneNav).not.toBeDisplayed();
+        expect(OBSGamePage.sidebar).not.toBeDisplayed();
+    });
+    it('Test Stream Page Background', async () => {
+        await OBSStreamPage.open()
+        await OBSStreamPage.chat.waitForExist();
+
+        expect(OBSStreamPage.body).toHaveElementProperty('background','transparent');
+        expect(OBSStreamPage.body).not.toHaveElementProperty('background','green');
+    })
+});
+
+describe('Multi Client Functionality UI', () => {
+    it('Journal Popout Close Delay', async () =>{
+        prepare();
+        await sleep(10000);
+        var delay = await GMGamePage.getSetting("popupCloseDelay");
+
+        await GMGamePage.showFirstJournalToPlayers();
+        await OBSGamePage.journalPopout.waitForExist();
+        await sleep(delay*1100);
+        await expect((await OBSGamePage.journalPopout).isExisting()).not.toBe(true);
+    });
+    it('Image Popout Close Delay', async () =>{
+        prepare();
+        await sleep(10000);
+        var delay = await GMGamePage.getSetting("popupCloseDelay");
+
+        await GMGamePage.showGenericImageToPlayers();
+        await OBSGamePage.imagePopout.waitForExist();
+        await sleep(delay*1100);
+        await expect((await OBSGamePage.imagePopout).isExisting()).not.toBe(true);
+    });
+    it('Toggle Show Combat Tracker', async () => {
+        prepare();
+        await sleep(5000);
+        var initialSetting = await GMGamePage.getSetting('showTrackerInCombat');
+
+        await GMGamePage.changeSetting('showTrackerInCombat',false);
+        await sleep(1000);
+        await GMGamePage.startCombatWithAllTokens();
+
+        await expect(await (await OBSGamePage.sidebar).isDisplayed()).not.toBeTruthy();
+
+        await GMGamePage.endCombat();
+
+        await GMGamePage.changeSetting('showTrackerInCombat',true);
+
+        await sleep(1000);
+
+        await GMGamePage.startCombatWithAllTokens();
+
+        await expect(await (await OBSGamePage.sidebar).isDisplayed()).toBeTruthy();
+
+        await GMGamePage.endCombat();
+
+        await GMGamePage.changeSetting('showTrackerInCombat', initialSetting);
     })
 })
 
 describe('Multi Client Functionality Non-Combat', () => {
     // OOC Tests
+    
     it('OOC Track All', async () => {
 
         await prepare();
@@ -172,13 +246,13 @@ describe('Multi Client Functionality Non-Combat', () => {
 
         await GMDirector.buttonCloneDMOOC.click();
 
-        await sleep(1000);
+        await sleep(3000);
 
         // Move Viewport
 
         await GMGamePage.panViewport(100,100,1);
 
-        await sleep(1000);
+        await sleep(3000);
 
         // Take Viewport on OBS Side
 
@@ -186,7 +260,7 @@ describe('Multi Client Functionality Non-Combat', () => {
 
         await GMGamePage.panViewport(300,300,0.5);
 
-        await sleep(1000);
+        await sleep(3000);
 
         // See if Viewport Changed
         var after = await OBSGamePage.getViewport();
@@ -238,7 +312,7 @@ describe('Multi Client Functionality Non-Combat', () => {
         await GMDirector.buttonClonePlayerOOC.click();
         await GMDirector.dropdownCopyPlayer.selectByVisibleText("Player3");
 
-        await sleep(1000);
+        await sleep(6000);
 
         // Move Viewport
 
@@ -257,6 +331,19 @@ describe('Multi Client Functionality Non-Combat', () => {
         // See if Viewport Changed
         var after = await OBSGamePage.getViewport();
         await expect(after).not.toEqual(before);
+        before = after;
+        // Change Player 
+
+        await GMDirector.dropdownCopyPlayer.selectByVisibleText("Player4");
+
+        await sleep(1000);
+        await PlayerGamePage.panViewport(300,300,0.5);
+
+        await sleep(1000);
+
+        // See if Viewport Changed
+        var after = await OBSGamePage.getViewport();
+        await expect(after).toEqual(before);
 
     });
 });
