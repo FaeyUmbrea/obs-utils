@@ -11,8 +11,7 @@ async function changeMode() {
 }
 
 export function registerSettings() {
-  getGame().settings.register(moduleID, 'minScale', {
-    name: `obs-utils.settings.minScale.Name`,
+  registerSetting('minScale', {
     default: 0.1,
     type: Number,
     range: {
@@ -22,10 +21,8 @@ export function registerSettings() {
     },
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.minScale.Hint`,
   });
-  getGame().settings.register(moduleID, 'maxScale', {
-    name: `obs-utils.settings.maxScale.Name`,
+  registerSetting('maxScale', {
     default: 2,
     type: Number,
     range: {
@@ -35,30 +32,24 @@ export function registerSettings() {
     },
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.maxScale.Hint`,
   });
-  getGame().settings.register(moduleID, 'defaultOutOfCombat', {
-    name: `obs-utils.settings.defaultOutOfCombat.Name`,
+  registerSetting('defaultOutOfCombat', {
     default: 'trackall',
     type: String,
     choices: OOCCHOICES,
     scope: 'world',
     config: false,
-    hint: `obs-utils.settings.defaultOutOfCombat.Hint`,
     onChange: changeMode,
   });
-  getGame().settings.register(moduleID, 'defaultInCombat', {
-    name: `obs-utils.settings.defaultInCombat.Name`,
+  registerSetting('defaultInCombat', {
     default: 'trackall',
     type: String,
     choices: ICCHOICES,
     scope: 'world',
     config: false,
-    hint: `obs-utils.settings.defaultInCombat.Hint`,
     onChange: changeMode,
   });
-  getGame().settings.register(moduleID, 'popupCloseDelay', {
-    name: `obs-utils.settings.popupCloseDelay.Name`,
+  registerSetting('popupCloseDelay', {
     default: 10,
     type: Number,
     range: {
@@ -68,24 +59,45 @@ export function registerSettings() {
     },
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.popupCloseDelay.Hint`,
   });
-  getGame().settings.register(moduleID, 'showTrackerInCombat', {
-    name: `obs-utils.settings.showTrackerInCombat.Name`,
+  registerSetting('showTrackerInCombat', {
     default: false,
     type: Boolean,
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.showTrackerInCombat.Hint`,
   });
-  getGame().settings.register(moduleID, 'trackedUser', {
-    name: `obs-utils.settings.trackedUser.Name`,
+  registerSetting('trackedUser', {
     default: getGame().userId,
     type: String,
     scope: 'world',
     config: false,
-    hint: `obs-utils.settings.trackedUser.Hint`,
     onChange: changeMode,
+  });
+  registerSetting('obsRemote', {
+    type: OBSRemoteSettings,
+    scope: 'world',
+    config: false,
+    default: new OBSRemoteSettings(),
+  });
+  registerSetting('enableOBSWebsocket', {
+    type: Boolean,
+    scope: 'world',
+    config: true,
+    default: false,
+  });
+  registerSetting('websocketSettings', {
+    type: OBSWebsocketSettings,
+    scope: 'client',
+    config: false,
+    default: new OBSWebsocketSettings(),
+  });
+}
+
+function registerSetting(settingName: string, config: Record<string, unknown>): void {
+  getGame().settings.register(moduleID, settingName, {
+    name: `${moduleID}.settings.${settingName}.Name`,
+    hint: `${moduleID}.settings.${settingName}.Hint`,
+    ...config,
   });
 }
 

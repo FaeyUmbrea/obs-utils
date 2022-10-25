@@ -12,7 +12,7 @@ import {
   hideSidebar,
 } from './utils/canvas.js';
 import { registerSettings } from './utils/settings';
-import Director from './applications/director';
+import DirectorApplication from './applications/director';
 import './less/obs-utils.less';
 import { socketCanvas } from './utils/socket';
 import { handleCombat, stopCombat } from './utils/combat';
@@ -34,7 +34,7 @@ function buildButtons(buttons: SceneControl[]) {
 }
 
 function openDirector(button: SceneControlTool) {
-  if (!d) d = new Director(button);
+  if (!d) d = new DirectorApplication(button);
   if (!d.rendered) d.render(true);
   else d.close();
 }
