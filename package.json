@@ -71,7 +71,7 @@
     "wdio-coverage-service": "https://gitlab.com/Aetheros/wdio-coverage-service.git"
   },
   "volta": {
-    "node": "16.18.0",
+    "node": "18.12.0",
     "yarn": "1.22.19"
   }
 }
