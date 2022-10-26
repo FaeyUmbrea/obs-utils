@@ -28,7 +28,13 @@ export function isOBS(): boolean {
 }
 
 function getWSSettings(): OBSWebsocketSettings {
-  const setting = getSetting('websocketSettings') as OBSWebsocketSettings;
+  let url = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-host');
+  let port = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-port');
+  let password = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-password');
+  let setting = getSetting('websocketSettings') as OBSWebsocketSettings;
+  if(url) setting.url = url;
+  if(port) setting.port = port;
+  if(password) setting.password = password;
   return setting;
 }
 

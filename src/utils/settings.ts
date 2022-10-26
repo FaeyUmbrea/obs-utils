@@ -6,10 +6,10 @@ import OBSRemoteApplication from '../applications/obsremote';
 import OBSWebsocketApplication from '../applications/obswebsocket';
 
 export enum OBSAction {
-  SwitchScene,
-  ToggleSource,
-  EnableSource,
-  DisableSource,
+  SwitchScene = "Switch Scene",
+  ToggleSource = "Toggle Source",
+  EnableSource = "Enable Source",
+  DisableSource = "Disable Source",
 }
 
 export class OBSEvent {

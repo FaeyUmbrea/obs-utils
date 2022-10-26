@@ -9,7 +9,7 @@
     let idDisabled: boolean = true;
     let sceneDisabled: boolean = false;
 
-    let actionTypes = Object.keys(OBSAction);
+    let actionTypes = Object.values(OBSAction);
    
     function changeEvent(){
         if(event.targetAction == OBSAction.SwitchScene){
