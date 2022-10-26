@@ -1,22 +1,19 @@
-import OBSRemote from '../svelte/OBSRemote.svelte';
-import { getSetting, OBSRemoteSettings, setSetting } from '../utils/settings';
+import ObsWebsocket from '../svelte/OBSWebsocket.svelte';
+import { getSetting, OBSWebsocketSettings, setSetting } from '../utils/settings';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
-export default class OBSRemoteApplication extends FormApplication<any, any, any> {
-  component: OBSRemote | undefined;
-  settings: OBSRemoteSettings = new OBSRemoteSettings();
-  useWebsocket = false;
+export default class OBSWebsocketApplication extends FormApplication<any, any, any> {
+  component: ObsWebsocket | undefined;
 
   protected async _updateObject(event: Event, formData?: object | undefined) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
-    console.warn(this.settings);
-    console.warn(await setSetting('obsRemote', this.settings));
+    const data = expandObject(formData);
+    setSetting('websocketSettings', data);
   }
 
   getData() {
-    this.useWebsocket = getSetting('enableOBSWebsocket');
-    this.settings = getSetting('obsRemote');
+    return getSetting('websocketSettings') as OBSWebsocketSettings;
   }
 
   static get defaultOptions(): FormApplicationOptions {
@@ -31,11 +28,10 @@ export default class OBSRemoteApplication extends FormApplication<any, any, any>
 
   protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
     const html = await super._renderInner(data);
-    this.component = new OBSRemote({
+    this.component = new ObsWebsocket({
       target: html.get(0) as Element,
       props: {
-        useWebSocket: this.useWebsocket,
-        settings: this.settings,
+        websocketSettings: data,
       },
     });
     return html;

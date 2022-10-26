@@ -1,4 +1,4 @@
-import { isOBS } from './utils/obs';
+import { handleOBS, isOBS } from './utils/obs';
 import {
   hideApplication,
   hideTokenBorder,
@@ -90,6 +90,22 @@ function start() {
       // Close Popups after configurable Time
       Hooks.on('renderJournalSheet', closePopupWithDelay);
       Hooks.on('renderImagePopout', closePopupWithDelay);
+
+      // Adding OBS Remote hooks;
+      Hooks.on('updateCombat', (combat: Combat, change: any) => {
+        if (change.turn == 0 && change.round == 1) handleOBS('onCombatStart');
+      });
+      Hooks.on('deleteCombat', () => {
+        handleOBS('onCombatEnd');
+      });
+      Hooks.on('pauseGame', (pause: boolean) => {
+        if (pause) {
+          handleOBS('onPause');
+        } else {
+          handleOBS('onUnpause');
+        }
+      });
+      Hooks.once('ready', () => handleOBS('onLoad'));
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);

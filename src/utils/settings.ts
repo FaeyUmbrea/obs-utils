@@ -1,7 +1,36 @@
-import { scaleToFit, tokenMoved } from './canvas.js';
-import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const.js';
-import { getGame } from './helpers.js';
-import { isOBS } from './obs.js';
+import { scaleToFit, tokenMoved } from './canvas';
+import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
+import { getGame } from './helpers';
+import { isOBS } from './obs';
+import OBSRemoteApplication from '../applications/obsremote';
+import OBSWebsocketApplication from '../applications/obswebsocket';
+
+export enum OBSAction {
+  SwitchScene,
+  ToggleSource,
+  EnableSource,
+  DisableSource,
+}
+
+export class OBSEvent {
+  targetAction: OBSAction = OBSAction.SwitchScene;
+  sceneName = '';
+  targetName = '';
+}
+
+export class OBSWebsocketSettings {
+  url = '';
+  port = '';
+  password = '';
+}
+
+export class OBSRemoteSettings {
+  onLoad: OBSEvent[] = [];
+  onCombatStart: OBSEvent[] = [];
+  onCombatEnd: OBSEvent[] = [];
+  onPause: OBSEvent[] = [];
+  onUnpause: OBSEvent[] = [];
+}
 
 async function changeMode() {
   if (!isOBS()) return;
@@ -74,7 +103,7 @@ export function registerSettings() {
     onChange: changeMode,
   });
   registerSetting('obsRemote', {
-    type: OBSRemoteSettings,
+    type: Object,
     scope: 'world',
     config: false,
     default: new OBSRemoteSettings(),
@@ -86,10 +115,26 @@ export function registerSettings() {
     default: false,
   });
   registerSetting('websocketSettings', {
-    type: OBSWebsocketSettings,
-    scope: 'client',
+    type: Object,
+    scope: 'world',
     config: false,
     default: new OBSWebsocketSettings(),
+  });
+  getGame().settings.registerMenu(moduleID, 'obsRemoteMenu', {
+    name: `${moduleID}.settings.obsRemoteMenu.Name`,
+    label: `${moduleID}.settings.obsRemoteMenu.Label`,
+    hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
+    type: OBSRemoteApplication,
+    icon: 'fas fa-bars',
+    restricted: true,
+  });
+  getGame().settings.registerMenu(moduleID, 'obsWebsocketMenu', {
+    name: `${moduleID}.settings.obsWebsocketMenu.Name`,
+    label: `${moduleID}.settings.obsWebsocketMenu.Label`,
+    hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
+    type: OBSWebsocketApplication,
+    icon: 'fas fa-bars',
+    restricted: true,
   });
 }
 

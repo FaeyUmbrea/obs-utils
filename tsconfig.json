@@ -4,7 +4,7 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "baseUrl": ".",
-    "lib": ["DOM", "ES2020"],
+    "lib": ["DOM", "ES2022"],
     "types": ["@league-of-foundry-developers/foundry-vtt-types","obs-studio","obs-websocket-js"],
     "esModuleInterop": true,
     "moduleResolution": "node",
@@ -14,7 +14,8 @@
     "module": "ESNext",
     "noImplicitAny": true,
     "allowJs": true,
-    "checkJs": true
+    "checkJs": true,
+    "isolatedModules": true,
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/node_modules/**/*"],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*"],

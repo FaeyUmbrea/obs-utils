@@ -1,4 +1,4 @@
-import { getSetting } from './settings';
+import { getSetting, OBSAction, OBSEvent, OBSRemoteSettings, OBSWebsocketSettings } from './settings';
 import OBSWebSocket from 'obs-websocket-js';
 
 let obswebsocket: OBSWebSocket;
@@ -25,6 +25,11 @@ function debug(): boolean {
 
 export function isOBS(): boolean {
   return !!window.obsstudio || debug();
+}
+
+function getWSSettings(): OBSWebsocketSettings {
+  const setting = getSetting('websocketSettings') as OBSWebsocketSettings;
+  return setting;
 }
 
 export function handleOBS(event: string): void {
@@ -57,25 +62,25 @@ async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
       case OBSAction.EnableSource:
         await websocket.call('SetSceneItemEnabled', {
           sceneName: obsevent.sceneName,
-          sceneItemId: obsevent.targetID,
+          sceneItemId: await getSceneItemIdByName(obsevent.sceneName, obsevent.targetName),
           sceneItemEnabled: true,
         });
         break;
       case OBSAction.DisableSource:
         await websocket.call('SetSceneItemEnabled', {
           sceneName: obsevent.sceneName,
-          sceneItemId: obsevent.targetID,
+          sceneItemId: await getSceneItemIdByName(obsevent.sceneName, obsevent.targetName),
           sceneItemEnabled: false,
         });
         break;
       case OBSAction.ToggleSource: {
         const sourcestatus = await websocket.call('GetSceneItemEnabled', {
           sceneName: obsevent.sceneName,
-          sceneItemId: obsevent.targetID,
+          sceneItemId: await getSceneItemIdByName(obsevent.sceneName, obsevent.targetName),
         });
         await websocket.call('SetSceneItemEnabled', {
           sceneName: obsevent.sceneName,
-          sceneItemId: obsevent.targetID,
+          sceneItemId: await getSceneItemIdByName(obsevent.sceneName, obsevent.targetName),
           sceneItemEnabled: !sourcestatus,
         });
         break;
@@ -84,10 +89,23 @@ async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
   }
 }
 
+async function getSceneItemIdByName(scene: string, item: string): Promise<number> {
+  return (await (await getWebsocket()).call('GetSceneItemId', { sceneName: scene, sourceName: item })).sceneItemId;
+}
+
 async function getWebsocket(): Promise<OBSWebSocket> {
   if (obswebsocket) return obswebsocket;
-  const wsSettings = getSetting('websocketSettings') as OBSWebsocketSettings;
+  const wsSettings = getWSSettings();
   obswebsocket = new OBSWebSocket();
   await obswebsocket.connect(`ws://${wsSettings.url}:${wsSettings.port}`, wsSettings.password);
   return obswebsocket;
+}
+
+export async function getSceneData() {
+  const sceneData = (await (await getWebsocket()).call('GetSceneList')).scenes as unknown as string[];
+  const map: Map<string, Array<number>> = new Map();
+  sceneData.forEach(async (scene: string) => {
+    map.set(scene, (await (await getWebsocket()).call('GetSceneItemList')).sceneItems as unknown as number[]);
+  });
+  return map;
 }

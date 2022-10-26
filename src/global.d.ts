@@ -54,31 +54,4 @@ declare global {
   let socketlib: any;
 
   class DirectorApp extends SvelteComponentTyped {}
-
-  enum OBSAction {
-    SwitchScene,
-    ToggleSource,
-    EnableSource,
-    DisableSource,
-  }
-
-  class OBSEvent {
-    targetAction: OBSAction;
-    sceneName: string;
-    targetID: number;
-  }
-
-  class OBSWebsocketSettings {
-    url: string;
-    port: string;
-    password: string;
-  }
-
-  class OBSRemoteSettings {
-    onLoad: OBSEvent[];
-    onCombatStart: OBSEvent[];
-    onCombatEnd: OBSEvent[];
-    onPause: OBSEvent[];
-    onUnpause: OBSEvent[];
-  }
 }
