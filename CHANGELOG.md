@@ -1,3 +1,7 @@
+### Version 1.2.3
+
+Added OBS Remote Functionality!
+Replaced original onExitObs with onStopStreaming because OBS would close before the final commands got executed.
 ## Version 1.1.1
 
 Fixes to the Director Window

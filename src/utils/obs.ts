@@ -110,7 +110,9 @@ async function getWebsocket(): Promise<OBSWebSocket> {
 export async function registerOBSEvents() {
   const useWS = getSetting('enableOBSWebsocket') as boolean;
   if (useWS) {
-    (await getWebsocket()).addListener("StreamStateChanged", (returnValue) => {if(returnValue.outputState == "OBS_WEBSOCKET_OUTPUT_STOPPED") handleOBS('onStopStreaming')});
+    (await getWebsocket()).addListener('StreamStateChanged', (returnValue) => {
+      if (returnValue.outputState == 'OBS_WEBSOCKET_OUTPUT_STOPPED') handleOBS('onStopStreaming');
+    });
   } else {
     window.addEventListener('obsStreamingStopped', async () => await handleOBS('onStopStreaming'));
   }

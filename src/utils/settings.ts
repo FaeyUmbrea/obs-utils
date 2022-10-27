@@ -147,8 +147,6 @@ function registerSetting(settingName: string, config: Record<string, unknown>): 
   });
 }
 
-
-
 export function getSetting(settingName: string): any {
   return getGame().settings.get('obs-utils', settingName);
 }
