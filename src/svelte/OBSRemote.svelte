@@ -1,14 +1,9 @@
 <script lang="ts">
-    import { OBSRemoteSettings } from "../utils/settings";
+    import type { OBSRemoteSettings } from "../utils/settings";
     import ObsTab from "./components/OBSTab.svelte";
 
     export let useWebSocket: boolean;
     export let settings: OBSRemoteSettings;
-
-    console.warn(settings);
-    // To make sure that newly added fields work after updating
-    settings = mergeObject(new OBSRemoteSettings(),settings);
-    console.warn(settings);
 
 
     let entries = Object.getOwnPropertyNames(settings);
