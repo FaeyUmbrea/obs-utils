@@ -1,4 +1,4 @@
-import { handleOBS, isOBS } from './utils/obs';
+import { handleOBS, isOBS, registerOBSEvents } from './utils/obs';
 import {
   hideApplication,
   hideTokenBorder,
@@ -105,6 +105,8 @@ function start() {
         }
       });
       Hooks.once('ready', () => handleOBS('onLoad'));
+
+      registerOBSEvents();
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);
