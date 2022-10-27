@@ -1,5 +1,6 @@
 import ObsWebsocket from '../svelte/OBSWebsocket.svelte';
 import { getSetting, OBSWebsocketSettings, setSetting } from '../utils/settings';
+import '../less/obsremote.less';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
@@ -18,10 +19,10 @@ export default class OBSWebsocketApplication extends FormApplication<any, any, a
 
   static get defaultOptions(): FormApplicationOptions {
     return mergeObject(super.defaultOptions, {
-      classes: ['obsremote'],
+      classes: ['obswebsocket'],
       template: DICECTOR_TEMPLATE,
-      id: 'obsremote-application',
-      title: 'OBS Remote Settings',
+      id: 'obswebsocket-application',
+      title: 'OBS Websocket Settings',
       tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
     }) as FormApplicationOptions;
   }

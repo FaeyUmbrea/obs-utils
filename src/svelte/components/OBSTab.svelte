@@ -16,9 +16,12 @@
     }
     
 </script>
+    <button class="add" type="button" on:click={() => handleAdd()}><i class="fas fa-plus" /></button>
+    <div class="scroll">
     <ul>
         {#each eventArray as event, index (eventArray.indexOf(event)) }
             <ObsSetting event={event} removeFn={()=>handleRemove(index)} useWebSocket={useWebSocket}></ObsSetting>
         {/each}
     </ul>
-    <button type="button" on:click={() => handleAdd()}>Add</button>
+    </div>
+    

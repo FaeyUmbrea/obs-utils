@@ -115,3 +115,12 @@ export async function getSceneData() {
   });
   return map;
 }
+
+export async function registerOBSEvents() {
+  const useWS = getSetting('enableOBSWebsocket') as boolean;
+  if (useWS) {
+    (await getWebsocket()).addListener('ExitStarted', () => handleOBS('onCloseObs'));
+  } else {
+    window.addEventListener('obsExit', () => handleOBS('onCloseObs'));
+  }
+}

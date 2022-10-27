@@ -13,7 +13,6 @@ import {
 } from './utils/canvas.js';
 import { registerSettings } from './utils/settings';
 import DirectorApplication from './applications/director';
-import './less/obs-utils.less';
 import { socketCanvas } from './utils/socket';
 import { handleCombat, stopCombat } from './utils/combat';
 import { getGame } from './utils/helpers';

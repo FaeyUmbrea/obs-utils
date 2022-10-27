@@ -6,7 +6,7 @@
 </script>
 
 <hr>
-<div class="flex">
+<div class="flexcol">
     URL: <input name="url" type="text" bind:value={websocketSettings.url} />
     <br>
     Port: <input name="port" type="number" bind:value={websocketSettings.port} />

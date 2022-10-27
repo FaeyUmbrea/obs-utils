@@ -26,6 +26,8 @@ export default class OBSRemoteApplication extends FormApplication<any, any, any>
       id: 'obsremote-application',
       title: 'OBS Remote Settings',
       tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
+      height: 700,
+      resizeable: true,
     }) as FormApplicationOptions;
   }
 

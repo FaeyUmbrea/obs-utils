@@ -30,6 +30,7 @@ export class OBSRemoteSettings {
   onCombatEnd: OBSEvent[] = [];
   onPause: OBSEvent[] = [];
   onUnpause: OBSEvent[] = [];
+  onCloseObs: OBSEvent[] = [];
 }
 
 async function changeMode() {
