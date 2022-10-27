@@ -18,6 +18,10 @@ This Module was in large parts inspired by Stream View and Stream Utils respecti
 This module is supposed to be easy, low config and out of the box. 
 Most importantly its supposed to be as hands off on the OBS Side as possible. 
 
+## Usage
+
+Check the Wiki!
+
 ## Features
 
 - Automatically follow Tokens based on Spectator or Owner permission
