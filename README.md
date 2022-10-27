@@ -18,6 +18,10 @@ This Module was in large parts inspired by Stream View and Stream Utils respecti
 This module is supposed to be easy, low config and out of the box. 
 Most importantly its supposed to be as hands off on the OBS Side as possible. 
 
+## Usage
+
+Check the Wiki!
+
 ## Features
 
 - Automatically follow Tokens based on Spectator or Owner permission
@@ -30,9 +34,14 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 - Birds-Eye Mode: Fit Map to Screen
 - Mode Select both in and out of Combat
 
+
 - Make /stream Background Transparent
 
+
 - Levels Support (in Combat)
+
+
+- OBS Remote Controls via Websocket or Browser Source
 
 ## Requirements
 
@@ -50,7 +59,6 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 - Modify the /stream Page (Information Overlays etc.)
 
 - Levels Support (out of Combat)
-- Trigger OBS Scenes from Foundry
 
 - Twitch Chat Integration (Patron Only)
 - YouTube Chat Integration (Patron Only)

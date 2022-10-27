@@ -24,6 +24,20 @@
       "showTrackerInCombat": {
         "Name": "Show Combat Tracker in Combat?",
         "Hint": "If checked, the Combat Tracker will be visible during Combat Turns."
+      },
+      "obsRemoteMenu": {
+        "Label": "Open Menu",
+        "Name": "OBS Remote Settings",
+        "Hint": "Configure the OBS Remote"
+      },
+      "obsWebsocketMenu": {
+        "Label": "Open Menu",
+        "Name": "OBS Websocket Settings",
+        "Hint": "Configure OBS Websocket"
+      },
+      "enableOBSWebsocket": {
+        "Name": "Enable OBS Websocket?",
+        "Hint": "If checked, OBS Websocket will be used for Remoting"
       }
     }
   }

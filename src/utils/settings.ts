@@ -1,7 +1,37 @@
-import { scaleToFit, tokenMoved } from './canvas.js';
-import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const.js';
-import { getGame } from './helpers.js';
-import { isOBS } from './obs.js';
+import { scaleToFit, tokenMoved } from './canvas';
+import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
+import { getGame } from './helpers';
+import { isOBS } from './obs';
+import OBSRemoteApplication from '../applications/obsremote';
+import OBSWebsocketApplication from '../applications/obswebsocket';
+
+export enum OBSAction {
+  SwitchScene = 'Switch Scene',
+  ToggleSource = 'Toggle Source',
+  EnableSource = 'Enable Source',
+  DisableSource = 'Disable Source',
+}
+
+export class OBSEvent {
+  targetAction: OBSAction = OBSAction.SwitchScene;
+  sceneName = '';
+  targetName = '';
+}
+
+export class OBSWebsocketSettings {
+  url = '';
+  port = '';
+  password = '';
+}
+
+export class OBSRemoteSettings {
+  onLoad: OBSEvent[] = [];
+  onCombatStart: OBSEvent[] = [];
+  onCombatEnd: OBSEvent[] = [];
+  onPause: OBSEvent[] = [];
+  onUnpause: OBSEvent[] = [];
+  onCloseObs: OBSEvent[] = [];
+}
 
 async function changeMode() {
   if (!isOBS()) return;
@@ -11,8 +41,7 @@ async function changeMode() {
 }
 
 export function registerSettings() {
-  getGame().settings.register(moduleID, 'minScale', {
-    name: `obs-utils.settings.minScale.Name`,
+  registerSetting('minScale', {
     default: 0.1,
     type: Number,
     range: {
@@ -22,10 +51,8 @@ export function registerSettings() {
     },
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.minScale.Hint`,
   });
-  getGame().settings.register(moduleID, 'maxScale', {
-    name: `obs-utils.settings.maxScale.Name`,
+  registerSetting('maxScale', {
     default: 2,
     type: Number,
     range: {
@@ -35,30 +62,24 @@ export function registerSettings() {
     },
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.maxScale.Hint`,
   });
-  getGame().settings.register(moduleID, 'defaultOutOfCombat', {
-    name: `obs-utils.settings.defaultOutOfCombat.Name`,
+  registerSetting('defaultOutOfCombat', {
     default: 'trackall',
     type: String,
     choices: OOCCHOICES,
     scope: 'world',
     config: false,
-    hint: `obs-utils.settings.defaultOutOfCombat.Hint`,
     onChange: changeMode,
   });
-  getGame().settings.register(moduleID, 'defaultInCombat', {
-    name: `obs-utils.settings.defaultInCombat.Name`,
+  registerSetting('defaultInCombat', {
     default: 'trackall',
     type: String,
     choices: ICCHOICES,
     scope: 'world',
     config: false,
-    hint: `obs-utils.settings.defaultInCombat.Hint`,
     onChange: changeMode,
   });
-  getGame().settings.register(moduleID, 'popupCloseDelay', {
-    name: `obs-utils.settings.popupCloseDelay.Name`,
+  registerSetting('popupCloseDelay', {
     default: 10,
     type: Number,
     range: {
@@ -68,24 +89,61 @@ export function registerSettings() {
     },
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.popupCloseDelay.Hint`,
   });
-  getGame().settings.register(moduleID, 'showTrackerInCombat', {
-    name: `obs-utils.settings.showTrackerInCombat.Name`,
+  registerSetting('showTrackerInCombat', {
     default: false,
     type: Boolean,
     scope: 'world',
     config: true,
-    hint: `obs-utils.settings.showTrackerInCombat.Hint`,
   });
-  getGame().settings.register(moduleID, 'trackedUser', {
-    name: `obs-utils.settings.trackedUser.Name`,
+  registerSetting('trackedUser', {
     default: getGame().userId,
     type: String,
     scope: 'world',
     config: false,
-    hint: `obs-utils.settings.trackedUser.Hint`,
     onChange: changeMode,
+  });
+  registerSetting('obsRemote', {
+    type: Object,
+    scope: 'world',
+    config: false,
+    default: new OBSRemoteSettings(),
+  });
+  registerSetting('enableOBSWebsocket', {
+    type: Boolean,
+    scope: 'world',
+    config: true,
+    default: false,
+  });
+  registerSetting('websocketSettings', {
+    type: Object,
+    scope: 'world',
+    config: false,
+    default: new OBSWebsocketSettings(),
+  });
+  getGame().settings.registerMenu(moduleID, 'obsRemoteMenu', {
+    name: `${moduleID}.settings.obsRemoteMenu.Name`,
+    label: `${moduleID}.settings.obsRemoteMenu.Label`,
+    hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
+    type: OBSRemoteApplication,
+    icon: 'fas fa-bars',
+    restricted: true,
+  });
+  getGame().settings.registerMenu(moduleID, 'obsWebsocketMenu', {
+    name: `${moduleID}.settings.obsWebsocketMenu.Name`,
+    label: `${moduleID}.settings.obsWebsocketMenu.Label`,
+    hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
+    type: OBSWebsocketApplication,
+    icon: 'fas fa-bars',
+    restricted: true,
+  });
+}
+
+function registerSetting(settingName: string, config: Record<string, unknown>): void {
+  getGame().settings.register(moduleID, settingName, {
+    name: `${moduleID}.settings.${settingName}.Name`,
+    hint: `${moduleID}.settings.${settingName}.Hint`,
+    ...config,
   });
 }
 

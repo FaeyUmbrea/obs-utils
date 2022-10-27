@@ -1,0 +1,50 @@
+<script lang="ts">
+    import { OBSRemoteSettings } from "../utils/settings";
+    import ObsTab from "./components/OBSTab.svelte";
+
+    export let useWebSocket: boolean;
+    export let settings: OBSRemoteSettings;
+
+    console.warn(settings);
+    // To make sure that newly added fields work after updating
+    settings = mergeObject(new OBSRemoteSettings(),settings);
+    console.warn(settings);
+
+
+    let entries = Object.getOwnPropertyNames(settings);
+    
+    if(!useWebSocket){
+        entries = entries.filter((entry)=> entry!="onCloseObs")
+    }
+
+    function getKey(key: string){
+        return key as keyof OBSRemoteSettings
+    }
+
+    function formatKey(key: string){
+        return key.replace(/([a-z])([A-Z])/g, '$1 $2').substring(2);
+    }
+
+</script>
+
+    <nav class="tabs" data-group="primary-tabs">
+        {#each entries as key }
+            <!-- svelte-ignore a11y-missing-attribute -->
+            <a class="item" data-tab={key}><i class="fas {key == "onCloseObs" ? "fa-signal-stream" : "fa-dice-d20"}"></i> {formatKey(key)}</a>
+        {/each}
+    </nav>
+<hr>
+<div>
+<section class="content">
+    {#each entries as key}
+    <div class="tab flexcol" data-tab={key} data-group="primary-tabs">
+
+        <ObsTab bind:eventArray={settings[getKey(key)]} useWebSocket={useWebSocket} />
+    </div>
+    {/each}
+</section>
+<footer>
+<hr>
+<button class="submit" type="submit">Submit</button>
+</footer>
+</div>

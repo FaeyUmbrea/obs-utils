@@ -1,4 +1,4 @@
-import { isOBS } from './utils/obs';
+import { handleOBS, isOBS } from './utils/obs';
 import {
   hideApplication,
   hideTokenBorder,
@@ -12,8 +12,7 @@ import {
   hideSidebar,
 } from './utils/canvas.js';
 import { registerSettings } from './utils/settings';
-import Director from './applications/director';
-import './less/obs-utils.less';
+import DirectorApplication from './applications/director';
 import { socketCanvas } from './utils/socket';
 import { handleCombat, stopCombat } from './utils/combat';
 import { getGame } from './utils/helpers';
@@ -34,7 +33,7 @@ function buildButtons(buttons: SceneControl[]) {
 }
 
 function openDirector(button: SceneControlTool) {
-  if (!d) d = new Director(button);
+  if (!d) d = new DirectorApplication(button);
   if (!d.rendered) d.render(true);
   else d.close();
 }
@@ -90,6 +89,22 @@ function start() {
       // Close Popups after configurable Time
       Hooks.on('renderJournalSheet', closePopupWithDelay);
       Hooks.on('renderImagePopout', closePopupWithDelay);
+
+      // Adding OBS Remote hooks;
+      Hooks.on('updateCombat', (combat: Combat, change: any) => {
+        if (change.turn == 0 && change.round == 1) handleOBS('onCombatStart');
+      });
+      Hooks.on('deleteCombat', () => {
+        handleOBS('onCombatEnd');
+      });
+      Hooks.on('pauseGame', (pause: boolean) => {
+        if (pause) {
+          handleOBS('onPause');
+        } else {
+          handleOBS('onUnpause');
+        }
+      });
+      Hooks.once('ready', () => handleOBS('onLoad'));
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);

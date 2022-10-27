@@ -1,9 +1,10 @@
 import { generateDataBlockFromSetting, getSetting, setSetting } from '../utils/settings.js';
 import DirectorApp from '../svelte/DirectorApp.svelte';
+import '../less/obsdirector.less';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/apps.hbs';
 
-export default class Director extends Application {
+export default class DirectorApplication extends Application {
   buttonData: DirectorData;
   sidebarButton: SceneControlTool;
   component: DirectorApp | undefined;

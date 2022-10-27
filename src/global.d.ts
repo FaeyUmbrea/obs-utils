@@ -12,6 +12,7 @@ declare global {
       'obs-utils.defaultOutOfCombat': string;
       'obs-utils.defaultInCombat': string;
       'obs-utils.popupCloseDelay': number;
+      'obs-utils.obsRemote': OBSRemoteSettings;
     }
   }
   class Tagger {

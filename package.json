@@ -27,6 +27,9 @@
     "watch": "vite build --watch",
     "wdio": "wdio run wdio.conf.js"
   },
+  "dependencies": {
+    "obs-websocket-js": "^5.0.2"
+  },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
     "@rollup/plugin-typescript": "9.0.2",
