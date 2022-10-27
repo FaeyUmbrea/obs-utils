@@ -2,7 +2,7 @@
 
 import { getCurrentUser, viewportChanged } from './canvas';
 import { ID } from './const';
-import { isOBS, getSceneData } from './obs';
+import { isOBS } from './obs';
 import { OBSWebsocketSettings, setSetting } from './settings';
 
 let modulesocket: any;
@@ -12,7 +12,6 @@ Hooks.once('socketlib.ready', () => {
 
   modulesocket.register('viewport', changeViewport);
   modulesocket.register('websocketSettings', changeOBSSettings);
-  modulesocket.register('getOBSData', getSceneData);
 });
 
 export async function getOBSData(user: string) {

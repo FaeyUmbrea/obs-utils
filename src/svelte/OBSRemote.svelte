@@ -9,7 +9,7 @@
     let entries = Object.getOwnPropertyNames(settings);
     
     if(!useWebSocket){
-        entries = entries.filter((entry)=> entry!="onCloseObs")
+        entries = entries.filter((entry)=> entry!="onStopStreaming")
     }
 
     function getKey(key: string){
@@ -25,7 +25,7 @@
     <nav class="tabs" data-group="primary-tabs">
         {#each entries as key }
             <!-- svelte-ignore a11y-missing-attribute -->
-            <a class="item" data-tab={key}><i class="fas {key == "onCloseObs" ? "fa-signal-stream" : "fa-dice-d20"}"></i> {formatKey(key)}</a>
+            <a class="item" data-tab={key}><i class="fas {key == "onStopStreaming" ? "fa-signal-stream" : "fa-dice-d20"}"></i> {formatKey(key)}</a>
         {/each}
     </nav>
 <hr>

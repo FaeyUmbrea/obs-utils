@@ -17,8 +17,9 @@ export default class OBSRemoteApplication extends FormApplication<any, any, any>
   getData() {
     this.useWebsocket = getSetting('enableOBSWebsocket');
     this.settings = getSetting('obsRemote');
-    // To make sure that newly added fields work after updating
+    // Code for Migration Setting Models
     this.settings = mergeObject(new OBSRemoteSettings(), this.settings);
+    delete this.settings['onCloseObs' as keyof OBSRemoteSettings];
   }
 
   static get defaultOptions(): FormApplicationOptions {

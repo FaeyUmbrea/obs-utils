@@ -38,11 +38,11 @@ function getWSSettings(): OBSWebsocketSettings {
   return setting;
 }
 
-export function handleOBS(event: string): void {
+export async function handleOBS(event: string): Promise<void> {
   if (!isOBS()) return;
   const obsEvents = (getSetting('obsRemote') as OBSRemoteSettings)[event as keyof OBSRemoteSettings];
   const useWS = getSetting('enableOBSWebsocket') as boolean;
-  obsEvents.forEach((obsEvent) => triggerOBSAction(obsEvent, useWS));
+  obsEvents.forEach(async (obsEvent) => await triggerOBSAction(obsEvent, useWS));
 }
 
 async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
@@ -107,20 +107,11 @@ async function getWebsocket(): Promise<OBSWebSocket> {
   return obswebsocket;
 }
 
-export async function getSceneData() {
-  const sceneData = (await (await getWebsocket()).call('GetSceneList')).scenes as unknown as string[];
-  const map: Map<string, Array<number>> = new Map();
-  sceneData.forEach(async (scene: string) => {
-    map.set(scene, (await (await getWebsocket()).call('GetSceneItemList')).sceneItems as unknown as number[]);
-  });
-  return map;
-}
-
 export async function registerOBSEvents() {
   const useWS = getSetting('enableOBSWebsocket') as boolean;
   if (useWS) {
-    (await getWebsocket()).addListener('ExitStarted', () => handleOBS('onCloseObs'));
+    (await getWebsocket()).addListener("StreamStateChanged", (returnValue) => {if(returnValue.outputState == "OBS_WEBSOCKET_OUTPUT_STOPPED") handleOBS('onStopStreaming')});
   } else {
-    window.addEventListener('obsExit', () => handleOBS('onCloseObs'));
+    window.addEventListener('obsStreamingStopped', async () => await handleOBS('onStopStreaming'));
   }
 }

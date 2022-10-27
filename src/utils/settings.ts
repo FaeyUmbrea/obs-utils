@@ -30,7 +30,7 @@ export class OBSRemoteSettings {
   onCombatEnd: OBSEvent[] = [];
   onPause: OBSEvent[] = [];
   onUnpause: OBSEvent[] = [];
-  onCloseObs: OBSEvent[] = [];
+  onStopStreaming: OBSEvent[] = [];
 }
 
 async function changeMode() {
@@ -146,6 +146,8 @@ function registerSetting(settingName: string, config: Record<string, unknown>): 
     ...config,
   });
 }
+
+
 
 export function getSetting(settingName: string): any {
   return getGame().settings.get('obs-utils', settingName);
