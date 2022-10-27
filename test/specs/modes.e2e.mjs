@@ -50,7 +50,7 @@ async function prepare() {
     await OBSGamePage.open()
     await obsClient.waitUntil(OBSGamePage.isReady)
 }
-
+/*
 describe('DM Client Only', () => {
     it('Click Director Button to Open and Close', async () => {
         await GMGamePage.open();
@@ -151,11 +151,11 @@ describe('Multi Client Functionality UI', () => {
 
         await GMGamePage.changeSetting('showTrackerInCombat', initialSetting);
     })
-})
+})*/
 
 describe('Multi Client Functionality Non-Combat', () => {
     // OOC Tests
-    
+    /*
     it('OOC Track All', async () => {
 
         await prepare();
@@ -163,10 +163,10 @@ describe('Multi Client Functionality Non-Combat', () => {
         // Set Mode to TrackAll
         await GMGamePage.toggleDirectorWithIconButton();
         await GMGamePage.director.waitForExist();
-        await sleep(1000);
+        await sleep(2000);
         await GMDirector.buttonAllTokensOOC.click();
 
-        await sleep(1000);
+        await sleep(2000);
 
         await GMGamePage.closeDirector();
 
@@ -174,7 +174,7 @@ describe('Multi Client Functionality Non-Combat', () => {
 
         await GMGamePage.takeControlOfToken();
 
-        await sleep(3000);
+        await sleep(4000);
 
         // Move into position
 
@@ -184,12 +184,12 @@ describe('Multi Client Functionality Non-Combat', () => {
 
         var before = await OBSGamePage.getViewport();
 
-        await sleep(3000);
+        await sleep(4000);
 
         // Move Token
 
         await GMGamePage.holdKey('d', 1000);
-        await sleep(3000);
+        await sleep(4000);
 
         // See if Viewport Changed
         var after = await OBSGamePage.getViewport();
@@ -235,7 +235,7 @@ describe('Multi Client Functionality Non-Combat', () => {
         var after = await OBSGamePage.getViewport();
         await expect(after).not.toEqual(before);
 
-    });
+    });*/
     it('OOC Copy GM', async () => {
 
         await prepare();
@@ -244,15 +244,17 @@ describe('Multi Client Functionality Non-Combat', () => {
         await GMGamePage.toggleDirectorWithIconButton();
         await GMGamePage.director.waitForExist();
 
+        await sleep(1000);
+
         await GMDirector.buttonCloneDMOOC.click();
 
-        await sleep(3000);
+        await sleep(5000);
 
         // Move Viewport
 
         await GMGamePage.panViewport(100,100,1);
 
-        await sleep(3000);
+        await sleep(5000);
 
         // Take Viewport on OBS Side
 
@@ -260,7 +262,7 @@ describe('Multi Client Functionality Non-Combat', () => {
 
         await GMGamePage.panViewport(300,300,0.5);
 
-        await sleep(3000);
+        await sleep(5000);
 
         // See if Viewport Changed
         var after = await OBSGamePage.getViewport();
@@ -347,7 +349,7 @@ describe('Multi Client Functionality Non-Combat', () => {
 
     });
 });
-
+/*
 describe('Multi Client Functionality Combat', () => {
     it('Track All', async () => {
 
@@ -610,4 +612,4 @@ describe('Multi Client Functionality Combat', () => {
 
         await GMGamePage.endCombat();
     });
-});
+});*/
