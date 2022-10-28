@@ -59,7 +59,7 @@ exports.config = {
                 //
                 browserName: 'chrome',
                 "goog:chromeOptions": {
-                    args: [/*"--headless",/*"--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",*/ "--window-size=1930,1090"]
+                    args: ["--headless","--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1930,1090"]
                 },      
                 acceptInsecureCerts: true
                 // If outputDir is provided WebdriverIO can capture driver session logs
@@ -77,7 +77,7 @@ exports.config = {
                 //
                 browserName: 'chrome',
                 "goog:chromeOptions": {
-                    args: [/*"--headless",/*"--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",*/ "--window-size=1930,1090"]
+                    args: ["--headless","--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1930,1090"]
                 },      
                 acceptInsecureCerts: true
                 // If outputDir is provided WebdriverIO can capture driver session logs
@@ -95,7 +95,7 @@ exports.config = {
                 //
                 browserName: 'chrome',
                 "goog:chromeOptions": {
-                    args: [/*"--headless",/*"--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",*/ "--window-size=1930,1090"]
+                    args: ["--headless","--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage", "--window-size=1930,1090"]
                 },      
                 acceptInsecureCerts: true
                 // If outputDir is provided WebdriverIO can capture driver session logs
@@ -137,7 +137,7 @@ exports.config = {
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
-    baseUrl: 'http://localhost:30000',
+    baseUrl: 'http://localhost:31000',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,

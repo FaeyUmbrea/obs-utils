@@ -8,6 +8,6 @@ export default class Page {
     * @param path path of the sub page (e.g. /path/to/page.html)
     */
     open (path, usebrowser) {
-        return usebrowser.url(`http://localhost:30000/${path}`)
+        return usebrowser.url(`http://localhost:31000/${path}`)
     }
 }
