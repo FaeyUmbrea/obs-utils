@@ -20,16 +20,12 @@ jobs:
         with:
           node-version: 16
       - name: Install
-        uses: borales/actions-yarn@v3
-        with:
-          cmd: install
+        run: yarn install
       - uses: browser-actions/setup-chrome@latest
       - name: Test
-        uses: borales/actions-yarn@v3
-        with:
-          cmd: test
+        run: yarn test
       - uses: actions/upload-artifact@v3
         if: failure()
         with: 
           name: logs
-          path: logs
+          path: coverage/wdio
