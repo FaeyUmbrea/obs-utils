@@ -22,6 +22,7 @@ jobs:
         uses: borales/actions-yarn@v3
         with:
           cmd: install
+      - uses: browser-actions/setup-chrome@latest
       - name: Test
         uses: borales/actions-yarn@v3
         with:
