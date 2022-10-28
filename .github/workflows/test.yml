@@ -1,0 +1,29 @@
+name: 'Test'
+description: 'Run some tests!'
+jobs:
+  test-foundry:
+    runs-on: ubuntu-latest
+    container: 
+      image: felddy/foundryvtt:10
+      env:
+        FOUNDRY_USERNAME= ${{ secrets.FOUNDRY_USER }}
+        FOUNDRY_PASSWORD= ${{ secrets.FOUNDRY_PASSWORD }}
+      ports: 
+        - 30000
+      volumes: 
+        - data:/data
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install
+        run: yarn install --frozen-lockfile
+      - name: Test
+        run: yarn test
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with: 
+          name: logs
+          path: logs
