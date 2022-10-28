@@ -3,15 +3,16 @@ on: workflow_dispatch
 jobs:
   test-foundry:
     runs-on: ubuntu-latest
-    container: 
-      image: felddy/foundryvtt:10
-      env:
-        FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USER }}
-        FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
-      ports: 
-        - 30000
-      volumes: 
-        - data:/data
+    services:
+      foundry:
+        image: felddy/foundryvtt:10
+        env:
+          FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USER }}
+          FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
+        ports: 
+          - 30000:30000
+        volumes: 
+          - data:/data
     steps:
       - name: Checkout
         uses: actions/checkout@v3
