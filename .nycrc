@@ -1,6 +1,6 @@
 
 {
-    "all": true,
+    "all": false,
     "check-coverage": false,
     "extension": [
       "*.ts",
@@ -9,6 +9,9 @@
     ],
     "include": [
       "src/**/*"
+    ],
+    "exclude": [
+      "obs-utils/node_modules/**/*"
     ],
     "reporter": [
       "json",
