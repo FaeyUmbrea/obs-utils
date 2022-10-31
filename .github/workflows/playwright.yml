@@ -3,7 +3,17 @@ on: workflow_dispatch
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+    services:
+      foundry:
+        image: felddy/foundryvtt:10
+        ports: 
+          - 31000:31000
+        env:
+          FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
+          FOUNDRY_PASSWORD: ${{ secrets.FOUNRDY_PASSWORD }}
+        volumes:
+          - ./Foundry:/data
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
