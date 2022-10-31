@@ -10,10 +10,10 @@ jobs:
         ports: 
           - 31000:31000
         env:
-          FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
-          FOUNDRY_PASSWORD: ${{ secrets.FOUNRDY_PASSWORD }}
+          FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USER }}
+          FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
         volumes:
-          - ./Foundry:/data
+          - data:/data
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
