@@ -17,5 +17,7 @@ wdio.conf.js
 LICENSE
 
 
-test/*
+tests/*
 coverage/*
+
+playwright*
