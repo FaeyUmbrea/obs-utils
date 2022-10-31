@@ -1,5 +1,6 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
+import './tests/fixtures';
 
 /**
  * Read environment variables from file.
@@ -13,7 +14,7 @@ import { devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 75 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -48,10 +49,11 @@ const config: PlaywrightTestConfig = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chrome@latest:Windows 10@browserstack',
+      name: 'chrome@latest:OSX Monterey@browserstack',
       use:{
         browserName: 'chromium',
-        channel: 'chrome'
+        channel: 'chrome',
+        launchOptions: {headless:false}
       }
     },
 

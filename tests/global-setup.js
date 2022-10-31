@@ -1,9 +1,9 @@
-const { bsLocal, BS_LOCAL_ARGS } = require('./fixtures');
-const { promisify } = require('util');
+import { bsLocal, BS_LOCAL_ARGS } from './fixtures.js';
+import { promisify } from 'util';
 const sleep = promisify(setTimeout);
 const redColour = '\x1b[31m';
 const whiteColour = '\x1b[0m';
-module.exports = async () => {
+export default async () => {
   console.log('Starting BrowserStackLocal ...');
   // Starts the Local instance with the required arguments
   let localResponseReceived = false;

@@ -14,6 +14,7 @@
   "author": "Faey Umbrea",
   "main": "src/module/obs-util.js",
   "scripts": {
+    "bs": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright.config.browserstack.ts",
     "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "coverage": "nyc report",

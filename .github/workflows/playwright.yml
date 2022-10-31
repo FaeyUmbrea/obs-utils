@@ -4,10 +4,11 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+  - workflow_dispatch
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -15,10 +16,13 @@ jobs:
         node-version: 16
     - name: Install dependencies
       run: yarn
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+    - name: Build with Coverage
+      run: yarn instrument
     - name: Run Playwright tests
-      run: yarn playwright test
+      run: yarn bs
+      env: 
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
     - uses: actions/upload-artifact@v3
       if: always()
       with:
