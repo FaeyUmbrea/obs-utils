@@ -8,7 +8,7 @@ jobs:
       foundry:
         image: felddy/foundryvtt:10
         ports: 
-          - 31000:31000
+          - 31000:30000
         env:
           FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USER }}
           FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}

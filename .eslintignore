@@ -21,3 +21,4 @@ tests/*
 coverage/*
 
 playwright*
+*.log
