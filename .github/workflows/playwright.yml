@@ -10,7 +10,7 @@ jobs:
       with:
         node-version: 16
     - name: Install dependencies
-      run: yarn && npx playwright install chrome
+      run: yarn
     - name: Build with Coverage
       run: yarn instrument
     - name: Start Container
