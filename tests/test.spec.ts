@@ -17,6 +17,12 @@ test.beforeAll(async ({browser})=>{
   await gmPage.coverage.startJSCoverage();
   await gmPage.goto("/setup");
   
+  if(gmPage.url().includes("/auth")){
+    await gmPage.getByLabel('Administrator Password').fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
+    await gmPage.getByRole('button', { name: ' Submit' }).click();
+    await gmPage.waitForURL("/setup");
+  }
+
   if(gmPage.url().includes("/setup")){
     await gmPage.getByRole('button', { name: ' Launch World' }).click();
   }
@@ -25,10 +31,10 @@ test.beforeAll(async ({browser})=>{
   await gmPage.goto("/join");
 
   await gmPage.locator('select[name="userid"]').selectOption({label:"Gamemaster"});
-  await gmPage.locator("input[name=password]").fill('');
+  await gmPage.locator("input[name=password]").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
     
   await gmPage.getByRole('button', { name: ' Join Game Session' }).click();
-  await expect(gmPage).toHaveURL('http://localhost:31000/game');
+  await expect(gmPage).toHaveURL('/game');
 })
 
 test.beforeAll(async ({browser})=>{
@@ -44,9 +50,9 @@ test.beforeAll(async ({browser})=>{
   await obsPage.goto("/join");
 
   await obsPage.locator('select[name="userid"]').selectOption({label:"Player2"});
-  await obsPage.locator("input[name=password]").fill('');
+  await obsPage.locator("input[name=password]").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
   await obsPage.getByRole('button', { name: ' Join Game Session' }).click();
-  await expect(obsPage).toHaveURL('http://localhost:31000/game');
+  await expect(obsPage).toHaveURL('/game');
 })
 
 
@@ -343,9 +349,9 @@ test.describe('Player Client Additional Tests', () => {
       playerPage = await playerContext.newPage();
       playerPage.goto("/join")
       await playerPage.locator('select[name="userid"]').selectOption({label:"Player3"});
-      await playerPage.locator("input[name=password]").fill('');
+      await playerPage.locator("input[name=password]").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
       await playerPage.getByRole('button', { name: ' Join Game Session' }).click();
-      await expect(playerPage).toHaveURL('http://localhost:31000/game');
+      await expect(playerPage).toHaveURL('/game');
       await playerPage.waitForFunction(() => window['game']?.ready)
     })
 

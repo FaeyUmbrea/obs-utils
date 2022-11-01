@@ -3,7 +3,7 @@ on: workflow_dispatch
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       foundry:
         image: felddy/foundryvtt:10
@@ -12,8 +12,12 @@ jobs:
         env:
           FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USER }}
           FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
+          FOUNDRY_ADMIN_KEY: ${{ secrets.TEST_INSTALL_PASSWORD }}
+          FOUNDRY_UID: $(id -u)
+          FOUNDRY_GID: $(id -g)
         volumes:
-          - data:/data
+          - ~/data:/data
+          - dist:/data/Data/modules/obs-utils
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -24,10 +28,12 @@ jobs:
     - name: Build with Coverage
       run: yarn instrument
     - name: Run Playwright tests
-      run: yarn bs
+      run: yarn playwright test
       env: 
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        TEST_INSTALL_PASSWORD: ${{ secrets.TEST_INSTALL_PASSWORD }}
+        TEST_URL: ${{ secrets.TEST_URL }}
     - uses: actions/upload-artifact@v3
       if: always()
       with:
