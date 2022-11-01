@@ -18,7 +18,7 @@ test.beforeAll(async ({browser})=>{
   await gmPage.goto("/setup");
   
   if(gmPage.url().includes("/auth")){
-    await gmPage.getByLabel('Administrator Password').fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
+    await gmPage.locator("input#key").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
     await gmPage.getByRole('button', { name: ' Submit' }).click();
     await gmPage.waitForURL("/setup");
   }
