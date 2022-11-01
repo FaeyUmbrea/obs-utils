@@ -14,8 +14,6 @@
   "author": "Faey Umbrea",
   "main": "src/module/obs-util.js",
   "scripts": {
-    "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
-    "test:local": "yarn playwright test --config=./playwright_local.config.ts",
     "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "coverage": "nyc report",
@@ -26,6 +24,8 @@
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
     "test": "yarn instrument && yarn wdio && yarn coverage",
+    "test:local": "yarn playwright test --config=./playwright_local.config.ts",
+    "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
     "watch": "vite build --watch",
     "wdio": "wdio run wdio.conf.js"
   },
