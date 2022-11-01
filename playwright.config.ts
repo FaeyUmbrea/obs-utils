@@ -50,7 +50,6 @@ const config: PlaywrightTestConfig = {
       name: 'chrome@latest:OSX Monterey@browserstack',
       use:{
         browserName: 'chromium',
-        channel: 'chromium',
         headless: true
       }
     },
