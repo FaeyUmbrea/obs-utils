@@ -14,7 +14,8 @@ jobs:
     - name: Build with Coverage
       run: yarn instrument
     - name: Start Container
-      run: cd ~/docker && docker-compose up -d
+      run: docker ps
+    - run: cd ~/docker && docker-compose up -d
     - name: Run Playwright tests
       run: yarn playwright test
       env: 
