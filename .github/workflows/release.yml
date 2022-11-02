@@ -33,7 +33,7 @@ jobs:
         manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
         download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip
     - name: Install
-      uses: actions/setup-node@8c91899e586c5b171469028077307d293428b516
+      uses: actions/setup-node@00e1b6691b40cce14b5078cb411dd1ec7dab07f7
       with:
         node-version: 16
       
