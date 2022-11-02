@@ -23,11 +23,10 @@
     "prepare": "husky install",
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
-    "test": "yarn instrument && yarn wdio && yarn coverage",
+    "test": "yarn playwright test",
     "test:local": "yarn playwright test --config=./playwright_local.config.ts",
     "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
-    "watch": "vite build --watch",
-    "wdio": "wdio run wdio.conf.js"
+    "watch": "vite build --watch"
   },
   "dependencies": {
     "obs-websocket-js": "^5.0.2"
