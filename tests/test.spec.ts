@@ -182,9 +182,7 @@ test.describe('Multiclient Functionality Non-Combat', () => {
 
     await gmPage.keyboard.press('d',{delay:1000});
 
-    let after = await getOBSViewport();
-
-    await expect(before).not.toEqual(after);
+    await expect(before).not.toEqual(getOBSViewport());
 
   });
   test('Tag Based', async () =>{

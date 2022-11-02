@@ -3,7 +3,7 @@ on: workflow_dispatch
 jobs:
   test:
     timeout-minutes: 60
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-node@v3
@@ -13,9 +13,6 @@ jobs:
       run: yarn && npx playwright install
     - name: Build with Coverage
       run: yarn instrument
-    - name: Start Container
-      run: id
-    - run: cd ~/docker && docker-compose up -d
     - name: Run Playwright tests
       run: yarn playwright test
       env: 
@@ -29,4 +26,3 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
-    - run: cd ~/docker && docker-compose up -d
