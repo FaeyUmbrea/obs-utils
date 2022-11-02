@@ -30,6 +30,21 @@
         "dependencies",
         "breaking"
       ]
+    },
+    {
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "digest"
+      ],
+      "groupName": "all digests",
+      "groupSlug": "all-digest-patch",
+      "automerge": true,
+      "labels": [
+        "digest"
+      ]
+      
     }
   ]
 }
