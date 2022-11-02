@@ -32,4 +32,4 @@ jobs:
         retention-days: 30
     - name: Stop Container
       if: always()
-      run: cd ~/docker && docker-compose up -d
+      run: cd ~/docker && docker-compose down
