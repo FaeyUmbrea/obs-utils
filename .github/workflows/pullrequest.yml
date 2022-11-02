@@ -1,0 +1,23 @@
+name: "Basic Build Test"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@3888ae1b9fbce718b86218b974255090596e99cd
+      with:
+        egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+
+    - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+
+    - run: yarn install
+    - name: build
+      run: yarn build
