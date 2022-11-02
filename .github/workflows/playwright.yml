@@ -13,6 +13,8 @@ jobs:
       run: yarn && npx playwright install
     - name: Build with Coverage
       run: yarn instrument
+    - name: Start Container
+      run: cd ~/docker && docker-compose up -d
     - name: Run Playwright tests
       run: yarn playwright test
       env: 
@@ -26,3 +28,6 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+    - name: Stop Container
+      if: always()
+      run: cd ~/docker && docker-compose up -d
