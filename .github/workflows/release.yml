@@ -13,7 +13,6 @@ jobs:
       with:
         egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-    - uses: AutoModality/action-clean@1077775f5ef0022fc3a9d6f93377921ea3701fa7
     - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
 
     # get part of the tag after the `v`
