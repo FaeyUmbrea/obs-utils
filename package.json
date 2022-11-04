@@ -19,13 +19,13 @@
     "instrument": "cross-env VITE_COVERAGE=\"true\" vite build",
     "lint": "eslint \"./**\" ",
     "lint:fix": "eslint \"./**\" --fix",
+    "lint:svelte": "svelte-check --tsconfig \"./tsconfig.json\"",
     "prepare": "husky install",
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
     "test": "yarn playwright test",
     "test:local": "yarn playwright test --config=./playwright_local.config.ts",
     "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
-    "test:svelte": "svelte-check --tsconfig \"./tsconfig.json\"",
     "watch": "vite build --watch"
   },
   "dependencies": {
