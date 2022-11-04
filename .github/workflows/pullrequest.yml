@@ -1,4 +1,4 @@
-name: "Basic Build Test"
+name: "Basic Lint Test"
 
 on:
   push:
@@ -25,3 +25,5 @@ jobs:
       run: yarn install
     - name: Check
       run: yarn lint
+      run: yarn stylelint
+      run: yarn lint:svelte
