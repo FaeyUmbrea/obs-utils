@@ -1,6 +1,6 @@
 /* global socketlib */
 
-import { getCurrentUser, viewportChanged } from './canvas';
+import { getCurrentUser, viewportChanged, VIEWPORT_DATA } from './canvas';
 import { ID } from './const';
 import { isOBS } from './obs';
 import { OBSWebsocketSettings, setSetting } from './settings';
@@ -28,7 +28,10 @@ export function sendOBSSetting(user: string, settings: OBSWebsocketSettings): vo
 
 function changeViewport(viewport: Canvas.View, userId: string) {
   if (!isOBS()) return;
-  viewportChanged(viewport, userId);
+  // First update the collection of viewport data
+  VIEWPORT_DATA.set(userId,viewport);
+  // Then immediately try to animate to that users position
+  viewportChanged(userId);
 }
 
 export function socketCanvas(_canvas: Canvas, position: Canvas.View) {

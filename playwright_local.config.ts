@@ -42,8 +42,6 @@ const config: PlaywrightTestConfig = {
     trace: 'on-first-retry',
     headless: false,
   },
-  globalSetup: require.resolve('./tests/global-setup.js'),
-  globalTeardown: require.resolve('./tests/global-teardown.js'),
 
   /* Configure projects for major browsers */
   projects: [

@@ -5,6 +5,8 @@ import { UI_ELEMENTS } from './const';
 import { getCanvas, getGame, sleep } from './helpers';
 import { getSetting } from './settings';
 
+export const VIEWPORT_DATA = new Map<String,Canvas.View>()
+
 export function hideApplication(_: never, html: JQuery) {
   html.hide();
 }
@@ -105,17 +107,17 @@ function calculateBoundsOfCoodinates(coordSet: Array<TrackedTokenData>) {
   };
 }
 
-export function viewportChanged(viewport: Canvas.View, userId: string) {
+export function viewportChanged(userId: string) {
   if (getGame().combat?.started) {
     switch (getSetting('defaultInCombat')) {
       case 'cloneDM':
-        if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(viewport);
+        if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'cloneTurnPlayer':
-        if (getCurrentCombatants()?.some((e) => e.id == userId)) getCanvas().animatePan(viewport);
+        if (getCurrentCombatants()?.some((e) => e.id == userId)) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'clonePlayer':
-        if (userId == getSetting('trackedUser')) getCanvas().animatePan(viewport);
+        if (userId == getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -123,10 +125,10 @@ export function viewportChanged(viewport: Canvas.View, userId: string) {
   } else {
     switch (getSetting('defaultOutOfCombat')) {
       case 'cloneDM':
-        if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(viewport);
+        if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'clonePlayer':
-        if (userId == getSetting('trackedUser')) getCanvas().animatePan(viewport);
+        if (userId == getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;

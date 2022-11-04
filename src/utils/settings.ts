@@ -1,4 +1,4 @@
-import { scaleToFit, tokenMoved } from './canvas';
+import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
 import { getGame } from './helpers';
 import { isOBS } from './obs';
@@ -33,11 +33,18 @@ export class OBSRemoteSettings {
   onStopStreaming: OBSEvent[] = [];
 }
 
+function getGM(){
+  return getGame().users?.find((user) => user.isGM)
+}
+
 async function changeMode() {
   if (!isOBS()) return;
-  //Using an object to avoid reading Settings every time a token moves
+  //Trigger modes after mode change, calling the methods avoids doing every conditional twice
   scaleToFit();
   tokenMoved();
+  viewportChanged(getSetting('trackedUser'));
+  const firstGM = getGM()?.id;
+  if(firstGM) viewportChanged(firstGM);
 }
 
 export function registerSettings() {
