@@ -29,7 +29,7 @@ export function sendOBSSetting(user: string, settings: OBSWebsocketSettings): vo
 function changeViewport(viewport: Canvas.View, userId: string) {
   if (!isOBS()) return;
   // First update the collection of viewport data
-  VIEWPORT_DATA.set(userId,viewport);
+  VIEWPORT_DATA.set(userId, viewport);
   // Then immediately try to animate to that users position
   viewportChanged(userId);
 }

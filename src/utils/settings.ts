@@ -33,8 +33,8 @@ export class OBSRemoteSettings {
   onStopStreaming: OBSEvent[] = [];
 }
 
-function getGM(){
-  return getGame().users?.find((user) => user.isGM)
+function getGM() {
+  return getGame().users?.find((user) => user.isGM);
 }
 
 async function changeMode() {
@@ -44,7 +44,7 @@ async function changeMode() {
   tokenMoved();
   viewportChanged(getSetting('trackedUser'));
   const firstGM = getGM()?.id;
-  if(firstGM) viewportChanged(firstGM);
+  if (firstGM) viewportChanged(firstGM);
 }
 
 export function registerSettings() {

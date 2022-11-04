@@ -5,7 +5,7 @@ import { UI_ELEMENTS } from './const';
 import { getCanvas, getGame, sleep } from './helpers';
 import { getSetting } from './settings';
 
-export const VIEWPORT_DATA = new Map<String,Canvas.View>()
+export const VIEWPORT_DATA = new Map<string, Canvas.View>();
 
 export function hideApplication(_: never, html: JQuery) {
   html.hide();
