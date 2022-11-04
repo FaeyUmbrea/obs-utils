@@ -15,11 +15,6 @@ jobs:
 
     - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
 
-    # get part of the tag after the `v`
-    - name: Extract tag version number
-      id: get_version
-      uses: battila7/get-version-action@d681662789c541f0777208c1f0e82f255f70b28d
-
     # Substitute the Manifest and Download URLs in the module.json
     - name: Substitute Manifest and Download Links For Versioned Ones
       id: sub_manifest_link_version
@@ -27,14 +22,15 @@ jobs:
       with:
         files: 'public/module.json'
       env:
-        version: ${{steps.get_version.outputs.version-without-v}}
+        version: ${{ github.event.release.tag_name }}
         url: https://github.com/${{github.repository}}
         manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
         download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip
+    
     - name: Install
       uses: actions/setup-node@00e1b6691b40cce14b5078cb411dd1ec7dab07f7
       with:
-        node-version: 16
+        node-version: 18
       
     - run: yarn install
     - name: build
