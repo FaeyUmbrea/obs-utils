@@ -23,7 +23,9 @@ jobs:
 
     - name: Install Requirements
       run: yarn install
-    - name: Check
+    - name: Script Check
       run: yarn lint
+    - name: Style Check
       run: yarn stylelint
+    - name: Svelte Check
       run: yarn lint:svelte
