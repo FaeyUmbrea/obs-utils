@@ -23,7 +23,7 @@ jobs:
     # Substitute the Manifest and Download URLs in the module.json
     - name: Substitute Manifest and Download Links For Versioned Ones
       id: sub_manifest_link_version
-      uses: microsoft/variable-substitution@6287962da9e5b6e68778dc51e840caa03ca84495
+      uses: microsoft/variable-substitution@8c51fbdacd6eeb14b543a993adca02a7c07e6f27
       with:
         files: 'public/module.json'
       env:
