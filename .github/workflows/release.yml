@@ -22,16 +22,7 @@ jobs:
 
     # Substitute the Manifest and Download URLs in the module.json
     - name: Substitute Manifest and Download Links For Versioned Ones
-      id: sub_manifest_link_version
-      uses: microsoft/variable-substitution@8c51fbdacd6eeb14b543a993adca02a7c07e6f27
-      with:
-        files: 'public/module.json'
-      env:
-        version: ${{ github.event.release.tag_name }}
-        url: https://github.com/${{github.repository}}
-        manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-        download: https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip
-    
+      run: cat public/module.json | yq '.version="${{ github.event.release.tag_name }}" | .url="https://github.com/${{github.repository}}" | .manifest="https://github.com/${{github.repository}}/releases/latest/download/module.json" | .download="https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip"' > public/module.json
     - name: Install
       uses: actions/setup-node@00e1b6691b40cce14b5078cb411dd1ec7dab07f7
       with:
