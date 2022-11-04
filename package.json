@@ -15,7 +15,6 @@
   "main": "src/module/obs-util.js",
   "scripts": {
     "build": "vite build",
-    "test:svelte": "svelte-check --tsconfig \"./tsconfig.json\"",
     "coverage": "nyc report",
     "instrument": "cross-env VITE_COVERAGE=\"true\" vite build",
     "lint": "eslint \"./**\" ",
@@ -26,6 +25,7 @@
     "test": "yarn playwright test",
     "test:local": "yarn playwright test --config=./playwright_local.config.ts",
     "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
+    "test:svelte": "svelte-check --tsconfig \"./tsconfig.json\"",
     "watch": "vite build --watch"
   },
   "dependencies": {
