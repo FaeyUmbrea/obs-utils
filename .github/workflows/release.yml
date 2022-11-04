@@ -4,8 +4,13 @@ on:
   release:
     types: [published]
 
+permissions:  # added using https://github.com/step-security/secure-workflows
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: write  # for ncipollo/release-action to create a release
     runs-on: ubuntu-latest
     steps:
     - name: Harden Runner
