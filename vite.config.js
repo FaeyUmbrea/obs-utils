@@ -5,7 +5,7 @@ const config = {
   base: '/modules/obs-utils/',
   resolve: { conditions: ['import', 'browser'] },
   esbuild: {
-    target: ['es2022', 'chrome100'],
+    target: ['esnext', 'chrome100'],
     keepNames: true, // Note: doesn't seem to work.
   },
   server: {
@@ -33,7 +33,7 @@ const config = {
     emptyOutDir: true,
     sourcemap: true,
     brotliSize: true,
-    minify: 'terser',
+    //minify: 'terser',
     lib: {
       name: 'obs-utils',
       entry: 'src/obs-utils.ts',
