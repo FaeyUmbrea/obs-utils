@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SimpleTextOverlayData } from "src/utils/stream";
+  import type { SimpleTextOverlayData } from "../../utils/stream";
 
   export let overlayData:SimpleTextOverlayData;
   export let actors:Array<Actor>;
