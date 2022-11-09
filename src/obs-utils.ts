@@ -16,6 +16,7 @@ import DirectorApplication from './applications/director';
 import { socketCanvas } from './utils/socket';
 import { handleCombat, stopCombat } from './utils/combat';
 import { getGame } from './utils/helpers';
+import { renderOverlays } from './utils/stream';
 
 let d: any;
 
@@ -57,7 +58,10 @@ function start() {
 
   if (isOBS()) {
     Hooks.once('init', async function () {
-      if (getGame().view == 'stream') $('body.stream').css('background-color', 'transparent');
+      if (getGame().view == 'stream') {
+        //$('body.stream').css('background-color', 'transparent');
+        Hooks.on('renderChatLog', () => renderOverlays());
+      }
       if (getGame().view != 'game') return;
       Hooks.once('canvasReady', scaleToFit);
 

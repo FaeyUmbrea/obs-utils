@@ -4,6 +4,7 @@ import { getGame } from './helpers';
 import { isOBS } from './obs';
 import OBSRemoteApplication from '../applications/obsremote';
 import OBSWebsocketApplication from '../applications/obswebsocket';
+import type { OverlayData } from './stream';
 
 export enum OBSAction {
   SwitchScene = 'Switch Scene',
@@ -127,6 +128,12 @@ export function registerSettings() {
     scope: 'world',
     config: false,
     default: new OBSWebsocketSettings(),
+  });
+  registerSetting('streamOverlays', {
+    type: Object,
+    scope: 'world',
+    config: false,
+    default: new Array<OverlayData>(),
   });
   getGame().settings.registerMenu(moduleID, 'obsRemoteMenu', {
     name: `${moduleID}.settings.obsRemoteMenu.Name`,
