@@ -28,6 +28,10 @@
     "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
     "watch": "vite build --watch"
   },
+  "lint-staged": {
+    "*": "yarn lint:fix",
+    "*.less": "yarn stylelint:fix"
+  },
   "dependencies": {
     "obs-websocket-js": "^5.0.2"
   },
