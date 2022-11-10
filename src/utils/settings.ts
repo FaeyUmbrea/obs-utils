@@ -135,6 +135,12 @@ export function registerSettings() {
     config: false,
     default: new Array<OverlayData>(),
   });
+  registerSetting('overlayActors', {
+    type: Object,
+    scope: 'world',
+    config: false,
+    default: new Array<string>(),
+  });
   getGame().settings.registerMenu(moduleID, 'obsRemoteMenu', {
     name: `${moduleID}.settings.obsRemoteMenu.Name`,
     label: `${moduleID}.settings.obsRemoteMenu.Label`,

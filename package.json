@@ -33,6 +33,8 @@
     "*.less": "yarn stylelint:fix"
   },
   "dependencies": {
+    "@types/lodash-es": "^4.17.6",
+    "lodash-es": "^4.17.21",
     "obs-websocket-js": "^5.0.2"
   },
   "devDependencies": {
@@ -41,6 +43,7 @@
     "@rollup/plugin-typescript": "9.0.2",
     "@sveltejs/vite-plugin-svelte": "1.1.0",
     "@tsconfig/svelte": "3.0.0",
+    "@types/lodash": "^4.14.188",
     "@types/obs-studio": "2.17.0",
     "@typescript-eslint/eslint-plugin": "5.42.1",
     "@typescript-eslint/parser": "5.42.1",

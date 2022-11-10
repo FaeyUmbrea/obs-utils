@@ -1,8 +1,7 @@
 <script lang="ts">
-  import type { PlainTextComponentData } from "../../../utils/stream";
+  import type { OverlayComponentData } from "../../../utils/stream";
 
-  export let overlayData:PlainTextComponentData;
-  export let actors:Array<Actor>;
+  export let overlayData:OverlayComponentData;
 </script>
 
-{overlayData.getData(actors)}
+{overlayData.data}

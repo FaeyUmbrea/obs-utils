@@ -32,8 +32,6 @@ const config = {
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
-    brotliSize: true,
-    //minify: 'terser',
     lib: {
       name: 'obs-utils',
       entry: 'src/obs-utils.ts',

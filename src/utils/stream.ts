@@ -2,65 +2,45 @@ import InformationOverlay from '../svelte/InformationOverlay.svelte';
 import { getGame } from './helpers';
 import '../less/streamoverlay.less';
 
-export interface OverlayData {
-  get backgroundImage(): string;
-  get components(): Array<TextOverlayComponentData>;
+export enum ComponentType {
+  PLAINTEXT = 0,
+  FAICON = 1,
+  ACTORVAL = 2,
 }
 
-export class TextOverlayData implements OverlayData {
-  backgroundImage = '';
-  components: Array<TextOverlayComponentData> = new Array<TextOverlayComponentData>();
+export enum OverlayType {
+  SINGLELINE = 0,
 }
 
-export interface TextOverlayComponentData {
-  getData(options: any): string;
-  setData(newData: string): void;
-}
-
-export class PlainTextComponentData implements TextOverlayComponentData {
-  protected _data = '';
-
-  getData(_options: any): string {
-    return this._data;
-  }
-  setData(newData: string): void {
-    this._data = newData;
+export class OverlayData {
+  type: OverlayType;
+  components: Array<OverlayComponentData>;
+  constructor(type: OverlayType = 0, components: Array<OverlayComponentData> = []) {
+    this.type = type;
+    this.components = components;
   }
 }
 
-export class PlayerInfoComponentData extends PlainTextComponentData {
-  getData(options: Actor): string {
-    return options[this._data as keyof Actor] as string;
-  }
-  setData(newData: string): void {
-    this._data = newData;
-  }
-}
-
-export class FAIconComponentData implements TextOverlayComponentData {
-  private _data = '';
-
-  getData(_options: any): string {
-    return this._data;
-  }
-  setData(newData: string) {
-    this._data = newData;
+export class OverlayComponentData {
+  type: ComponentType;
+  data: any;
+  constructor(type: ComponentType = 0, data: any = {}) {
+    this.type = type;
+    this.data = data;
   }
 }
 
 export function renderOverlays() {
   const _game = getGame();
   if (_game.actors instanceof Actors) {
-    const overlay = new TextOverlayData();
-    const component = new FAIconComponentData();
-    component.setData('fa-solid fa-signal-stream');
+    const overlay = new OverlayData();
+    const component = new OverlayComponentData(ComponentType.FAICON, 'fa-solid fa-signal-stream');
     overlay.components.push(component);
-    const component2 = new PlainTextComponentData();
-    component2.setData('Hello there~');
+    const component2 = new OverlayComponentData(ComponentType.PLAINTEXT, 'Hello there~');
     overlay.components.push(component2);
     const overlays = new Array<OverlayData>();
     overlays.push(overlay);
-    const players = _game.actors.filter((actor) => actor.hasPlayerOwner).map((actor) => actor as Actor);
+    const players = _game.actors.filter((actor) => actor.hasPlayerOwner).map((actor) => actor.id);
     const render = new InformationOverlay({
       target: $('body').get(0) as Element,
       props: {
