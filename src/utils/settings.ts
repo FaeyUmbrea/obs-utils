@@ -5,6 +5,7 @@ import { isOBS } from './obs';
 import OBSRemoteApplication from '../applications/obsremote';
 import OBSWebsocketApplication from '../applications/obswebsocket';
 import type { OverlayData } from './stream';
+import OverlayActorSelect from '../applications/overlayactorselect';
 
 export enum OBSAction {
   SwitchScene = 'Switch Scene',
@@ -154,6 +155,14 @@ export function registerSettings() {
     label: `${moduleID}.settings.obsWebsocketMenu.Label`,
     hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
     type: OBSWebsocketApplication,
+    icon: 'fas fa-bars',
+    restricted: true,
+  });
+  getGame().settings.registerMenu(moduleID, 'overlayActorSelect', {
+    name: `${moduleID}.settings.overlayActorSelect.Name`,
+    label: `${moduleID}.settings.overlayActorSelect.Label`,
+    hint: `${moduleID}.settings.overlayActorSelect.Hint`,
+    type: OverlayActorSelect,
     icon: 'fas fa-bars',
     restricted: true,
   });

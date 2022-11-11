@@ -1,12 +1,15 @@
 <script lang="ts">
     export let selectedActors: Array<string>;
-    export let actors: Array<Actor>;
+    export let actors: Array<Actor> = Array<Actor>();
 </script>
 
 <div>
-    <select name="selectedActor" bind:value={selectedActors} multiple>
+    <ul>
         {#each actors as actor}
-            <option value={actor.id}></option>
+            <input value={actor.id} type="checkbox" id={actor.id} name={actor.id} checked={(actor.id? selectedActors.includes(actor.id):false)} />
+            <label for={actor.id}><img src={actor.img} alt={actor.name}/><p>{actor.name}</p></label>
         {/each}
-    </select>
+    </ul>
 </div>
+
+<footer><button>Submit</button></footer>

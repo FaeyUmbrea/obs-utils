@@ -4,19 +4,20 @@
   import FAIconComponent from "./overlaycomponents/FAIconComponent.svelte";
   import PlaintextComponent from "./overlaycomponents/PlaintextComponent.svelte";
   export let overlayData:OverlayData;
-  export let actors:Array<String>;
+  export let actorIDs:Array<string>;
+  export let hooks:Array<number>;
 </script>
 
-{#each actors as actor}
+{#each actorIDs as actor}
     <div class="actor actor{actor} text-overlay">
     {#each overlayData.components as component}
     <div class="component">
       {#if component.type == ComponentType.FAICON}
-        <FAIconComponent  overlayData={component} />
+        <FAIconComponent  data={component.data} />
       {:else if component.type == ComponentType.PLAINTEXT}
-        <PlaintextComponent overlayData={component} />
+        <PlaintextComponent data={component.data} />
       {:else if component.type == ComponentType.ACTORVAL}
-        <ActorValComponent overlayData={component} actor={actor}/>
+        <ActorValComponent data={component.data} actorID={actor} bind:hooks={hooks}/>
       {/if}
     </div>
     {/each}

@@ -1,7 +1,5 @@
 <script lang="ts">
-  import type { OverlayComponentData } from "../../../utils/stream";
-
-  export let overlayData:OverlayComponentData;
+  export let data:any;
 </script>
 
-{overlayData.data}
+{data}

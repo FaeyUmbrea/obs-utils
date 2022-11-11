@@ -35,6 +35,11 @@
         "Name": "OBS Websocket Settings",
         "Hint": "Configure OBS Websocket"
       },
+      "overlayActorSelect": {
+        "Label": "Open Menu",
+        "Name": "OBS Websocket Settings",
+        "Hint": "Configure OBS Websocket"
+      },
       "enableOBSWebsocket": {
         "Name": "Enable OBS Websocket?",
         "Hint": "If checked, OBS Websocket will be used for Remoting"

@@ -59,8 +59,7 @@ function start() {
   if (isOBS()) {
     Hooks.once('init', async function () {
       if (getGame().view == 'stream') {
-        //$('body.stream').css('background-color', 'transparent');
-        Hooks.on('renderChatLog', () => renderOverlays());
+        Hooks.once('renderChatLog', () => renderOverlays());
       }
       if (getGame().view != 'game') return;
       Hooks.once('canvasReady', scaleToFit);

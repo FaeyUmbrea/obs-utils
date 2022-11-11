@@ -1,11 +1,22 @@
 <script lang="ts">
+    import { get } from "lodash-es";
     import { getGame } from "../../../utils/helpers";
-    import type { OverlayComponentData } from "../../../utils/stream";
-    import * as _ from "lodash-es";
   
-    export let overlayData:OverlayComponentData;
-    export let actor:string;
-    let actorObject = getGame().actors?.getName(actor)
+    export let data:string;
+    export let actorID:string;
+    export let hooks:Array<number>;
+
+
+    let actor = getGame().actors?.get(actorID);
+    let value = get(actor, data, "");
+
+    hooks.push(Hooks.on('updateActor', (actor:Actor)=>{
+        if(actor.id != actorID) return;
+        value = get(actor, data, "");
+    }));
 </script>
   
-{_.get(actorObject,overlayData.data,"")}
+{#key getGame().actors}
+    {value}   
+{/key} 
+

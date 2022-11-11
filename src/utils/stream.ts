@@ -36,16 +36,18 @@ export function renderOverlays() {
     const overlay = new OverlayData();
     const component = new OverlayComponentData(ComponentType.FAICON, 'fa-solid fa-signal-stream');
     overlay.components.push(component);
-    const component2 = new OverlayComponentData(ComponentType.PLAINTEXT, 'Hello there~');
+    const component2 = new OverlayComponentData(ComponentType.ACTORVAL, 'system.attributes.hp.value');
     overlay.components.push(component2);
     const overlays = new Array<OverlayData>();
     overlays.push(overlay);
     const players = _game.actors.filter((actor) => actor.hasPlayerOwner).map((actor) => actor.id);
+    console.log(players);
     const render = new InformationOverlay({
       target: $('body').get(0) as Element,
       props: {
         overlays: overlays,
-        actors: players,
+        actorIDs: players,
+        hooks: [],
       },
     });
   }
