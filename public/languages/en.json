@@ -37,8 +37,13 @@
       },
       "overlayActorSelect": {
         "Label": "Open Menu",
-        "Name": "OBS Websocket Settings",
-        "Hint": "Configure OBS Websocket"
+        "Name": "Overlay Actors",
+        "Hint": "Select the Actors for the Overlay"
+      },
+      "overlayEditor": {
+        "Label": "Open Editor",
+        "Name": "Overlay Editor",
+        "Hint": "Edit the Overlays"
       },
       "enableOBSWebsocket": {
         "Name": "Enable OBS Websocket?",

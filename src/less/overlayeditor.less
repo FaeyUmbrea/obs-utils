@@ -1,0 +1,62 @@
+.overlayeditor {
+  .stream-overlay {
+    left: 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 100%;
+    height: 100%;
+  }
+
+  .preview {
+    background-color: black;
+    border: 2 white;
+    border-radius: 4px;
+  }
+
+  .editor {
+    .component button {
+      width: 35px;
+      margin: auto;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .component select {
+      height: auto;
+    }
+
+    button.add {
+      width: 35px;
+      align-self: flex-end;
+    }
+
+    li {
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+
+    .scroll {
+      overflow: auto;
+      float: left;
+      max-height: 535px;
+      height: 535px;
+      width: auto;
+      padding-right: 10px;
+      padding-left: 3px;
+    }
+
+    footer {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      padding: 10px;
+    }
+  }
+}

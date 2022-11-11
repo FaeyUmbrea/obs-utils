@@ -3,19 +3,19 @@ import { getGame } from './helpers';
 import '../less/streamoverlay.less';
 
 export enum ComponentType {
-  PLAINTEXT = 0,
-  FAICON = 1,
-  ACTORVAL = 2,
+  PLAINTEXT = 'Plain Text',
+  FAICON = 'Font Awesome Icon',
+  ACTORVAL = 'Actor Value',
 }
 
 export enum OverlayType {
-  SINGLELINE = 0,
+  SINGLELINE = 'Single Line',
 }
 
 export class OverlayData {
   type: OverlayType;
   components: Array<OverlayComponentData>;
-  constructor(type: OverlayType = 0, components: Array<OverlayComponentData> = []) {
+  constructor(type: OverlayType = OverlayType.SINGLELINE, components: Array<OverlayComponentData> = []) {
     this.type = type;
     this.components = components;
   }
@@ -24,7 +24,7 @@ export class OverlayData {
 export class OverlayComponentData {
   type: ComponentType;
   data: any;
-  constructor(type: ComponentType = 0, data: any = {}) {
+  constructor(type: ComponentType = ComponentType.PLAINTEXT, data: any = '') {
     this.type = type;
     this.data = data;
   }
