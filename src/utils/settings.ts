@@ -1,7 +1,6 @@
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
-import { getGame } from './helpers';
-import { isOBS } from './obs';
+import { getGame, isOBS } from './helpers';
 import OBSRemoteApplication from '../applications/obsremote';
 import OBSWebsocketApplication from '../applications/obswebsocket';
 import type { OverlayData } from './stream';

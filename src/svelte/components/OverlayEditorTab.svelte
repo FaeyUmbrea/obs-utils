@@ -4,11 +4,13 @@
 
 
     export let components:Array<OverlayComponentData>;
+    export let removeFn:any;
+    export let componentindex:number;
 
-        function handleRemove(index: number){
-            components = [
-            ...components.slice(0,index),
-            ...components.slice(index+1,components.length)
+    function handleRemove(index: number){
+        components = [
+        ...components.slice(0,index),
+        ...components.slice(index+1,components.length)
         ]
     }
 
@@ -25,3 +27,4 @@
         {/each}
     </ul>
     </div>
+<button class="remove-tab" type="button" on:click={()=>removeFn(componentindex)}><i class="fas fa-trash" /></button>

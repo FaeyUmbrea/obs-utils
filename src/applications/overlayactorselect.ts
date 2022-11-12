@@ -21,8 +21,8 @@ export default class OverlayActorSelect extends FormApplication<any, any, any> {
     return mergeObject(super.defaultOptions, {
       classes: ['actorselect'],
       template: DICECTOR_TEMPLATE,
-      id: 'obswebsocket-application',
-      title: 'OBS Websocket Settings',
+      id: 'actorselect-application',
+      title: 'Actor Selection',
       tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
       height: 300,
       width: 200,

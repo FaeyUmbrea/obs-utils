@@ -14,7 +14,8 @@ export default class OverlayEditor extends FormApplication<any, any, any> {
   protected async _updateObject(event: Event, formData?: object | undefined) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
     console.warn(this.dataArray);
-    //console.warn(await setSetting('obsRemote', this.dataArray));
+    console.warn(expandObject(formData));
+    console.warn(await setSetting('streamOverlays', this.dataArray));
   }
 
   getData() {
@@ -26,8 +27,8 @@ export default class OverlayEditor extends FormApplication<any, any, any> {
     return mergeObject(super.defaultOptions, {
       classes: ['overlayeditor'],
       template: DICECTOR_TEMPLATE,
-      id: 'obsremote-application',
-      title: 'OBS Remote Settings',
+      id: 'overlayeditor-application',
+      title: 'Overlay Editor',
       tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
       height: 400,
       width: 700,

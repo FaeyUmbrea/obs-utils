@@ -1,4 +1,4 @@
-import { handleOBS, isOBS, registerOBSEvents } from './utils/obs';
+import { handleOBS, registerOBSEvents } from './utils/obs';
 import {
   hideApplication,
   hideTokenBorder,
@@ -15,7 +15,7 @@ import { registerSettings } from './utils/settings';
 import DirectorApplication from './applications/director';
 import { socketCanvas } from './utils/socket';
 import { handleCombat, stopCombat } from './utils/combat';
-import { getGame } from './utils/helpers';
+import { getGame, isOBS } from './utils/helpers';
 import { renderOverlays } from './utils/stream';
 
 let d: any;
