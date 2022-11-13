@@ -1,9 +1,11 @@
-<script lang="ts">
-  import { ComponentType, OverlayComponentData } from '../../utils/stream';
+<script>
+  import { ComponentType } from '../../utils/stream';
+  import Svelecte from 'svelecte';
   import { fade } from 'svelte/transition';
 
-  export let component: OverlayComponentData;
-  export let removeFn: any;
+  export let component;
+  export let removeFn;
+  export let actorValues;
 
   const componentTypes = Object.values(ComponentType);
 </script>
@@ -15,7 +17,11 @@
         <option value={component}>{component}</option>
       {/each}
     </select>
-    <input name="sceneNames" bind:value={component.data} placeholder="Scene Name" />
+    {#if component.type == ComponentType.ACTORVAL}
+      <Svelecte options={actorValues} inputId={'data'} bind:value={component.data} labelAsValue={true} />
+    {:else}
+      <input name="data" bind:value={component.data} placeholder="" />
+    {/if}
     <button type="button" on:click={removeFn}>
       <i class="fas fa-trash" />
     </button>

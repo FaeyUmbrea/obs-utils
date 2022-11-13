@@ -44,7 +44,8 @@
   "dependencies": {
     "@types/lodash-es": "^4.17.6",
     "lodash-es": "^4.17.21",
-    "obs-websocket-js": "^5.0.2"
+    "obs-websocket-js": "^5.0.2",
+    "svelecte": "^3.12.0"
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
