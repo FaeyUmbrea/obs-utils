@@ -30,7 +30,7 @@
   // feature.
   //
   // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
-  "plugins": ["json-format", "html", "svelte3", "@typescript-eslint"],
+  "plugins": ["html", "svelte3", "@typescript-eslint"],
   "settings": {
     "svelte3/typescript": true
   },

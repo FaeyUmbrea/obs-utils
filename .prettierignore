@@ -25,3 +25,4 @@ playwright*
 
 /stats.html
 .prettierignore
+.eslintignore

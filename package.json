@@ -21,7 +21,7 @@
     "lint:fix": "eslint \"./**\" --fix",
     "lint:svelte": "svelte-check --tsconfig \"./tsconfig.json\"",
     "prepare": "husky install",
-    "prettier": "prettier .",
+    "prettier": "prettier . --check",
     "prettier:write": "prettier . --write",
     "preview": "vite preview",
     "stylelint": "stylelint \"**/*.less\"",
