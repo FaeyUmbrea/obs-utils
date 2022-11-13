@@ -1,5 +1,5 @@
 <script lang="ts">
-    export let data:string;
+  export let data: string;
 </script>
-  
-<i class={data}></i>
+
+<i class={data} />

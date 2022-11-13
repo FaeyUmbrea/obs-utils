@@ -1,31 +1,31 @@
-name: "Basic Lint Test"
+name: 'Basic Lint Test'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: ['main']
 
-permissions:  # added using https://github.com/step-security/secure-workflows
+permissions: # added using https://github.com/step-security/secure-workflows
   contents: read
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@b4401455ef773683d2da2e176e3539cce0fabdc7
-      with:
-        egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - name: Harden Runner
+        uses: step-security/harden-runner@b4401455ef773683d2da2e176e3539cce0fabdc7
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-    - uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+      - uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
 
-    - name: Install Requirements
-      run: yarn install
-    - name: Script Check
-      run: yarn lint
-    - name: Style Check
-      run: yarn stylelint
-    - name: Svelte Check
-      run: yarn lint:svelte
+      - name: Install Requirements
+        run: yarn install
+      - name: Script Check
+        run: yarn lint
+      - name: Style Check
+        run: yarn stylelint
+      - name: Svelte Check
+        run: yarn lint:svelte

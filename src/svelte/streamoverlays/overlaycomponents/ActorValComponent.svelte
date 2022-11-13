@@ -1,32 +1,30 @@
 <script lang="ts">
-    import { get } from "lodash-es";
-  import { onDestroy } from "svelte";
-    import { getGame } from "../../../utils/helpers";
-  
-    export let data:string;
-    export let actorID:string;
+  import { get } from 'lodash-es';
+  import { onDestroy } from 'svelte';
+  import { getGame } from '../../../utils/helpers';
 
-    let actor = getGame().actors?.get(actorID);
+  export let data: string;
+  export let actorID: string;
 
-    let value:any = "";
-    let hook:number = Hooks.on('updateActor', (actor:Actor)=>{
-        if(actor.id != actorID) return;
-        value = get(actor, data, "");
-    })
+  let actor = getGame().actors?.get(actorID);
 
-    function getValue(){
-        value = get(actor, data, "");
-        return ""
-    }
+  let value: any = '';
+  let hook: number = Hooks.on('updateActor', (actor: Actor) => {
+    if (actor.id != actorID) return;
+    value = get(actor, data, '');
+  });
 
-    onDestroy(() => {
-        Hooks.off('updateActor', hook);
-    })
+  function getValue() {
+    value = get(actor, data, '');
+    return '';
+  }
+
+  onDestroy(() => {
+    Hooks.off('updateActor', hook);
+  });
 </script>
+
 {#key data}
-    {getValue()} 
+  {getValue()}
 {/key}
 {value}
-  
-
-

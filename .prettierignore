@@ -1,8 +1,6 @@
 dist
 package-lock.json
 .pnp.js
-
-dist
 *.css
 *.md
 
@@ -26,3 +24,4 @@ playwright*
 *.log
 
 /stats.html
+.prettierignore
