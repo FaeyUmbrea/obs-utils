@@ -23,7 +23,7 @@ jobs:
       # Substitute the Manifest and Download URLs in the module.json
       - name: Substitute Manifest and Download Links For Versioned Ones
         run: cat ./public/module.json | jq '.version="${{ github.event.release.tag_name }}" | .url="https://github.com/${{github.repository}}" | .manifest="https://github.com/${{github.repository}}/releases/latest/download/module.json" | .download="https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip"' > ./public/module.json
-      - name: cat ./public/module.json
+      - run: cat ./public/module.json
       - name: Install
         uses: actions/setup-node@9b8fcdc725d99a2f6d5fd880cf5d84129c4c4a40
         with:
