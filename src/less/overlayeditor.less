@@ -1,0 +1,116 @@
+@import url('./streamoverlay.less');
+
+#overlayeditor-application {
+  form {
+    max-height: 100%;
+  }
+}
+
+.overlayeditor {
+  footer {
+    position: absolute;
+    width: calc(100% - 20px);
+    bottom: 0;
+    left: 10px;
+    padding: 10px;
+    display: flex;
+
+    .remove-tab {
+      width: calc(100% - 35px);
+    }
+  }
+
+  .add {
+    width: 35px;
+    align-self: flex-end;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 100%;
+    height: calc(100% - 50px);
+    max-height: calc(100% - 50px);
+  }
+
+  .preview {
+    background-color: black;
+    border: 2 white;
+    border-radius: 4px;
+  }
+
+  .editor {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+
+    .content {
+      height: calc(100% - 110px);
+      max-height: calc(100% - 110px);
+      overflow: scroll;
+    }
+
+    .component {
+      display: flex;
+
+      button {
+        width: 35px;
+        margin: auto;
+      }
+
+      select {
+        height: auto;
+      }
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+
+    .scroll {
+      overflow: auto;
+      float: left;
+      max-height: calc(100% - 50px);
+      width: 100%;
+      padding-right: 10px;
+      padding-left: 3px;
+
+      ul {
+        width: 100%;
+
+        li {
+          width: 100%;
+
+          input {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .nav-with-add-button {
+      display: grid;
+      grid-template-columns: calc(100% - 35px) 35px;
+
+      .tabs {
+        justify-content: left;
+        overflow-x: scroll;
+
+        .item {
+          padding-inline: 10px;
+          align-self: center;
+        }
+      }
+
+      .add {
+        align-self: center;
+      }
+    }
+  }
+}

@@ -1,9 +1,11 @@
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
-import { getGame } from './helpers';
-import { isOBS } from './obs';
+import { getGame, isOBS } from './helpers';
 import OBSRemoteApplication from '../applications/obsremote';
 import OBSWebsocketApplication from '../applications/obswebsocket';
+import type { OverlayData } from './stream';
+import OverlayActorSelect from '../applications/overlayactorselect';
+import OverlayEditor from '../applications/overlayeditor';
 
 export enum OBSAction {
   SwitchScene = 'Switch Scene',
@@ -128,6 +130,18 @@ export function registerSettings() {
     config: false,
     default: new OBSWebsocketSettings(),
   });
+  registerSetting('streamOverlays', {
+    type: Object,
+    scope: 'world',
+    config: false,
+    default: new Array<OverlayData>(),
+  });
+  registerSetting('overlayActors', {
+    type: Object,
+    scope: 'world',
+    config: false,
+    default: new Array<string>(),
+  });
   getGame().settings.registerMenu(moduleID, 'obsRemoteMenu', {
     name: `${moduleID}.settings.obsRemoteMenu.Name`,
     label: `${moduleID}.settings.obsRemoteMenu.Label`,
@@ -141,6 +155,22 @@ export function registerSettings() {
     label: `${moduleID}.settings.obsWebsocketMenu.Label`,
     hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
     type: OBSWebsocketApplication,
+    icon: 'fas fa-bars',
+    restricted: true,
+  });
+  getGame().settings.registerMenu(moduleID, 'overlayActorSelect', {
+    name: `${moduleID}.settings.overlayActorSelect.Name`,
+    label: `${moduleID}.settings.overlayActorSelect.Label`,
+    hint: `${moduleID}.settings.overlayActorSelect.Hint`,
+    type: OverlayActorSelect,
+    icon: 'fas fa-bars',
+    restricted: true,
+  });
+  getGame().settings.registerMenu(moduleID, 'overlayEditor', {
+    name: `${moduleID}.settings.overlayEditor.Name`,
+    label: `${moduleID}.settings.overlayEditor.Label`,
+    hint: `${moduleID}.settings.overlayEditor.Hint`,
+    type: OverlayEditor,
     icon: 'fas fa-bars',
     restricted: true,
   });

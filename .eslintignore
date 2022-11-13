@@ -22,3 +22,7 @@ coverage/*
 
 playwright*
 *.log
+
+/stats.html
+
+*.json

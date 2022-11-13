@@ -1,11 +1,12 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import IstanbulPlugin from 'vite-plugin-istanbul';
+import visualizer from 'rollup-plugin-visualizer';
 
 const config = {
   base: '/modules/obs-utils/',
   resolve: { conditions: ['import', 'browser'] },
   esbuild: {
-    target: ['es2022', 'chrome100'],
+    target: ['esnext', 'chrome100'],
     keepNames: true, // Note: doesn't seem to work.
   },
   server: {
@@ -26,14 +27,12 @@ const config = {
     checkProd: true,
     forceBuildInstrument: true,
     requireEnv: true
-  })],
+  }),visualizer()],
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
     sourcemap: true,
-    brotliSize: true,
-    minify: 'terser',
     lib: {
       name: 'obs-utils',
       entry: 'src/obs-utils.ts',

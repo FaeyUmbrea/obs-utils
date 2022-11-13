@@ -2,7 +2,7 @@
 
 import { getCurrentUser, viewportChanged, VIEWPORT_DATA } from './canvas';
 import { ID } from './const';
-import { isOBS } from './obs';
+import { isOBS } from './helpers';
 import { OBSWebsocketSettings, setSetting } from './settings';
 
 let modulesocket: any;

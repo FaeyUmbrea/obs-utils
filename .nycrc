@@ -1,22 +1,9 @@
-
 {
-    "all": false,
-    "check-coverage": false,
-    "extension": [
-      "*.ts",
-      "*.mjs",
-      "*.svelte"
-    ],
-    "include": [
-      "src/**/*"
-    ],
-    "exclude": [
-      "obs-utils/node_modules/**/*"
-    ],
-    "reporter": [
-      "json",
-      "text",
-      "lcov"
-    ],
-    "exclude-after-remap": false
+  "all": false,
+  "check-coverage": false,
+  "extension": ["*.ts", "*.mjs", "*.svelte"],
+  "include": ["src/**/*"],
+  "exclude": ["obs-utils/node_modules/**/*"],
+  "reporter": ["json", "text", "lcov"],
+  "exclude-after-remap": false
 }

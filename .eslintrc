@@ -4,45 +4,45 @@
  *
  * Note: specific versions are located in /<VERSION>
  */
- {
-    "parserOptions":{
-        "ecmaVersion": 2020,
-        "sourceType": "module",
-        "tsconfigRootDir": ".",
-        "project": ["./tsconfig.json"],
-        "extraFileExtentions": [".svelte"]
-    },
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jquery": true
-    },    
-    "extends": ["eslint:recommended","@typhonjs-fvtt/eslint-config-foundry.js/0.8.0","plugin:prettier/recommended","plugin:@typescript-eslint/recommended"],
-  
-    "parser": "@typescript-eslint/parser",
-    // Prevents overwriting any built in globals particularly from `@typhonjs-fvtt/eslint-config-foundry.js`. 
-    // `event / window.event` shadowing is allowed due to being a common variable name and an uncommonly used browser 
-    // feature.
-    //
-    // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
-    "plugins":[
-        "json-format",
-        "html",
-        "svelte3",
-        "@typescript-eslint"
-    ],
-    "settings": {
-      "svelte3/typescript": true
-    },
-    "overrides": [
-      {
-        "files": ["*.svelte"],
-        "processor": "svelte3/svelte3"
-      }
-    ],
-    "rules": {
-      //"no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }],
-      "@typescript-eslint/no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }],
-      "@typescript-eslint/no-explicit-any": "off"
+{
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "tsconfigRootDir": ".",
+    "project": ["./tsconfig.json"],
+    "extraFileExtentions": [".svelte"]
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "jquery": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "@typhonjs-fvtt/eslint-config-foundry.js/0.8.0",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+
+  "parser": "@typescript-eslint/parser",
+  // Prevents overwriting any built in globals particularly from `@typhonjs-fvtt/eslint-config-foundry.js`.
+  // `event / window.event` shadowing is allowed due to being a common variable name and an uncommonly used browser
+  // feature.
+  //
+  // Note: if you are using Typescript you must use `@typescript-eslint/no-shadow`
+  "plugins": ["html", "svelte3", "@typescript-eslint"],
+  "settings": {
+    "svelte3/typescript": true
+  },
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
     }
+  ],
+  "rules": {
+    //"no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }],
+    "@typescript-eslint/no-shadow": ["error", { "builtinGlobals": true, "hoist": "all", "allow": ["event"] }],
+    "@typescript-eslint/no-explicit-any": "off"
   }
+}

@@ -1,11 +1,8 @@
 import { getSetting, OBSAction, OBSEvent, OBSRemoteSettings, OBSWebsocketSettings } from './settings';
 import OBSWebSocket from 'obs-websocket-js';
+import { isOBS } from './helpers';
 
 let obswebsocket: OBSWebSocket;
-
-export function isOBS(): boolean {
-  return !!window.obsstudio;
-}
 
 function getWSSettings(): OBSWebsocketSettings {
   const url = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-host');

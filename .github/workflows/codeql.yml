@@ -9,18 +9,18 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "CodeQL"
+name: 'CodeQL'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ "main" ]
+    branches: ['main']
   schedule:
     - cron: '38 9 * * 0'
 
-permissions:  # added using https://github.com/step-security/secure-workflows
+permissions: # added using https://github.com/step-security/secure-workflows
   contents: read
 
 jobs:
@@ -35,48 +35,47 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'typescript' ]
+        language: ['typescript']
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@b4401455ef773683d2da2e176e3539cce0fabdc7
-      with:
-        egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - name: Harden Runner
+        uses: step-security/harden-runner@b4401455ef773683d2da2e176e3539cce0fabdc7
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-    - name: Checkout repository
-      uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+      - name: Checkout repository
+        uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
 
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@33b10be6bf0b751c776ae2799b0f044885a8fa8f
-      with:
-        languages: ${{ matrix.language }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
-        
-        # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@006bb00765df5ace47e70657a677e6ecd3b0d6a1
+        with:
+          languages: ${{ matrix.language }}
+          # If you wish to specify custom queries, you can do so here or in a config file.
+          # By default, queries listed here will override any specified in a config file.
+          # Prefix the list here with "+" to use these queries and those in the config file.
 
-        
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@33b10be6bf0b751c776ae2799b0f044885a8fa8f
+          # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
+          # queries: security-extended,security-and-quality
 
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+      # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
+      # If this step fails, then you should remove it and run the build manually (see below)
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@006bb00765df5ace47e70657a677e6ecd3b0d6a1
 
-    #   If the Autobuild fails above, remove it and uncomment the following three lines. 
-    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+      # ℹ️ Command-line programs to run using the OS shell.
+      # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
 
-    # - run: |
-    #   echo "Run, Build Application using script"
-    #   ./location_of_script_within_repo/buildscript.sh
+      #   If the Autobuild fails above, remove it and uncomment the following three lines.
+      #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@33b10be6bf0b751c776ae2799b0f044885a8fa8f
-      with:
-        category: "/language:${{matrix.language}}"
+      # - run: |
+      #   echo "Run, Build Application using script"
+      #   ./location_of_script_within_repo/buildscript.sh
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@006bb00765df5ace47e70657a677e6ecd3b0d6a1
+        with:
+          category: '/language:${{matrix.language}}'

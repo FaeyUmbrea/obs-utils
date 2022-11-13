@@ -1,7 +1,4 @@
 {
-    "extends": [
-        "stylelint-config-standard",
-        "stylelint-prettier/recommended"
-    ],
-    "customSyntax": "postcss-less"
+  "extends": ["stylelint-config-standard", "stylelint-config-prettier"],
+  "customSyntax": "postcss-less"
 }

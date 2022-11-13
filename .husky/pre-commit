@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run lint:fix
+exec >/dev/tty 2>&1
 
-npm run stylelint:fix
+npx lint-staged

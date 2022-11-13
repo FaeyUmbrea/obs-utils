@@ -1,52 +1,52 @@
 name: Release Creation
 
-on: 
+on:
   release:
     types: [published]
 
-permissions:  # added using https://github.com/step-security/secure-workflows
+permissions: # added using https://github.com/step-security/secure-workflows
   contents: read
 
 jobs:
   build:
     permissions:
-      contents: write  # for ncipollo/release-action to create a release
+      contents: write # for ncipollo/release-action to create a release
     runs-on: ubuntu-latest
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@b4401455ef773683d2da2e176e3539cce0fabdc7
-      with:
-        egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
+      - name: Harden Runner
+        uses: step-security/harden-runner@b4401455ef773683d2da2e176e3539cce0fabdc7
+        with:
+          egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-    - uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+      - uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
 
-    # Substitute the Manifest and Download URLs in the module.json
-    - name: Substitute Manifest and Download Links For Versioned Ones
-      run: cat public/module.json | yq '.version="${{ github.event.release.tag_name }}" | .url="https://github.com/${{github.repository}}" | .manifest="https://github.com/${{github.repository}}/releases/latest/download/module.json" | .download="https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip"' > public/module.json
-    - name: Install
-      uses: actions/setup-node@9b8fcdc725d99a2f6d5fd880cf5d84129c4c4a40
-      with:
-        node-version: 18
-      
-    - run: yarn install
-    - name: build
-      run: yarn build
+      # Substitute the Manifest and Download URLs in the module.json
+      - name: Substitute Manifest and Download Links For Versioned Ones
+        run: cat public/module.json | yq '.version="${{ github.event.release.tag_name }}" | .url="https://github.com/${{github.repository}}" | .manifest="https://github.com/${{github.repository}}/releases/latest/download/module.json" | .download="https://github.com/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.zip"' > public/module.json
+      - name: Install
+        uses: actions/setup-node@9b8fcdc725d99a2f6d5fd880cf5d84129c4c4a40
+        with:
+          node-version: 18
 
-    # Create a zip file with all files required by the module to add to the release
-    - run: (cd dist && zip -r ../module.zip *)
-    
-    - run: zip -ur module.zip LICENSE README.md
+      - run: yarn install
+      - name: build
+        run: yarn build
 
-    # Create a release for this specific version
-    - name: Update Release with Files
-      id: create_version_release
-      uses: ncipollo/release-action@443f2c0c7964f224ff9da4cff09b25420f306c37
-      with:
-        allowUpdates: true # Set this to false if you want to prevent updating existing releases
-        name: ${{ github.event.release.name }}
-        draft: ${{ github.event.release.unpublished }}
-        prerelease: ${{ github.event.release.prerelease }}
-        token: ${{ secrets.GITHUB_TOKEN }}
-        artifacts: './dist/module.json, ./module.zip'
-        tag: ${{ github.event.release.tag_name }}
-        body: ${{ github.event.release.body }}
+      # Create a zip file with all files required by the module to add to the release
+      - run: (cd dist && zip -r ../module.zip *)
+
+      - run: zip -ur module.zip LICENSE README.md
+
+      # Create a release for this specific version
+      - name: Update Release with Files
+        id: create_version_release
+        uses: ncipollo/release-action@3ac4132803a6419fa2a7f4e9dbd1d93fceb690b9
+        with:
+          allowUpdates: true # Set this to false if you want to prevent updating existing releases
+          name: ${{ github.event.release.name }}
+          draft: ${{ github.event.release.unpublished }}
+          prerelease: ${{ github.event.release.prerelease }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: './dist/module.json, ./module.zip'
+          tag: ${{ github.event.release.tag_name }}
+          body: ${{ github.event.release.body }}
