@@ -3889,6 +3889,13 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+svelecte@^3.12.0:
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/svelecte/-/svelecte-3.12.0.tgz#fde5fb4696f21967c563a3261a2266efc43c1652"
+  integrity sha512-TI4yXn5iWizqc0V6lL+BlP2cw4S0Mxp+MW82/lfQAtg2k4YeH/d6ADrOPF5C5nrlLIuhVupv1Fna0ZftWPK1+w==
+  dependencies:
+    svelte-tiny-virtual-list "^2.0.0"
+
 svelte-check@2.9.2:
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/svelte-check/-/svelte-check-2.9.2.tgz#6581b750aa51cf476e82139a674a9bfa4de2ec2d"
@@ -3919,6 +3926,11 @@ svelte-preprocess@4.10.7, svelte-preprocess@^4.0.0:
     magic-string "^0.25.7"
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
+
+svelte-tiny-virtual-list@^2.0.0:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/svelte-tiny-virtual-list/-/svelte-tiny-virtual-list-2.0.5.tgz#5a88b14f2041eedc060dc799a2f146ee0355073f"
+  integrity sha512-xg9ckb8UeeIme4/5qlwCrl2QNmUZ8SCQYZn3Ji83cUsoASqRNy3KWjpmNmzYvPDqCHSZjruBBsoB7t5hwuzw5g==
 
 svelte@3.53.1:
   version "3.53.1"

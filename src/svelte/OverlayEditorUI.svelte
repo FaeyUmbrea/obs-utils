@@ -5,6 +5,7 @@
   import { getSetting } from '../utils/settings';
 
   export let overlays: Array<OverlayData>;
+  export let actorValues: Array<string>;
   let actorIDs = getSetting('overlayActors');
 
   let activeIndex: number = 0;
@@ -51,7 +52,12 @@
     <section class="content">
       {#each overlays as overlay, index (overlays.indexOf(overlay))}
         <div class="tab {index == activeIndex ? 'active' : ''}" data-tab={index} data-group="primary-tabs">
-          <OverlayEditorTab bind:components={overlay.components} removeFn={handleRemove} componentindex={index} />
+          <OverlayEditorTab
+            bind:components={overlay.components}
+            removeFn={handleRemove}
+            componentindex={index}
+            {actorValues}
+          />
         </div>
       {/each}
     </section>

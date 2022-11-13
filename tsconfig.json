@@ -14,7 +14,6 @@
     "module": "ESNext",
     "noImplicitAny": true,
     "allowJs": true,
-    "checkJs": true,
     "isolatedModules": true,
   },
   "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "src/node_modules/**/*"],
