@@ -1,5 +1,6 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import IstanbulPlugin from 'vite-plugin-istanbul';
+import visualizer from 'rollup-plugin-visualizer';
 
 const config = {
   base: '/modules/obs-utils/',
@@ -26,7 +27,7 @@ const config = {
     checkProd: true,
     forceBuildInstrument: true,
     requireEnv: true
-  })],
+  }),visualizer()],
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

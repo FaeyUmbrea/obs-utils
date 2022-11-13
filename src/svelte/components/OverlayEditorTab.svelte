@@ -19,7 +19,6 @@
     }
 </script>
 
-<button class="add" type="button" on:click={() => handleAdd()}><i class="fas fa-plus" /></button>
     <div class="scroll">
     <ul>
         {#each components as component, index (components.indexOf(component)) }
@@ -27,4 +26,7 @@
         {/each}
     </ul>
     </div>
-<button class="remove-tab" type="button" on:click={()=>removeFn(componentindex)}><i class="fas fa-trash" /></button>
+<footer>
+    <button class="add" type="button" on:click={() => handleAdd()}><i class="fas fa-plus" /></button>
+    <button class="remove-tab" type="button" on:click={()=>removeFn(componentindex)}><i class="fas fa-trash" /></button>
+</footer>

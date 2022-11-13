@@ -5,7 +5,6 @@
   import PlaintextComponent from "./overlaycomponents/PlaintextComponent.svelte";
   export let overlayData:OverlayData;
   export let actorIDs:Array<string>;
-  export let hooks:Array<number>;
 </script>
 
 {#each actorIDs as actor}
@@ -17,7 +16,7 @@
       {:else if component.type == ComponentType.PLAINTEXT}
         <PlaintextComponent data={component.data} />
       {:else if component.type == ComponentType.ACTORVAL}
-        <ActorValComponent data={component.data} actorID={actor} bind:hooks={hooks}/>
+        <ActorValComponent data={component.data} actorID={actor}/>
       {/if}
     </div>
     {/each}
