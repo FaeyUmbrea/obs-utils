@@ -33,7 +33,7 @@ export default class OverlayEditor extends FormApplication<any, any, any> {
 
   protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
     const html = await super._renderInner(data);
-    const actorValues = propertiesToArray(getGame().actors?.find((e) => true));
+    const actorValues = propertiesToArray(getGame().actors?.find((e) => e.type == 'character'));
     this.component = new OverlayEditorUI({
       target: html.get(0) as Element,
       props: {

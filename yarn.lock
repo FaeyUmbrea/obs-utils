@@ -3927,6 +3927,11 @@ svelte-preprocess@4.10.7, svelte-preprocess@^4.0.0:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
+svelte-sortable-list@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/svelte-sortable-list/-/svelte-sortable-list-1.1.0.tgz#e56c935f45013cbc348149904ac85f80a531d3ec"
+  integrity sha512-K8axS2OEJhN8KI/aXx1LEJkMGZTkR13U191nVhvN0BImZpNmFJ10Zy8K9T0EAg6chB6/hz3/hOeFoe2RVZylSw==
+
 svelte-tiny-virtual-list@^2.0.0:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/svelte-tiny-virtual-list/-/svelte-tiny-virtual-list-2.0.5.tgz#5a88b14f2041eedc060dc799a2f146ee0355073f"

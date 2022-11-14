@@ -18,7 +18,14 @@
       {/each}
     </select>
     {#if component.type == ComponentType.ACTORVAL}
-      <Svelecte options={actorValues} inputId={'data'} bind:value={component.data} labelAsValue={true} />
+      <Svelecte
+        options={actorValues}
+        inputId={'data'}
+        bind:value={component.data}
+        labelAsValue={true}
+        creatable={true}
+        allowEditing={true}
+      />
     {:else}
       <input name="data" bind:value={component.data} placeholder="" />
     {/if}
