@@ -21,6 +21,7 @@
       "groupName": "all digests",
       "groupSlug": "all-digest-patch",
       "automerge": true,
+      "schedule": ["before 3am on Monday"],
       "labels": ["digest"]
     }
   ]
