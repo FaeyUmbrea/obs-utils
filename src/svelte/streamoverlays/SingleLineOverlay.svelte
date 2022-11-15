@@ -5,20 +5,21 @@
   import PlaintextComponent from './overlaycomponents/PlaintextComponent.svelte';
   export let overlayData: OverlayData;
   export let actorIDs: Array<string>;
+  export let overlayIndex: number;
 </script>
 
-{#each actorIDs as actor}
-  <div class="actor actor{actor} text-overlay">
-    {#each overlayData.components as component}
-      <div class="component">
+<div class="single-line-overlay" id={overlayIndex.toString()} style={overlayData.style}>
+  {#each actorIDs as actor}
+    <div class="actor" id={actor}>
+      {#each overlayData.components as component, index (overlayData.components.indexOf(component))}
         {#if component.type == ComponentType.FAICON}
-          <FAIconComponent data={component.data} />
+          <FAIconComponent data={component.data} componentIndex={index} style={component.style} />
         {:else if component.type == ComponentType.PLAINTEXT}
-          <PlaintextComponent data={component.data} />
+          <PlaintextComponent data={component.data} componentIndex={index} style={component.style} />
         {:else if component.type == ComponentType.ACTORVAL}
-          <ActorValComponent data={component.data} actorID={actor} />
+          <ActorValComponent data={component.data} actorID={actor} componentIndex={index} style={component.style} />
         {/if}
-      </div>
-    {/each}
-  </div>
-{/each}
+      {/each}
+    </div>
+  {/each}
+</div>

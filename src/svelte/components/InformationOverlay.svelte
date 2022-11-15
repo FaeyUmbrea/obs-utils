@@ -6,12 +6,10 @@
   export let additionalClasses: string = '';
 </script>
 
-<div class="stream-overlay {additionalClasses}">
-  {#each overlays as overlay, index}
+<div class="obs-utils overlay {additionalClasses}">
+  {#each overlays as overlay, index (overlays.indexOf(overlay))}
     {#if overlay.type == OverlayType.SINGLELINE}
-      <div class="obsutils overlay overlay{index}">
-        <SingleLineOverlay overlayData={overlay} {actorIDs} />
-      </div>
+      <SingleLineOverlay overlayData={overlay} {actorIDs} overlayIndex={index} />
     {/if}
   {/each}
 </div>

@@ -5,6 +5,8 @@
 
   export let data: string;
   export let actorID: string;
+  export let style: string;
+  export let componentIndex: number;
 
   let actor = getGame().actors?.get(actorID);
 
@@ -27,4 +29,6 @@
 {#key data}
   {getValue()}
 {/key}
-{value}
+<div class="component actor-val-component" id={componentIndex.toString()} {style}>
+  {value}
+</div>

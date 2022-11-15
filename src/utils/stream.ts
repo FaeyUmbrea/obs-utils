@@ -15,18 +15,23 @@ export enum OverlayType {
 export class OverlayData {
   type: OverlayType;
   components: Array<OverlayComponentData>;
-  constructor(type: OverlayType = OverlayType.SINGLELINE, components: Array<OverlayComponentData> = []) {
+  style: string;
+  constructor(type: OverlayType = OverlayType.SINGLELINE, components: Array<OverlayComponentData> = [], style = '') {
     this.type = type;
     this.components = components;
+    this.style = style;
   }
 }
 
 export class OverlayComponentData {
   type: ComponentType;
   data: any;
-  constructor(type: ComponentType = ComponentType.PLAINTEXT, data: any = '') {
+  style: string;
+
+  constructor(type: ComponentType = ComponentType.PLAINTEXT, data: any = '', style = '') {
     this.type = type;
     this.data = data;
+    this.style = style;
   }
 }
 
