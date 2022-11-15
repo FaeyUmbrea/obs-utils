@@ -48,6 +48,10 @@
   </ul>
 </div>
 <footer>
-  <button class="add" type="button" on:click={() => handleAdd()}><i class="fas fa-plus" /></button>
-  <button class="remove-tab" type="button" on:click={() => removeFn(componentindex)}><i class="fas fa-trash" /></button>
+  <button class="add" type="button" title="Add new Component" on:click={() => handleAdd()}
+    ><i class="fas fa-plus" /></button
+  >
+  <button class="remove-tab" type="button" title="Remove Overlay" on:click={() => removeFn(componentindex)}
+    ><i class="fas fa-trash" /></button
+  >
 </footer>

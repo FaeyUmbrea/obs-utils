@@ -37,16 +37,18 @@
 
   <div class="editor">
     <div class="nav-with-add-button">
+      <button class="add" type="button" title="Add new Overlay" on:click={() => handleAdd()}
+        ><i class="fas fa-plus" /></button
+      >
       <nav class="tabs" data-group="primary-tabs">
         {#each overlays as overlay, index (overlays.indexOf(overlay))}
           <!-- svelte-ignore a11y-missing-attribute -->
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <a class="item {index == activeIndex ? 'active' : ''}" data-tab={index} on:click={() => changeTab(index)}
-            ><i class="fas fa-dice-d20" />{index}</a
+            >{index}</a
           >
         {/each}
       </nav>
-      <button class="add" type="button" on:click={() => handleAdd()}><i class="fas fa-plus" /></button>
     </div>
     <hr />
     <section class="content">
@@ -63,7 +65,7 @@
     </section>
   </div>
 </div>
+<hr />
 <footer>
-  <hr />
   <button class="submit" type="submit">Submit</button>
 </footer>

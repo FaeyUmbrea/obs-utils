@@ -23,8 +23,8 @@ export default class OverlayEditor extends FormApplication<any, any, any> {
       id: 'overlayeditor-application',
       title: 'Overlay Editor',
       //tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
-      height: 400,
-      width: 700,
+      height: 600,
+      width: 1000,
       resizable: true,
     }) as FormApplicationOptions;
   }
