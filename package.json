@@ -52,7 +52,7 @@
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
     "@playwright/test": "^1.27.1",
     "@rollup/plugin-typescript": "9.0.2",
-    "@sveltejs/vite-plugin-svelte": "1.1.1",
+    "@sveltejs/vite-plugin-svelte": "1.2.0",
     "@tsconfig/svelte": "3.0.0",
     "@types/lodash": "^4.14.188",
     "@types/obs-studio": "2.17.0",
