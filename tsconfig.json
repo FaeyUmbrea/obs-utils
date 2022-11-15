@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "lib": ["DOM", "ES2022"],
     "esModuleInterop": true,
-    "types": ["@league-of-foundry-developers/foundry-vtt-types","obs-studio","obs-websocket-js","@types/lodash-es","vite/client"],
+    "types": ["@league-of-foundry-developers/foundry-vtt-types","obs-studio","obs-websocket-js","@types/lodash-es","vite/client","svelte-agnostic-draggable"],
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,

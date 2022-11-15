@@ -1,5 +1,4 @@
 import type { OverlayData } from '../utils/stream';
-import OverlayEditorUI from '../svelte/OverlayEditorUI.svelte';
 import { getSetting, setSetting } from '../utils/settings';
 import '../less/overlayeditor.less';
 import { getFontawesomeVariables, getGame, propertiesToArray } from '../utils/helpers';
@@ -7,7 +6,6 @@ import { getFontawesomeVariables, getGame, propertiesToArray } from '../utils/he
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
 export default class OverlayEditor extends FormApplication<any, any, any> {
-  component: OverlayEditorUI | undefined;
   dataArray: Array<OverlayData> = new Array<OverlayData>();
   protected async _updateObject(event: Event, formData?: object | undefined) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
@@ -34,7 +32,8 @@ export default class OverlayEditor extends FormApplication<any, any, any> {
   protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
     const html = await super._renderInner(data);
     const actorValues = propertiesToArray(getGame().actors?.find((e) => e.type == 'character'));
-    this.component = new OverlayEditorUI({
+    const OverlayEditorUI = await (await import('../svelte/OverlayEditorUI.svelte')).default;
+    new OverlayEditorUI({
       target: html.get(0) as Element,
       props: {
         overlays: this.dataArray,
