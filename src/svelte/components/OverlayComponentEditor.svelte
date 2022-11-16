@@ -1,6 +1,7 @@
 <script>
   import { ComponentType } from '../../utils/stream';
   import Svelecte from 'svelecte';
+  import StyleEditor from '../../applications/styleditor';
 
   export let component;
   export let removeFn;
@@ -8,6 +9,13 @@
   export let actorValues;
 
   const componentTypes = Object.values(ComponentType);
+
+  function openStyleEditor() {
+    let editor = new StyleEditor(component.style, (styleNew) => {
+      component.style = styleNew;
+    });
+    editor.render(true);
+  }
 </script>
 
 <li data-list-key={index}>
@@ -33,6 +41,9 @@
     {/if}
     <button type="button" title="Remove Component" on:click={() => removeFn(index)}>
       <i class="fas fa-trash" />
+    </button>
+    <button class="add" type="button" title="Edit Component Style" on:click={() => openStyleEditor()}>
+      <i class="fas fa-pencil" />
     </button>
   </div>
 </li>
