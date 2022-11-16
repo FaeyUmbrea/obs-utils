@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "@sveltejs/svelte-virtual-list": "^3.0.1",
     "@types/lodash-es": "^4.17.6",
     "lodash-es": "^4.17.21",
     "obs-websocket-js": "^5.0.2",

@@ -9,6 +9,7 @@ export default class OverlayActorSelect extends FormApplication<any, any, any> {
   component!: OverlayActorSelectUi;
   protected async _updateObject(event: Event, formData?: object | undefined) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
+    delete (formData as any).search;
     const data = (Object.values(expandObject(formData)) as Array<string>).filter((entry) => entry != null);
     setSetting('overlayActors', data);
   }

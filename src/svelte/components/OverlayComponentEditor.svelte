@@ -26,11 +26,12 @@
         labelAsValue={true}
         creatable={true}
         allowEditing={true}
+        creatablePrefix=""
       />
     {:else}
       <input name="data" bind:value={component.data} placeholder="" />
     {/if}
-    <button type="button" alt="Remove Component" on:click={() => removeFn(index)}>
+    <button type="button" title="Remove Component" on:click={() => removeFn(index)}>
       <i class="fas fa-trash" />
     </button>
   </div>

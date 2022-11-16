@@ -69,7 +69,7 @@ let actorValues: Array<string>;
 
 export function getActorValues() {
   if (!actorValues) {
-    actorValues = propertiesToArray(new Actor({ name: 'actor', type: 'character' }));
+    actorValues = propertiesToArray(new CONFIG.Actor.documentClass({ name: 'actor', type: 'character' }));
   }
   return actorValues;
 }
