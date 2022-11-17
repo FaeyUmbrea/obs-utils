@@ -7,9 +7,13 @@
 </script>
 
 <div class="obs-utils overlay {additionalClasses}">
-  {#each overlays as overlay, index (overlays.indexOf(overlay))}
-    {#if overlay.type == OverlayType.SINGLELINE}
-      <SingleLineOverlay overlayData={overlay} {actorIDs} overlayIndex={index} />
-    {/if}
+  {#each actorIDs as actorID}
+    <div class="actor" id={'actor' + actorID}>
+      {#each overlays as overlay, index (overlays.indexOf(overlay))}
+        {#if overlay.type == OverlayType.SINGLELINE}
+          <SingleLineOverlay overlayData={overlay} {actorID} overlayIndex={index} />
+        {/if}
+      {/each}
+    </div>
   {/each}
 </div>

@@ -4,6 +4,6 @@
   export let componentIndex: number;
 </script>
 
-<div class="component fa-icon-component" id={componentIndex.toString()} {style}>
+<div class="component fa-icon-component" id={'component' + componentIndex.toString()} {style}>
   <i class={data} />
 </div>

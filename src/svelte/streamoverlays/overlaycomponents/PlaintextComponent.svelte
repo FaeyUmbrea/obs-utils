@@ -4,6 +4,6 @@
   export let componentIndex: number;
 </script>
 
-<div class="component plain-text-component" id={componentIndex.toString()} {style}>
+<div class="component plain-text-component" id={'component' + componentIndex.toString()} {style}>
   {data}
 </div>

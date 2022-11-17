@@ -29,6 +29,6 @@
 {#key data}
   {getValue()}
 {/key}
-<div class="component actor-val-component" id={componentIndex.toString()} {style}>
+<div class="component actor-val-component" id={'component' + componentIndex.toString()} {style}>
   {value}
 </div>

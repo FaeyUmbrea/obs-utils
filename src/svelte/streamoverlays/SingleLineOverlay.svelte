@@ -4,22 +4,18 @@
   import FAIconComponent from './overlaycomponents/FAIconComponent.svelte';
   import PlaintextComponent from './overlaycomponents/PlaintextComponent.svelte';
   export let overlayData: OverlayData;
-  export let actorIDs: Array<string>;
+  export let actorID: string;
   export let overlayIndex: number;
 </script>
 
-<div class="single-line-overlay" id={overlayIndex.toString()} style={overlayData.style}>
-  {#each actorIDs as actor}
-    <div class="actor" id={actor}>
-      {#each overlayData.components as component, index (overlayData.components.indexOf(component))}
-        {#if component.type == ComponentType.FAICON}
-          <FAIconComponent data={component.data} componentIndex={index} style={component.style} />
-        {:else if component.type == ComponentType.PLAINTEXT}
-          <PlaintextComponent data={component.data} componentIndex={index} style={component.style} />
-        {:else if component.type == ComponentType.ACTORVAL}
-          <ActorValComponent data={component.data} actorID={actor} componentIndex={index} style={component.style} />
-        {/if}
-      {/each}
-    </div>
+<div class="single-line-overlay" id={'overlay' + overlayIndex.toString()} style={overlayData.style}>
+  {#each overlayData.components as component, index (overlayData.components.indexOf(component))}
+    {#if component.type == ComponentType.FAICON}
+      <FAIconComponent data={component.data} componentIndex={index} style={component.style} />
+    {:else if component.type == ComponentType.PLAINTEXT}
+      <PlaintextComponent data={component.data} componentIndex={index} style={component.style} />
+    {:else if component.type == ComponentType.ACTORVAL}
+      <ActorValComponent data={component.data} {actorID} componentIndex={index} style={component.style} />
+    {/if}
   {/each}
 </div>
