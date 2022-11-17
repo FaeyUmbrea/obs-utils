@@ -46,10 +46,10 @@
     "@types/lodash-es": "^4.17.6",
     "lodash-es": "^4.17.21",
     "obs-websocket-js": "^5.0.2",
-    "svelecte": "^3.12.0",
-    "svelte-agnostic-draggable": "^0.1.11"
+    "svelecte": "^3.12.0"
   },
   "devDependencies": {
+    "@jhubbardsf/svelte-sortablejs": "^1.1.0",
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
     "@playwright/test": "^1.27.1",
     "@rollup/plugin-typescript": "9.0.2",

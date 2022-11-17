@@ -1,8 +1,9 @@
 <script>
   import { OverlayComponentData } from '../../utils/stream';
   import OverlayComponentEditor from './OverlayComponentEditor.svelte';
-  import { sortable } from 'svelte-agnostic-draggable';
+  //import { sortable } from 'svelte-agnostic-draggable';
   import StyleEditor from '../../applications/styleditor';
+  import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 
   export let overlay;
   export let removeFn;
@@ -24,16 +25,11 @@
 
   let rerender = 0;
 
-  function handleReorder() {
-    let newListElements = [];
-    let ItemViewList = ListView.children;
-    for (let i = 0, l = ItemViewList.length; i < l; i++) {
-      let ListKey = ItemViewList[i].dataset.listKey;
-      if (ListKey != null) {
-        newListElements.push(overlay.components[Number.parseInt(ListKey)]);
-      }
-    }
-    overlay.components = newListElements;
+  function handleReorder(e) {
+    [overlay.components[e.oldDraggableIndex], overlay.components[e.newDraggableIndex]] = [
+      overlay.components[e.newDraggableIndex],
+      overlay.components[e.oldDraggableIndex],
+    ];
     rerender++;
   }
 
@@ -46,16 +42,14 @@
 </script>
 
 <div class="scroll">
-  <ul
-    bind:this={ListView}
-    use:sortable={{ cursor: 'grabbing', zIndex: 10, handle: '.handle' }}
-    on:sortable:update={handleReorder}
-  >
-    {#key rerender}
-      {#each overlay.components as component, index (overlay.components.indexOf(component))}
-        <OverlayComponentEditor bind:component removeFn={handleRemove} {actorValues} {index} />
-      {/each}
-    {/key}
+  <ul>
+    <SortableList onEnd={handleReorder} animation={150} handle=".handle">
+      {#key rerender}
+        {#each overlay.components as component, index (overlay.components.indexOf(component))}
+          <OverlayComponentEditor bind:component removeFn={handleRemove} {actorValues} {index} />
+        {/each}
+      {/key}
+    </SortableList>
   </ul>
 </div>
 <footer>
