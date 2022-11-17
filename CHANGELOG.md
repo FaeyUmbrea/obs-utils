@@ -1,4 +1,9 @@
-### Version 1.2.3
+## Version 1.3.6
+
+Implemented the Stream Overlay Funtionality along with a WYSIWYG Editor for it!
+Check the Wiki for more Information on the CSS Structure
+
+## Version 1.2.3
 
 Added OBS Remote Functionality!
 Replaced original onExitObs with onStopStreaming because OBS would close before the final commands got executed.

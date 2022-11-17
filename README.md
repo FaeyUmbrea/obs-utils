@@ -36,6 +36,7 @@ Check the Wiki!
 
 
 - Make /stream Background Transparent
+- /stream Information Overlays
 
 
 - Levels Support (in Combat)
@@ -54,9 +55,6 @@ Check the Wiki!
 - theripper93's Levels [GitHub](https://github.com/theripper93/Levels)
 
 ## Planned Features
-
-
-- Modify the /stream Page (Information Overlays etc.)
 
 - Levels Support (out of Combat)
 
