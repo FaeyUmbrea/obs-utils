@@ -19,7 +19,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+      - uses: actions/checkout@bf085276cecdb0cc76fbbe0687a5a0e786646936
 
       - name: Install Requirements
         run: yarn install
