@@ -18,7 +18,7 @@ jobs:
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@5c3ccc22eb2c950a0fa5bc7c47190d8e3f7e681a
+      - uses: actions/checkout@bf085276cecdb0cc76fbbe0687a5a0e786646936
 
       # Substitute the Manifest and Download URLs in the module.json
       - name: Substitute Manifest and Download Links For Versioned Ones
@@ -28,7 +28,7 @@ jobs:
           mv ./public/module.json.tmp ./public/module.json
       - run: cat ./public/module.json
       - name: Install
-        uses: actions/setup-node@6bc15ab23c9584a6fe2fdf1ae07fd5fb409d1dbc
+        uses: actions/setup-node@41acaa2e85a9c20b0bcaff1397645d5f33cab6ac
         with:
           node-version: 18
 
@@ -44,7 +44,7 @@ jobs:
       # Create a release for this specific version
       - name: Update Release with Files
         id: create_version_release
-        uses: ncipollo/release-action@443f2c0c7964f224ff9da4cff09b25420f306c37
+        uses: ncipollo/release-action@3dd806f2bf5644b1c265f3285d997f98c2dbb9e0
         with:
           allowUpdates: true # Set this to false if you want to prevent updating existing releases
           name: ${{ github.event.release.name }}
