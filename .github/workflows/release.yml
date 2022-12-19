@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@0a5820a2ec510d2521c1715d24860fc8cd06400a
+        uses: step-security/harden-runner@266a5d6a507c6927766a67b8380f323eacd977a2
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
-      - uses: actions/checkout@bf085276cecdb0cc76fbbe0687a5a0e786646936
+      - uses: actions/checkout@3ba5ee6fac7e0e30e2ea884e236f282d3a775891
 
       # Substitute the Manifest and Download URLs in the module.json
       - name: Substitute Manifest and Download Links For Versioned Ones
@@ -28,7 +28,7 @@ jobs:
           mv ./public/module.json.tmp ./public/module.json
       - run: cat ./public/module.json
       - name: Install
-        uses: actions/setup-node@d1b197b965eb46e1a1878caad41c4ab3efae133f
+        uses: actions/setup-node@377c6dae4006fcd73be5aac564ee449b1a5d63f7
         with:
           node-version: 18
 
