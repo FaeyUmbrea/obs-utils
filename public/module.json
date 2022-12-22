@@ -31,7 +31,7 @@
       }
     ]
   },
-  "esmodules": ["obs-utils.mjs"],
+  "esmodules": ["obs-utils.js"],
   "styles": ["style.css"],
   "languages": [
     {
