@@ -20,7 +20,7 @@ export const NAME_TO_ICON = {
   trackone: 'fa-solid fa-user',
   trackmanual: 'fa-regular fa-users',
   clonePlayer: 'fa-regular fa-users-viewfinder',
-  cloneTurnPlayer: 'fa-sharp fa-solid fa-arrows-repeat',
+  cloneTurnPlayer: 'fa-solid fa-arrows-repeat',
   cloneDM: 'fa-solid fa-dice-d20',
   birdseye: 'fa-solid fa-bird',
 };
