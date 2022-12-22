@@ -10,6 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/FaeyUmbrea/obs-utils.git"
   },
+  "type": "module",
   "license": "AGPL-3.0-only",
   "author": "Faey Umbrea",
   "main": "src/module/obs-util.js",
@@ -53,7 +54,7 @@
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
     "@playwright/test": "^1.27.1",
     "@rollup/plugin-typescript": "10.0.1",
-    "@sveltejs/vite-plugin-svelte": "2.0.2",
+    "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "@tsconfig/svelte": "3.0.0",
     "@types/lodash": "^4.14.188",
     "@types/obs-studio": "2.17.0",
