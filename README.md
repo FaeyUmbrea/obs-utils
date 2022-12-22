@@ -66,3 +66,14 @@ Check the Wiki!
 ## TODO (Smaller improvements that aren't Full Features)
 - Add configuration for automatic camera
 - 
+
+## Getting Started
+```sh
+    yarn install
+```
+
+## Building
+
+```sh
+    yarn build
+```
