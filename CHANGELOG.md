@@ -1,3 +1,11 @@
+## Version 1.4.0
+
+Added a new Feature to display Boolean Actor Values as Icons
+
+## Version 1.3.7
+
+Fixed some display issues in the Director
+
 ## Version 1.3.6
 
 Implemented the Stream Overlay Funtionality along with a WYSIWYG Editor for it!
