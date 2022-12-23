@@ -26,7 +26,7 @@
         <option value={component}>{component}</option>
       {/each}
     </select>
-    {#if component.type == ComponentType.ACTORVAL}
+    {#if component.type == ComponentType.ACTORVAL || component.type == ComponentType.BOOLAV}
       <Svelecte
         options={actorValues}
         inputId={'data'}

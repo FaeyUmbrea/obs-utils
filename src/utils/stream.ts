@@ -6,6 +6,7 @@ export enum ComponentType {
   PLAINTEXT = 'Plain Text',
   FAICON = 'Font Awesome Icon',
   ACTORVAL = 'Actor Value',
+  BOOLAV = 'Boolean Actor Value',
 }
 
 export enum OverlayType {

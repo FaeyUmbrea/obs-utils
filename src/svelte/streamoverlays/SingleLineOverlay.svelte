@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ComponentType, type OverlayData } from '../../utils/stream';
   import ActorValComponent from './overlaycomponents/ActorValComponent.svelte';
+  import AvBoolDisplayComponent from './overlaycomponents/AVBoolDisplayComponent.svelte';
   import FAIconComponent from './overlaycomponents/FAIconComponent.svelte';
   import PlaintextComponent from './overlaycomponents/PlaintextComponent.svelte';
   export let overlayData: OverlayData;
@@ -16,6 +17,8 @@
       <PlaintextComponent data={component.data} componentIndex={index} style={component.style} />
     {:else if component.type == ComponentType.ACTORVAL}
       <ActorValComponent data={component.data} {actorID} componentIndex={index} style={component.style} />
+    {:else if component.type == ComponentType.BOOLAV}
+      <AvBoolDisplayComponent data={component.data} {actorID} componentIndex={index} style={component.style} />
     {/if}
   {/each}
 </div>
