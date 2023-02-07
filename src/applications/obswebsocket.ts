@@ -24,6 +24,7 @@ export default class OBSWebsocketApplication extends FormApplication<any, any, a
       id: 'obswebsocket-application',
       title: 'OBS Websocket Settings',
       tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
+      resize: true,
     }) as FormApplicationOptions;
   }
 

@@ -1,5 +1,7 @@
 // These are necessary because Game and Canvas are not always initialized so TypeScript complains
 
+import _ from 'lodash-es';
+
 export function getGame(): Game {
   return game as Game;
 }
@@ -69,7 +71,7 @@ let actorValues: Array<string>;
 
 export function getActorValues() {
   if (!actorValues) {
-    actorValues = propertiesToArray(new CONFIG.Actor.documentClass({ name: 'actor', type: 'character' }));
+    actorValues = _.keys(new CONFIG.Actor.documentClass({ name: 'actor', type: 'character' }));
   }
   return actorValues;
 }
