@@ -1,3 +1,6 @@
+## Version 1.4.2 
+Fixing pf2e compatbility
+
 ## Version 1.4.0
 
 Added a new Feature to display Boolean Actor Values as Icons

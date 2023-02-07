@@ -1,6 +1,6 @@
 // These are necessary because Game and Canvas are not always initialized so TypeScript complains
 
-import _ from 'lodash-es';
+import flatten from 'flat';
 
 export function getGame(): Game {
   return game as Game;
@@ -16,21 +16,6 @@ export function sleep(milliseconds: number) {
 
 export function isOBS(): boolean {
   return !!window.obsstudio;
-}
-
-export function propertiesToArray(obj: any) {
-  const isObject = (val: any) => val && typeof val === 'object' && !Array.isArray(val);
-
-  const addDelimiter = (a: any, b: any) => (a ? `${a}.${b}` : b);
-
-  const paths: any = (obj2 = {}, head = '') => {
-    return Object.entries(obj2).reduce((product, [key, value]) => {
-      const fullPath = addDelimiter(head, key);
-      return isObject(value) ? product.concat(paths(value, fullPath)) : product.concat(fullPath);
-    }, []);
-  };
-
-  return paths(obj);
 }
 
 function getFontAwesomeVersion() {
@@ -71,7 +56,9 @@ let actorValues: Array<string>;
 
 export function getActorValues() {
   if (!actorValues) {
-    actorValues = _.keys(new CONFIG.Actor.documentClass({ name: 'actor', type: 'character' }));
+    actorValues = Object.keys(
+      flatten(JSON.parse(JSON.stringify(new CONFIG.Actor.documentClass({ name: 'actor', type: 'character' })))),
+    );
   }
   return actorValues;
 }
