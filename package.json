@@ -30,7 +30,8 @@
     "test": "yarn playwright test",
     "test:local": "yarn playwright test --config=./playwright_local.config.ts",
     "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
-    "watch": "vite build --watch"
+    "watch": "vite build --watch",
+    "dev": "vite"
   },
   "lint-staged": {
     "*": [
@@ -62,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "5.47.0",
     "@typescript-eslint/parser": "5.47.0",
     "@typhonjs-fvtt/eslint-config-foundry.js": "0.8.0",
+    "@typhonjs-fvtt/runtime": "^0.0.22",
     "browserstack-local": "^1.5.1",
     "cross-env": "7.0.3",
     "eslint": "8.30.0",

@@ -1,11 +1,10 @@
 <script lang="ts">
   import { OverlayData } from '../utils/stream';
   import OverlayEditorTab from './components/OverlayEditorTab.svelte';
-  import InformationOverlay from './components/InformationOverlay.svelte';
+  import InformationOverlay from './components/PerActorOverlay.svelte';
   import { getSetting } from '../utils/settings';
 
   export let overlays: Array<OverlayData>;
-  export let actorValues: Array<string>;
   let actorIDs = getSetting('overlayActors');
 
   let activeIndex: number = 0;
@@ -44,7 +43,7 @@
         {#each overlays as overlay, index (overlays.indexOf(overlay))}
           <!-- svelte-ignore a11y-missing-attribute -->
           <!-- svelte-ignore a11y-click-events-have-key-events -->
-          <a class="item {index == activeIndex ? 'active' : ''}" data-tab={index} on:click={() => changeTab(index)}
+          <a class="item {index === activeIndex ? 'active' : ''}" data-tab={index} on:click={() => changeTab(index)}
             >{index}</a
           >
         {/each}
@@ -53,8 +52,8 @@
     <hr />
     <section class="content">
       {#each overlays as overlay, index (overlays.indexOf(overlay))}
-        <div class="tab {index == activeIndex ? 'active' : ''}" data-tab={index} data-group="primary-tabs">
-          <OverlayEditorTab bind:overlay removeFn={handleRemove} componentindex={index} {actorValues} />
+        <div class="tab {index === activeIndex ? 'active' : ''}" data-tab={index} data-group="primary-tabs">
+          <OverlayEditorTab bind:overlay removeFn={handleRemove} componentindex={index} />
         </div>
       {/each}
     </section>

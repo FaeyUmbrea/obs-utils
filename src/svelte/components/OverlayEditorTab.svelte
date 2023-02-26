@@ -1,6 +1,6 @@
 <script>
   import { OverlayComponentData } from '../../utils/stream';
-  import OverlayComponentEditor from './OverlayComponentEditor.svelte';
+  import OverlayComponentEditor from './editors/SingleLineOverlayEditor.svelte';
   //import { sortable } from 'svelte-agnostic-draggable';
   import StyleEditor from '../../applications/styleditor';
   import { SortableList } from '@jhubbardsf/svelte-sortablejs';
@@ -8,7 +8,6 @@
   export let overlay;
   export let removeFn;
   export let componentindex;
-  export let actorValues;
 
   let ListView;
 
@@ -46,7 +45,7 @@
     <SortableList onEnd={handleReorder} animation={150} handle=".handle">
       {#key rerender}
         {#each overlay.components as component, index (overlay.components.indexOf(component))}
-          <OverlayComponentEditor bind:component removeFn={handleRemove} {actorValues} {index} />
+          <OverlayComponentEditor bind:component removeFn={handleRemove} {index} />
         {/each}
       {/key}
     </SortableList>

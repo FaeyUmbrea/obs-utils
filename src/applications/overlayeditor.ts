@@ -1,7 +1,7 @@
 import type { OverlayData } from '../utils/stream';
 import { getSetting, setSetting } from '../utils/settings';
 import '../less/overlayeditor.less';
-import { getActorValues } from '../utils/helpers';
+import OverlayEditorUI from '../svelte/OverlayEditorUI.svelte';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
@@ -31,13 +31,10 @@ export default class OverlayEditor extends FormApplication<any, any, any> {
 
   protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
     const html = await super._renderInner(data);
-    const actorValues = getActorValues();
-    const OverlayEditorUI = await (await import('../svelte/OverlayEditorUI.svelte')).default;
     new OverlayEditorUI({
       target: html.get(0) as Element,
       props: {
         overlays: this.dataArray,
-        actorValues: actorValues,
       },
     });
     return html;

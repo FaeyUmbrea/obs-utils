@@ -17,6 +17,7 @@ import { socketCanvas } from './utils/socket';
 import { handleCombat, stopCombat } from './utils/combat';
 import { getGame, isOBS } from './utils/helpers';
 import { renderOverlays } from './utils/stream';
+import { ObsUtilsApi, registerDefaultTypes } from './utils/api';
 
 let d: any;
 
@@ -40,8 +41,15 @@ function openDirector(button: SceneControlTool) {
 }
 
 function start() {
+  window.obsutils = new ObsUtilsApi();
+  registerDefaultTypes();
+  Hooks.call('obsUtilsInit');
+
   Hooks.once('init', async function () {
     registerSettings();
+    if (getGame().view == 'game') {
+      await (await import('./utils/menus')).registerMenus();
+    }
   });
 
   Hooks.once('ready', async function () {
@@ -115,5 +123,4 @@ function start() {
     Hooks.on('getSceneControlButtons', buildButtons);
   }
 }
-
 start();

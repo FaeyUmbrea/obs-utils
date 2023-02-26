@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { getSetting } from '../utils/settings';
-  import InformationOverlay from './components/InformationOverlay.svelte';
+  import InformationOverlay from './components/PerActorOverlay.svelte';
 
   let overlays = getSetting('streamOverlays');
   let actors = getSetting('overlayActors');

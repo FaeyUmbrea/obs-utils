@@ -1,10 +1,15 @@
 import { SvelteComponentTyped } from 'svelte';
+import { ObsUtilsApi } from './utils/api';
 
 export {};
 
 /* eslint no-shadow: 0 */
 
 declare global {
+  interface Window {
+    obsutils: ObsUtilsApi;
+  }
+
   namespace ClientSettings {
     interface Values {
       'obs-utils.minScale': number;

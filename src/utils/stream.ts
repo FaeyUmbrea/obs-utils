@@ -2,22 +2,11 @@ import OverlayRenderer from '../svelte/OverlayRenderer.svelte';
 import { getGame } from './helpers';
 import '../less/overlayrenderer.less';
 
-export enum ComponentType {
-  PLAINTEXT = 'Plain Text',
-  FAICON = 'Font Awesome Icon',
-  ACTORVAL = 'Actor Value',
-  BOOLAV = 'Boolean Actor Value',
-}
-
-export enum OverlayType {
-  SINGLELINE = 'Single Line',
-}
-
 export class OverlayData {
-  type: OverlayType;
+  type: string;
   components: Array<OverlayComponentData>;
   style: string;
-  constructor(type: OverlayType = OverlayType.SINGLELINE, components: Array<OverlayComponentData> = [], style = '') {
+  constructor(type = 'sl', components: Array<OverlayComponentData> = [], style = '') {
     this.type = type;
     this.components = components;
     this.style = style;
@@ -25,11 +14,11 @@ export class OverlayData {
 }
 
 export class OverlayComponentData {
-  type: ComponentType;
+  type: string;
   data: any;
   style: string;
 
-  constructor(type: ComponentType = ComponentType.PLAINTEXT, data: any = '', style = '') {
+  constructor(type = 'pt', data: any = '', style = '') {
     this.type = type;
     this.data = data;
     this.style = style;
