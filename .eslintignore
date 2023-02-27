@@ -26,3 +26,5 @@ playwright*
 /stats.html
 
 *.json
+
+.idea/

@@ -26,3 +26,6 @@ playwright*
 /stats.html
 .prettierignore
 .eslintignore
+package.json
+.idea/
+.gitignore

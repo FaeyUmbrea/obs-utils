@@ -12,13 +12,19 @@ export class ObsUtilsApi {
   overlayTypes: Map<string, OverlayType>;
   overlayTypeNames: Map<string, string>;
 
+  singleInstanceOverlays: Set<SvelteComponent>;
   constructor() {
     this.overlayTypes = new Map<string, OverlayType>();
     this.overlayTypeNames = new Map<string, string>();
+    this.singleInstanceOverlays = new Set<SvelteComponent>();
   }
   registerOverlayType(key: string, readableName: string, type: OverlayType) {
     this.overlayTypes.set(key, type);
     this.overlayTypeNames.set(key, readableName);
+  }
+
+  registerUniqueOverlay(overlay: SvelteComponent) {
+    this.singleInstanceOverlays.add(overlay);
   }
 }
 

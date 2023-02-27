@@ -135,3 +135,5 @@ coverage/*
 /playwright/.cache/
 
 /stats.html
+
+.vite-cache/

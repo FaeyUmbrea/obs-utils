@@ -17,6 +17,11 @@
   onDestroy(() => {
     Hooks.off('updateSettings', hook);
   });
+
+  const singleTimeOverlays = window.obsutils.singleInstanceOverlays;
 </script>
 
 <InformationOverlay additionalClasses={'overlay-renderer'} {overlays} actorIDs={actors} />
+{#each singleTimeOverlays as overlay}
+  <svelte:component this={overlay} />
+{/each}
