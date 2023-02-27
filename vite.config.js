@@ -5,6 +5,7 @@ import {postcssConfig, terserConfig} from '@typhonjs-fvtt/runtime/rollup';
 import {visualizer} from "rollup-plugin-visualizer";
 import {transform} from 'esbuild';
 import IstanbulPlugin from 'vite-plugin-istanbul';
+import {loadEnv} from "vite";
 
 // ATTENTION!
 // Please modify the below variables: s_PACKAGE_ID and s_SVELTE_HASH_ID appropriately.
@@ -28,8 +29,9 @@ const s_RESOLVE_CONFIG = {
   dedupe: ['svelte']
 };
 
-export default () =>
+export default (mode) =>
 {
+  const env = loadEnv(mode,process.cwd(),'')
   /** @type {import('vite').UserConfig} */
   return {
     root: 'src/',                 // Source location / esbuild root.
@@ -83,7 +85,8 @@ export default () =>
         entry: './obs-utils.ts',
         formats: ['es'],
         fileName: `obs-utils`
-      }
+      },
+      rollupOptions: env.VITE_COVERAGE ? {output: {manualChunks: () => 'obs-utils.js'}}:undefined
     },
 
     plugins: [

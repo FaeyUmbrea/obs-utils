@@ -1,12 +1,12 @@
-import { expect, Page } from '@playwright/test';
-import {test} from './fixtures';
+import { expect } from '@playwright/test';
+import {test} from './fixtures.js';
 import v8toIstanbul from 'v8-to-istanbul';
 import fs from 'fs';
 
 test.describe.configure({ mode: 'serial' });
 
-let obsPage: Page;
-let gmPage: Page;
+let obsPage;
+let gmPage;
 
 test.beforeAll(async ({browser})=>{
 
@@ -75,12 +75,12 @@ test.describe('DM Client Only Tests', () => {
     let before = await gmPage.evaluate(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track"))
     if(!before){
       button.click()
-      await gmPage.waitForFunction(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track")==true)
+      await gmPage.waitForFunction(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track")===true)
     }
     await button.click();
-    await gmPage.waitForFunction(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track")==false)
+    await gmPage.waitForFunction(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track")===false)
     await button.click();
-    await gmPage.waitForFunction(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track")==true)
+    await gmPage.waitForFunction(() => window['Tagger'].hasTags(window['canvas'].tokens.controlled[0],"obs_manual_track")===true)
   })
 })
 
@@ -134,7 +134,7 @@ test.describe('Multiclient UI', () => {
   })
   test('Toggle Show Combat Tracker', async () =>{
     await gmPage.evaluate(()=> window['game'].settings.set('obs-utils', 'showTrackerInCombat', false)) 
-    await gmPage.waitForFunction(()=> window['game'].settings.get('obs-utils', 'showTrackerInCombat')==false)
+    await gmPage.waitForFunction(()=> window['game'].settings.get('obs-utils', 'showTrackerInCombat')===false)
 
     await startCombatWithAllTokens(gmPage);
 
@@ -143,7 +143,7 @@ test.describe('Multiclient UI', () => {
     await endCombat(gmPage);
 
     await gmPage.evaluate(()=> window['game'].settings.set('obs-utils', 'showTrackerInCombat', true)) 
-    await gmPage.waitForFunction(()=> window['game'].settings.get('obs-utils', 'showTrackerInCombat')==true)
+    await gmPage.waitForFunction(()=> window['game'].settings.get('obs-utils', 'showTrackerInCombat')===true)
 
     await startCombatWithAllTokens(gmPage);
 
@@ -339,7 +339,7 @@ test.describe('Multiclient Functionality Combat', () => {
 })
 
 test.describe('Player Client Additional Tests', () => {
-    let playerPage: Page;
+    let playerPage;
     let playerContext;
 
     test.beforeAll(async ({browser}) => {
@@ -400,7 +400,7 @@ test.afterAll(async ()=>{
   let coverage = [...coverageGM,...coverageOBS];
   fs.rmSync(process.cwd()+"/.nyc_output",{recursive:true,force:true});
   fs.mkdirSync(process.cwd()+"/.nyc_output");
-  const converter = v8toIstanbul('dist/obs-utils.mjs',undefined,undefined,(path)=>path.includes('node_modules'));
+  const converter = v8toIstanbul('dist/obs-utils.js',undefined,undefined,(path)=>path.includes('node_modules'));
     await converter.load();
   for (const entry of coverage) {
     if(!entry.source) continue;

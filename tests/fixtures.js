@@ -1,11 +1,11 @@
-  const base = require('@playwright/test');
-const cp = require('child_process');
+import base from '@playwright/test';
+import cp from 'child_process';
 const clientPlaywrightVersion = cp
   .execSync('npx playwright --version')
   .toString()
   .trim()
   .split(' ')[1];
-const BrowserStackLocal = require('browserstack-local');
+import BrowserStackLocal from 'browserstack-local';
 
 // BrowserStack Specific Capabilities.
 const caps = {
@@ -20,10 +20,10 @@ const caps = {
   'client.playwrightVersion': clientPlaywrightVersion,
 };
 
-exports.bsLocal = new BrowserStackLocal.Local();
+export let bsLocal = new BrowserStackLocal.Local();
 
 // replace YOUR_ACCESS_KEY with your key. You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
-exports.BS_LOCAL_ARGS = {
+export let BS_LOCAL_ARGS = {
   key: process.env.BROWSERSTACK_ACCESS_KEY || 'key',
 };
 
@@ -42,23 +42,7 @@ const patchCaps = (name, title) => {
   caps.name = title;
 };
 
-const isHash = (entity) => Boolean(entity && typeof(entity) === "object" && !Array.isArray(entity));
-const nestedKeyValue = (hash, keys) => keys.reduce((hash, key) => (isHash(hash) ? hash[key] : undefined), hash);
-const isUndefined = val => (val === undefined || val === null || val === '');
-const evaluateSessionStatus = (status) => {
-  if (!isUndefined(status)) {
-    status = status.toLowerCase();
-  }
-  if (status === "passed") {
-    return "passed";
-  } else if (status === "failed" || status === "timedout") {
-    return "failed";
-  } else {
-    return "";
-  }
-}
-
-exports.test = base.test.extend({
+export let test = base.extend({
   browser: async ({ browser, playwright }, use, testInfo) => {
     if (testInfo.project.name.match(/browserstack/)) {
     // Use BrowserStack Launched Browser according to capabilities for cross-browser testing.
