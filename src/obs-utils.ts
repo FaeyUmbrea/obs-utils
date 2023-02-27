@@ -102,7 +102,7 @@ function start() {
       Hooks.on('renderImagePopout', closePopupWithDelay);
 
       // Adding OBS Remote hooks;
-      Hooks.on('updateCombat', (combat: Combat, change: any) => {
+      Hooks.on('updateCombat', (_combat: Combat, change: any) => {
         if (change.turn == 0 && change.round == 1) handleOBS('onCombatStart');
       });
       Hooks.on('deleteCombat', () => {

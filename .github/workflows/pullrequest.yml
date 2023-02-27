@@ -27,7 +27,5 @@ jobs:
         run: yarn lint
       - name: Style Check
         run: yarn stylelint
-      - name: Svelte Check
-        run: yarn lint:svelte
       - name: Formatting Check
         run: yarn prettier

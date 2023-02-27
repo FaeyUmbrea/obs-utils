@@ -8,9 +8,6 @@
   export let overlay;
   export let removeFn;
   export let componentindex;
-
-  let ListView;
-
   function handleRemove(index) {
     overlay.components = [
       ...overlay.components.slice(0, index),

@@ -7,8 +7,8 @@ const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
 export default class OverlayEditor extends FormApplication<any, any, any> {
   dataArray: Array<OverlayData> = new Array<OverlayData>();
-  protected async _updateObject(event: Event, formData?: object | undefined) {
-    if (!(formData instanceof Object)) throw new Error('Form Data Empty');
+  protected async _updateObject(_event: Event, formData?: object | undefined) {
+    if (formData == undefined) throw new Error('Form Data Empty');
     await setSetting('streamOverlays', this.dataArray);
   }
 
