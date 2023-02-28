@@ -6,8 +6,10 @@ export {};
 /* eslint no-shadow: 0 */
 
 declare global {
-  interface Window {
-    obsutils: ObsUtilsApi;
+  namespace Game {
+    interface ModuleData {
+      api: ObsUtilsApi;
+    }
   }
 
   namespace ClientSettings {

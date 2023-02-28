@@ -2,13 +2,14 @@
   import StyleEditor from '../../../applications/styleditor';
   import FallbackEditor from './FallbackEditor.svelte';
   import type { OverlayComponentData } from '../../../utils/stream.js';
+  import { getApi } from '../../../utils/helpers';
 
   export let component: OverlayComponentData;
   export let removeFn;
   export let index;
 
-  const componentNames = window.obsutils.overlayTypes.get('sl').overlayComponentNames;
-  const componentEditors = window.obsutils.overlayTypes.get('sl').overlayComponentEditors;
+  const componentNames = getApi().overlayTypes.get('sl').overlayComponentNames;
+  const componentEditors = getApi().overlayTypes.get('sl').overlayComponentEditors;
 
   function openStyleEditor() {
     let editor = new StyleEditor(component.style, (styleNew) => {
@@ -18,7 +19,7 @@
   }
 
   function getEditor(type: string) {
-    const editor = window.obsutils.overlayTypes.get('sl').overlayComponentEditors.get(type);
+    const editor = getApi().overlayTypes.get('sl').overlayComponentEditors.get(type);
     if (editor != undefined) {
       return editor;
     } else {

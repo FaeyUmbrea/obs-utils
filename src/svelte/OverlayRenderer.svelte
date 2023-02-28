@@ -2,6 +2,8 @@
   import { onDestroy } from 'svelte';
   import { getSetting } from '../utils/settings';
   import InformationOverlay from './components/PerActorOverlay.svelte';
+  import ExternalComponent from './utilities/ExternalComponent.svelte';
+  import { getApi } from '../utils/helpers';
 
   let overlays = getSetting('streamOverlays');
   let actors = getSetting('overlayActors');
@@ -18,10 +20,12 @@
     Hooks.off('updateSettings', hook);
   });
 
-  const singleTimeOverlays = window.obsutils.singleInstanceOverlays;
+  const singleTimeOverlays = getApi().singleInstanceOverlays;
 </script>
 
-<InformationOverlay additionalClasses={'overlay-renderer'} {overlays} actorIDs={actors} />
-{#each singleTimeOverlays as overlay}
-  <svelte:component this={overlay} />
-{/each}
+<div class="overlay-renderer">
+  <InformationOverlay {overlays} actorIDs={actors} />
+  {#each [...singleTimeOverlays] as overlay}
+    <ExternalComponent externalClass={overlay} />
+  {/each}
+</div>

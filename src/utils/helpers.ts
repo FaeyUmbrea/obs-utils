@@ -1,6 +1,7 @@
 // These are necessary because Game and Canvas are not always initialized so TypeScript complains
 
 import flatten from 'flat';
+import type { ObsUtilsApi } from './api';
 
 export function getGame(): Game {
   return game as Game;
@@ -61,4 +62,10 @@ export function getActorValues() {
     );
   }
   return actorValues;
+}
+
+export function getApi(): ObsUtilsApi {
+  const moduleData = getGame().modules.get('obs-utils');
+  if (moduleData) return moduleData.api;
+  else throw new Error('Something went very wrong!');
 }

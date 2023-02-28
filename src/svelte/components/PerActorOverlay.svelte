@@ -1,15 +1,14 @@
 <script lang="ts">
   import { type OverlayData } from '../../utils/stream';
+  import { getApi } from '../../utils/helpers';
   export let overlays: Array<OverlayData>;
   export let actorIDs: Array<string>;
-  export let additionalClasses: string = '';
-
   function getOverlayType(type: string) {
-    return window.obsutils.overlayTypes.get(type).overlayClass;
+    return getApi().overlayTypes.get(type).overlayClass;
   }
 </script>
 
-<div class="obs-utils overlay {additionalClasses}">
+<div class="obs-utils overlay">
   {#each actorIDs as actorID}
     <div class="actor" id={'actor' + actorID}>
       {#each overlays as overlay, index (overlays.indexOf(overlay))}

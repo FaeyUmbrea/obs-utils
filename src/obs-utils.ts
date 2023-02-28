@@ -41,11 +41,13 @@ function openDirector(button: SceneControlTool) {
 }
 
 function start() {
-  window.obsutils = new ObsUtilsApi();
-  registerDefaultTypes();
-  Hooks.call('obsUtilsInit');
-
   Hooks.once('init', async function () {
+    const moduleData = getGame()?.modules?.get('obs-utils');
+    if (moduleData) {
+      moduleData.api = new ObsUtilsApi();
+      registerDefaultTypes();
+      Hooks.call('obsUtilsInit');
+    }
     registerSettings();
     if (getGame().view == 'game') {
       await (await import('./utils/menus')).registerMenus();

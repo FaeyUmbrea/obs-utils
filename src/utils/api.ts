@@ -7,6 +7,7 @@ import AVBoolDisplayComponent from '../svelte/streamoverlays/overlaycomponents/A
 import SingleLineOverlayEditor from '../svelte/components/editors/SingleLineOverlayEditor.svelte';
 import PlainEditor from '../svelte/components/editors/PlainEditor.svelte';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
+import { getApi } from './helpers';
 
 export class ObsUtilsApi {
   overlayTypes: Map<string, OverlayType>;
@@ -67,6 +68,6 @@ export function registerDefaultTypes() {
   singleLineOverlay.overlayComponents.set('Actor Value', ActorValComponent);
   singleLineOverlay.overlayComponents.set('Boolean Actor Value', AVBoolDisplayComponent);
 
-  window.obsutils.registerOverlayType('sl', 'Single Line', singleLineOverlay);
-  window.obsutils.overlayTypes.set('Single Line', singleLineOverlay);
+  getApi().registerOverlayType('sl', 'Single Line', singleLineOverlay);
+  getApi().overlayTypes.set('Single Line', singleLineOverlay);
 }
