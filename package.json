@@ -26,9 +26,7 @@
     "preview": "vite preview",
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
-    "test": "yarn playwright test",
-    "test:local": "yarn playwright test --config=./playwright_local.config.ts",
-    "test:local-browserstack": "cross-env BROWSERSTACK_LOCAL=true yarn playwright test --config=./playwright_local_browserstack.config.ts",
+    "test": "yarn playwright test --reporter=html",
     "watch": "vite build --watch",
     "dev": "vite"
   },
@@ -52,7 +50,7 @@
   "devDependencies": {
     "@jhubbardsf/svelte-sortablejs": "^1.1.0",
     "@league-of-foundry-developers/foundry-vtt-types": "9.280.0",
-    "@playwright/test": "^1.27.1",
+    "@playwright/test": "^1.31.2",
     "@rollup/plugin-typescript": "10.0.1",
     "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "@tsconfig/svelte": "3.0.0",
@@ -75,6 +73,7 @@
     "less": "4.1.3",
     "lint-staged": "^13.0.3",
     "nyc": "15.1.0",
+    "playwright-teamcity-reporter": "^0.2.0",
     "postcss": "8.4.20",
     "postcss-less": "6.0.0",
     "prettier": "2.8.1",
