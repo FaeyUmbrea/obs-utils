@@ -1,5 +1,4 @@
-import { expect } from '@playwright/test';
-import {test} from './fixtures.js';
+import {expect, test} from '@playwright/test';
 import v8toIstanbul from 'v8-to-istanbul';
 import fs from 'fs';
 

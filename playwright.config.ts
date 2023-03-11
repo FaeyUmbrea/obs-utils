@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
-import './tests/fixtures';
+import { devices } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -13,7 +13,7 @@ import './tests/fixtures';
 const config: PlaywrightTestConfig = {
   testDir: './tests',
   /* Maximum time one test can run for. */
-  timeout: 75 * 1000,
+  timeout: 30 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -40,18 +40,18 @@ const config: PlaywrightTestConfig = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    viewport: {width:1280,height:720}
+    headless: false,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chrome@latest:OSX Monterey@browserstack',
-      use:{
-        browserName: 'chromium',
-        headless: true
-      }
+      name: 'chrome',
+      use: {
+        ...devices['Desktop Chrome']
+      },
     },
+
 
     /* Test against mobile viewports. */
     // {
