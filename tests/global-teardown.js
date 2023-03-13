@@ -1,8 +1,8 @@
 // global-teardown.js
-import { bsLocal } from './fixtures';
-import { promisify } from 'util';
+const { bsLocal } = require('./fixtures');
+const { promisify } = require('util');
 const sleep = promisify(setTimeout);
-export default async () => {
+module.exports = async () => {
     // Stop the Local instance after your test run is completed, i.e after driver.quit
     let localStopped = false;
 
