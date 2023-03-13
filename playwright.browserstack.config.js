@@ -1,4 +1,3 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
 import './tests/fixtures.js';
 
 /**
@@ -10,7 +9,7 @@ import './tests/fixtures.js';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-const config: PlaywrightTestConfig = {
+const config = {
     testDir: './tests',
     /* Maximum time one test can run for. */
     timeout: 75 * 1000,
