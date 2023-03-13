@@ -1,6 +1,7 @@
-import {expect, test} from '@playwright/test';
-//import v8toIstanbul from 'v8-to-istanbul';
-//import fs from 'fs';
+import { expect } from '@playwright/test';
+import {test} from './fixtures.js';
+import v8toIstanbul from 'v8-to-istanbul';
+import fs from 'fs';
 
 test.describe.configure({ mode: 'serial' });
 
@@ -13,9 +14,9 @@ test.beforeAll(async ({browser})=>{
 
   gmPage = await gmContext.newPage();
 
-  //await gmPage.coverage.startJSCoverage();
+  await gmPage.coverage.startJSCoverage();
   await gmPage.goto("/setup");
-  
+
   if(gmPage.url().includes("/auth")){
     await gmPage.locator("input#key").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
     await gmPage.getByRole('button', { name: ' Submit' }).click();
@@ -31,7 +32,7 @@ test.beforeAll(async ({browser})=>{
 
   await gmPage.locator('select[name="userid"]').selectOption({label:"Gamemaster"});
   await gmPage.locator("input[name=password]").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
-    
+
   await gmPage.getByRole('button', { name: ' Join Game Session' }).click();
   await expect(gmPage).toHaveURL('/game');
 })
@@ -42,9 +43,9 @@ test.beforeAll(async ({browser})=>{
 
   await obsContext.addInitScript({path:'tests/initScripts/fakeobs.js'})
 
-  obsPage = await obsContext.newPage(); 
+  obsPage = await obsContext.newPage();
 
-  //await obsPage.coverage.startJSCoverage();
+  await obsPage.coverage.startJSCoverage();
 
   await obsPage.goto("/join");
 
@@ -58,7 +59,7 @@ test.beforeAll(async ({browser})=>{
 test.describe('DM Client Only Tests', () => {
   test.beforeEach(async () => {
     await gmPage.goto('/game');
-  
+
     await gmPage.waitForFunction(() => window['game'].ready)
   })
   test('Click Director Button to Open and Close', async () => {
@@ -86,7 +87,7 @@ test.describe('DM Client Only Tests', () => {
 test.describe('OBS Client Only Tests', () => {
   test.beforeEach(async () => {
     await obsPage.goto('/game');
-  
+
     await obsPage.waitForFunction(() => window['game'].ready)
   })
   test('Test Elements Disappearing', async () => {
@@ -108,11 +109,11 @@ test.describe('OBS Client Only Tests', () => {
 test.describe('Multiclient UI', () => {
   test.beforeEach(async () => {
     await gmPage.goto('/game');
-  
+
     await gmPage.waitForFunction(() => window['game'].ready)
-  
+
     await obsPage.goto('/game');
-  
+
     await obsPage.waitForFunction(() => window['game'].ready)
   })
   test('Journal Popout Close Delay', async () => {
@@ -132,7 +133,7 @@ test.describe('Multiclient UI', () => {
     await expect(obsPage.locator("div.app.window-app.image-popout")).not.toBeVisible();
   })
   test('Toggle Show Combat Tracker', async () =>{
-    await gmPage.evaluate(()=> window['game'].settings.set('obs-utils', 'showTrackerInCombat', false)) 
+    await gmPage.evaluate(()=> window['game'].settings.set('obs-utils', 'showTrackerInCombat', false))
     await gmPage.waitForFunction(()=> window['game'].settings.get('obs-utils', 'showTrackerInCombat')===false)
 
     await startCombatWithAllTokens(gmPage);
@@ -141,7 +142,7 @@ test.describe('Multiclient UI', () => {
 
     await endCombat(gmPage);
 
-    await gmPage.evaluate(()=> window['game'].settings.set('obs-utils', 'showTrackerInCombat', true)) 
+    await gmPage.evaluate(()=> window['game'].settings.set('obs-utils', 'showTrackerInCombat', true))
     await gmPage.waitForFunction(()=> window['game'].settings.get('obs-utils', 'showTrackerInCombat')===true)
 
     await startCombatWithAllTokens(gmPage);
@@ -158,11 +159,11 @@ test.describe('Multiclient UI', () => {
 test.describe('Multiclient Functionality Non-Combat', () => {
   test.beforeEach(async () => {
     await gmPage.goto('/game');
-  
+
     await gmPage.waitForFunction(() => window['game'].ready)
-  
+
     await obsPage.goto('/game');
-  
+
     await obsPage.waitForFunction(() => window['game'].ready)
   })
   test('Track All', async () => {
@@ -245,17 +246,17 @@ test.describe('Multiclient Functionality Non-Combat', () => {
     await expect(before).not.toEqual(after);
 
   })
-  
+
 })
 
 test.describe('Multiclient Functionality Combat', () => {
   test.beforeEach(async () => {
     await gmPage.goto('/game');
-  
+
     await gmPage.waitForFunction(() => window['game'].ready)
-  
+
     await obsPage.goto('/game');
-  
+
     await obsPage.waitForFunction(() => window['game'].ready)
   })
   test('Track All', async () => {
@@ -334,81 +335,81 @@ test.describe('Multiclient Functionality Combat', () => {
     await endCombat(gmPage);
 
   })
-  
+
 })
 
 test.describe('Player Client Additional Tests', () => {
-    let playerPage;
-    let playerContext;
+  let playerPage;
+  let playerContext;
 
-    test.beforeAll(async ({browser}) => {
-      playerContext = await browser.newContext()
-      playerPage = await playerContext.newPage();
-      playerPage.goto("/join")
-      await playerPage.locator('select[name="userid"]').selectOption({label:"Player3"});
-      await playerPage.locator("input[name=password]").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
-      await playerPage.getByRole('button', { name: ' Join Game Session' }).click();
-      await expect(playerPage).toHaveURL('/game');
-      await playerPage.waitForFunction(() => window['game']?.ready)
-    })
-
-    test.beforeEach(async () => {
-      await gmPage.goto('/game');
-    
-      await gmPage.waitForFunction(() => window['game'].ready)
-    
-      await obsPage.goto('/game');
-    
-      await obsPage.waitForFunction(() => window['game'].ready)
-
-      await playerPage.goto('/game');
-    
-      await playerPage.waitForFunction(() => window['game'].ready)
-    })
-
-    test('Copy Player', async () =>{
-      await openDirector(gmPage);
-  
-      await gmPage.locator("div[id=director-application] label[for=radiooocclonePlayer]").click();
-      await gmPage.locator("select[name=trackedPlayer]").selectOption({label:'Player3'});
-  
-      await closeDirector(gmPage);
-  
-  
-      await playerPage.evaluate(() => window['canvas'].pan({x: 100, y: 100, scale: 0.5}));
-      
-      await expect.poll(async () => {return await getOBSViewport()}).toEqual([100,100,0.5,0.5]);
-  
-      await playerPage.evaluate(() => window['canvas'].pan({x: 200, y: 200, scale: 1}));
-  
-      await expect.poll(async () => {return await getOBSViewport()}).toEqual([200,200,1,1]);
-  
-      await panGMViewport(gmPage,300,300,10);
-  
-      await expect.poll(async () => {return await getOBSViewport()}).toEqual([200,200,1,1]);
-    })
-
-    test.afterAll(async () =>{
-      await playerContext.close();
-    })
+  test.beforeAll(async ({browser}) => {
+    playerContext = await browser.newContext()
+    playerPage = await playerContext.newPage();
+    playerPage.goto("/join")
+    await playerPage.locator('select[name="userid"]').selectOption({label:"Player3"});
+    await playerPage.locator("input[name=password]").fill(process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '');
+    await playerPage.getByRole('button', { name: ' Join Game Session' }).click();
+    await expect(playerPage).toHaveURL('/game');
+    await playerPage.waitForFunction(() => window['game']?.ready)
   })
 
-/*test.afterAll(async ()=>{
+  test.beforeEach(async () => {
+    await gmPage.goto('/game');
+
+    await gmPage.waitForFunction(() => window['game'].ready)
+
+    await obsPage.goto('/game');
+
+    await obsPage.waitForFunction(() => window['game'].ready)
+
+    await playerPage.goto('/game');
+
+    await playerPage.waitForFunction(() => window['game'].ready)
+  })
+
+  test('Copy Player', async () =>{
+    await openDirector(gmPage);
+
+    await gmPage.locator("div[id=director-application] label[for=radiooocclonePlayer]").click();
+    await gmPage.locator("select[name=trackedPlayer]").selectOption({label:'Player3'});
+
+    await closeDirector(gmPage);
+
+
+    await playerPage.evaluate(() => window['canvas'].pan({x: 100, y: 100, scale: 0.5}));
+
+    await expect.poll(async () => {return await getOBSViewport()}).toEqual([100,100,0.5,0.5]);
+
+    await playerPage.evaluate(() => window['canvas'].pan({x: 200, y: 200, scale: 1}));
+
+    await expect.poll(async () => {return await getOBSViewport()}).toEqual([200,200,1,1]);
+
+    await panGMViewport(gmPage,300,300,10);
+
+    await expect.poll(async () => {return await getOBSViewport()}).toEqual([200,200,1,1]);
+  })
+
+  test.afterAll(async () =>{
+    await playerContext.close();
+  })
+})
+
+test.afterAll(async ()=>{
   let coverageGM = await gmPage.coverage.stopJSCoverage();
   let coverageOBS = await obsPage.coverage.stopJSCoverage();
   let coverage = [...coverageGM,...coverageOBS];
   fs.rmSync(process.cwd()+"/.nyc_output",{recursive:true,force:true});
   fs.mkdirSync(process.cwd()+"/.nyc_output");
   const converter = v8toIstanbul('dist/obs-utils.js',undefined,undefined,(path)=>path.includes('node_modules'));
-    await converter.load();
+  await converter.load();
   for (const entry of coverage) {
     if(!entry.source) continue;
     converter.applyCoverage(entry.functions);
   }
   let data = JSON.stringify(converter.toIstanbul());
-    
+
   fs.writeFileSync(process.cwd() + '/.nyc_output/data.json',data);
-})*/
+})
 
 async function startCombatWithAllTokens(gmPage){
   await gmPage.locator("a.item[data-tab=combat]").click();
