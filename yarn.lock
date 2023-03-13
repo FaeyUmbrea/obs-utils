@@ -3639,6 +3639,11 @@ playwright-core@1.31.1:
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.31.1.tgz#4deeebbb8fb73b512593fe24bea206d8fd85ff7f"
   integrity sha512-JTyX4kV3/LXsvpHkLzL2I36aCdml4zeE35x+G5aPc4bkLsiRiQshU5lWeVpHFAuC8xAcbI6FDcw/8z3q2xtJSQ==
 
+playwright-teamcity-reporter@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/playwright-teamcity-reporter/-/playwright-teamcity-reporter-0.2.0.tgz#0f431ed4e2e0ccbfc4a9deb60b13f05f8a15d4a4"
+  integrity sha512-S7kwDmaPtwHPbZVtfNXv25KFKN2Tg7fjXogJso2QF9fpSkVKaCcTGXuaFYRxegh9Xl13XwPolnJSlxi2TIGTZA==
+
 postcss-attribute-case-insensitive@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/postcss-attribute-case-insensitive/-/postcss-attribute-case-insensitive-5.0.2.tgz#03d761b24afc04c09e757e92ff53716ae8ea2741"
