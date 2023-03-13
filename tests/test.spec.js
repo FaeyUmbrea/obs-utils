@@ -1,6 +1,6 @@
 import {expect, test} from '@playwright/test';
-import v8toIstanbul from 'v8-to-istanbul';
-import fs from 'fs';
+//import v8toIstanbul from 'v8-to-istanbul';
+//import fs from 'fs';
 
 test.describe.configure({ mode: 'serial' });
 
@@ -13,7 +13,7 @@ test.beforeAll(async ({browser})=>{
 
   gmPage = await gmContext.newPage();
 
-  await gmPage.coverage.startJSCoverage();
+  //await gmPage.coverage.startJSCoverage();
   await gmPage.goto("/setup");
   
   if(gmPage.url().includes("/auth")){
@@ -44,7 +44,7 @@ test.beforeAll(async ({browser})=>{
 
   obsPage = await obsContext.newPage(); 
 
-  await obsPage.coverage.startJSCoverage();
+  //await obsPage.coverage.startJSCoverage();
 
   await obsPage.goto("/join");
 
@@ -393,7 +393,7 @@ test.describe('Player Client Additional Tests', () => {
     })
   })
 
-test.afterAll(async ()=>{
+/*test.afterAll(async ()=>{
   let coverageGM = await gmPage.coverage.stopJSCoverage();
   let coverageOBS = await obsPage.coverage.stopJSCoverage();
   let coverage = [...coverageGM,...coverageOBS];
@@ -408,7 +408,7 @@ test.afterAll(async ()=>{
   let data = JSON.stringify(converter.toIstanbul());
     
   fs.writeFileSync(process.cwd() + '/.nyc_output/data.json',data);
-})
+})*/
 
 async function startCombatWithAllTokens(gmPage){
   await gmPage.locator("a.item[data-tab=combat]").click();
