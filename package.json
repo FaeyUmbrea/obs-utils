@@ -27,7 +27,6 @@
     "stylelint": "stylelint \"**/*.less\"",
     "stylelint:fix": "stylelint \"**/*.less\" --fix",
     "test": "yarn playwright test --reporter=html",
-    "test:ci": "yarn playwright test --reporter=playwright-teamcity-reporter",
     "watch": "vite build --watch",
     "dev": "vite"
   },
