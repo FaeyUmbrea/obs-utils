@@ -1,5 +1,5 @@
 // global-teardown.js
-import { bsLocal } from './fixtures';
+import { bsLocal } from './fixtures.js';
 import { promisify } from 'util';
 const sleep = promisify(setTimeout);
 export default async () => {
