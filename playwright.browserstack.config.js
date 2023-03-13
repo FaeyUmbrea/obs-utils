@@ -46,7 +46,7 @@ const config = {
             name: 'chrome@latest:OSX Monterey@browserstack',
             use:{
                 browserName: 'chromium',
-                channel: 'chromium',
+                channel: 'chrome',
                 headless: true
             }
         },
