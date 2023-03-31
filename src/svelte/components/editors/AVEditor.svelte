@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { getActorValues } from '../../../utils/helpers';
 
   export let data;

@@ -5,20 +5,20 @@ import '../less/actorselect.less';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
-export default class OverlayActorSelect extends FormApplication<any, any, any> {
-  component!: OverlayActorSelectUi;
-  protected async _updateObject(event: Event, formData?: object | undefined) {
+export default class OverlayActorSelect extends FormApplication {
+  component;
+  async _updateObject(event, formData) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
-    delete (formData as any).search;
-    const data = (Object.values(expandObject(formData)) as Array<string>).filter((entry) => entry != null);
+    delete (formData).search;
+    const data = (Object.values(expandObject(formData))).filter((entry) => entry != null);
     setSetting('overlayActors', data);
   }
 
   getData() {
-    return getSetting('overlayActors') as Array<string>;
+    return getSetting('overlayActors');
   }
 
-  static get defaultOptions(): FormApplicationOptions {
+  static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ['actorselect'],
       template: DICECTOR_TEMPLATE,
@@ -28,10 +28,10 @@ export default class OverlayActorSelect extends FormApplication<any, any, any> {
       height: 300,
       width: 200,
       resizable: true,
-    }) as FormApplicationOptions;
+    });
   }
 
-  protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
+  async _renderInner(data) {
     const html = await super._renderInner(data);
     const actors = getGame().actors;
     let actorArray = undefined;
@@ -39,7 +39,7 @@ export default class OverlayActorSelect extends FormApplication<any, any, any> {
       actorArray = Array.from(actors.values());
     }
     this.component = new OverlayActorSelectUi({
-      target: html.get(0) as Element,
+      target: html.get(0),
       props: {
         selectedActors: data,
         actors: actorArray,

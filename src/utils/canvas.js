@@ -1,16 +1,16 @@
 /* global Tagger */
 
-import { getCurrentCombatants } from './combat';
-import { UI_ELEMENTS } from './const';
-import { getCanvas, getGame, sleep } from './helpers';
-import { getSetting } from './settings';
+import { getCurrentCombatants } from './combat.js';
+import { UI_ELEMENTS } from './const.js';
+import { getCanvas, getGame, sleep } from './helpers.js';
+import { getSetting } from './settings.js';
 
-export const VIEWPORT_DATA = new Map<string, Canvas.View>();
+export const VIEWPORT_DATA = new Map();
 
-export function hideApplication(_: never, html: JQuery) {
+export function hideApplication(_, html) {
   html.hide();
 }
-export function hideTokenBorder(token: Token) {
+export function hideTokenBorder(token) {
   if (token?.border?.alpha) {
     token.border.alpha = 0;
   }
@@ -21,10 +21,10 @@ function getAutoTokens() {
 }
 
 function getManualToken() {
-  return Tagger.getByTag('obs_manual_track').map((manualToken) => manualToken.object as Token);
+  return Tagger.getByTag('obs_manual_track').map((manualToken) => manualToken.object);
 }
 
-function toggleToken(token: Token) {
+function toggleToken(token) {
   Tagger.toggleTags(token, 'obs_manual_track');
 }
 
@@ -36,8 +36,8 @@ function trackAll() {
   trackTokenList(getAutoTokens());
 }
 
-function trackTokenList(tokens: Array<Token | null | undefined> | null | undefined) {
-  const coordinates = new Array<TrackedTokenData>();
+function trackTokenList(tokens) {
+  const coordinates = [];
 
   tokens?.forEach((token) => {
     const object = { x: token?.document.x, y: token?.document.y, width: token?.w, height: token?.h };
@@ -54,8 +54,8 @@ function trackTokenList(tokens: Array<Token | null | undefined> | null | undefin
   const scaleY = screenDimensions[1] / (bounds.maxY - bounds.minY + 300);
 
   let scale = Math.min(scaleX, scaleY);
-  scale = Math.min(scale, getSetting('maxScale') as number);
-  scale = Math.max(scale, getSetting('minScale') as number);
+  scale = Math.min(scale, getSetting('maxScale'));
+  scale = Math.max(scale, getSetting('minScale'));
 
   getCanvas().animatePan({ x: bounds.center.x, y: bounds.center.y, scale: scale });
 }
@@ -86,18 +86,18 @@ export function tokenMoved() {
   }
 }
 
-function calculateBoundsOfCoodinates(coordSet: Array<TrackedTokenData>) {
-  let minX: number, maxX: number, minY: number, maxY: number;
+function calculateBoundsOfCoodinates(coordSet) {
+  let minX, maxX, minY, maxY;
   maxX = maxY = Number.MIN_VALUE;
   minX = minY = Number.MAX_VALUE;
 
   coordSet.forEach((coords) => {
-    minX = Math.min(minX, coords.x as number);
-    minY = Math.min(minY, coords.y as number);
-    maxX = Math.max(maxX, (coords.x as number) + (coords.width as number));
-    maxY = Math.max(maxY, (coords.y as number) + (coords.height as number));
+    minX = Math.min(minX, coords);
+    minY = Math.min(minY, coords);
+    maxX = Math.max(maxX, (coords) + (coords.width));
+    maxY = Math.max(maxY, (coords) + (coords.height));
   });
-  if ((minX == minY && minX == Number.MAX_VALUE) || (maxX == maxY && maxX == Number.MIN_VALUE)) return undefined;
+  if ((minX === minY && minX === Number.MAX_VALUE) || (maxX === maxY && maxX === Number.MIN_VALUE)) return undefined;
   return {
     minX: minX,
     minY: minY,
@@ -107,17 +107,17 @@ function calculateBoundsOfCoodinates(coordSet: Array<TrackedTokenData>) {
   };
 }
 
-export function viewportChanged(userId: string) {
+export function viewportChanged(userId) {
   if (getGame().combat?.started) {
     switch (getSetting('defaultInCombat')) {
       case 'cloneDM':
         if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'cloneTurnPlayer':
-        if (getCurrentCombatants()?.some((e) => e.id == userId)) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (getCurrentCombatants()?.some((e) => e.id === userId)) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'clonePlayer':
-        if (userId == getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (userId === getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -128,7 +128,7 @@ export function viewportChanged(userId: string) {
         if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'clonePlayer':
-        if (userId == getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (userId === getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -139,7 +139,7 @@ export function viewportChanged(userId: string) {
 export function isGM() {
   return getGame().user?.isGM;
 }
-export function expandTokenHud(_tokenHud: TokenHUD, html: JQuery, token: TokenDocument) {
+export function expandTokenHud(_tokenHud, html, token) {
   if (getGame().user?.isGM) {
     const currenToken = getCanvas().tokens?.get(token._id);
     const rightSide = html.find('div.col.right');
@@ -150,7 +150,7 @@ export function expandTokenHud(_tokenHud: TokenHUD, html: JQuery, token: TokenDo
       }"><i title='Track Token' class='fa-solid fa-signal-stream' /></div>`,
     );
     element.on('click', function () {
-      toggleToken(currenToken as Token);
+      toggleToken(currenToken);
       $(this).toggleClass('active');
     });
     rightSide.append(element);
@@ -166,7 +166,7 @@ export function scaleToFit() {
   )
     return;
   const screenDimensions = getCanvas().screenDimensions;
-  const sceneDimensions = getCanvas().scene?.dimensions as Canvas.Dimensions;
+  const sceneDimensions = getCanvas().scene?.dimensions;
 
   const center = { x: sceneDimensions.width / 2, y: sceneDimensions.height / 2 };
   const scale = Math.min(screenDimensions[0] / sceneDimensions.width, screenDimensions[1] / sceneDimensions.height);
@@ -174,12 +174,12 @@ export function scaleToFit() {
   getCanvas().animatePan({ ...center, scale: scale });
 }
 
-export async function closePopupWithDelay(popout: Application) {
-  await sleep((getSetting('popupCloseDelay') as number) * 1000);
+export async function closePopupWithDelay(popout) {
+  await sleep((getSetting('popupCloseDelay')) * 1000);
   popout.close();
 }
 
-export async function preserveSideBar(sidebar: Sidebar) {
+export async function preserveSideBar(sidebar) {
   UI_ELEMENTS.sidebar = sidebar;
 }
 

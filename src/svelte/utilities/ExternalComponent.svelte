@@ -1,8 +1,8 @@
-<script lang="ts">
+<script>
   import { onMount, SvelteComponent } from 'svelte';
 
   let div;
-  export let externalClass: typeof SvelteComponent;
+  export let externalClass;
   onMount(() => {
     new externalClass({
       target: div,

@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
   import { OBSEvent } from '../../utils/settings';
   import ObsSetting from './OBSSetting.svelte';
 
-  export let eventArray: OBSEvent[];
-  export let useWebSocket: boolean;
-  function handleRemove(index: number) {
+  export let eventArray;
+  export let useWebSocket;
+  function handleRemove(index) {
     eventArray = [...eventArray.slice(0, index), ...eventArray.slice(index + 1, eventArray.length)];
   }
 

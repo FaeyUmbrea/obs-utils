@@ -5,26 +5,26 @@ import '../less/obsdirector.less';
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/apps.hbs';
 
 export default class DirectorApplication extends Application {
-  buttonData: DirectorData;
-  sidebarButton: SceneControlTool;
-  component: DirectorApp | undefined;
-  constructor(sidebarButton: SceneControlTool) {
+  buttonData;
+  sidebarButton;
+  component;
+  constructor(sidebarButton) {
     super();
     this.buttonData = generateDataBlockFromSetting();
     this.sidebarButton = sidebarButton;
   }
 
-  async onChangeIC(event: Event) {
-    await setSetting('defaultInCombat', (event.target as HTMLInputElement).value);
+  async onChangeIC(event) {
+    await setSetting('defaultInCombat', (event.target).value);
   }
-  async onChangeOOC(event: Event) {
-    await setSetting('defaultOutOfCombat', (event.target as HTMLInputElement).value);
+  async onChangeOOC(event) {
+    await setSetting('defaultOutOfCombat', (event.target).value);
   }
-  async onChangePlayer(event: Event) {
-    await setSetting('trackedUser', (event.target as HTMLSelectElement).value);
+  async onChangePlayer(event) {
+    await setSetting('trackedUser', (event.target).value);
   }
 
-  activateListeners(html: JQuery) {
+  activateListeners(html) {
     const playerList = this.buttonData.players;
     const currentIC = getSetting('defaultInCombat');
     const currentOOC = getSetting('defaultOutOfCombat');
@@ -32,7 +32,7 @@ export default class DirectorApplication extends Application {
 
     if (currentIC)
       this.component = new DirectorApp({
-        target: html.get(0) as Element,
+        target: html.get(0),
         props: {
           ic: this.buttonData.ic,
           ooc: this.buttonData.ooc,
@@ -61,7 +61,7 @@ export default class DirectorApplication extends Application {
     });
   }
 
-  async close(options: any) {
+  async close(options) {
     super.close(options);
     $('[data-tool=openStreamDirector]').removeClass('active');
     this.sidebarButton.active = false;

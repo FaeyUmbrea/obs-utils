@@ -82,7 +82,7 @@ export default (mode) =>
       target: ['es2022'],
       terserOptions: s_TERSER ? { ...terserConfig(), ecma: 2022 } : void 0,
       lib: {
-        entry: './obs-utils.ts',
+        entry: './obs-utils.js',
         formats: ['es'],
         fileName: `obs-utils`
       },

@@ -4,20 +4,20 @@ import '../less/obsremote.less';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
-export default class OBSWebsocketApplication extends FormApplication<any, any, any> {
-  component: ObsWebsocket | undefined;
+export default class OBSWebsocketApplication extends FormApplication {
+  component;
 
-  protected async _updateObject(event: Event, formData?: object | undefined) {
+  async _updateObject(event, formData) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
     const data = expandObject(formData);
     setSetting('websocketSettings', data);
   }
 
   getData() {
-    return getSetting('websocketSettings') as OBSWebsocketSettings;
+    return getSetting('websocketSettings');
   }
 
-  static get defaultOptions(): FormApplicationOptions {
+  static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ['obswebsocket'],
       template: DICECTOR_TEMPLATE,
@@ -25,13 +25,13 @@ export default class OBSWebsocketApplication extends FormApplication<any, any, a
       title: 'OBS Websocket Settings',
       tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
       resize: true,
-    }) as FormApplicationOptions;
+    });
   }
 
-  protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
+  async _renderInner(data) {
     const html = await super._renderInner(data);
     this.component = new ObsWebsocket({
-      target: html.get(0) as Element,
+      target: html.get(0),
       props: {
         websocketSettings: data,
       },

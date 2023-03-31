@@ -1,12 +1,11 @@
-import { getGame } from './helpers';
 import { ID as moduleID } from './const';
-import OBSRemoteApplication from '../applications/obsremote';
-import OBSWebsocketApplication from '../applications/obswebsocket';
-import OverlayActorSelect from '../applications/overlayactorselect';
-import OverlayEditor from '../applications/overlayeditor';
+import OBSRemoteApplication from '../applications/obsremote.js';
+import OBSWebsocketApplication from '../applications/obswebsocket.js';
+import OverlayActorSelect from '../applications/overlayactorselect.js';
+import OverlayEditor from '../applications/overlayeditor.js';
 
 export async function registerMenus() {
-  getGame().settings.registerMenu(moduleID, 'obsRemoteMenu', {
+  game.settings.registerMenu(moduleID, 'obsRemoteMenu', {
     name: `${moduleID}.settings.obsRemoteMenu.Name`,
     label: `${moduleID}.settings.obsRemoteMenu.Label`,
     hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
@@ -14,7 +13,7 @@ export async function registerMenus() {
     icon: 'fas fa-bars',
     restricted: true,
   });
-  getGame().settings.registerMenu(moduleID, 'obsWebsocketMenu', {
+  game.settings.registerMenu(moduleID, 'obsWebsocketMenu', {
     name: `${moduleID}.settings.obsWebsocketMenu.Name`,
     label: `${moduleID}.settings.obsWebsocketMenu.Label`,
     hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
@@ -22,7 +21,7 @@ export async function registerMenus() {
     icon: 'fas fa-bars',
     restricted: true,
   });
-  getGame().settings.registerMenu(moduleID, 'overlayActorSelect', {
+  game.settings.registerMenu(moduleID, 'overlayActorSelect', {
     name: `${moduleID}.settings.overlayActorSelect.Name`,
     label: `${moduleID}.settings.overlayActorSelect.Label`,
     hint: `${moduleID}.settings.overlayActorSelect.Hint`,
@@ -30,7 +29,7 @@ export async function registerMenus() {
     icon: 'fas fa-bars',
     restricted: true,
   });
-  getGame().settings.registerMenu(moduleID, 'overlayEditor', {
+  game.settings.registerMenu(moduleID, 'overlayEditor', {
     name: `${moduleID}.settings.overlayEditor.Name`,
     label: `${moduleID}.settings.overlayEditor.Label`,
     hint: `${moduleID}.settings.overlayEditor.Hint`,

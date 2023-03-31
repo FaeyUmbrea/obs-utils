@@ -1,36 +1,36 @@
-import { getSetting, OBSAction, OBSEvent, OBSRemoteSettings, OBSWebsocketSettings } from './settings';
+import { getSetting, OBSAction, OBSEvent, OBSRemoteSettings, OBSWebsocketSettings } from './settings.js';
 import OBSWebSocket from 'obs-websocket-js';
 import { isOBS } from './helpers';
 
-let obswebsocket: OBSWebSocket;
+let obswebsocket;
 
-function getWSSettings(): OBSWebsocketSettings {
+function getWSSettings() {
   const url = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-host');
   const port = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-port');
   const password = getComputedStyle(document.documentElement).getPropertyValue('--local-obs-password');
-  const setting = getSetting('websocketSettings') as OBSWebsocketSettings;
+  const setting = getSetting('websocketSettings');
   if (url) setting.url = url;
   if (port) setting.port = port;
   if (password) setting.password = password;
   return setting;
 }
 
-export async function handleOBS(event: string): Promise<void> {
+export async function handleOBS() {
   if (!isOBS()) return;
-  const obsEvents = (getSetting('obsRemote') as OBSRemoteSettings)[event as keyof OBSRemoteSettings];
-  const useWS = getSetting('enableOBSWebsocket') as boolean;
+  const obsEvents = getSetting('obsRemote');
+  const useWS = getSetting('enableOBSWebsocket');
   obsEvents.forEach(async (obsEvent) => await triggerOBSAction(obsEvent, useWS));
 }
 
-async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
+async function triggerOBSAction(obsevent, useWS) {
   if (!useWS) {
-    obsstudio.getControlLevel(async (controlLevel) => {
+    window.obsstudio.getControlLevel(async (controlLevel) => {
       switch (obsevent.targetAction) {
         case OBSAction.SwitchScene:
           if (!(controlLevel == 4)) {
             throw new Error('Control Level too Low');
           }
-          obsstudio.setCurrentScene(obsevent.sceneName);
+          window.obsstudio.setCurrentScene(obsevent.sceneName);
           break;
         default:
           throw new Error('OBS Websocket is Disabled! How are you triggering this?!?');
@@ -72,11 +72,11 @@ async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
   }
 }
 
-async function getSceneItemIdByName(scene: string, item: string): Promise<number> {
+async function getSceneItemIdByName(scene, item) {
   return (await (await getWebsocket()).call('GetSceneItemId', { sceneName: scene, sourceName: item })).sceneItemId;
 }
 
-async function getWebsocket(): Promise<OBSWebSocket> {
+async function getWebsocket() {
   if (obswebsocket) return obswebsocket;
   const wsSettings = getWSSettings();
   obswebsocket = new OBSWebSocket();
@@ -85,7 +85,7 @@ async function getWebsocket(): Promise<OBSWebSocket> {
 }
 
 export async function registerOBSEvents() {
-  const useWS = getSetting('enableOBSWebsocket') as boolean;
+  const useWS = getSetting('enableOBSWebsocket');
   if (useWS) {
     (await getWebsocket()).addListener('StreamStateChanged', (returnValue) => {
       if (returnValue.outputState == 'OBS_WEBSOCKET_OUTPUT_STOPPED') handleOBS('onStopStreaming');

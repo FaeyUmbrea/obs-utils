@@ -1,4 +1,4 @@
-import { handleOBS, registerOBSEvents } from './utils/obs';
+import { handleOBS, registerOBSEvents } from './utils/obs.js';
 import {
   hideApplication,
   hideTokenBorder,
@@ -11,17 +11,17 @@ import {
   showTracker,
   hideSidebar,
 } from './utils/canvas.js';
-import { registerSettings } from './utils/settings';
-import DirectorApplication from './applications/director';
-import { socketCanvas } from './utils/socket';
-import { handleCombat, stopCombat } from './utils/combat';
-import { getGame, isOBS } from './utils/helpers';
-import { renderOverlays } from './utils/stream';
-import { ObsUtilsApi, registerDefaultTypes } from './utils/api';
+import { registerSettings } from './utils/settings.js';
+import DirectorApplication from './applications/director.js';
+import { socketCanvas } from './utils/socket.js';
+import { handleCombat, stopCombat } from './utils/combat.js';
+import { getGame, isOBS } from './utils/helpers.js';
+import { renderOverlays } from './utils/stream.js';
+import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 
-let d: any;
+let d;
 
-function buildButtons(buttons: SceneControl[]) {
+function buildButtons(buttons) {
   if (!getGame().user?.isGM) return;
   const buttonGroup = buttons.find((element) => element.name === 'token');
   const newButton = {
@@ -29,12 +29,12 @@ function buildButtons(buttons: SceneControl[]) {
     name: 'openStreamDirector',
     title: 'Open Stream Director',
     toggle: true,
-    onClick: (): void => openDirector(newButton),
+    onClick: ()=> openDirector(newButton),
   };
   buttonGroup?.tools.push(newButton);
 }
 
-function openDirector(button: SceneControlTool) {
+function openDirector(button) {
   if (!d) d = new DirectorApplication(button);
   if (!d.rendered) d.render(true);
   else d.close();
@@ -50,7 +50,7 @@ function start() {
     }
     registerSettings();
     if (getGame().view == 'game') {
-      await (await import('./utils/menus')).registerMenus();
+      await (await import('./utils/menus.js')).registerMenus();
     }
   });
 
@@ -104,13 +104,13 @@ function start() {
       Hooks.on('renderImagePopout', closePopupWithDelay);
 
       // Adding OBS Remote hooks;
-      Hooks.on('updateCombat', (_combat: Combat, change: any) => {
+      Hooks.on('updateCombat', (_combat, change) => {
         if (change.turn == 0 && change.round == 1) handleOBS('onCombatStart');
       });
       Hooks.on('deleteCombat', () => {
         handleOBS('onCombatEnd');
       });
-      Hooks.on('pauseGame', (pause: boolean) => {
+      Hooks.on('pauseGame', (pause) => {
         if (pause) {
           handleOBS('onPause');
         } else {

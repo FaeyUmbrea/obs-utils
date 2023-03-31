@@ -1,9 +1,8 @@
-<script lang="ts">
-  import type { OBSRemoteSettings } from '../utils/settings';
+<script>
   import ObsTab from './components/OBSTab.svelte';
 
-  export let useWebSocket: boolean;
-  export let settings: OBSRemoteSettings;
+  export let useWebSocket;
+  export let settings;
 
   let entries = Object.getOwnPropertyNames(settings);
 
@@ -11,11 +10,11 @@
     entries = entries.filter((entry) => entry != 'onStopStreaming');
   }
 
-  function getKey(key: string) {
-    return key as keyof OBSRemoteSettings;
+  function getKey(key) {
+    return key;
   }
 
-  function formatKey(key: string) {
+  function formatKey(key) {
     return key.replace(/([a-z])([A-Z])/g, '$1 $2').substring(2);
   }
 </script>

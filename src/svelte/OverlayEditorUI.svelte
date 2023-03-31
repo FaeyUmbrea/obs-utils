@@ -1,19 +1,19 @@
-<script lang="ts">
+<script>
   import { OverlayData } from '../utils/stream';
   import OverlayEditorTab from './components/OverlayEditorTab.svelte';
   import InformationOverlay from './components/PerActorOverlay.svelte';
   import { getSetting } from '../utils/settings';
 
-  export let overlays: Array<OverlayData>;
+  export let overlays;
   let actorIDs = getSetting('overlayActors');
 
-  let activeIndex: number = 0;
+  let activeIndex = 0;
 
-  function handleRemove(index: number) {
+  function handleRemove(index) {
     overlays.splice(index, 1);
     // Make Svelte Rerender
     overlays = overlays;
-    if (activeIndex == index) {
+    if (activeIndex === index) {
       activeIndex = Math.max(0, index - 1);
     }
   }
@@ -24,7 +24,7 @@
     overlays = overlays;
   }
 
-  function changeTab(tab: number) {
+  function changeTab(tab) {
     activeIndex = tab;
   }
 </script>

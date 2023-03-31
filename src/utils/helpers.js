@@ -1,26 +1,25 @@
 // These are necessary because Game and Canvas are not always initialized so TypeScript complains
 
 import flatten from 'flat';
-import type { ObsUtilsApi } from './api';
 
-export function getGame(): Game {
-  return game as Game;
+export function getGame() {
+  return game;
 }
 
-export function getCanvas(): Canvas {
-  return canvas as Canvas;
+export function getCanvas() {
+  return canvas;
 }
 
-export function sleep(milliseconds: number) {
+export function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-export function isOBS(): boolean {
+export function isOBS() {
   return !!window.obsstudio;
 }
 
 function getFontAwesomeVersion() {
-  const version: number = Number.parseInt(getGame().version.split('.')[1]);
+  const version = Number.parseInt(getGame().version.split('.')[1]);
   if (version <= 290) {
     return '6.1.0';
   }
@@ -39,10 +38,7 @@ export async function getFontawesomeVariables() {
   });
 
   const json = await response.json();
-  const icons = json['data']['release']['icons'] as Array<{
-    id: number;
-    familyStylesByLicense: { pro: Array<{ family: string; style: string }> };
-  }>;
+  const icons = json['data']['release']['icons'];
 
   return icons
     .map((value) => {
@@ -53,7 +49,7 @@ export async function getFontawesomeVariables() {
     .flat();
 }
 
-let actorValues: Array<string>;
+let actorValues;
 
 export function getActorValues() {
   if (!actorValues) {
@@ -64,7 +60,7 @@ export function getActorValues() {
   return actorValues;
 }
 
-export function getApi(): ObsUtilsApi {
+export function getApi() {
   const moduleData = getGame().modules.get('obs-utils');
   if (moduleData) return moduleData.api;
   else throw new Error('Something went very wrong!');

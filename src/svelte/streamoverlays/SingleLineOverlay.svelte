@@ -1,14 +1,12 @@
-<script lang="ts">
-  import { type OverlayData } from '../../utils/stream';
-
+<script>
   import EmptyComponent from './overlaycomponents/EmptyComponent.svelte';
   import { getApi } from '../../utils/helpers';
-  export let overlayData: OverlayData;
-  export let actorID: string;
-  export let overlayIndex: number;
+  export let overlayData;
+  export let actorID;
+  export let overlayIndex;
 
   let overlayTypes = getApi().overlayTypes.get('sl').overlayComponents;
-  function getComponentType(type: string) {
+  function getComponentType(type) {
     const resolvedType = overlayTypes.get(type);
     if (resolvedType != undefined) {
       return resolvedType;

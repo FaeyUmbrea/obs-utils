@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
   import VirtualList from '@sveltejs/svelte-virtual-list';
 
-  export let selectedActors: Array<string>;
-  export let actors: Array<Actor> = Array<Actor>();
+  export let selectedActors;
+  export let actors = [];
 
-  let searchTerm: string = '';
+  let searchTerm = '';
 
   $: filteredActors = actors.filter((item) => item.name?.indexOf(searchTerm) !== -1);
 </script>

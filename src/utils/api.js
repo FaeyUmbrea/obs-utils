@@ -1,4 +1,3 @@
-import type { SvelteComponent } from 'svelte';
 import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte';
 import PlaintextComponent from '../svelte/streamoverlays/overlaycomponents/PlaintextComponent.svelte';
 import FAIconComponent from '../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte';
@@ -7,47 +6,47 @@ import AVBoolDisplayComponent from '../svelte/streamoverlays/overlaycomponents/A
 import SingleLineOverlayEditor from '../svelte/components/editors/SingleLineOverlayEditor.svelte';
 import PlainEditor from '../svelte/components/editors/PlainEditor.svelte';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
-import { getApi } from './helpers';
+import { getApi } from './helpers.js';
 
 export class ObsUtilsApi {
-  overlayTypes: Map<string, OverlayType>;
-  overlayTypeNames: Map<string, string>;
+  overlayTypes;
+  overlayTypeNames;
 
-  singleInstanceOverlays: Set<SvelteComponent>;
+  singleInstanceOverlays;
   constructor() {
-    this.overlayTypes = new Map<string, OverlayType>();
-    this.overlayTypeNames = new Map<string, string>();
-    this.singleInstanceOverlays = new Set<SvelteComponent>();
+    this.overlayTypes = new Map();
+    this.overlayTypeNames = new Map();
+    this.singleInstanceOverlays = new Set();
   }
-  registerOverlayType(key: string, readableName: string, type: OverlayType) {
+  registerOverlayType(key, readableName, type) {
     this.overlayTypes.set(key, type);
     this.overlayTypeNames.set(key, readableName);
   }
 
-  registerUniqueOverlay(overlay: SvelteComponent) {
+  registerUniqueOverlay(overlay) {
     this.singleInstanceOverlays.add(overlay);
   }
 }
 
 export class OverlayType {
-  overlayComponents: Map<string, typeof SvelteComponent>;
-  overlayComponentNames: Map<string, string>;
-  overlayComponentEditors: Map<string, typeof SvelteComponent>;
-  overlayClass: typeof SvelteComponent;
-  overlayEditor: typeof SvelteComponent;
-  constructor(overlayClass: typeof SvelteComponent, overlayEditor: typeof SvelteComponent) {
-    this.overlayComponents = new Map<string, typeof SvelteComponent>();
+  overlayComponents;
+  overlayComponentNames;
+  overlayComponentEditors;
+  overlayClass;
+  overlayEditor;
+  constructor(overlayClass, overlayEditor) {
+    this.overlayComponents = new Map();
     this.overlayClass = overlayClass;
-    this.overlayComponentNames = new Map<string, string>();
+    this.overlayComponentNames = new Map();
     this.overlayEditor = overlayEditor;
-    this.overlayComponentEditors = new Map<string, typeof SvelteComponent>();
+    this.overlayComponentEditors = new Map();
   }
 
   registerOverlayComponent(
-    key: string,
-    readableName: string,
-    type: typeof SvelteComponent,
-    editor: typeof SvelteComponent = PlainEditor,
+    key,
+    readableName,
+    type,
+    editor = PlainEditor,
   ) {
     this.overlayComponents.set(key, type);
     this.overlayComponentEditors.set(key, editor);

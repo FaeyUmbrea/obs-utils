@@ -1,10 +1,10 @@
-import { getCanvas, getGame } from './helpers';
+import { getCanvas, getGame } from './helpers.js';
 
 export function stopCombat() {
   getCanvas().tokens?.controlledObjects.forEach((token) => token.release());
 }
 
-export function handleCombat(runningCombat: Combat) {
+export function handleCombat(runningCombat) {
   if (runningCombat.combatant?.isOwner) {
     runningCombat.combatant?.token?.object?.control({ releaseOthers: true });
   }

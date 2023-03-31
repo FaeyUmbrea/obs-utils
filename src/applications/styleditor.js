@@ -2,25 +2,25 @@ import '../less/styleeditor.less';
 
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
-export default class StyleEditor extends FormApplication<any, any, any> {
-  style: string;
-  callback: CallableFunction;
+export default class StyleEditor extends FormApplication{
+  style;
+  callback;
 
-  constructor(style: string, callback: CallableFunction) {
+  constructor(style, callback) {
     super();
     this.style = style;
     this.callback = callback;
   }
-  protected async _updateObject(event: Event, formData?: object | undefined) {
+  async _updateObject(event, formData) {
     if (!(formData instanceof Object)) throw new Error('Form Data Empty');
-    this.callback(formData['style' as keyof typeof formData]);
+    this.callback(formData['style']);
   }
 
   getData() {
     return this.style;
   }
 
-  static get defaultOptions(): FormApplicationOptions {
+  static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ['styleeditor'],
       template: DICECTOR_TEMPLATE,
@@ -30,14 +30,14 @@ export default class StyleEditor extends FormApplication<any, any, any> {
       height: 125,
       width: 400,
       //resizable: true,
-    }) as FormApplicationOptions;
+    });
   }
 
-  protected async _renderInner(data: any): Promise<JQuery<HTMLElement>> {
+  async _renderInner(data){
     const html = await super._renderInner(data);
     const StyleEditorUI = await (await import('../svelte/StyleEditor.svelte')).default;
     new StyleEditorUI({
-      target: html.get(0) as Element,
+      target: html.get(0),
       props: {
         style: this.style,
       },

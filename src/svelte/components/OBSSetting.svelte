@@ -1,13 +1,13 @@
-<script lang="ts">
-  import { OBSAction, type OBSEvent } from '../../utils/settings';
+<script>
+  import { OBSAction } from '../../utils/settings';
   import { fade } from 'svelte/transition';
 
-  export let removeFn: any;
-  export let event: OBSEvent;
-  export let useWebSocket: boolean;
+  export let removeFn;
+  export let event;
+  export let useWebSocket;
 
-  let idDisabled: boolean = true;
-  let sceneDisabled: boolean = false;
+  let idDisabled = true;
+  let sceneDisabled = false;
 
   let actionTypes = Object.values(OBSAction);
 

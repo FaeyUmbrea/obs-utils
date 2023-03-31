@@ -1,9 +1,8 @@
-<script lang="ts">
-  import { type OverlayData } from '../../utils/stream';
+<script>
   import { getApi } from '../../utils/helpers';
-  export let overlays: Array<OverlayData>;
-  export let actorIDs: Array<string>;
-  function getOverlayType(type: string) {
+  export let overlays;
+  export let actorIDs;
+  function getOverlayType(type) {
     return getApi().overlayTypes.get(type).overlayClass;
   }
 </script>

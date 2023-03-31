@@ -1,32 +1,30 @@
-/* global socketlib */
-
 import { getCurrentUser, viewportChanged, VIEWPORT_DATA } from './canvas';
 import { ID } from './const';
 import { isOBS } from './helpers';
-import { OBSWebsocketSettings, setSetting } from './settings';
+import { setSetting } from './settings';
 
-let modulesocket: any;
+let modulesocket;
 
 Hooks.once('socketlib.ready', () => {
-  modulesocket = socketlib.registerModule(ID);
+  modulesocket = window.socketlib.registerModule(ID);
 
   modulesocket.register('viewport', changeViewport);
   modulesocket.register('websocketSettings', changeOBSSettings);
 });
 
-export async function getOBSData(user: string) {
+export async function getOBSData(user) {
   return await modulesocket.executeAsUser('getOBSData', user);
 }
 
-function changeOBSSettings(settings: OBSWebsocketSettings): void {
+function changeOBSSettings(settings) {
   setSetting('websocketSettings', settings);
 }
 
-export function sendOBSSetting(user: string, settings: OBSWebsocketSettings): void {
+export function sendOBSSetting(user, settings) {
   modulesocket.executeAsUser('websocketSettings', user, settings);
 }
 
-function changeViewport(viewport: Canvas.View, userId: string) {
+function changeViewport(viewport, userId) {
   if (!isOBS()) return;
   // First update the collection of viewport data
   VIEWPORT_DATA.set(userId, viewport);
@@ -34,6 +32,6 @@ function changeViewport(viewport: Canvas.View, userId: string) {
   viewportChanged(userId);
 }
 
-export function socketCanvas(_canvas: Canvas, position: Canvas.View) {
+export function socketCanvas(_canvas, position) {
   modulesocket.executeForOthers('viewport', position, getCurrentUser());
 }

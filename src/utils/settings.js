@@ -1,17 +1,16 @@
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
 import { getGame, isOBS } from './helpers';
-import type { OverlayData } from './stream';
 
-export enum OBSAction {
-  SwitchScene = 'Switch Scene',
-  ToggleSource = 'Toggle Source',
-  EnableSource = 'Enable Source',
-  DisableSource = 'Disable Source',
+export const OBSAction = {
+  SwitchScene: 'Switch Scene',
+  ToggleSource: 'Toggle Source',
+  EnableSource: 'Enable Source',
+  DisableSource: 'Disable Source',
 }
 
 export class OBSEvent {
-  targetAction: OBSAction = OBSAction.SwitchScene;
+  targetAction = OBSAction.SwitchScene;
   sceneName = '';
   targetName = '';
 }
@@ -23,12 +22,12 @@ export class OBSWebsocketSettings {
 }
 
 export class OBSRemoteSettings {
-  onLoad: OBSEvent[] = [];
-  onCombatStart: OBSEvent[] = [];
-  onCombatEnd: OBSEvent[] = [];
-  onPause: OBSEvent[] = [];
-  onUnpause: OBSEvent[] = [];
-  onStopStreaming: OBSEvent[] = [];
+  onLoad = [];
+  onCombatStart = [];
+  onCombatEnd = [];
+  onPause = [];
+  onUnpause = [];
+  onStopStreaming = [];
 }
 
 function getGM() {
@@ -130,17 +129,17 @@ export function registerSettings() {
     type: Object,
     scope: 'world',
     config: false,
-    default: new Array<OverlayData>(),
+    default: [],
   });
   registerSetting('overlayActors', {
     type: Object,
     scope: 'world',
     config: false,
-    default: new Array<string>(),
+    default: [],
   });
 }
 
-function registerSetting(settingName: string, config: Record<string, unknown>): void {
+function registerSetting(settingName, config) {
   getGame().settings.register(moduleID, settingName, {
     name: `${moduleID}.settings.${settingName}.Name`,
     hint: `${moduleID}.settings.${settingName}.Hint`,
@@ -148,16 +147,16 @@ function registerSetting(settingName: string, config: Record<string, unknown>): 
   });
 }
 
-export function getSetting(settingName: string): any {
+export function getSetting(settingName) {
   return getGame().settings.get('obs-utils', settingName);
 }
 
-export async function setSetting(settingName: string, value: any) {
+export async function setSetting(settingName, value) {
   await getGame().settings.set('obs-utils', settingName, value);
 }
 
 export function generateDataBlockFromSetting() {
-  const buttonData: DirectorData = {
+  const buttonData = {
     ic: [],
     ooc: [],
     players: [],
@@ -165,18 +164,18 @@ export function generateDataBlockFromSetting() {
 
   for (const [key, value] of Object.entries(ICCHOICES)) {
     buttonData.ic.push({
-      icon: NAME_TO_ICON[key as keyof typeof NAME_TO_ICON],
+      icon: NAME_TO_ICON[key],
       tooltip: value,
       id: key,
     });
   }
   for (const [key, value] of Object.entries(OOCCHOICES)) {
     buttonData.ooc.push({
-      icon: NAME_TO_ICON[key as keyof typeof NAME_TO_ICON],
+      icon: NAME_TO_ICON[key],
       tooltip: value,
       id: key,
     });
   }
-  buttonData.players = getGame().users?.filter((element) => !element.isGM) as StoredDocument<User>[];
+  buttonData.players = getGame().users?.filter((element) => !element.isGM);
   return buttonData;
 }

@@ -2,7 +2,7 @@
   import { OverlayComponentData } from '../../utils/stream';
   import OverlayComponentEditor from './editors/SingleLineOverlayEditor.svelte';
   //import { sortable } from 'svelte-agnostic-draggable';
-  import StyleEditor from '../../applications/styleditor';
+  import StyleEditor from '../../applications/styleditor.js';
   import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 
   export let overlay;

@@ -1,10 +1,9 @@
-<script lang="ts">
-  import StyleEditor from '../../../applications/styleditor';
+<script>
+  import StyleEditor from '../../../applications/styleditor.js';
   import FallbackEditor from './FallbackEditor.svelte';
-  import type { OverlayComponentData } from '../../../utils/stream.js';
   import { getApi } from '../../../utils/helpers';
 
-  export let component: OverlayComponentData;
+  export let component;
   export let removeFn;
   export let index;
 
@@ -18,7 +17,7 @@
     editor.render(true);
   }
 
-  function getEditor(type: string) {
+  function getEditor(type) {
     const editor = getApi().overlayTypes.get('sl').overlayComponentEditors.get(type);
     if (editor != undefined) {
       return editor;

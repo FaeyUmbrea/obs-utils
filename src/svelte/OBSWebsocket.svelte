@@ -1,7 +1,6 @@
-<script lang="ts">
-  import type { OBSWebsocketSettings } from 'src/utils/settings';
+<script>
 
-  export let websocketSettings: OBSWebsocketSettings;
+  export let websocketSettings;
 </script>
 
 <hr />
