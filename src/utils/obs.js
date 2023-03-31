@@ -1,6 +1,6 @@
-import { getSetting, OBSAction, OBSEvent, OBSRemoteSettings, OBSWebsocketSettings } from './settings.js';
+import {getSetting, OBSAction} from './settings.js';
 import OBSWebSocket from 'obs-websocket-js';
-import { isOBS } from './helpers';
+import {isOBS} from './helpers';
 
 let obswebsocket;
 
@@ -15,9 +15,9 @@ function getWSSettings() {
   return setting;
 }
 
-export async function handleOBS() {
+export async function handleOBS(event) {
   if (!isOBS()) return;
-  const obsEvents = getSetting('obsRemote');
+  const obsEvents = getSetting('obsRemote')[event];
   const useWS = getSetting('enableOBSWebsocket');
   obsEvents.forEach(async (obsEvent) => await triggerOBSAction(obsEvent, useWS));
 }
@@ -27,7 +27,7 @@ async function triggerOBSAction(obsevent, useWS) {
     window.obsstudio.getControlLevel(async (controlLevel) => {
       switch (obsevent.targetAction) {
         case OBSAction.SwitchScene:
-          if (!(controlLevel == 4)) {
+          if (!(controlLevel === 4)) {
             throw new Error('Control Level too Low');
           }
           window.obsstudio.setCurrentScene(obsevent.sceneName);
@@ -88,7 +88,7 @@ export async function registerOBSEvents() {
   const useWS = getSetting('enableOBSWebsocket');
   if (useWS) {
     (await getWebsocket()).addListener('StreamStateChanged', (returnValue) => {
-      if (returnValue.outputState == 'OBS_WEBSOCKET_OUTPUT_STOPPED') handleOBS('onStopStreaming');
+      if (returnValue.outputState === 'OBS_WEBSOCKET_OUTPUT_STOPPED') handleOBS('onStopStreaming');
     });
   } else {
     window.addEventListener('obsStreamingStopped', async () => await handleOBS('onStopStreaming'));
