@@ -1,23 +1,23 @@
-import { handleOBS, registerOBSEvents } from './utils/obs.js';
+import {handleOBS, registerOBSEvents} from './utils/obs.js';
 import {
-  hideApplication,
-  hideTokenBorder,
-  tokenMoved,
-  isGM,
-  expandTokenHud,
-  scaleToFit,
   closePopupWithDelay,
-  preserveSideBar,
-  showTracker,
+  expandTokenHud,
+  hideApplication,
   hideSidebar,
+  hideTokenBorder,
+  isGM,
+  preserveSideBar,
+  scaleToFit,
+  showTracker,
+  tokenMoved,
 } from './utils/canvas.js';
-import { registerSettings } from './utils/settings.js';
+import {registerSettings} from './utils/settings.js';
 import DirectorApplication from './applications/director.js';
-import { socketCanvas } from './utils/socket.js';
-import { handleCombat, stopCombat } from './utils/combat.js';
-import { getGame, isOBS } from './utils/helpers.js';
-import { renderOverlays } from './utils/stream.js';
-import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
+import {socketCanvas} from './utils/socket.js';
+import {handleCombat, stopCombat} from './utils/combat.js';
+import {getGame, isOBS} from './utils/helpers.js';
+import {renderOverlays} from './utils/stream.js';
+import {ObsUtilsApi, registerDefaultTypes} from './utils/api.js';
 
 let d;
 
@@ -49,7 +49,7 @@ function start() {
       Hooks.call('obsUtilsInit');
     }
     registerSettings();
-    if (getGame().view == 'game') {
+    if (getGame().view === 'game') {
       await (await import('./utils/menus.js')).registerMenus();
     }
   });
@@ -68,10 +68,10 @@ function start() {
 
   if (isOBS()) {
     Hooks.once('init', async function () {
-      if (getGame().view == 'stream') {
+      if (getGame().view === 'stream') {
         Hooks.once('renderChatLog', () => renderOverlays());
       }
-      if (getGame().view != 'game') return;
+      if (getGame().view !== 'game') return;
       Hooks.once('canvasReady', scaleToFit);
 
       Hooks.on('renderSidebar', hideApplication);
@@ -105,7 +105,7 @@ function start() {
 
       // Adding OBS Remote hooks;
       Hooks.on('updateCombat', (_combat, change) => {
-        if (change.turn == 0 && change.round == 1) handleOBS('onCombatStart');
+        if (change.turn === 0 && change.round === 1) handleOBS('onCombatStart');
       });
       Hooks.on('deleteCombat', () => {
         handleOBS('onCombatEnd');
@@ -119,7 +119,7 @@ function start() {
       });
       Hooks.once('ready', () => handleOBS('onLoad'));
 
-      registerOBSEvents();
+      await registerOBSEvents();
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);
