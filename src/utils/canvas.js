@@ -1,9 +1,9 @@
 /* global Tagger */
 
-import { getCurrentCombatants } from './combat.js';
-import { UI_ELEMENTS } from './const.js';
-import { getCanvas, getGame, sleep } from './helpers.js';
-import { getSetting } from './settings.js';
+import {getCurrentCombatants} from './combat.js';
+import {UI_ELEMENTS} from './const.js';
+import {getCanvas, getGame, sleep} from './helpers.js';
+import {getSetting} from './settings.js';
 
 export const VIEWPORT_DATA = new Map();
 
@@ -92,10 +92,10 @@ function calculateBoundsOfCoodinates(coordSet) {
   minX = minY = Number.MAX_VALUE;
 
   coordSet.forEach((coords) => {
-    minX = Math.min(minX, coords);
-    minY = Math.min(minY, coords);
-    maxX = Math.max(maxX, (coords) + (coords.width));
-    maxY = Math.max(maxY, (coords) + (coords.height));
+    minX = Math.min(minX, coords.x);
+    minY = Math.min(minY, coords.y);
+    maxX = Math.max(maxX, (coords.x) + (coords.width));
+    maxY = Math.max(maxY, (coords.y) + (coords.height));
   });
   if ((minX === minY && minX === Number.MAX_VALUE) || (maxX === maxY && maxX === Number.MIN_VALUE)) return undefined;
   return {
@@ -160,8 +160,8 @@ export function expandTokenHud(_tokenHud, html, token) {
 export function scaleToFit() {
   if (
     !(
-      (getGame().combat?.started && getSetting('defaultInCombat') == 'birdseye') ||
-      (!getGame().combat?.started && getSetting('defaultOutOfCombat') == 'birdseye')
+        (getGame().combat?.started && getSetting('defaultInCombat') === 'birdseye') ||
+        (!getGame().combat?.started && getSetting('defaultOutOfCombat') === 'birdseye')
     )
   )
     return;

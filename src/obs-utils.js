@@ -119,7 +119,7 @@ function start() {
       });
       Hooks.once('ready', () => handleOBS('onLoad'));
 
-      await registerOBSEvents();
+      registerOBSEvents();
     });
   } else {
     Hooks.on('getSceneControlButtons', buildButtons);
