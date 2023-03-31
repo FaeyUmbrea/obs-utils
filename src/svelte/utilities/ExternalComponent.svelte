@@ -1,7 +1,7 @@
 <script>
-  import { onMount, SvelteComponent } from 'svelte';
+    import {onMount} from 'svelte';
 
-  let div;
+    let div;
   export let externalClass;
   onMount(() => {
     new externalClass({
@@ -11,4 +11,4 @@
   });
 </script>
 
-<div bind:this={div} />
+<div bind:this={div}></div>
