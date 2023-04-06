@@ -23,3 +23,13 @@
     <button on:click={close}>Submit</button>
   </footer>
 </ApplicationShell>
+
+<style>
+  footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+  }
+</style>
