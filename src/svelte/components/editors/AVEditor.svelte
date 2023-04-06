@@ -9,10 +9,6 @@
 
     let filterText = '';
 
-    async function getSvelecte() {
-        return (await import('svelecte')).default;
-    }
-
     function handleFilter(e) {
         if (e.detail.length === 0 && filterText.length > 0) {
             items = [...values, filterText]

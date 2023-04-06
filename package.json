@@ -31,7 +31,6 @@
     "@typhonjs-fvtt/svelte-standard": "^0.0.23",
     "lodash-es": "^4.17.21",
     "obs-websocket-js": "^5.0.2",
-    "svelecte": "^3.12.0",
     "svelte-select": "^5.5.3"
   },
   "devDependencies": {
