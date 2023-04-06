@@ -13,11 +13,32 @@
   }
 </script>
 
-<button class="add" type="button" on:click={() => handleAdd()}><i class="fas fa-plus" /></button>
+<button class="add" on:click={() => handleAdd()} type="button"><i class="fas fa-plus"/></button>
 <div class="scroll">
-  <ul>
-    {#each eventArray as event, index (eventArray.indexOf(event))}
-      <ObsSetting {event} removeFn={() => handleRemove(index)} {useWebSocket} />
-    {/each}
-  </ul>
+    <ul>
+        {#each eventArray as event, index (eventArray.indexOf(event))}
+            <ObsSetting {event} removeFn={() => handleRemove(index)} {useWebSocket}/>
+        {/each}
+    </ul>
 </div>
+
+<style>
+    .add {
+        width: 35px;
+        align-self: flex-end;
+    }
+
+    .scroll {
+        overflow: auto;
+        float: left;
+        max-height: 535px;
+        height: 535px;
+        width: auto;
+        padding-left: 3px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+</style>

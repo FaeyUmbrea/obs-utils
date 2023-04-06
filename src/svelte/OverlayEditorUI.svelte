@@ -1,10 +1,12 @@
 <script>
-  import { OverlayData } from '../utils/stream';
+  import {OverlayData} from '../utils/stream';
   import OverlayEditorTab from './components/OverlayEditorTab.svelte';
   import InformationOverlay from './components/PerActorOverlay.svelte';
-  import { getSetting } from '../utils/settings';
+  import {getSetting, setSetting} from '../utils/settings';
+  import {getContext} from "svelte";
+  import {ApplicationShell} from "@typhonjs-fvtt/runtime/svelte/component/core";
 
-  export let overlays;
+  let overlays = getSetting('streamOverlays');
   let actorIDs = getSetting('overlayActors');
 
   let activeIndex = 0;
@@ -27,18 +29,29 @@
   function changeTab(tab) {
     activeIndex = tab;
   }
+
+  export let elementRoot = void 0;
+
+  const context = getContext('#external');
+
+  async function submit() {
+    await setSetting('streamOverlays', overlays)
+    context.application.close()
+  }
+
 </script>
+<svelte:options accessors={true}/>
+<ApplicationShell bind:elementRoot>
+  <div class="grid">
+    <div class="preview">
+      <InformationOverlay {actorIDs} {overlays}/>
+    </div>
 
-<div class="grid">
-  <div class="preview">
-    <InformationOverlay {overlays} {actorIDs} />
-  </div>
-
-  <div class="editor">
-    <div class="nav-with-add-button">
-      <button class="add" type="button" title="Add new Overlay" on:click={() => handleAdd()}
-        ><i class="fas fa-plus" /></button
-      >
+    <div class="editor">
+      <div class="nav-with-add-button">
+        <button class="add" on:click={() => handleAdd()} title="Add new Overlay" type="button"
+        ><i class="fas fa-plus"></i></button
+        >
       <nav class="tabs" data-group="primary-tabs">
         {#each overlays as overlay, index (overlays.indexOf(overlay))}
           <!-- svelte-ignore a11y-missing-attribute -->
@@ -53,13 +66,79 @@
     <section class="content">
       {#each overlays as overlay, index (overlays.indexOf(overlay))}
         <div class="tab {index === activeIndex ? 'active' : ''}" data-tab={index} data-group="primary-tabs">
-          <OverlayEditorTab bind:overlay removeFn={handleRemove} componentindex={index} />
+          <OverlayEditorTab bind:overlay removeFn={handleRemove} componentindex={index}/>
         </div>
       {/each}
     </section>
+    </div>
   </div>
-</div>
-<hr />
-<footer>
-  <button class="submit" type="submit">Submit</button>
-</footer>
+  <hr/>
+  <footer>
+    <button on:click={submit}>Submit</button>
+  </footer>
+</ApplicationShell>
+
+<style lang="less">
+
+  footer {
+    position: absolute;
+    width: calc(100% - 20px);
+    bottom: 0;
+    left: 10px;
+    padding: 10px;
+    display: flex;
+  }
+
+  .add {
+    width: 35px;
+    align-self: flex-end;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    grid-template-rows: 100%;
+    height: calc(100% - 50px);
+    min-height: calc(100% - 50px);
+    max-height: calc(100% - 50px);
+  }
+
+  .preview {
+    background-color: black;
+    border-radius: 4px;
+  }
+
+  .editor {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    padding-left: 5px;
+
+    .content {
+      height: calc(100% - 110px);
+      max-height: calc(100% - 110px);
+      overflow: hidden;
+    }
+
+    .nav-with-add-button {
+      display: grid;
+      grid-template-columns: 35px calc(100% - 35px);
+
+      .tabs {
+        justify-content: left;
+        overflow-x: scroll;
+
+        .item {
+          padding-inline: 10px;
+          align-self: center;
+          font-size: 20px;
+          padding-top: 6px;
+        }
+      }
+
+      .add {
+        align-self: center;
+      }
+    }
+  }
+</style>

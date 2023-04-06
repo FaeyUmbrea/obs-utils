@@ -2,14 +2,6 @@
 
 import flatten from 'flat';
 
-export function getGame() {
-  return game;
-}
-
-export function getCanvas() {
-  return canvas;
-}
-
 export function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
@@ -19,7 +11,7 @@ export function isOBS() {
 }
 
 function getFontAwesomeVersion() {
-  const version = Number.parseInt(getGame().version.split('.')[1]);
+  const version = Number.parseInt(game.version.split('.')[1]);
   if (version <= 290) {
     return '6.1.0';
   }
@@ -61,7 +53,7 @@ export function getActorValues() {
 }
 
 export function getApi() {
-  const moduleData = getGame().modules.get('obs-utils');
+    const moduleData = game.modules.get('obs-utils');
   if (moduleData) return moduleData.api;
   else throw new Error('Something went very wrong!');
 }

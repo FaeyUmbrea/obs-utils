@@ -1,14 +1,12 @@
 <script>
   import { get } from 'lodash-es';
   import { onDestroy } from 'svelte';
-  import { getGame } from '../../../utils/helpers';
-
   export let data;
   export let actorID;
   export let style;
   export let componentIndex;
 
-  let actor = getGame().actors?.get(actorID);
+  let actor = game.actors?.get(actorID);
 
   let value = '';
   let hook = Hooks.on('updateActor', (actor) => {

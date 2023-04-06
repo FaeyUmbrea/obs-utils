@@ -31,8 +31,12 @@
       }
     ]
   },
-  "esmodules": ["obs-utils.js"],
-  "styles": ["style.css"],
+  "esmodules": [
+    "index.js"
+  ],
+  "styles": [
+    "style.css"
+  ],
   "languages": [
     {
       "lang": "en",

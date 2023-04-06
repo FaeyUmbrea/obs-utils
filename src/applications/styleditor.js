@@ -1,5 +1,3 @@
-import '../less/styleeditor.less';
-
 const DICECTOR_TEMPLATE = 'modules/obs-utils/templates/formapps.hbs';
 
 export default class StyleEditor extends FormApplication{

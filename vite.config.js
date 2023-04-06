@@ -4,8 +4,6 @@ import preprocess from 'svelte-preprocess';
 import {postcssConfig, terserConfig} from '@typhonjs-fvtt/runtime/rollup';
 import {visualizer} from "rollup-plugin-visualizer";
 import {transform} from 'esbuild';
-import IstanbulPlugin from 'vite-plugin-istanbul';
-import {loadEnv} from "vite";
 
 // ATTENTION!
 // Please modify the below variables: s_PACKAGE_ID and s_SVELTE_HASH_ID appropriately.
@@ -29,17 +27,15 @@ const s_RESOLVE_CONFIG = {
   dedupe: ['svelte']
 };
 
-export default (mode) =>
-{
-  const env = loadEnv(mode,process.cwd(),'')
-  /** @type {import('vite').UserConfig} */
-  return {
-    root: 'src/',                 // Source location / esbuild root.
-    base: `/${s_PACKAGE_ID}/`,    // Base module path that 30001 / served dev directory.
-    publicDir: '../public',       // No public resources to copy.
-    cacheDir: '../.vite-cache',   // Relative from root directory.
+export default () => {
+    /** @type {import('vite').UserConfig} */
+    return {
+        root: 'src/',                 // Source location / esbuild root.
+        base: `/${s_PACKAGE_ID}/`,    // Base module path that 30001 / served dev directory.
+        publicDir: '../public',       // No public resources to copy.
+        cacheDir: '../.vite-cache',   // Relative from root directory.
 
-    resolve: { conditions: ['import', 'browser'] },
+        resolve: {conditions: ['import', 'browser']},
 
     esbuild: {
       target: ['es2022']
@@ -74,19 +70,18 @@ export default (mode) =>
       }
     },
     build: {
-      outDir: "../dist",
-      emptyOutDir: true,
-      sourcemap: s_SOURCEMAPS,
-      brotliSize: true,
-      minify: s_TERSER ? 'terser' : 'esbuild',
-      target: ['es2022'],
-      terserOptions: s_TERSER ? { ...terserConfig(), ecma: 2022 } : void 0,
-      lib: {
-        entry: './obs-utils.js',
-        formats: ['es'],
-        fileName: `obs-utils`
-      },
-      rollupOptions: env.VITE_COVERAGE ? {output: {manualChunks: () => 'obs-utils.js'}}:undefined
+        outDir: "../dist",
+        emptyOutDir: false,
+        sourcemap: s_SOURCEMAPS,
+        brotliSize: true,
+        minify: s_TERSER ? 'terser' : 'esbuild',
+        target: ['es2022'],
+        terserOptions: s_TERSER ? {...terserConfig(), ecma: 2022} : void 0,
+        lib: {
+            entry: './index.js',
+            formats: ['es'],
+            fileName: `index`
+        }
     },
 
     plugins: [
@@ -102,7 +97,6 @@ export default (mode) =>
       }),
 
       resolve(s_RESOLVE_CONFIG),    // Necessary when bundling npm-linked packages.
-      IstanbulPlugin({ include: 'src/*', exclude: ['node_modules','test/'], extention: ['.ts', '.svelte'], checkProd: true, forceBuildInstrument: true, requireEnv: true }),
 
       minifyEs(),visualizer()
     ]

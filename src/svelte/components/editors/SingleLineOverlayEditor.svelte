@@ -35,12 +35,42 @@
         <option value={component}>{name}</option>
       {/each}
     </select>
-    <svelte:component this={getEditor(component.type)} bind:data={component.data} />
+    <svelte:component bind:data={component.data} this={getEditor(component.type)}/>
     <button type="button" title="Remove Component" on:click={() => removeFn(index)}>
-      <i class="fas fa-trash" />
+      <i class="fas fa-trash"/>
     </button>
     <button class="add" type="button" title="Edit Component Style" on:click={() => openStyleEditor()}>
-      <i class="fas fa-pencil" />
+      <i class="fas fa-pencil"/>
     </button>
   </div>
 </li>
+
+<style lang="less">
+  li {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+
+  .handle {
+    height: 35px;
+    width: 35px;
+    font-size: 25px;
+    text-align: center;
+    line-height: 35px;
+  }
+
+  .component {
+    display: grid;
+    grid-template-columns: 35px 150px auto 35px 35px;
+    grid-template-rows: 35px;
+
+    button {
+      width: 35px;
+      margin: auto;
+    }
+
+    select {
+      height: auto;
+    }
+  }
+</style>

@@ -1,7 +1,5 @@
-import { getCanvas, getGame } from './helpers.js';
-
 export function stopCombat() {
-  getCanvas().tokens?.controlledObjects.forEach((token) => token.release());
+  canvas.tokens?.controlledObjects.forEach((token) => token.release());
 }
 
 export function handleCombat(runningCombat) {
@@ -11,5 +9,5 @@ export function handleCombat(runningCombat) {
 }
 
 export function getCurrentCombatants() {
-  return getGame().combat?.combatant?.players;
+    return game.combat?.combatant?.players;
 }

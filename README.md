@@ -50,18 +50,14 @@ Check the Wiki!
 - Tagger
 - socketLib
 
-### Optional Requirements
+### Optional Modules
 
 - theripper93's Levels [GitHub](https://github.com/theripper93/Levels)
 
 ## Planned Features
 
 - Levels Support (out of Combat)
-
-- Twitch Chat Integration (Patron Only)
-- YouTube Chat Integration (Patron Only)
-
-- Discord Integration (Patron Only)
+- Roll Display Overlay
 
 ## TODO (Smaller improvements that aren't Full Features)
 - Add configuration for automatic camera

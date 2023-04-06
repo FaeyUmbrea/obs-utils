@@ -1,5 +1,4 @@
 import OverlayRenderer from '../svelte/OverlayRenderer.svelte';
-import { getGame } from './helpers';
 import '../less/overlayrenderer.less';
 
 export class OverlayData {
@@ -26,7 +25,7 @@ export class OverlayComponentData {
 }
 
 export function renderOverlays() {
-  const _game = getGame();
+  const _game = game;
   if (_game.actors instanceof Actors) {
     new OverlayRenderer({
       target: $('body').get(0),

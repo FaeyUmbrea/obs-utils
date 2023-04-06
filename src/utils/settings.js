@@ -1,6 +1,6 @@
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
-import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from './const';
-import { getGame, isOBS } from './helpers';
+import {ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES} from './const';
+import {isOBS} from './helpers';
 
 export const OBSAction = {
   SwitchScene: 'Switch Scene',
@@ -31,7 +31,7 @@ export class OBSRemoteSettings {
 }
 
 function getGM() {
-  return getGame().users?.find((user) => user.isGM);
+    return game.users?.find((user) => user.isGM);
 }
 
 async function changeMode() {
@@ -101,11 +101,11 @@ export function registerSettings() {
     config: true,
   });
   registerSetting('trackedUser', {
-    default: getGame().userId,
-    type: String,
-    scope: 'world',
-    config: false,
-    onChange: changeMode,
+      default: game.userId,
+      type: String,
+      scope: 'world',
+      config: false,
+      onChange: changeMode,
   });
   registerSetting('obsRemote', {
     type: Object,
@@ -127,32 +127,55 @@ export function registerSettings() {
   });
   registerSetting('streamOverlays', {
     type: Object,
-    scope: 'world',
-    config: false,
-    default: [],
+      scope: 'world',
+      config: false,
+      default: [],
   });
-  registerSetting('overlayActors', {
-    type: Object,
-    scope: 'world',
-    config: false,
-    default: [],
-  });
+    registerSetting('overlayActors', {
+        type: Object,
+        scope: 'world',
+        config: false,
+        default: [],
+    });
+    registerSetting('settingsVersion', {
+        type: Number,
+        scope: 'world',
+        config: false,
+        default: 0
+    })
+}
+
+export function runMigrations() {
+    const version = getSetting('settingsVersion');
+    if (version < 1) {
+        console.warn("Running OBS Utils Migrations")
+        if (version < 1) {
+            console.warn("Migrations for Data-Model Version 1")
+            let obssettings = getSetting('obsRemote');
+            // Code for Migration Setting Models
+            obssettings = foundry.utils.mergeObject(new OBSRemoteSettings(), obssettings);
+            delete obssettings['onCloseObs'];
+            setSetting('obsRemote', obssettings);
+        }
+        console.warn("OBS Utils Migrations Finished")
+        setSetting('settingsVersion', 1);
+    }
 }
 
 function registerSetting(settingName, config) {
-  getGame().settings.register(moduleID, settingName, {
-    name: `${moduleID}.settings.${settingName}.Name`,
-    hint: `${moduleID}.settings.${settingName}.Hint`,
-    ...config,
-  });
+    game.settings.register(moduleID, settingName, {
+        name: `${moduleID}.settings.${settingName}.Name`,
+        hint: `${moduleID}.settings.${settingName}.Hint`,
+        ...config,
+    });
 }
 
 export function getSetting(settingName) {
-  return getGame().settings.get('obs-utils', settingName);
+    return game.settings.get('obs-utils', settingName);
 }
 
 export async function setSetting(settingName, value) {
-  await getGame().settings.set('obs-utils', settingName, value);
+    await game.settings.set('obs-utils', settingName, value);
 }
 
 export function generateDataBlockFromSetting() {
@@ -176,6 +199,6 @@ export function generateDataBlockFromSetting() {
       id: key,
     });
   }
-  buttonData.players = getGame().users?.filter((element) => !element.isGM);
+    buttonData.players = game.users?.filter((element) => !element.isGM);
   return buttonData;
 }

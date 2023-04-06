@@ -1,23 +1,27 @@
 <script>
-  import { getActorValues } from '../../../utils/helpers';
+    import {getActorValues} from '../../../utils/helpers';
 
-  export let data;
-  const actorValues = getActorValues();
+    import Select from 'svelte-select';
 
-  async function getSvelecte() {
-    return (await import('svelecte')).default;
-  }
+    export let data;
+    let values = getActorValues();
+    let items = [...values]
+
+    let filterText = '';
+
+    async function getSvelecte() {
+        return (await import('svelecte')).default;
+    }
+
+    function handleFilter(e) {
+        if (e.detail.length === 0 && filterText.length > 0) {
+            items = [...values, filterText]
+        }
+    }
 </script>
 
-{#await getSvelecte() then Svelecte}
-  <svelte:component
-    this={Svelecte}
-    options={actorValues}
-    inputId={'data'}
-    bind:value={data}
-    labelAsValue={true}
-    creatable={true}
-    allowEditing={true}
-    creatablePrefix=""
-  />
-{/await}
+<Select --height="30px" bind:filterText bind:justValue={data} closeListOnChange="false" floatingConfig={{
+            strategy: 'fixed',
+        }} {items}
+        on:filter={handleFilter} value={data}/>
+

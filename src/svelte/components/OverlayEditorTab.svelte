@@ -50,12 +50,41 @@
 </div>
 <footer>
   <button class="add" type="button" title="Add new Component" on:click={() => handleAdd()}
-    ><i class="fas fa-plus" /></button
+  ><i class="fas fa-plus"></i></button
   >
-  <button class="add" type="button" title="Edit Overlay Style" on:click={() => openStyleEditor()}
-    ><i class="fas fa-pencil" /></button
-  >
-  <button class="remove-tab" type="button" title="Remove Overlay" on:click={() => removeFn(componentindex)}
-    ><i class="fas fa-trash" /></button
-  >
+    <button class="add" on:click={() => openStyleEditor()} title="Edit Overlay Style" type="button"
+    ><i class="fas fa-pencil"></i></button
+    >
+    <button class="remove-tab" on:click={() => removeFn(componentindex)} title="Remove Overlay" type="button"
+    ><i class="fas fa-trash"></i></button
+    >
 </footer>
+
+<style lang="less">
+  footer {
+    position: absolute;
+    width: calc(100% - 10px);
+    bottom: 0;
+    left: 5px;
+    display: flex;
+    padding: 0 5px 0 0;
+
+    .remove-tab {
+      width: calc(100% - 35px);
+    }
+  }
+
+  .scroll {
+    overflow: scroll;
+    float: left;
+    max-height: 100%;
+    width: 100%;
+    padding-right: 10px;
+    padding-left: 3px;
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+  }
+</style>

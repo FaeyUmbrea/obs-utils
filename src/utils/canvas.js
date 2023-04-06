@@ -2,7 +2,7 @@
 
 import {getCurrentCombatants} from './combat.js';
 import {UI_ELEMENTS} from './const.js';
-import {getCanvas, getGame, sleep} from './helpers.js';
+import {sleep} from './helpers.js';
 import {getSetting} from './settings.js';
 
 export const VIEWPORT_DATA = new Map();
@@ -17,7 +17,7 @@ export function hideTokenBorder(token) {
 }
 
 function getAutoTokens() {
-  return getGame().canvas?.tokens?.ownedTokens;
+  return game.canvas?.tokens?.ownedTokens;
 }
 
 function getManualToken() {
@@ -29,7 +29,7 @@ function toggleToken(token) {
 }
 
 export function getCurrentUser() {
-  return getGame().userId;
+  return game.userId;
 }
 
 function trackAll() {
@@ -48,7 +48,7 @@ function trackTokenList(tokens) {
 
   if (!bounds) return;
 
-  const screenDimensions = getCanvas().screenDimensions;
+  const screenDimensions = canvas.screenDimensions;
 
   const scaleX = screenDimensions[0] / (bounds.maxX - bounds.minX + 300);
   const scaleY = screenDimensions[1] / (bounds.maxY - bounds.minY + 300);
@@ -57,17 +57,17 @@ function trackTokenList(tokens) {
   scale = Math.min(scale, getSetting('maxScale'));
   scale = Math.max(scale, getSetting('minScale'));
 
-  getCanvas().animatePan({ x: bounds.center.x, y: bounds.center.y, scale: scale });
+  canvas.animatePan({x: bounds.center.x, y: bounds.center.y, scale: scale});
 }
 
 export function tokenMoved() {
-  if (getGame().combat?.started) {
+  if (game.combat?.started) {
     switch (getSetting('defaultInCombat')) {
       case 'trackall':
         trackAll();
         break;
       case 'trackone':
-        trackTokenList([getAutoTokens()?.find((element) => element.id === getGame().combat?.combatant?.tokenId)]);
+        trackTokenList([getAutoTokens()?.find((element) => element.id === game.combat?.combatant?.tokenId)]);
         break;
       default:
         break;
@@ -108,16 +108,16 @@ function calculateBoundsOfCoodinates(coordSet) {
 }
 
 export function viewportChanged(userId) {
-  if (getGame().combat?.started) {
+  if (game.combat?.started) {
     switch (getSetting('defaultInCombat')) {
       case 'cloneDM':
-        if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (game.users?.get(userId)?.isGM) canvas.animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'cloneTurnPlayer':
-        if (getCurrentCombatants()?.some((e) => e.id === userId)) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (getCurrentCombatants()?.some((e) => e.id === userId)) canvas.animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'clonePlayer':
-        if (userId === getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (userId === getSetting('trackedUser')) canvas.animatePan(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -125,10 +125,10 @@ export function viewportChanged(userId) {
   } else {
     switch (getSetting('defaultOutOfCombat')) {
       case 'cloneDM':
-        if (getGame().users?.get(userId)?.isGM) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (game.users?.get(userId)?.isGM) canvas.animatePan(VIEWPORT_DATA.get(userId));
         break;
       case 'clonePlayer':
-        if (userId === getSetting('trackedUser')) getCanvas().animatePan(VIEWPORT_DATA.get(userId));
+        if (userId === getSetting('trackedUser')) canvas.animatePan(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -137,17 +137,17 @@ export function viewportChanged(userId) {
 }
 
 export function isGM() {
-  return getGame().user?.isGM;
+  return game.user?.isGM;
 }
 export function expandTokenHud(_tokenHud, html, token) {
-  if (getGame().user?.isGM) {
-    const currenToken = getCanvas().tokens?.get(token._id);
+  if (game.user?.isGM) {
+    const currenToken = canvas.tokens?.get(token._id);
     const rightSide = html.find('div.col.right');
     const isTracked = Tagger.hasTags(currenToken, 'obs_manual_track');
     const element = $(
-      `<div class="control-icon ${
-        isTracked ? 'active' : ''
-      }"><i title='Track Token' class='fa-solid fa-signal-stream' /></div>`,
+        `<div class="control-icon ${
+            isTracked ? 'active' : ''
+        }"><i title='Track Token' class='fa-solid fa-signal-stream' /></div>`,
     );
     element.on('click', function () {
       toggleToken(currenToken);
@@ -159,19 +159,19 @@ export function expandTokenHud(_tokenHud, html, token) {
 
 export function scaleToFit() {
   if (
-    !(
-        (getGame().combat?.started && getSetting('defaultInCombat') === 'birdseye') ||
-        (!getGame().combat?.started && getSetting('defaultOutOfCombat') === 'birdseye')
-    )
+      !(
+          (game.combat?.started && getSetting('defaultInCombat') === 'birdseye') ||
+          (!game.combat?.started && getSetting('defaultOutOfCombat') === 'birdseye')
+      )
   )
     return;
-  const screenDimensions = getCanvas().screenDimensions;
-  const sceneDimensions = getCanvas().scene?.dimensions;
+  const screenDimensions = canvas.screenDimensions;
+  const sceneDimensions = canvas.scene?.dimensions;
 
-  const center = { x: sceneDimensions.width / 2, y: sceneDimensions.height / 2 };
+  const center = {x: sceneDimensions.width / 2, y: sceneDimensions.height / 2};
   const scale = Math.min(screenDimensions[0] / sceneDimensions.width, screenDimensions[1] / sceneDimensions.height);
 
-  getCanvas().animatePan({ ...center, scale: scale });
+  canvas.animatePan({...center, scale: scale});
 }
 
 export async function closePopupWithDelay(popout) {

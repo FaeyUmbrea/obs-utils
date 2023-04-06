@@ -399,7 +399,7 @@ test.afterAll(async ()=>{
   let coverage = [...coverageGM,...coverageOBS];
   fs.rmSync(process.cwd()+"/.nyc_output",{recursive:true,force:true});
   fs.mkdirSync(process.cwd()+"/.nyc_output");
-  const converter = v8toIstanbul('dist/obs-utils.js',undefined,undefined,(path)=>path.includes('node_modules'));
+  const converter = v8toIstanbul('dist/indexindex.js', undefined, undefined, (path) => path.includes('node_modules'));
     await converter.load();
   for (const entry of coverage) {
     if(!entry.source) continue;

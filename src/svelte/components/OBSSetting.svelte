@@ -12,15 +12,11 @@
   let actionTypes = Object.values(OBSAction);
 
   if (!useWebSocket) {
-    actionTypes = actionTypes.filter((type) => type == OBSAction.SwitchScene);
+    actionTypes = actionTypes.filter((type) => type === OBSAction.SwitchScene);
   }
 
   function changeEvent() {
-    if (event.targetAction == OBSAction.SwitchScene) {
-      idDisabled = true;
-    } else {
-      idDisabled = false;
-    }
+    idDisabled = event.targetAction === OBSAction.SwitchScene;
   }
 
   changeEvent();
@@ -33,10 +29,36 @@
         <option value={action}>{action}</option>
       {/each}
     </select>
-    <input name="sceneNames" bind:value={event.sceneName} disabled={sceneDisabled} placeholder="Scene Name" />
-    <input name="itemIDs" bind:value={event.targetName} disabled={idDisabled} placeholder="Source Name" />
+    <input bind:value={event.sceneName} disabled={sceneDisabled} name="sceneNames" placeholder="Scene Name"/>
+    <input bind:value={event.targetName} disabled={idDisabled} name="itemIDs" placeholder="Source Name"/>
     <button type="button" on:click={removeFn}>
-      <i class="fas fa-trash" />
+      <i class="fas fa-trash"></i>
     </button>
   </div>
 </li>
+
+
+<style>
+  .setting {
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-content: space-around;
+    flex-flow: row nowrap;
+    align-items: stretch;
+  }
+
+  .setting button {
+    width: 35px;
+    margin: auto;
+  }
+
+  .setting select {
+    height: auto;
+  }
+
+  li {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+</style>

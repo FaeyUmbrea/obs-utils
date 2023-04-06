@@ -11,45 +11,23 @@ import {
   showTracker,
   tokenMoved,
 } from './utils/canvas.js';
-import {registerSettings} from './utils/settings.js';
-import DirectorApplication from './applications/director.js';
+import {registerSettings, runMigrations} from './utils/settings.js';
 import {socketCanvas} from './utils/socket.js';
 import {handleCombat, stopCombat} from './utils/combat.js';
-import {getGame, isOBS} from './utils/helpers.js';
+import {isOBS} from './utils/helpers.js';
 import {renderOverlays} from './utils/stream.js';
 import {ObsUtilsApi, registerDefaultTypes} from './utils/api.js';
 
-let d;
-
-function buildButtons(buttons) {
-  if (!getGame().user?.isGM) return;
-  const buttonGroup = buttons.find((element) => element.name === 'token');
-  const newButton = {
-    icon: 'fa-solid fa-signal-stream',
-    name: 'openStreamDirector',
-    title: 'Open Stream Director',
-    toggle: true,
-    onClick: ()=> openDirector(newButton),
-  };
-  buttonGroup?.tools.push(newButton);
-}
-
-function openDirector(button) {
-  if (!d) d = new DirectorApplication(button);
-  if (!d.rendered) d.render(true);
-  else d.close();
-}
-
 function start() {
   Hooks.once('init', async function () {
-    const moduleData = getGame()?.modules?.get('obs-utils');
+    const moduleData = game?.modules?.get('obs-utils');
     if (moduleData) {
       moduleData.api = new ObsUtilsApi();
       registerDefaultTypes();
       Hooks.call('obsUtilsInit');
     }
     registerSettings();
-    if (getGame().view === 'game') {
+    if (game.view === 'game') {
       await (await import('./utils/menus.js')).registerMenus();
     }
   });
@@ -57,6 +35,7 @@ function start() {
   Hooks.once('ready', async function () {
     if (isGM()) {
       Hooks.on('renderTokenHUD', expandTokenHud);
+      runMigrations();
     }
     if (isOBS()) {
       //Simulate a user interaction to start video playback
@@ -68,10 +47,10 @@ function start() {
 
   if (isOBS()) {
     Hooks.once('init', async function () {
-      if (getGame().view === 'stream') {
+      if (game.view === 'stream') {
         Hooks.once('renderChatLog', () => renderOverlays());
       }
-      if (getGame().view !== 'game') return;
+      if (game.view !== 'game') return;
       Hooks.once('canvasReady', scaleToFit);
 
       Hooks.on('renderSidebar', hideApplication);
@@ -121,8 +100,6 @@ function start() {
 
       registerOBSEvents();
     });
-  } else {
-    Hooks.on('getSceneControlButtons', buildButtons);
   }
 }
 start();
