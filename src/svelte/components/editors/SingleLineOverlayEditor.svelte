@@ -1,7 +1,7 @@
 <script>
   import StyleEditor from '../../../applications/styleditor.js';
   import FallbackEditor from './FallbackEditor.svelte';
-  import { getApi } from '../../../utils/helpers';
+  import {getApi} from '../../../utils/helpers';
 
   export let component;
   export let removeFn;
@@ -19,7 +19,7 @@
 
   function getEditor(type) {
     const editor = getApi().overlayTypes.get('sl').overlayComponentEditors.get(type);
-    if (editor != undefined) {
+    if (editor !== undefined) {
       return editor;
     } else {
       return FallbackEditor;
@@ -29,7 +29,7 @@
 
 <li data-list-key={index}>
   <div class="component">
-    <i class="fa-light fa-bars handle" />
+    <i class="fa-light fa-bars handle"></i>
     <select name="types" bind:value={component.type}>
       {#each [...componentNames] as [component, name]}
         <option value={component}>{name}</option>
@@ -37,15 +37,15 @@
     </select>
     <svelte:component bind:data={component.data} this={getEditor(component.type)}/>
     <button type="button" title="Remove Component" on:click={() => removeFn(index)}>
-      <i class="fas fa-trash"/>
+      <i class="fas fa-trash"></i>
     </button>
     <button class="add" type="button" title="Edit Component Style" on:click={() => openStyleEditor()}>
-      <i class="fas fa-pencil"/>
+      <i class="fas fa-pencil"></i>
     </button>
   </div>
 </li>
 
-<style lang="less">
+<style lang="stylus">
   li {
     padding-top: 1px;
     padding-bottom: 1px;

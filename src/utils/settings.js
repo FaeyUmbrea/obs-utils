@@ -1,4 +1,4 @@
-import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
+import {scaleToFit, tokenMoved, viewportChanged} from './canvas';
 import {ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES} from './const';
 import {isOBS} from './helpers';
 
@@ -142,6 +142,18 @@ export function registerSettings() {
         scope: 'world',
         config: false,
         default: 0
+    })
+    registerSetting('rollOverlayRollDelay', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayRollStay', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 5000
     })
 }
 

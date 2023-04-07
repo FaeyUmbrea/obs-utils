@@ -47,7 +47,7 @@
         />
         <label for={item.id}
         ><img alt={item.name} src={item.img}/>
-          <p>{item.name}</p></label
+          <span>{item.name}</span></label
         >
       </div>
     </VirtualList>
@@ -58,7 +58,7 @@
   </main>
 </ApplicationShell>
 
-<style lang="less">
+<style lang="stylus">
   main {
     display: grid;
     grid-template-columns: 100%;

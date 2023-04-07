@@ -78,7 +78,7 @@
   </footer>
 </ApplicationShell>
 
-<style lang="less">
+<style lang="stylus">
 
   footer {
     position: absolute;

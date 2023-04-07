@@ -1,9 +1,9 @@
 <script>
-  import { OverlayComponentData } from '../../utils/stream';
+  import {OverlayComponentData} from '../../utils/stream';
   import OverlayComponentEditor from './editors/SingleLineOverlayEditor.svelte';
   //import { sortable } from 'svelte-agnostic-draggable';
   import StyleEditor from '../../applications/styleditor.js';
-  import { SortableList } from '@jhubbardsf/svelte-sortablejs';
+  import {SortableList} from '@jhubbardsf/svelte-sortablejs';
 
   export let overlay;
   export let removeFn;
@@ -60,7 +60,7 @@
     >
 </footer>
 
-<style lang="less">
+<style lang="stylus">
   footer {
     position: absolute;
     width: calc(100% - 10px);
