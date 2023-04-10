@@ -71,7 +71,7 @@ export default () => {
     },
     build: {
         outDir: "../dist",
-        emptyOutDir: false,
+        emptyOutDir: true,
         sourcemap: s_SOURCEMAPS,
         brotliSize: true,
         minify: s_TERSER ? 'terser' : 'esbuild',

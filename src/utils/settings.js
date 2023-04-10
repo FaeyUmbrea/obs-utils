@@ -143,7 +143,7 @@ export function registerSettings() {
         config: false,
         default: 0
     })
-    registerSetting('rollOverlayRollDelay', {
+    registerSetting('rollOverlayPreRollDelay', {
         type: Number,
         scope: 'world',
         config: 'true',
@@ -166,6 +166,66 @@ export function registerSettings() {
         scope: 'world',
         config: 'true',
         default: 5000
+    })
+    registerSetting('rollOverlayPreRollFadeIn', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayPreRollFadeOut', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayPreRollStay', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayPostRollFadeIn', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayPostRollFadeOut', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayPostRollStay', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayPreRollImage', {
+        type: String,
+        scope: 'world',
+        config: 'true',
+        default: ""
+    })
+    registerSetting('rollOverlayRollBackground', {
+        type: String,
+        scope: 'world',
+        config: 'true',
+        default: ""
+    })
+    registerSetting('rollOverlayRollForeground', {
+        type: String,
+        scope: 'world',
+        config: 'true',
+        default: ""
+    })
+    registerSetting('rollOverlayPostRollImage', {
+        type: String,
+        scope: 'world',
+        config: 'true',
+        default: ""
     })
 }
 
