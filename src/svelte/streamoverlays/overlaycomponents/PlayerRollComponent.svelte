@@ -7,8 +7,12 @@
     export let playerId;
 
     let rollShow;
+    let preRollShow;
     let rollDelay = getSetting("rollOverlayRollDelay");
     let rollStay = getSetting("rollOverlayRollStay");
+    let rollFadeIn = getSetting("rollOverlayRollFadeIn");
+    let rollFadeOut = getSetting("rollOverlayRollFadeOut");
+
     let rollValue = "0";
 
     Hooks.on('createChatMessage', (e) => {
@@ -18,11 +22,15 @@
             rollShow = true;
         }
     })
-
+    
 </script>
 
 <div class="display-area" id={playerId}>
+    {#if preRollShow}
+
+    {/if}
     {#if rollShow}
-        <p in:fade="{{delay:rollDelay,duration:1}}" out:fade="{{delay:rollStay,duration:1}}">{rollValue}</p>
+        <span in:fade="{{delay:rollDelay,duration:rollFadeIn}}" out:fade="{{delay:rollStay,duration:rollFadeOut}}"
+              on:introend={()=>rollShow=false}>{rollValue}</span>
     {/if}
 </div>

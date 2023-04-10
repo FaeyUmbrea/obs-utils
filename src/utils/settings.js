@@ -149,6 +149,18 @@ export function registerSettings() {
         config: 'true',
         default: 0
     })
+    registerSetting('rollOverlayRollFadeIn', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
+    registerSetting('rollOverlayRollFadeOut', {
+        type: Number,
+        scope: 'world',
+        config: 'true',
+        default: 0
+    })
     registerSetting('rollOverlayRollStay', {
         type: Number,
         scope: 'world',

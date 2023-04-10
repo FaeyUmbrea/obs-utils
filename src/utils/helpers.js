@@ -52,8 +52,11 @@ export function getActorValues() {
   return actorValues;
 }
 
+/**
+ * @returns {ObsUtilsApi}
+ */
 export function getApi() {
     const moduleData = game.modules.get('obs-utils');
-  if (moduleData) return moduleData.api;
-  else throw new Error('Something went very wrong!');
+    if (moduleData) return moduleData.api;
+    else throw new Error('Something went very wrong!');
 }

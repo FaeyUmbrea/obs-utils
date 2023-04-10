@@ -5,6 +5,10 @@ import OverlayActorSelect from '../applications/overlayactorselect.js';
 import OverlayEditor from '../applications/overlayeditor.js';
 import DirectorApplication from "../applications/director.js";
 import {SettingsShell} from "../applications/settingsShell.js";
+import {getApi} from "./helpers.js";
+import SingleLineOverlayEditor from "../svelte/components/editors/SingleLineOverlayEditor.svelte";
+import PlainEditor from "../svelte/components/editors/PlainEditor.svelte";
+import AVEditor from "../svelte/components/editors/AVEditor.svelte";
 
 let d;
 
@@ -27,7 +31,7 @@ async function openDirector(button) {
     else d.close();
 }
 
-export async function registerMenus() {
+export async function registerUI() {
     game.settings.registerMenu(moduleID, 'obsRemoteMenu', {
         name: `${moduleID}.settings.obsRemoteMenu.Name`,
         label: `${moduleID}.settings.obsRemoteMenu.Label`,
@@ -36,8 +40,8 @@ export async function registerMenus() {
         icon: 'fas fa-bars',
         restricted: true,
     });
-  game.settings.registerMenu(moduleID, 'obsWebsocketMenu', {
-      name: `${moduleID}.settings.obsWebsocketMenu.Name`,
+    game.settings.registerMenu(moduleID, 'obsWebsocketMenu', {
+        name: `${moduleID}.settings.obsWebsocketMenu.Name`,
       label: `${moduleID}.settings.obsWebsocketMenu.Label`,
       hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
       type: SettingsShell(OBSWebsocketApplication),
@@ -62,4 +66,10 @@ export async function registerMenus() {
     });
 
     Hooks.on('getSceneControlButtons', buildButtons);
+
+    getApi().overlayTypes.get("sl").registerOverlayEditor(SingleLineOverlayEditor);
+    getApi().overlayTypes.get("sl").registerComponentEditor('pt', PlainEditor);
+    getApi().overlayTypes.get("sl").registerComponentEditor('fai', PlainEditor);
+    getApi().overlayTypes.get("sl").registerComponentEditor('av', AVEditor);
+    getApi().overlayTypes.get("sl").registerComponentEditor('bav', AVEditor);
 }

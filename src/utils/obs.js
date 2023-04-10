@@ -1,6 +1,18 @@
 import {getSetting, OBSAction} from './settings.js';
 import OBSWebSocket from 'obs-websocket-js';
 import {isOBS} from './helpers';
+import {renderOverlays} from "./stream.js";
+import {
+  closePopupWithDelay,
+  hideApplication,
+  hideSidebar,
+  hideTokenBorder,
+  preserveSideBar,
+  scaleToFit,
+  showTracker,
+  tokenMoved
+} from "./canvas.js";
+import {handleCombat, stopCombat} from "./combat.js";
 
 let obswebsocket;
 
@@ -84,7 +96,7 @@ async function getWebsocket() {
   return obswebsocket;
 }
 
-export async function registerOBSEvents() {
+async function registerOBSEvents() {
   const useWS = getSetting('enableOBSWebsocket');
   if (useWS) {
     (await getWebsocket()).addListener('StreamStateChanged', (returnValue) => {
@@ -93,4 +105,59 @@ export async function registerOBSEvents() {
   } else {
     window.addEventListener('obsStreamingStopped', async () => await handleOBS('onStopStreaming'));
   }
+}
+
+export async function initOBS() {
+  if (game.view === 'stream') {
+    Hooks.once('renderChatLog', () => renderOverlays());
+  }
+  if (game.view !== 'game') return;
+  Hooks.once('canvasReady', scaleToFit);
+
+  Hooks.on('renderSidebar', hideApplication);
+  Hooks.on('renderSceneNavigation', hideApplication);
+  Hooks.on('renderMainMenu', hideApplication);
+  Hooks.on('renderSceneControls', hideApplication);
+  Hooks.on('renderTokenHUD', hideApplication);
+  Hooks.on('renderUserConfig', hideApplication);
+  Hooks.on('renderCameraViews', hideApplication);
+  Hooks.on('renderPlayerList', hideApplication);
+  Hooks.on('renderHotbar', hideApplication);
+
+  Hooks.on('renderSidebar', preserveSideBar);
+
+  $('section#ui-left img#logo').remove();
+
+  Hooks.on('drawToken', hideTokenBorder);
+  Hooks.on('refreshToken', hideTokenBorder);
+
+  Hooks.on('updateToken', tokenMoved);
+
+  Hooks.on('updateCombat', handleCombat);
+  Hooks.on('updateCombat', tokenMoved);
+  Hooks.on('updateCombat', showTracker);
+  Hooks.on('deleteCombat', stopCombat);
+  Hooks.on('deleteCombat', hideSidebar);
+
+  // Close Popups after configurable Time
+  Hooks.on('renderJournalSheet', closePopupWithDelay);
+  Hooks.on('renderImagePopout', closePopupWithDelay);
+
+  // Adding OBS Remote hooks;
+  Hooks.on('updateCombat', (_combat, change) => {
+    if (change.turn === 0 && change.round === 1) handleOBS('onCombatStart');
+  });
+  Hooks.on('deleteCombat', () => {
+    handleOBS('onCombatEnd');
+  });
+  Hooks.on('pauseGame', (pause) => {
+    if (pause) {
+      handleOBS('onPause');
+    } else {
+      handleOBS('onUnpause');
+    }
+  });
+  Hooks.once('ready', () => handleOBS('onLoad'));
+
+  await registerOBSEvents();
 }
