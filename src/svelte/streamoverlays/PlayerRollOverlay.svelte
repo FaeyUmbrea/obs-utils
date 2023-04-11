@@ -1,11 +1,11 @@
 <script>
-    import PlayerRollComponent from "./overlaycomponents/PlayerRollComponent.svelte";
+    import RollListenerComponent from "./overlaycomponents/RollListenerComponent.svelte";
 
-    let players = game.users.filter((e) => e.id !== game.user.id)
+    let players = game.users.filter((e) => e.id !== game.user.id).map((user) => user.id)
 </script>
 
 <div class="obs-utils roll-overlay">
-    {#each players as player}
-        <PlayerRollComponent playerId={player.id}/>
+    {#each players as id}
+        <RollListenerComponent {id}/>
     {/each}
 </div>

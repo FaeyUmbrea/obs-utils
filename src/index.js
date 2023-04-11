@@ -1,5 +1,5 @@
 import {expandTokenHud, isGM,} from './utils/canvas.js';
-import {registerSettings, runMigrations} from './utils/settings.js';
+import {rollOverlaySettings, runMigrations, settings} from './utils/settings.js';
 import {socketCanvas} from './utils/socket.js';
 import {isOBS} from './utils/helpers.js';
 import {ObsUtilsApi, registerDefaultTypes} from './utils/api.js';
@@ -14,8 +14,8 @@ function start() {
       Hooks.call('obsUtilsInit');
     }
 
-    // Register Settings
-    registerSettings();
+    settings.init();
+    rollOverlaySettings.init();
 
     // Load UI Component only on /game
     if (game.view === 'game') {

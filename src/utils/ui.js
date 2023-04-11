@@ -9,6 +9,7 @@ import {getApi} from "./helpers.js";
 import SingleLineOverlayEditor from "../svelte/components/editors/SingleLineOverlayEditor.svelte";
 import PlainEditor from "../svelte/components/editors/PlainEditor.svelte";
 import AVEditor from "../svelte/components/editors/AVEditor.svelte";
+import RollOverlay from "../applications/rolloverlay.js";
 
 let d;
 
@@ -64,6 +65,14 @@ export async function registerUI() {
         icon: 'fas fa-bars',
         restricted: true,
     });
+    game.settings.registerMenu(moduleID, 'rollOverlayEditor', {
+        name: `${moduleID}.settings.rollOverlayEditor.Name`,
+        label: `${moduleID}.settings.rollOverlayEditor.Label`,
+        hint: `${moduleID}.settings.rollOverlayEditor.Hint`,
+        icon: 'fas fa-bars',
+        type: SettingsShell(RollOverlay),
+        restricted: true,
+    })
 
     Hooks.on('getSceneControlButtons', buildButtons);
 

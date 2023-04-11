@@ -1,24 +1,23 @@
-import OverlayEditorUI from '../svelte/OverlayEditorUI.svelte';
 import {SvelteApplication} from "@typhonjs-fvtt/runtime/svelte/application";
+import PlayerRollOverlayEditor from "../svelte/components/editors/PlayerRollOverlayEditor.svelte";
 
-export default class OverlayEditor extends SvelteApplication {
+export default class RollOverlay extends SvelteApplication {
     dataArray = [];
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['overlayeditor'],
-            id: 'overlayeditor-application',
-            title: 'Overlay Editor',
-            //tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
+            classes: ['rolloverlayeditor'],
+            id: 'rolloverlayeditor-application',
+            title: 'Roll Overlay Editor',
             height: 600,
             width: 1000,
             zIndex: 95,
             resizable: true,
             focusKeep: true,
             svelte: {
-                class: OverlayEditorUI,
+                class: PlayerRollOverlayEditor,
                 target: document.body
             }
         });
-  }
+    }
 }

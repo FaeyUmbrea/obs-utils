@@ -1,7 +1,7 @@
 <script>
   import {OverlayData} from '../utils/stream';
   import OverlayEditorTab from './components/OverlayEditorTab.svelte';
-  import InformationOverlay from './components/PerActorOverlay.svelte';
+  import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';
   import {getSetting, setSetting} from '../utils/settings';
   import {getContext} from "svelte";
   import {ApplicationShell} from "@typhonjs-fvtt/runtime/svelte/component/core";

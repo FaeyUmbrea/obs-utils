@@ -1,10 +1,12 @@
 <script>
-  import { getApi } from '../../utils/helpers';
+  import {getApi} from '../../utils/helpers.js';
+
   export let overlays;
-  export let actorIDs;
-  function getOverlayType(type) {
-    return getApi().overlayTypes.get(type).overlayClass;
-  }
+    export let actorIDs;
+
+    function getOverlayType(type) {
+        return getApi().overlayTypes.get(type).overlayClass;
+    }
 </script>
 
 <div class="obs-utils overlay">

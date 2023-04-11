@@ -1,70 +1,72 @@
 <script>
 
-    import {getSetting} from "../../../utils/settings.js";
+    import {rollOverlaySettings as settings} from "../../../utils/settings.js";
     import {fade} from 'svelte/transition';
-    import {onDestroy} from "svelte";
 
 
-    export let playerId;
+    export let id;
 
-    let preRollDelay = getSetting("rollOverlayPreRollDelay");
-    let preRollStay = getSetting("rollOverlayPreRollStay");
-    let preRollFadeIn = getSetting("rollOverlayPreRollFadeIn");
-    let preRollFadeOut = getSetting("rollOverlayPreRollFadeOut");
-    let rollDelay = preRollDelay + preRollFadeIn + preRollStay + preRollFadeOut;
-    let rollStay = getSetting("rollOverlayRollStay");
-    let rollFadeIn = getSetting("rollOverlayRollFadeIn");
-    let rollFadeOut = getSetting("rollOverlayRollFadeOut");
-    let postRollDelay = rollDelay + rollFadeIn + rollStay + rollFadeOut
-    let postRollStay = getSetting("rollOverlayPostRollStay");
-    let postRollFadeIn = getSetting("rollOverlayPostRollFadeIn");
-    let postRollFadeOut = getSetting("rollOverlayPostRollFadeOut");
+    let preRollDelay = settings.getStore("rollOverlayPreRollDelay");
+    let preRollStay = settings.getStore("rollOverlayPreRollStay");
+    let preRollFadeIn = settings.getStore("rollOverlayPreRollFadeIn");
+    let preRollFadeOut = settings.getStore("rollOverlayPreRollFadeOut");
+    let rollDelay = $preRollDelay + $preRollFadeIn + $preRollStay + $preRollFadeOut;
+    let rollStay = settings.getStore("rollOverlayRollStay");
+    let rollFadeIn = settings.getStore("rollOverlayRollFadeIn");
+    let rollFadeOut = settings.getStore("rollOverlayRollFadeOut");
+    let postRollDelay = rollDelay + $rollFadeIn + $rollStay + $rollFadeOut
+    let postRollStay = settings.getStore("rollOverlayPostRollStay");
+    let postRollFadeIn = settings.getStore("rollOverlayPostRollFadeIn");
+    let postRollFadeOut = settings.getStore("rollOverlayPostRollFadeOut");
+
+    function recalculateRollDelay() {
+        rollDelay = $preRollDelay + $preRollFadeIn + $preRollStay + $preRollFadeOut;
+    }
+
+    preRollDelay.subscribe(recalculateRollDelay)
+    preRollFadeIn.subscribe(recalculateRollDelay)
+    preRollStay.subscribe(recalculateRollDelay)
+    preRollFadeOut.subscribe(recalculateRollDelay)
+
+    function recalculatePostRollDelay() {
+        postRollDelay = rollDelay + $rollFadeIn + $rollStay + $rollFadeOut
+    }
+
+    rollFadeIn.subscribe(recalculatePostRollDelay)
+    rollStay.subscribe(recalculatePostRollDelay)
+    rollFadeOut.subscribe(recalculatePostRollDelay)
+
+    let preRollImage = settings.getStore("rollOverlayPreRollImage")
+    let rollBackgroundImage = settings.getStore("rollOverlayRollBackground")
+    let rollForegroundImage = settings.getStore("rollOverlayRollForeground")
+    let postRollImage = settings.getStore("rollOverlayPostRollImage")
 
 
-    let preRollImage = getSetting("rollOverlayPreRollImage")
-    let rollBackgroundImage = getSetting("rollOverlayRollBackground")
-    let rollForegroundImage = getSetting("rollOverlayRollForeground")
-    let postRollImage = getSetting("rollOverlayPostRollImage")
-
-
-    let rollValue = "0";
-
-    let rollShow;
-
-    let hook = Hooks.on('createChatMessage', (e) => {
-        const uid = e.user.id;
-        if (uid === playerId && e.whisper.length === 0) {
-            rollValue = e.roll.result;
-            rollShow = true;
-        }
-    })
-
-    onDestroy(() => {
-        Hooks.off('createChatMessage', hook);
-    })
+    export let rollValue = "0";
+    export let rollShow = false;
 
 </script>
 
-<div class="display-area" id={playerId}>
+<div class="display-area" id={id}>
     {#if rollShow}
-        {#if preRollImage}
-            <img class="before layer" in:fade={{delay:preRollDelay,duration:preRollFadeIn}}
-                 out:fade="{{delay:preRollStay,duration:preRollFadeOut}}" src={preRollImage} alt="pre roll image"/>
+        {#if $preRollImage}
+            <img class="before layer" in:fade={{delay:preRollDelay,duration:$preRollFadeIn}}
+                 out:fade="{{delay:$preRollStay,duration:$preRollFadeOut}}" src={$preRollImage} alt="pre roll"/>
         {/if}
-        {#if rollBackgroundImage}
-            <img class="background layer" in:fade="{{delay:rollDelay,duration:rollFadeIn}}"
-                 out:fade="{{delay:rollStay,duration:rollFadeOut}}" src={rollBackgroundImage} alt="roll image"/>
+        {#if $rollBackgroundImage}
+            <img class="background layer" in:fade="{{delay:rollDelay,duration:$rollFadeIn}}"
+                 out:fade="{{delay:$rollStay,duration:$rollFadeOut}}" src={$rollBackgroundImage} alt="roll background"/>
         {/if}
-        <span class="roll layer" in:fade="{{delay:rollDelay,duration:rollFadeIn}}"
-              out:fade="{{delay:rollStay,duration:rollFadeOut}}"
+        <span class="roll layer" in:fade="{{delay:rollDelay,duration:$rollFadeIn}}"
+              out:fade="{{delay:$rollStay,duration:$rollFadeOut}}"
               on:introend={()=>rollShow=false}>{rollValue}</span>
-        {#if rollForegroundImage}
-            <img class="foreground layer" in:fade="{{delay:rollDelay,duration:rollFadeIn}}"
-                 out:fade="{{delay:rollStay,duration:rollFadeOut}}" src={rollForegroundImage} alt="roll image"/>
+        {#if $rollForegroundImage}
+            <img class="foreground layer" in:fade="{{delay:rollDelay,duration:$rollFadeIn}}"
+                 out:fade="{{delay:$rollStay,duration:$rollFadeOut}}" src={$rollForegroundImage} alt="roll foreground"/>
         {/if}
-        {#if postRollImage}
-            <img class="after layer" in:fade="{{delay:postRollDelay,duration:postRollFadeIn}}"
-                 out:fade="{{delay:postRollStay,duration:postRollFadeOut}}" src={postRollImage} alt="roll image"/>
+        {#if $postRollImage}
+            <img class="after layer" in:fade="{{delay:postRollDelay,duration:$postRollFadeIn}}"
+                 out:fade="{{delay:$postRollStay,duration:$postRollFadeOut}}" src={$postRollImage} alt="post roll"/>
         {/if}
     {/if}
 </div>

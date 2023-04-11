@@ -48,6 +48,67 @@
       "enableOBSWebsocket": {
         "Name": "Enable OBS Websocket?",
         "Hint": "If checked, OBS Websocket will be used for Remoting"
+      },
+      "rollOverlayPostRollImage": {
+        "Name": "Post Roll Image (Optional)",
+        "Hint": "Image to be displayed after the Roll"
+      },
+      "rollOverlayRollForegroundImage": {
+        "Name": "Foreground Roll Image (Optional)",
+        "Hint": "Image to be displayed in front of the Roll"
+      },
+      "rollOverlayRollBackgroundImage": {
+        "Name": "Background Roll Image (Optional)",
+        "Hint": "Image to be displayed behind the Roll"
+      },
+      "rollOverlayPreRollImage": {
+        "Name": "Pre Roll Image (Optional)",
+        "Hint": "Image to be displayed before the Roll"
+      },
+      "rollOverlayPreRollDelay": {
+        "Name": "Pre Roll Delay",
+        "Hint": "The delay in milliseconds (ms) until the pre roll is displayed"
+      },
+      "rollOverlayPreRollStay": {
+        "Name": "Pre Roll Duration",
+        "Hint": "The time in milliseconds (ms) that the pre roll is displayed"
+      },
+      "rollOverlayPreRollFadeIn": {
+        "Name": "Pre Roll Fade In Duration",
+        "Hint": "The time in milliseconds (ms) that the pre roll is faded in"
+      },
+      "rollOverlayPreRollFadeOut": {
+        "Name": "Pre Roll Fade In Duration",
+        "Hint": "The time in milliseconds (ms) that the pre roll is faded out"
+      },
+      "rollOverlayRollStay": {
+        "Name": "Roll Duration",
+        "Hint": "The time in milliseconds (ms) that the roll is displayed"
+      },
+      "rollOverlayRollFadeIn": {
+        "Name": "Roll Fade In Duration",
+        "Hint": "The time in milliseconds (ms) that the roll is faded in"
+      },
+      "rollOverlayRollFadeOut": {
+        "Name": "Roll Fade In Duration",
+        "Hint": "The time in milliseconds (ms) that the roll is faded out"
+      },
+      "rollOverlayPostRollStay": {
+        "Name": "Post Roll Duration",
+        "Hint": "The time in milliseconds (ms) that the post roll is displayed"
+      },
+      "rollOverlayPostRollFadeIn": {
+        "Name": "Post Roll Fade In Duration",
+        "Hint": "The time in milliseconds (ms) that the post roll is faded in"
+      },
+      "rollOverlayRollPostFadeOut": {
+        "Name": "Post Roll Fade In Duration",
+        "Hint": "The time in milliseconds (ms) that the post roll is faded out"
+      },
+      "rollOverlayEditor": {
+        "Name": "Roll Overlay Editor",
+        "Hint": "Edit the Roll Overlay",
+        "Label": "Open Editor"
       }
     }
   }
