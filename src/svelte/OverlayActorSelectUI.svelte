@@ -79,11 +79,6 @@
       border-radius: 4px;
     }
 
-    ul {
-      padding-inline-start: 20px;
-      padding-inline-end: 20px;
-    }
-
     img {
       height: inherit;
     }
@@ -95,11 +90,6 @@
     input[type='checkbox']:checked + label {
       background-color: rgb(0 0 0 / 20%);
       border-color: rgb(0 0 0 / 37.8%);
-    }
-
-    p {
-      text-align: center;
-      width: 100%;
     }
 
     footer {

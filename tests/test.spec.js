@@ -396,18 +396,23 @@ test.describe('Player Client Additional Tests', () => {
 test.afterAll(async ()=>{
   let coverageGM = await gmPage.coverage.stopJSCoverage();
   let coverageOBS = await obsPage.coverage.stopJSCoverage();
-  let coverage = [...coverageGM,...coverageOBS];
-  fs.rmSync(process.cwd()+"/.nyc_output",{recursive:true,force:true});
-  fs.mkdirSync(process.cwd()+"/.nyc_output");
-  const converter = v8toIstanbul('dist/indexindex.js', undefined, undefined, (path) => path.includes('node_modules'));
-    await converter.load();
-  for (const entry of coverage) {
-    if(!entry.source) continue;
-    converter.applyCoverage(entry.functions);
-  }
-  let data = JSON.stringify(converter.toIstanbul());
-    
-  fs.writeFileSync(process.cwd() + '/.nyc_output/data.json',data);
+  let coverage = [...coverageGM, ...coverageOBS];
+  fs.rmSync(process.cwd() + "/.nyc_output", {recursive: true, force: true});
+  fs.mkdirSync(process.cwd() + "/.nyc_output");
+  fs.readdir('dist', async (err, files) => {
+    for (const file of files) {
+      if (!file.endsWith('.js')) continue;
+      const converter = v8toIstanbul('dist/' + file, undefined, undefined, (path) => path.includes('node_modules'));
+      await converter.load();
+      for (const entry of coverage) {
+        if (!entry.source) continue;
+        converter.applyCoverage(entry.functions);
+      }
+      let data = JSON.stringify(converter.toIstanbul());
+
+      fs.writeFileSync(process.cwd() + '/.nyc_output/' + file + 'data.json', data);
+    }
+  });
 })
 
 async function startCombatWithAllTokens(gmPage){
