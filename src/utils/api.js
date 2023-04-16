@@ -23,11 +23,20 @@ export class ObsUtilsApi {
         this.singleInstanceOverlays = new Set();
     }
 
+    /**
+     *
+     * @param key {string} The id of the Overlay
+     * @param readableName {string} The readable Name for the overlay
+     * @param type {OverlayType} The class for the Overlay
+     */
     registerOverlayType(key, readableName, type) {
         this.overlayTypes.set(key, type);
         this.overlayTypeNames.set(key, readableName);
     }
 
+    /**
+     * @param overlay {SvelteComponent} The class for the Overlay
+     */
     registerUniqueOverlay(overlay) {
         this.singleInstanceOverlays.add(overlay);
     }
@@ -36,6 +45,9 @@ export class ObsUtilsApi {
 export class OverlayType {
     overlayEditor;
 
+    /**
+     * @param overlayClass {SvelteComponent} The class for the Overlay
+     */
     constructor(overlayClass) {
         this.overlayComponents = new Map();
         this.overlayClass = overlayClass;
@@ -43,6 +55,9 @@ export class OverlayType {
         this.overlayComponentEditors = new Map();
     }
 
+    /**
+     * @param editor {SvelteComponent} The class for the Editor
+     */
     registerOverlayEditor(editor) {
         this.overlayEditor = editor;
     }

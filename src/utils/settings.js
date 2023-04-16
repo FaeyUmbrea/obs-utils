@@ -299,6 +299,18 @@ class RollOverlaySettings extends TJSGameSettings {
             config: true,
             default: ""
         }))
+        settings.push(createSetting('rollOverlayPostRollEnabled', {
+            type: Boolean,
+            scope: 'world',
+            config: true,
+            default: false
+        }))
+        settings.push(createSetting('rollOverlayPreRollEnabled', {
+            type: Boolean,
+            scope: 'world',
+            config: true,
+            default: false
+        }))
         this.registerAll(settings, false)
     }
 

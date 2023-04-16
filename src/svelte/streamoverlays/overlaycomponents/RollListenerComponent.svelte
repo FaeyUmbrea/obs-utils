@@ -13,6 +13,7 @@
         const uid = e.user.id;
         if (uid === id && e.whisper.length === 0) {
             rollValue = e.roll.result;
+            rollShow = false;
             rollShow = true;
         }
     })
@@ -21,4 +22,4 @@
         Hooks.off('createChatMessage', hook);
     })
 </script>
-<PlayerRollComponent bind:rollShow bind:rollValue {id}/>
+<PlayerRollComponent bind:postRollShow={rollShow} bind:preRollShow={rollShow} bind:rollShow bind:rollValue {id}/>
