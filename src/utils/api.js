@@ -5,6 +5,8 @@ import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorV
 import AVBoolDisplayComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolDisplayComponent.svelte';
 import {getApi} from './helpers.js';
 import PlayerRollOverlay from "../svelte/streamoverlays/PlayerRollOverlay.svelte";
+import AVImageDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVImageDisplayComponent.svelte";
+import ImageComponent from "../svelte/streamoverlays/overlaycomponents/ImageComponent.svelte";
 
 export class ObsUtilsApi {
 
@@ -87,6 +89,8 @@ export function registerDefaultTypes() {
     singleLineOverlay.registerComponent('fai', 'Font Awesome Icon', FAIconComponent);
     singleLineOverlay.registerComponent('av', 'Actor Value', ActorValComponent);
     singleLineOverlay.registerComponent('bav', 'Boolean Actor Value', AVBoolDisplayComponent);
+    singleLineOverlay.registerComponent('img', 'Image', ImageComponent);
+    singleLineOverlay.registerComponent('iav', 'Image Actor Value', AVImageDisplayComponent);
 
     // Register Legacy Names
     singleLineOverlay.overlayComponents.set('Plain Text', PlaintextComponent);

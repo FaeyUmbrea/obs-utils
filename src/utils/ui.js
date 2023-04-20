@@ -79,6 +79,8 @@ export async function registerUI() {
     getApi().overlayTypes.get("sl").registerOverlayEditor(SingleLineOverlayEditor);
     getApi().overlayTypes.get("sl").registerComponentEditor('pt', PlainEditor);
     getApi().overlayTypes.get("sl").registerComponentEditor('fai', PlainEditor);
+    getApi().overlayTypes.get("sl").registerComponentEditor('img', PlainEditor);
     getApi().overlayTypes.get("sl").registerComponentEditor('av', AVEditor);
     getApi().overlayTypes.get("sl").registerComponentEditor('bav', AVEditor);
+    getApi().overlayTypes.get("sl").registerComponentEditor('iav', AVEditor);
 }
