@@ -1,4 +1,18 @@
-## Version 1.4.2 
+## Version 2.2.0
+
+Added an Image Overlay
+
+## Version 2.1.0
+
+Added a new Roll Overlay
+
+## Version 2.0.0
+
+Added an API for Overlays
+Added single-render Overlays
+
+## Version 1.4.2
+
 Fixing pf2e compatbility
 
 ## Version 1.4.0
