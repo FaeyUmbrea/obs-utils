@@ -1,3 +1,7 @@
+## Version 2.2.1
+
+Add an option to show or hide the Cameras
+
 ## Version 2.2.0
 
 Added an Image Overlay

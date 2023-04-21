@@ -120,8 +120,8 @@ export async function initOBS() {
   Hooks.on('renderSceneControls', hideApplication);
   Hooks.on('renderTokenHUD', hideApplication);
   Hooks.on('renderUserConfig', hideApplication);
-  if (getSetting('showAV')) {
-    Hooks.on('renderCameraViews', hideApplication);
+  if (!getSetting('showAV')) {
+      Hooks.on('renderCameraViews', hideApplication);
   }
   Hooks.on('renderPlayerList', hideApplication);
   Hooks.on('renderHotbar', hideApplication);
