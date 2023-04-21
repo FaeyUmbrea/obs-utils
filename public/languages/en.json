@@ -109,6 +109,10 @@
         "Name": "Roll Overlay Editor",
         "Hint": "Edit the Roll Overlay",
         "Label": "Open Editor"
+      },
+      "showAV": {
+        "Name": "Show Video Overlay?",
+        "Hint": "If checked, the camera sidebar will be visible on OBS"
       }
     }
   }

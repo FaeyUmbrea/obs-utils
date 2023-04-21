@@ -201,6 +201,12 @@ class OBSUtilsSettings extends TJSGameSettings {
             config: false,
             default: 0
         }))
+        settings.push(createSetting('showAV', {
+            type: Boolean,
+            scope: 'world',
+            config: true,
+            default: false
+        }))
         this.registerAll(settings, true)
     }
 }
