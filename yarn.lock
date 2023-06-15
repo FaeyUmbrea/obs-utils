@@ -1102,7 +1102,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typhonjs-fvtt/eslint-config-foundry.js@npm:0.8.0":
+"@typhonjs-fvtt/eslint-config-foundry.js@npm:^0.8.0":
   version: 0.8.0
   resolution: "@typhonjs-fvtt/eslint-config-foundry.js@npm:0.8.0"
   checksum: 42c35c89afb510108f0997e0c3373140fbf8bb7e337a147eeef163f6ade48c23a1f7f99c08bf4253c7cdc0cce98c73a50e173ab6162f3bdfda4446c5938e1ddb
@@ -3693,7 +3693,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nyc@npm:15.1.0":
+"nyc@npm:^15.1.0":
   version: 15.1.0
   resolution: "nyc@npm:15.1.0"
   dependencies:
@@ -3740,7 +3740,7 @@ __metadata:
     "@sveltejs/svelte-virtual-list": ^3.0.1
     "@sveltejs/vite-plugin-svelte": ^2.4.1
     "@types/lodash-es": ^4.17.7
-    "@typhonjs-fvtt/eslint-config-foundry.js": 0.8.0
+    "@typhonjs-fvtt/eslint-config-foundry.js": ^0.8.0
     "@typhonjs-fvtt/runtime": ^0.0.23
     "@typhonjs-fvtt/svelte-standard": ^0.0.23
     cross-env: 7.0.3
@@ -3751,15 +3751,15 @@ __metadata:
     eslint-plugin-svelte: ^2.30.0
     flat: ^5.0.2
     lodash-es: ^4.17.21
-    nyc: 15.1.0
+    nyc: ^15.1.0
     obs-websocket-js: ^5.0.3
-    postcss: 8.4.24
+    postcss: ^8.4.24
     postcss-stylus: ^0.0.1
     prettier: ^2.8.8
     prettier-plugin-svelte: ^2.10.1
     rollup-plugin-visualizer: ^5.9.2
     stylus: ^0.59.0
-    svelte: next
+    svelte: ^4.0.0-next.1
     svelte-preprocess: 5.0.4
     svelte-select: ^5.6.1
     v8-to-istanbul: ^9.1.0
@@ -4692,17 +4692,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.24, postcss@npm:^8, postcss@npm:^8.4.23, postcss@npm:^8.4.5":
-  version: 8.4.24
-  resolution: "postcss@npm:8.4.24"
-  dependencies:
-    nanoid: ^3.3.6
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: 814e2126dacfea313588eda09cc99a9b4c26ec55c059188aa7a916d20d26d483483106dc5ff9e560731b59f45c5bb91b945dfadc670aed875cc90ddbbf4e787d
-  languageName: node
-  linkType: hard
-
 "postcss@npm:^5.0.14":
   version: 5.2.18
   resolution: "postcss@npm:5.2.18"
@@ -4712,6 +4701,17 @@ __metadata:
     source-map: ^0.5.6
     supports-color: ^3.2.3
   checksum: 0cb88e7c887b9b55d0362159846ec9fbf330892c5853b0e346929e723d215295ffae48d9a0f219f64f74767f9114802dc1b5cd21c327184f958b7efaa93dd629
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8, postcss@npm:^8.4.23, postcss@npm:^8.4.24, postcss@npm:^8.4.5":
+  version: 8.4.24
+  resolution: "postcss@npm:8.4.24"
+  dependencies:
+    nanoid: ^3.3.6
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 814e2126dacfea313588eda09cc99a9b4c26ec55c059188aa7a916d20d26d483483106dc5ff9e560731b59f45c5bb91b945dfadc670aed875cc90ddbbf4e787d
   languageName: node
   linkType: hard
 
@@ -5401,7 +5401,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:next":
+"svelte@npm:^4.0.0-next.1":
   version: 4.0.0-next.1
   resolution: "svelte@npm:4.0.0-next.1"
   dependencies:
