@@ -94,6 +94,7 @@ export async function registerUI() {
 }
 
 export function showNotifications() {
+  if (!game.user.isGM) return;
   const lastRead = getSetting("lastReadNotification");
   if (lastRead < notifications[0].id) {
     new NotificationCenter().render(true);

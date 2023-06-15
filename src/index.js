@@ -25,7 +25,9 @@ function start() {
     if (game.view === "game") {
       const ui = await import("./utils/ui.js");
       await ui.registerUI();
-      await ui.showNotifications();
+
+      // Show notifications panel if UI is loaded
+      Hooks.once("ready", () => ui.showNotifications());
     }
 
     // Load OBS Stuff only in OBS

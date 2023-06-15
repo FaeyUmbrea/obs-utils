@@ -4,12 +4,17 @@
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import notifications from "../utils/notifications.json";
   import CollapsibleSection from "./components/CollapsibleSection.svelte";
+  import { setSetting } from "../utils/settings.js";
+  import { onDestroy } from "svelte";
 
   export let elementRoot = void 0;
 
   function openLink(uri) {
     window.open(uri, "_blank").focus();
   }
+  onDestroy(() => {
+    setSetting("lastReadNotification", notifications[0].id);
+  });
 </script>
 
 <ApplicationShell bind:elementRoot="{elementRoot}">

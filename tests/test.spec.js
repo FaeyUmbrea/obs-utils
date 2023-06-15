@@ -76,6 +76,9 @@ test.describe("DM Client Only Tests", () => {
 
     await gmPage.waitForFunction(() => window["game"].ready);
   });
+  test("Close Notification Center", async () => {
+    await closeNoficationCenter(gmPage);
+  });
   test("Click Director Button to Open and Close", async () => {
     await openDirector(gmPage);
 
@@ -559,6 +562,16 @@ async function endCombat(gmPage) {
   await gmPage
     .locator("button.dialog-button.yes.default[data-button=yes]")
     .waitFor({ state: "hidden" });
+}
+
+async function closeNoficationCenter(gmPage) {
+  await expect(
+    gmPage.locator("div[id=notification-application]")
+  ).toBeVisible();
+  await gmPage.locator("div[id=notification-application] a.close").click();
+  await expect(
+    gmPage.locator("div[id=notification-application]")
+  ).not.toBeVisible();
 }
 
 async function openDirector(gmPage) {
