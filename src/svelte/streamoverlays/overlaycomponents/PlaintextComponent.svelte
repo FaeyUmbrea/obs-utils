@@ -4,6 +4,9 @@
   export let componentIndex;
 </script>
 
-<div class="component plain-text-component" id={'component' + componentIndex.toString()} {style}>
+<div
+  class="component plain-text-component"
+  id="{'component' + componentIndex.toString()}"
+  style="{style}">
   {data}
 </div>

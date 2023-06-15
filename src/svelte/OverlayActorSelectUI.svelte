@@ -1,62 +1,4 @@
-<script>
-  import VirtualList from '@sveltejs/svelte-virtual-list';
-  import {getSetting, setSetting} from "../utils/settings.js";
-  import {getContext} from "svelte";
-  import {ApplicationShell} from "@typhonjs-fvtt/runtime/svelte/component/core";
-
-  let selectedActors = getSetting('overlayActors');
-
-  let actors = game.actors;
-  export let elementRoot = void 0;
-
-
-  let searchTerm = '';
-
-  $: filteredActors = actors.filter((item) => item.name?.indexOf(searchTerm) !== -1);
-
-  const context = getContext('#external');
-
-  async function submit() {
-    await setSetting('overlayActors', selectedActors)
-    context.application.close()
-  }
-
-  function change(id) {
-    if (selectedActors.includes(id)) {
-      selectedActors = selectedActors.filter((e) => e !== id)
-    } else {
-      selectedActors.push(id);
-    }
-  }
-</script>
-
-<svelte:options accessors={true}/>
-<ApplicationShell bind:elementRoot>
-  <main>
-    <input bind:value={searchTerm} name="search" type="text"/>
-
-    <VirtualList itemHeight={50} items={filteredActors} let:item>
-      <div>
-        <input
-                checked={item.id ? selectedActors.includes(item.id) : false}
-                id={item.id}
-                name={item.id}
-                on:change={change(item.id)}
-                type="checkbox"
-                value={item.id}
-        />
-        <label for={item.id}
-        ><img alt={item.name} src={item.img}/>
-          <span>{item.name}</span></label
-        >
-      </div>
-    </VirtualList>
-
-    <footer>
-      <button on:click={submit}>Submit</button>
-    </footer>
-  </main>
-</ApplicationShell>
+<svelte:options accessors="{true}" />
 
 <style lang="stylus">
   main {
@@ -101,3 +43,61 @@
     }
   }
 </style>
+
+<script>
+  import VirtualList from "@sveltejs/svelte-virtual-list";
+  import { getSetting, setSetting } from "../utils/settings.js";
+  import { getContext } from "svelte";
+  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+
+  let selectedActors = getSetting("overlayActors");
+
+  let actors = game.actors;
+  export let elementRoot = void 0;
+
+  let searchTerm = "";
+
+  $: filteredActors = actors.filter(
+    (item) => item.name?.indexOf(searchTerm) !== -1
+  );
+
+  const context = getContext("#external");
+
+  async function submit() {
+    await setSetting("overlayActors", selectedActors);
+    context.application.close();
+  }
+
+  function change(id) {
+    if (selectedActors.includes(id)) {
+      selectedActors = selectedActors.filter((e) => e !== id);
+    } else {
+      selectedActors.push(id);
+    }
+  }
+</script>
+
+<ApplicationShell bind:elementRoot="{elementRoot}">
+  <main>
+    <input bind:value="{searchTerm}" name="search" type="text" />
+
+    <VirtualList itemHeight="{50}" items="{filteredActors}" let:item>
+      <div>
+        <input
+          checked="{item.id ? selectedActors.includes(item.id) : false}"
+          id="{item.id}"
+          name="{item.id}"
+          on:change="{change(item.id)}"
+          type="checkbox"
+          value="{item.id}" />
+        <label for="{item.id}"
+        ><img alt="{item.name}" src="{item.img}" />
+          <span>{item.name}</span></label>
+      </div>
+    </VirtualList>
+
+    <footer>
+      <button on:click="{submit}">Submit</button>
+    </footer>
+  </main>
+</ApplicationShell>

@@ -1,104 +1,118 @@
-import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte';
-import PlaintextComponent from '../svelte/streamoverlays/overlaycomponents/PlaintextComponent.svelte';
-import FAIconComponent from '../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte';
-import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
-import AVBoolDisplayComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolDisplayComponent.svelte';
-import {getApi} from './helpers.js';
+import SingleLineOverlay from "../svelte/streamoverlays/SingleLineOverlay.svelte";
+import PlaintextComponent from "../svelte/streamoverlays/overlaycomponents/PlaintextComponent.svelte";
+import FAIconComponent from "../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte";
+import ActorValComponent from "../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte";
+import AVBoolDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVBoolDisplayComponent.svelte";
+import { getApi } from "./helpers.js";
 import PlayerRollOverlay from "../svelte/streamoverlays/PlayerRollOverlay.svelte";
 import AVImageDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVImageDisplayComponent.svelte";
 import ImageComponent from "../svelte/streamoverlays/overlaycomponents/ImageComponent.svelte";
 
 export class ObsUtilsApi {
-
-    constructor() {
-        /**
-         * @type {Map<string, OverlayType>}
-         */
-        this.overlayTypes = new Map();
-        /**
-         * @type {Map<string, OverlayType>}
-         */
-        this.overlayTypeNames = new Map();
-        /**
-         * @type {Map<string, OverlayType>}
-         */
-        this.singleInstanceOverlays = new Set();
-    }
-
+  constructor() {
     /**
-     *
-     * @param key {string} The id of the Overlay
-     * @param readableName {string} The readable Name for the overlay
-     * @param type {OverlayType} The class for the Overlay
+     * @type {Map<string, OverlayType>}
      */
-    registerOverlayType(key, readableName, type) {
-        this.overlayTypes.set(key, type);
-        this.overlayTypeNames.set(key, readableName);
-    }
-
+    this.overlayTypes = new Map();
     /**
-     * @param overlay {SvelteComponent} The class for the Overlay
+     * @type {Map<string, OverlayType>}
      */
-    registerUniqueOverlay(overlay) {
-        this.singleInstanceOverlays.add(overlay);
-    }
+    this.overlayTypeNames = new Map();
+    /**
+     * @type {Map<string, OverlayType>}
+     */
+    this.singleInstanceOverlays = new Set();
+  }
+
+  /**
+   *
+   * @param key {string} The id of the Overlay
+   * @param readableName {string} The readable Name for the overlay
+   * @param type {OverlayType} The class for the Overlay
+   */
+  registerOverlayType(key, readableName, type) {
+    this.overlayTypes.set(key, type);
+    this.overlayTypeNames.set(key, readableName);
+  }
+
+  /**
+   * @param overlay {SvelteComponent} The class for the Overlay
+   */
+  registerUniqueOverlay(overlay) {
+    this.singleInstanceOverlays.add(overlay);
+  }
 }
 
 export class OverlayType {
-    overlayEditor;
+  overlayEditor;
 
-    /**
-     * @param overlayClass {SvelteComponent} The class for the Overlay
-     */
-    constructor(overlayClass) {
-        this.overlayComponents = new Map();
-        this.overlayClass = overlayClass;
-        this.overlayComponentNames = new Map();
-        this.overlayComponentEditors = new Map();
-    }
+  /**
+   * @param overlayClass {SvelteComponent} The class for the Overlay
+   */
+  constructor(overlayClass) {
+    this.overlayComponents = new Map();
+    this.overlayClass = overlayClass;
+    this.overlayComponentNames = new Map();
+    this.overlayComponentEditors = new Map();
+  }
 
-    /**
-     * @param editor {SvelteComponent} The class for the Editor
-     */
-    registerOverlayEditor(editor) {
-        this.overlayEditor = editor;
-    }
+  /**
+   * @param editor {SvelteComponent} The class for the Editor
+   */
+  registerOverlayEditor(editor) {
+    this.overlayEditor = editor;
+  }
 
-    /**
-     * @param key {string} The id of the Component
-     * @param readableName {string} The readable Name for the component
-     * @param type {SvelteComponent} The class for the Component
-     */
-    registerComponent(key, readableName, type) {
-        this.overlayComponents.set(key, type);
-        this.overlayComponentNames.set(key, readableName);
-    }
+  /**
+   * @param key {string} The id of the Component
+   * @param readableName {string} The readable Name for the component
+   * @param type {SvelteComponent} The class for the Component
+   */
+  registerComponent(key, readableName, type) {
+    this.overlayComponents.set(key, type);
+    this.overlayComponentNames.set(key, readableName);
+  }
 
-    /**
-     * @param key {string} The id of the Component
-     * @param editor {SvelteComponent} The class for the Editor
-     */
-    registerComponentEditor(key, editor) {
-        this.overlayComponentEditors.set(key, editor);
-    }
+  /**
+   * @param key {string} The id of the Component
+   * @param editor {SvelteComponent} The class for the Editor
+   */
+  registerComponentEditor(key, editor) {
+    this.overlayComponentEditors.set(key, editor);
+  }
 }
 
 export function registerDefaultTypes() {
-    const singleLineOverlay = new OverlayType(SingleLineOverlay);
-    singleLineOverlay.registerComponent('pt', 'Plain Text', PlaintextComponent);
-    singleLineOverlay.registerComponent('fai', 'Font Awesome Icon', FAIconComponent);
-    singleLineOverlay.registerComponent('av', 'Actor Value', ActorValComponent);
-    singleLineOverlay.registerComponent('bav', 'Boolean Actor Value', AVBoolDisplayComponent);
-    singleLineOverlay.registerComponent('img', 'Image', ImageComponent);
-    singleLineOverlay.registerComponent('iav', 'Image Actor Value', AVImageDisplayComponent);
+  const singleLineOverlay = new OverlayType(SingleLineOverlay);
+  singleLineOverlay.registerComponent("pt", "Plain Text", PlaintextComponent);
+  singleLineOverlay.registerComponent(
+    "fai",
+    "Font Awesome Icon",
+    FAIconComponent
+  );
+  singleLineOverlay.registerComponent("av", "Actor Value", ActorValComponent);
+  singleLineOverlay.registerComponent(
+    "bav",
+    "Boolean Actor Value",
+    AVBoolDisplayComponent
+  );
+  singleLineOverlay.registerComponent("img", "Image", ImageComponent);
+  singleLineOverlay.registerComponent(
+    "iav",
+    "Image Actor Value",
+    AVImageDisplayComponent
+  );
 
-    // Register Legacy Names
-    singleLineOverlay.overlayComponents.set('Plain Text', PlaintextComponent);
-    singleLineOverlay.overlayComponents.set('Font Awesome Icon', FAIconComponent);
-    singleLineOverlay.overlayComponents.set('Actor Value', ActorValComponent);
-    singleLineOverlay.overlayComponents.set('Boolean Actor Value', AVBoolDisplayComponent);
+  // Register Legacy Names
+  singleLineOverlay.overlayComponents.set("Plain Text", PlaintextComponent);
+  singleLineOverlay.overlayComponents.set("Font Awesome Icon", FAIconComponent);
+  singleLineOverlay.overlayComponents.set("Actor Value", ActorValComponent);
+  singleLineOverlay.overlayComponents.set(
+    "Boolean Actor Value",
+    AVBoolDisplayComponent
+  );
 
-    getApi().registerOverlayType('sl', 'Single Line', singleLineOverlay);
-    getApi().overlayTypes.set('Single Line', singleLineOverlay);
-    getApi().registerUniqueOverlay(PlayerRollOverlay);
+  getApi().registerOverlayType("sl", "Single Line", singleLineOverlay);
+  getApi().overlayTypes.set("Single Line", singleLineOverlay);
+  getApi().registerUniqueOverlay(PlayerRollOverlay);
 }

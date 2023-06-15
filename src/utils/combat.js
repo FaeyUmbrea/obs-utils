@@ -9,5 +9,5 @@ export function handleCombat(runningCombat) {
 }
 
 export function getCurrentCombatants() {
-    return game.combat?.combatant?.players;
+  return game.combat?.combatant?.players;
 }

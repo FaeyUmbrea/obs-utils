@@ -1,12 +1,9 @@
+<svelte:options accessors="{true}" />
+
 <script>
-    import {ApplicationShell} from '@typhonjs-fvtt/runtime/svelte/component/core';
+  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
 
-    export let elementRoot = void 0;
-
+  export let elementRoot = void 0;
 </script>
 
-<svelte:options accessors={true}/>
-
-<ApplicationShell bind:elementRoot>
-
-</ApplicationShell>
+<ApplicationShell bind:elementRoot="{elementRoot}" />

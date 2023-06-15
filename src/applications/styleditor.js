@@ -1,4 +1,4 @@
-import {SvelteApplication} from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
 import StyleEditorUi from "../svelte/StyleEditorUi.svelte";
 
 export default class StyleEditor extends SvelteApplication {
@@ -13,9 +13,9 @@ export default class StyleEditor extends SvelteApplication {
 
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['styleeditor'],
-      id: 'styleeditor-application',
-      title: 'Style Editor',
+      classes: ["styleeditor"],
+      id: "styleeditor-application",
+      title: "Style Editor",
       //tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
       height: 125,
       width: 400,

@@ -1,11 +1,22 @@
+<svelte:options accessors="{true}" />
+
+<style>
+    footer {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        padding: 10px;
+    }
+</style>
+
 <script>
-  import {ApplicationShell} from "@typhonjs-fvtt/runtime/svelte/component/core";
-  import {getContext} from "svelte";
+  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { getContext } from "svelte";
 
   export let elementRoot = void 0;
-  const items = ["a", "b"]
 
-  let application = getContext("#external").application
+  let application = getContext("#external").application;
 
   let style = application.style;
 
@@ -15,21 +26,9 @@
   }
 </script>
 
-<svelte:options accessors={true}/>
-
-<ApplicationShell bind:elementRoot>
-  <input bind:value={style} name="style" type="text"/>
+<ApplicationShell bind:elementRoot="{elementRoot}">
+  <input bind:value="{style}" name="style" type="text" />
   <footer>
-    <button on:click={close}>Submit</button>
+    <button on:click="{close}">Submit</button>
   </footer>
 </ApplicationShell>
-
-<style>
-  footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    padding: 10px;
-  }
-</style>

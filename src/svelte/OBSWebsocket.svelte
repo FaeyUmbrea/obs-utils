@@ -1,34 +1,39 @@
+<svelte:options accessors="{true}" />
+
 <script>
+  import { getSetting, setSetting } from "../utils/settings.js";
+  import { getContext } from "svelte";
+  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
 
-  import {getSetting, setSetting} from "../utils/settings.js";
-  import {getContext} from "svelte";
-  import {ApplicationShell} from "@typhonjs-fvtt/runtime/svelte/component/core";
-
-  let websocketSettings = getSetting('websocketSettings');
+  let websocketSettings = getSetting("websocketSettings");
   export let elementRoot = void 0;
 
-  const context = getContext('#external');
+  const context = getContext("#external");
 
   async function submit() {
-    await setSetting('websocketSettings', websocketSettings)
-    context.application.close()
+    await setSetting("websocketSettings", websocketSettings);
+    context.application.close();
   }
 </script>
 
-<svelte:options accessors={true}/>
-<ApplicationShell bind:elementRoot>
+<ApplicationShell bind:elementRoot="{elementRoot}">
   <main>
-    <hr/>
+    <hr />
     <div class="flexcol">
-      URL: <input bind:value={websocketSettings.url} name="url" type="text"/>
-      <br/>
-      Port: <input bind:value={websocketSettings.port} name="port" type="number"/>
-      <br/>
-      Password: <input bind:value={websocketSettings.password} name="password" type="password"/>
+      URL: <input bind:value="{websocketSettings.url}" name="url" type="text" />
+      <br />
+      Port:
+      <input bind:value="{websocketSettings.port}" name="port" type="number" />
+      <br />
+      Password:
+      <input
+        bind:value="{websocketSettings.password}"
+        name="password"
+        type="password" />
       <p style="color:red">This password is NOT stored securely</p>
-      <hr/>
-      <button on:click={submit} type="submit">Save</button>
+      <hr />
+      <button on:click="{submit}" type="submit">Save</button>
     </div>
-    <hr/>
+    <hr />
   </main>
 </ApplicationShell>

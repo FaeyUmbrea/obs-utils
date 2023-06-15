@@ -1,64 +1,3 @@
-<script>
-  import {OverlayComponentData} from '../../utils/stream';
-  import OverlayComponentEditor from './editors/SingleLineOverlayEditor.svelte';
-  import StyleEditor from '../../applications/styleditor.js';
-  import {SortableList} from '@jhubbardsf/svelte-sortablejs';
-
-  export let overlay;
-  export let removeFn;
-  export let componentindex;
-  function handleRemove(index) {
-    overlay.components = [
-      ...overlay.components.slice(0, index),
-      ...overlay.components.slice(index + 1, overlay.components.length),
-    ];
-  }
-
-  function handleAdd() {
-    overlay.components = overlay.components.concat(new OverlayComponentData());
-  }
-
-  let rerender = 0;
-
-  function handleReorder(e) {
-    [overlay.components[e.oldDraggableIndex], overlay.components[e.newDraggableIndex]] = [
-      overlay.components[e.newDraggableIndex],
-      overlay.components[e.oldDraggableIndex],
-    ];
-    rerender++;
-  }
-
-  function openStyleEditor() {
-    let editor = new StyleEditor(overlay.style, (styleNew) => {
-      overlay.style = styleNew;
-    });
-    editor.render(true);
-  }
-</script>
-
-<div class="scroll">
-  <ul>
-    <SortableList onEnd={handleReorder} animation={150} handle=".handle">
-      {#key rerender}
-        {#each overlay.components as component, index (overlay.components.indexOf(component))}
-          <OverlayComponentEditor bind:component removeFn={handleRemove} {index} />
-        {/each}
-      {/key}
-    </SortableList>
-  </ul>
-</div>
-<footer>
-  <button class="add" type="button" title="Add new Component" on:click={() => handleAdd()}
-  ><i class="fas fa-plus"></i></button
-  >
-    <button class="add" on:click={() => openStyleEditor()} title="Edit Overlay Style" type="button"
-    ><i class="fas fa-pencil"></i></button
-    >
-    <button class="remove-tab" on:click={() => removeFn(componentindex)} title="Remove Overlay" type="button"
-    ><i class="fas fa-trash"></i></button
-    >
-</footer>
-
 <style lang="stylus">
   footer {
     position: absolute;
@@ -87,3 +26,77 @@
     }
   }
 </style>
+
+<script>
+  import { OverlayComponentData } from "../../utils/stream";
+  import OverlayComponentEditor from "./editors/SingleLineOverlayEditor.svelte";
+  import StyleEditor from "../../applications/styleditor.js";
+  import { SortableList } from "@jhubbardsf/svelte-sortablejs";
+
+  export let overlay;
+  export let removeFn;
+  export let componentindex;
+
+  function handleRemove(index) {
+    overlay.components = [
+      ...overlay.components.slice(0, index),
+      ...overlay.components.slice(index + 1, overlay.components.length)
+    ];
+  }
+
+  function handleAdd() {
+    overlay.components = overlay.components.concat(new OverlayComponentData());
+  }
+
+  let rerender = 0;
+
+  function handleReorder(e) {
+    [
+      overlay.components[e.oldDraggableIndex],
+      overlay.components[e.newDraggableIndex]
+    ] = [
+      overlay.components[e.newDraggableIndex],
+      overlay.components[e.oldDraggableIndex]
+    ];
+    rerender++;
+  }
+
+  function openStyleEditor() {
+    let editor = new StyleEditor(overlay.style, (styleNew) => {
+      overlay.style = styleNew;
+    });
+    editor.render(true);
+  }
+</script>
+
+<div class="scroll">
+  <ul>
+    <SortableList animation="{150}" handle=".handle" onEnd="{handleReorder}">
+      {#key rerender}
+        {#each overlay.components as component, index (overlay.components.indexOf(component))}
+          <OverlayComponentEditor
+            bind:component="{component}"
+            removeFn="{handleRemove}"
+            index="{index}" />
+        {/each}
+      {/key}
+    </SortableList>
+  </ul>
+</div>
+<footer>
+  <button
+    class="add"
+    on:click="{() => handleAdd()}"
+    title="Add new Component"
+    type="button"><i class="fas fa-plus"></i></button>
+  <button
+    class="add"
+    on:click="{() => openStyleEditor()}"
+    title="Edit Overlay Style"
+    type="button"><i class="fas fa-pencil"></i></button>
+  <button
+    class="remove-tab"
+    on:click="{() => removeFn(componentindex)}"
+    title="Remove Overlay"
+    type="button"><i class="fas fa-trash"></i></button>
+</footer>

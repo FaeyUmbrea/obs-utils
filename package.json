@@ -22,7 +22,9 @@
     "preview": "vite preview",
     "test": "yarn playwright test --reporter=html",
     "watch": "vite build --watch",
-    "dev": "vite"
+    "dev": "vite",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@sveltejs/svelte-virtual-list": "^3.0.1",
@@ -41,10 +43,16 @@
     "@typhonjs-fvtt/eslint-config-foundry.js": "0.8.0",
     "cross-env": "7.0.3",
     "esbuild": "^0.18.3",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-svelte": "^2.30.0",
     "flat": "^5.0.2",
     "nyc": "15.1.0",
     "postcss": "8.4.24",
     "postcss-stylus": "^0.0.1",
+    "prettier": "^2.8.8",
+    "prettier-plugin-svelte": "^2.10.1",
     "rollup-plugin-visualizer": "^5.9.2",
     "stylus": "^0.59.0",
     "svelte": "next",

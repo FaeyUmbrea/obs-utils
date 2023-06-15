@@ -1,0 +1,43 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:svelte/prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "tests/**/*",
+        "playwright*"
+      ],
+      "env": {
+        "node": true
+      }
+    }
+  ],
+  "globals": {
+    "game": true,
+    "Hooks": true,
+    "Actors": true,
+    "$": true,
+    "foundry": true,
+    "CONFIG": true,
+    "canvas": true,
+    "FilePicker": true,
+    "FormApplication": true
+  }
+}

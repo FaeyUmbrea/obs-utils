@@ -1,25 +1,30 @@
 <script>
+  // This is to decouple the roll listener from the actual component
 
-    // This is to decouple the roll listener from the actual component
+  import { onDestroy } from "svelte";
+  import PlayerRollComponent from "./PlayerRollComponent.svelte";
 
-    import {onDestroy} from "svelte";
-    import PlayerRollComponent from "./PlayerRollComponent.svelte";
+  export let id;
+  let rollShow = false;
 
-    export let id;
-    let rollShow = false;
+  let rollValue;
+  let hook = Hooks.on("createChatMessage", (e) => {
+    const uid = e.user.id;
+    if (uid === id && e.whisper.length === 0) {
+      rollValue = e.roll.result;
+      rollShow = false;
+      rollShow = true;
+    }
+  });
 
-    let rollValue
-    let hook = Hooks.on('createChatMessage', (e) => {
-        const uid = e.user.id;
-        if (uid === id && e.whisper.length === 0) {
-            rollValue = e.roll.result;
-            rollShow = false;
-            rollShow = true;
-        }
-    })
-
-    onDestroy(() => {
-        Hooks.off('createChatMessage', hook);
-    })
+  onDestroy(() => {
+    Hooks.off("createChatMessage", hook);
+  });
 </script>
-<PlayerRollComponent bind:postRollShow={rollShow} bind:preRollShow={rollShow} bind:rollShow bind:rollValue {id}/>
+
+<PlayerRollComponent
+  bind:postRollShow="{rollShow}"
+  bind:preRollShow="{rollShow}"
+  bind:rollShow="{rollShow}"
+  bind:rollValue="{rollValue}"
+  id="{id}" />

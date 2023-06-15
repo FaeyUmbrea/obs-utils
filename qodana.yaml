@@ -1,0 +1,7 @@
+version: "1.0"
+linter: jetbrains/qodana-js:2023.1-eap
+
+bootstrap: yarn install
+
+include:
+  - name: Eslint

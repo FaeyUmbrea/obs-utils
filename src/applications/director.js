@@ -1,6 +1,5 @@
-import {generateDataBlockFromSetting, getSetting, setSetting} from '../utils/settings.js';
-import DirectorApp from '../svelte/DirectorApp.svelte';
-import {SvelteApplication} from "@typhonjs-fvtt/runtime/svelte/application";
+import DirectorApp from "../svelte/DirectorApp.svelte";
+import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
 
 export default class DirectorApplication extends SvelteApplication {
   sidebarButton;
@@ -11,27 +10,26 @@ export default class DirectorApplication extends SvelteApplication {
   }
 
   static get defaultOptions() {
-
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ['obsdirector'],
+      classes: ["obsdirector"],
       minimizable: true,
       width: 272,
       height: 255,
-      id: 'director-application',
-      title: 'Director',
+      id: "director-application",
+      title: "Director",
       positionOrtho: false,
       transformOrigin: null,
       svelte: {
         class: DirectorApp,
         target: document.body,
-        intro: true,
+        intro: true
       }
     });
   }
 
   async close(options) {
     super.close(options);
-    $('[data-tool=openStreamDirector]').removeClass('active');
+    $("[data-tool=openStreamDirector]").removeClass("active");
     this.sidebarButton.active = false;
   }
 }
