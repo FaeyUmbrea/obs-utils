@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Welcome to OBS Utils",
+    "text": ["Hello and thank you so much for using OBS Utils!",
+      "This right here is the notification panel.",
+      "You will only see this if there is any news that are worth sharing.",
+      "If you have any Questions, do not hesitate to contact me. Either open an Issue on Github or join the Foundry Discord and ping me there @faey.",
+      "Finally, I'd be stoked if you'd consider supporting me on Patreon! The link is in the clicky below this."],
+    "link": [{"title":  "Patreon",
+      "url": "https://www.patreon.com/voidmonster"
+    },{"title": "Github", "url": "https://github.com/FaeyUmbrea/obs-utils"}]
+  }
+]

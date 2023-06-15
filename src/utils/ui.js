@@ -10,6 +10,12 @@ import SingleLineOverlayEditor from "../svelte/components/editors/SingleLineOver
 import PlainEditor from "../svelte/components/editors/PlainEditor.svelte";
 import AVEditor from "../svelte/components/editors/AVEditor.svelte";
 import RollOverlay from "../applications/rolloverlay.js";
+import { getSetting } from "./settings.js";
+/**
+ * @type {Array<any>}
+ */
+import notifications from "./notifications.json";
+import NotificationCenter from "../applications/notificationCenter.js";
 
 let d;
 
@@ -85,4 +91,11 @@ export async function registerUI() {
   getApi().overlayTypes.get("sl").registerComponentEditor("av", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("bav", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("iav", AVEditor);
+}
+
+export function showNotifications() {
+  const lastRead = getSetting("lastReadNotification");
+  if (lastRead < notifications[0].id) {
+    new NotificationCenter().render(true);
+  }
 }

@@ -15,7 +15,7 @@ export class ObsUtilsApi {
      */
     this.overlayTypes = new Map();
     /**
-     * @type {Map<string, OverlayType>}
+     * @type {Map<string, string>}
      */
     this.overlayTypeNames = new Map();
     /**

@@ -12,7 +12,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ampproject/remapping@npm:^2.2.0, @ampproject/remapping@npm:^2.2.1":
+"@ampproject/remapping@npm:^2.2.0":
   version: 2.2.1
   resolution: "@ampproject/remapping@npm:2.2.1"
   dependencies:
@@ -881,7 +881,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.13, @jridgewell/sourcemap-codec@npm:^1.4.14, @jridgewell/sourcemap-codec@npm:^1.4.15":
+"@jridgewell/sourcemap-codec@npm:^1.4.10, @jridgewell/sourcemap-codec@npm:^1.4.13, @jridgewell/sourcemap-codec@npm:^1.4.14":
   version: 1.4.15
   resolution: "@jridgewell/sourcemap-codec@npm:1.4.15"
   checksum: b881c7e503db3fc7f3c1f35a1dd2655a188cc51a3612d76efc8a6eb74728bef5606e6758ee77423e564092b4a518aba569bbb21c9bac5ab7a35b0c6ae7e344c8
@@ -1051,7 +1051,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/estree@npm:*, @types/estree@npm:^1.0.0":
+"@types/estree@npm:^1.0.0":
   version: 1.0.1
   resolution: "@types/estree@npm:1.0.1"
   checksum: e9aa175eacb797216fafce4d41e8202c7a75555bc55232dee0f9903d7171f8f19f0ae7d5191bb1a88cb90e65468be508c0df850a9fb81b4433b293a5a749899d
@@ -1153,7 +1153,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.8.0, acorn@npm:^8.8.2":
+"acorn@npm:^8.8.0":
   version: 8.8.2
   resolution: "acorn@npm:8.8.2"
   bin:
@@ -1316,15 +1316,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aria-query@npm:^5.1.3":
-  version: 5.2.1
-  resolution: "aria-query@npm:5.2.1"
-  dependencies:
-    dequal: ^2.0.3
-  checksum: fdb7a337d97acf4dae831e4c2c786233aca5ccb779a02c10fe65a65af9849f6e9868073593313ab52b7b0d9817e05cfb22a5cd43ecf22a8e7f2abea2268bdac9
-  languageName: node
-  linkType: hard
-
 "autoprefixer@npm:^10, autoprefixer@npm:^10.4.13":
   version: 10.4.14
   resolution: "autoprefixer@npm:10.4.14"
@@ -1340,15 +1331,6 @@ __metadata:
   bin:
     autoprefixer: bin/autoprefixer
   checksum: e9f18e664a4e4a54a8f4ec5f6b49ed228ec45afaa76efcae361c93721795dc5ab644f36d2fdfc0dea446b02a8067b9372f91542ea431994399e972781ed46d95
-  languageName: node
-  linkType: hard
-
-"axobject-query@npm:^3.1.1":
-  version: 3.2.1
-  resolution: "axobject-query@npm:3.2.1"
-  dependencies:
-    dequal: ^2.0.3
-  checksum: a94047e702b57c91680e6a952ec4a1aaa2cfd0d80ead76bc8c954202980d8c51968a6ea18b4d8010e8e2cf95676533d8022a8ebba9abc1dfe25686721df26fd2
   languageName: node
   linkType: hard
 
@@ -1583,19 +1565,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"code-red@npm:^1.0.0":
-  version: 1.0.2
-  resolution: "code-red@npm:1.0.2"
-  dependencies:
-    "@jridgewell/sourcemap-codec": ^1.4.14
-    "@types/estree": ^1.0.0
-    acorn: ^8.8.2
-    estree-walker: ^3.0.3
-    periscopic: ^3.1.0
-  checksum: adca8f0aa9de37d597657d0187d47a8da51c0a1319dbd271b4e8d36d6e12514d12225a027adefa22a7ce89941fff85346c6855be8a963bc1433c3f84c349dc8a
-  languageName: node
-  linkType: hard
-
 "color-convert@npm:^1.9.0":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
@@ -1778,16 +1747,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-tree@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "css-tree@npm:2.3.1"
-  dependencies:
-    mdn-data: 2.0.30
-    source-map-js: ^1.0.1
-  checksum: 493cc24b5c22b05ee5314b8a0d72d8a5869491c1458017ae5ed75aeb6c3596637dbe1b11dac2548974624adec9f7a1f3a6cf40593dc1f9185eb0e8279543fbc0
-  languageName: node
-  linkType: hard
-
 "css-what@npm:^6.0.1":
   version: 6.1.0
   resolution: "css-what@npm:6.1.0"
@@ -1941,13 +1900,6 @@ __metadata:
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: abbe19c768c97ee2eed6282d8ce3031126662252c58d711f646921c9623f9052e3e1906443066beec1095832f534e57c523b7333f8e7e0d93051ab6baef5ab3a
-  languageName: node
-  linkType: hard
-
-"dequal@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "dequal@npm:2.0.3"
-  checksum: 8679b850e1a3d0ebbc46ee780d5df7b478c23f335887464023a631d1b9af051ad4a6595a44220f9ff8ff95a8ddccf019b5ad778a976fd7bbf77383d36f412f90
   languageName: node
   linkType: hard
 
@@ -2417,15 +2369,6 @@ __metadata:
   version: 2.0.2
   resolution: "estree-walker@npm:2.0.2"
   checksum: 6151e6f9828abe2259e57f5fd3761335bb0d2ebd76dc1a01048ccee22fabcfef3c0859300f6d83ff0d1927849368775ec5a6d265dde2f6de5a1be1721cd94efc
-  languageName: node
-  linkType: hard
-
-"estree-walker@npm:^3.0.0, estree-walker@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "estree-walker@npm:3.0.3"
-  dependencies:
-    "@types/estree": ^1.0.0
-  checksum: a65728d5727b71de172c5df323385755a16c0fdab8234dc756c3854cfee343261ddfbb72a809a5660fac8c75d960bb3e21aa898c2d7e9b19bb298482ca58a3af
   languageName: node
   linkType: hard
 
@@ -3019,15 +2962,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-reference@npm:^3.0.0, is-reference@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "is-reference@npm:3.0.1"
-  dependencies:
-    "@types/estree": "*"
-  checksum: 12c316d16191961938057e949c9f59ecac3c00c8101005a81ee351fde0775590238939c294ecac3a371400eb85d4b2556675396ebd4db821b767c145df28623f
-  languageName: node
-  linkType: hard
-
 "is-stream@npm:^2.0.0":
   version: 2.0.1
   resolution: "is-stream@npm:2.0.1"
@@ -3274,13 +3208,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"locate-character@npm:^2.0.5":
-  version: 2.0.5
-  resolution: "locate-character@npm:2.0.5"
-  checksum: dbc4c62bb98ba95626d5533c6d45d480b2536bb500d1453efdd19d0797e75ba92abf8d0432966990a1567a3b591b0fa6067f0ce93808cbf8b55beedd7bd28a78
-  languageName: node
-  linkType: hard
-
 "locate-path@npm:^5.0.0":
   version: 5.0.0
   resolution: "locate-path@npm:5.0.0"
@@ -3420,13 +3347,6 @@ __metadata:
   version: 2.0.14
   resolution: "mdn-data@npm:2.0.14"
   checksum: 9d0128ed425a89f4cba8f787dca27ad9408b5cb1b220af2d938e2a0629d17d879a34d2cb19318bdb26c3f14c77dd5dfbae67211f5caaf07b61b1f2c5c8c7dc16
-  languageName: node
-  linkType: hard
-
-"mdn-data@npm:2.0.30":
-  version: 2.0.30
-  resolution: "mdn-data@npm:2.0.30"
-  checksum: d6ac5ac7439a1607df44b22738ecf83f48e66a0874e4482d6424a61c52da5cde5750f1d1229b6f5fa1b80a492be89465390da685b11f97d62b8adcc6e88189aa
   languageName: node
   linkType: hard
 
@@ -3759,8 +3679,8 @@ __metadata:
     prettier-plugin-svelte: ^2.10.1
     rollup-plugin-visualizer: ^5.9.2
     stylus: ^0.59.0
-    svelte: ^4.0.0-next.1
-    svelte-preprocess: 5.0.4
+    svelte: ^3.59.1
+    svelte-preprocess: ^5.0.4
     svelte-select: ^5.6.1
     v8-to-istanbul: ^9.1.0
     vite: ^4.3.9
@@ -3934,17 +3854,6 @@ __metadata:
     lru-cache: ^9.1.1
     minipass: ^5.0.0 || ^6.0.2
   checksum: 92888dfb68e285043c6d3291c8e971d5d2bc2f5082f4d7b5392896f34be47024c9d0a8b688dd7ae6d125acc424699195474927cb4f00049a9b1ec7c4256fa8e0
-  languageName: node
-  linkType: hard
-
-"periscopic@npm:^3.1.0":
-  version: 3.1.0
-  resolution: "periscopic@npm:3.1.0"
-  dependencies:
-    "@types/estree": ^1.0.0
-    estree-walker: ^3.0.0
-    is-reference: ^3.0.0
-  checksum: 2153244352e58a0d76e7e8d9263e66fe74509495f809af388da20045fb30aa3e93f2f94468dc0b9166ecf206fcfc0d73d2c7641c6fbedc07b1de858b710142cb
   languageName: node
   linkType: hard
 
@@ -5096,7 +5005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map-js@npm:>=0.6.2 <2.0.0, source-map-js@npm:^1.0.1, source-map-js@npm:^1.0.2":
+"source-map-js@npm:>=0.6.2 <2.0.0, source-map-js@npm:^1.0.2":
   version: 1.0.2
   resolution: "source-map-js@npm:1.0.2"
   checksum: c049a7fc4deb9a7e9b481ae3d424cc793cb4845daa690bc5a05d428bf41bf231ced49b4cf0c9e77f9d42fdb3d20d6187619fc586605f5eabe995a316da8d377c
@@ -5345,7 +5254,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-preprocess@npm:5.0.4":
+"svelte-preprocess@npm:^5.0.4":
   version: 5.0.4
   resolution: "svelte-preprocess@npm:5.0.4"
   dependencies:
@@ -5401,23 +5310,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte@npm:^4.0.0-next.1":
-  version: 4.0.0-next.1
-  resolution: "svelte@npm:4.0.0-next.1"
-  dependencies:
-    "@ampproject/remapping": ^2.2.1
-    "@jridgewell/sourcemap-codec": ^1.4.15
-    acorn: ^8.8.2
-    aria-query: ^5.1.3
-    axobject-query: ^3.1.1
-    code-red: ^1.0.0
-    css-tree: ^2.3.1
-    estree-walker: ^3.0.3
-    is-reference: ^3.0.1
-    locate-character: ^2.0.5
-    magic-string: ^0.30.0
-    periscopic: ^3.1.0
-  checksum: 4c4a1f9d77cd7ffc915a8d6bb4469415c5617bfd3bef2ec744717f4150a7fb807a3aa1f140d9705804bc8a9042967f73299c7fb3e249abd98c383181d8942389
+"svelte@npm:^3.59.1":
+  version: 3.59.1
+  resolution: "svelte@npm:3.59.1"
+  checksum: bd4344f01a5b0e219af99874b4e300e4e63449f81aa9e45c1216301a23f72baaf9b235147a40949d87e2a1430e7850659d73dec6be398bcd07706b79d4022cd6
   languageName: node
   linkType: hard
 

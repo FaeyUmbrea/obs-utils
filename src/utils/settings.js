@@ -1,5 +1,5 @@
 import { scaleToFit, tokenMoved, viewportChanged } from "./canvas";
-import { ICCHOICES, NAME_TO_ICON, OOCCHOICES, ID as moduleID } from "./const";
+import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from "./const";
 import { isOBS } from "./helpers";
 import { TJSGameSettings } from "@typhonjs-fvtt/svelte-standard/store";
 
@@ -236,6 +236,14 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: false,
+      })
+    );
+    settings.push(
+      createSetting("lastReadNotification", {
+        type: Number,
+        scope: "client",
+        config: false,
+        default: 0,
       })
     );
     this.registerAll(settings, true);

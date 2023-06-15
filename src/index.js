@@ -23,7 +23,9 @@ function start() {
 
     // Load UI Component only on /game
     if (game.view === "game") {
-      await (await import("./utils/ui.js")).registerUI();
+      const ui = await import("./utils/ui.js");
+      await ui.registerUI();
+      await ui.showNotifications();
     }
 
     // Load OBS Stuff only in OBS

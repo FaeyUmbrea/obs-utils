@@ -13,8 +13,7 @@ export default class DirectorApplication extends SvelteApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["obsdirector"],
       minimizable: true,
-      width: 272,
-      height: 255,
+      width: 275,
       id: "director-application",
       title: "Director",
       positionOrtho: false,
@@ -28,7 +27,7 @@ export default class DirectorApplication extends SvelteApplication {
   }
 
   async close(options) {
-    super.close(options);
+    await super.close(options);
     $("[data-tool=openStreamDirector]").removeClass("active");
     this.sidebarButton.active = false;
   }

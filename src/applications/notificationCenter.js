@@ -1,14 +1,15 @@
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/_dist/svelte/application/index.js";
+import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
 import NotificationCenterUI from "../svelte/NotificationCenterUI.svelte";
 
-export default class OverlayActorSelect extends SvelteApplication {
+export default class NotificationCenter extends SvelteApplication {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["notification-center"],
       id: "notification-application",
-      title: "OBS Remote Settings",
-      height: 700,
+      title: "OBS Utils Notification Center",
+      height: 420,
       width: 520,
+      resizable: true,
       svelte: {
         class: NotificationCenterUI,
         target: document.body,
