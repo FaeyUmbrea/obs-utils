@@ -47,7 +47,7 @@ function trackTokenList(tokens) {
       x: token?.document.x,
       y: token?.document.y,
       width: token?.w,
-      height: token?.h
+      height: token?.h,
     };
     coordinates.push(object);
   });
@@ -78,7 +78,7 @@ export function tokenMoved() {
         trackTokenList([
           getAutoTokens()?.find(
             (element) => element.id === game.combat?.combatant?.tokenId
-          )
+          ),
         ]);
         break;
       default:
@@ -119,7 +119,7 @@ function calculateBoundsOfCoodinates(coordSet) {
     minY: minY,
     maxX: maxX,
     maxY: maxY,
-    center: { x: minX + (maxX - minX) / 2, y: minY + (maxY - minY) / 2 }
+    center: { x: minX + (maxX - minX) / 2, y: minY + (maxY - minY) / 2 },
   };
 }
 
@@ -170,7 +170,7 @@ export function expandTokenHud(_tokenHud, html, token) {
         isTracked ? "active" : ""
       }"><i title="Track Token" class="fa-solid fa-signal-stream" /></div>`
     );
-    element.on("click", function() {
+    element.on("click", function () {
       toggleToken(currenToken);
       $(this).toggleClass("active");
     });
@@ -191,7 +191,7 @@ export function scaleToFit() {
 
   const center = {
     x: sceneDimensions.width / 2,
-    y: sceneDimensions.height / 2
+    y: sceneDimensions.height / 2,
   };
   const scale = Math.min(
     screenDimensions[0] / sceneDimensions.width,

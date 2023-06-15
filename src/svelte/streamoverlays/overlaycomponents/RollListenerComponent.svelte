@@ -27,4 +27,5 @@
   bind:preRollShow="{rollShow}"
   bind:rollShow="{rollShow}"
   bind:rollValue="{rollValue}"
-  id="{id}" />
+  id="{id}"
+/>

@@ -29,7 +29,8 @@
       <input
         bind:value="{websocketSettings.password}"
         name="password"
-        type="password" />
+        type="password"
+      />
       <p style="color:red">This password is NOT stored securely</p>
       <hr />
       <button on:click="{submit}" type="submit">Save</button>

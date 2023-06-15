@@ -21,7 +21,7 @@ function buildButtons(buttons) {
     name: "openStreamDirector",
     title: "Open Stream Director",
     toggle: true,
-    onClick: () => openDirector(newButton)
+    onClick: () => openDirector(newButton),
   };
   buttonGroup?.tools.push(newButton);
 }
@@ -39,7 +39,7 @@ export async function registerUI() {
     hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
     type: SettingsShell(OBSRemoteApplication),
     icon: "fas fa-bars",
-    restricted: true
+    restricted: true,
   });
   game.settings.registerMenu(moduleID, "obsWebsocketMenu", {
     name: `${moduleID}.settings.obsWebsocketMenu.Name`,
@@ -47,7 +47,7 @@ export async function registerUI() {
     hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
     type: SettingsShell(OBSWebsocketApplication),
     icon: "fas fa-bars",
-    restricted: true
+    restricted: true,
   });
   game.settings.registerMenu(moduleID, "overlayActorSelect", {
     name: `${moduleID}.settings.overlayActorSelect.Name`,
@@ -55,7 +55,7 @@ export async function registerUI() {
     hint: `${moduleID}.settings.overlayActorSelect.Hint`,
     type: SettingsShell(OverlayActorSelect),
     icon: "fas fa-bars",
-    restricted: true
+    restricted: true,
   });
   game.settings.registerMenu(moduleID, "overlayEditor", {
     name: `${moduleID}.settings.overlayEditor.Name`,
@@ -63,7 +63,7 @@ export async function registerUI() {
     hint: `${moduleID}.settings.overlayEditor.Hint`,
     type: SettingsShell(OverlayEditor),
     icon: "fas fa-bars",
-    restricted: true
+    restricted: true,
   });
   game.settings.registerMenu(moduleID, "rollOverlayEditor", {
     name: `${moduleID}.settings.rollOverlayEditor.Name`,
@@ -71,7 +71,7 @@ export async function registerUI() {
     hint: `${moduleID}.settings.rollOverlayEditor.Hint`,
     icon: "fas fa-bars",
     type: SettingsShell(RollOverlay),
-    restricted: true
+    restricted: true,
   });
 
   Hooks.on("getSceneControlButtons", buildButtons);

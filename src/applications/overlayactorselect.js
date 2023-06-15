@@ -11,16 +11,16 @@ export default class OverlayActorSelect extends SvelteApplication {
         {
           navSelector: ".tabs",
           contentSelector: ".content",
-          initial: "onLoad"
-        }
+          initial: "onLoad",
+        },
       ],
       height: 300,
       width: 200,
       resizable: true,
       svelte: {
         class: OverlayActorSelectUi,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 }

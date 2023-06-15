@@ -17,8 +17,8 @@ export default class OverlayEditor extends SvelteApplication {
       focusKeep: true,
       svelte: {
         class: OverlayEditorUI,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 }

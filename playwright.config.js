@@ -18,7 +18,7 @@ const config = {
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000
+    timeout: 5000,
   },
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -39,7 +39,7 @@ const config = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    headless: !!process.env.CI
+    headless: !!process.env.CI,
   },
 
   /* Configure projects for major browsers */
@@ -47,9 +47,9 @@ const config = {
     {
       name: "chrome",
       use: {
-        ...devices["Desktop Chrome"]
-      }
-    }
+        ...devices["Desktop Chrome"],
+      },
+    },
 
     /* Test against mobile viewports. */
     // {

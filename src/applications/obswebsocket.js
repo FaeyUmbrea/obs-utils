@@ -11,13 +11,13 @@ export default class OBSWebsocketApplication extends SvelteApplication {
         {
           navSelector: ".tabs",
           contentSelector: ".content",
-          initial: "onLoad"
-        }
+          initial: "onLoad",
+        },
       ],
       svelte: {
         class: ObsWebsocket,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 }

@@ -19,8 +19,7 @@ export function SettingsShell(Application) {
       Shell.showSettings();
     }
 
-    async _updateObject() {
-    }
+    async _updateObject() {}
 
     render() {
       this.close();

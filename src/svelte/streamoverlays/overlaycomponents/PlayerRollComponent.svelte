@@ -62,7 +62,8 @@
         out:fade="{{ delay: $preRollStay, duration: $preRollFadeOut }}"
         src="{$preRollImage}"
         alt="pre roll"
-        on:introend="{() => (preRollShow = false)}" />
+        on:introend="{() => (preRollShow = false)}"
+      />
     {/if}
   {/if}
   {#if rollShow}
@@ -72,20 +73,23 @@
         in:fade="{{ delay: rollDelay, duration: $rollFadeIn }}"
         out:fade="{{ delay: $rollStay, duration: $rollFadeOut }}"
         src="{$rollBackgroundImage}"
-        alt="roll background" />
+        alt="roll background"
+      />
     {/if}
     <span
       class="roll layer"
       in:fade="{{ delay: rollDelay, duration: $rollFadeIn }}"
       out:fade="{{ delay: $rollStay, duration: $rollFadeOut }}"
-      on:introend="{() => (rollShow = false)}">{rollValue}</span>
+      on:introend="{() => (rollShow = false)}">{rollValue}</span
+    >
     {#if $rollForegroundImage}
       <img
         class="foreground layer"
         in:fade="{{ delay: rollDelay, duration: $rollFadeIn }}"
         out:fade="{{ delay: $rollStay, duration: $rollFadeOut }}"
         src="{$rollForegroundImage}"
-        alt="roll foreground" />
+        alt="roll foreground"
+      />
     {/if}
   {/if}
   {#if postRollShow}
@@ -96,7 +100,8 @@
         out:fade="{{ delay: $postRollStay, duration: $postRollFadeOut }}"
         src="{$postRollImage}"
         on:introend="{() => (postRollShow = false)}"
-        alt="post roll" />
+        alt="post roll"
+      />
     {/if}
   {/if}
 </div>

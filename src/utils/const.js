@@ -6,14 +6,14 @@ export const ICCHOICES = {
   clonePlayer: "Clone the Selected Player's Viewport",
   cloneDM: "Clone the DM's Viewport",
   birdseye: "Fit Map to Screen",
-  cloneTurnPlayer: "Clone the Turn Player's Viewport"
+  cloneTurnPlayer: "Clone the Turn Player's Viewport",
 };
 export const OOCCHOICES = {
   trackall: "Track all Owned Tokens",
   trackmanual: "Track a manual List of Tokens",
   clonePlayer: "Clone a Player's Viewport",
   cloneDM: "Clone the DM's Viewport",
-  birdseye: "Fit Map to Screen"
+  birdseye: "Fit Map to Screen",
 };
 export const NAME_TO_ICON = {
   trackall: "fa-solid fa-users",
@@ -22,7 +22,7 @@ export const NAME_TO_ICON = {
   clonePlayer: "fa-regular fa-users-viewfinder",
   cloneTurnPlayer: "fa-solid fa-arrows-repeat",
   cloneDM: "fa-solid fa-dice-d20",
-  birdseye: "fa-solid fa-bird"
+  birdseye: "fa-solid fa-bird",
 };
 
 export const UI_ELEMENTS = {

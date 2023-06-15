@@ -10,7 +10,7 @@ import {
   preserveSideBar,
   scaleToFit,
   showTracker,
-  tokenMoved
+  tokenMoved,
 } from "./canvas.js";
 import { handleCombat, stopCombat } from "./combat.js";
 
@@ -63,7 +63,7 @@ async function triggerOBSAction(obsevent, useWS) {
     switch (obsevent.targetAction) {
       case OBSAction.SwitchScene:
         await websocket.call("SetCurrentProgramScene", {
-          sceneName: obsevent.sceneName
+          sceneName: obsevent.sceneName,
         });
         break;
       case OBSAction.EnableSource:
@@ -73,7 +73,7 @@ async function triggerOBSAction(obsevent, useWS) {
             obsevent.sceneName,
             obsevent.targetName
           ),
-          sceneItemEnabled: true
+          sceneItemEnabled: true,
         });
         break;
       case OBSAction.DisableSource:
@@ -83,7 +83,7 @@ async function triggerOBSAction(obsevent, useWS) {
             obsevent.sceneName,
             obsevent.targetName
           ),
-          sceneItemEnabled: false
+          sceneItemEnabled: false,
         });
         break;
       case OBSAction.ToggleSource: {
@@ -92,7 +92,7 @@ async function triggerOBSAction(obsevent, useWS) {
           sceneItemId: await getSceneItemIdByName(
             obsevent.sceneName,
             obsevent.targetName
-          )
+          ),
         });
         await websocket.call("SetSceneItemEnabled", {
           sceneName: obsevent.sceneName,
@@ -100,7 +100,7 @@ async function triggerOBSAction(obsevent, useWS) {
             obsevent.sceneName,
             obsevent.targetName
           ),
-          sceneItemEnabled: !sourcestatus
+          sceneItemEnabled: !sourcestatus,
         });
         break;
       }

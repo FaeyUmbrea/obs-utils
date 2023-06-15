@@ -1,15 +1,5 @@
 <svelte:options accessors="{true}" />
 
-<style>
-    footer {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        padding: 10px;
-    }
-</style>
-
 <script>
   import ObsTab from "./components/OBSTab.svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
@@ -49,11 +39,12 @@
       {#each entries as key}
         <!-- svelte-ignore a11y-missing-attribute -->
         <a class="item" data-tab="{key}"
-        ><i
-          class="fas {key === 'onStopStreaming'
+          ><i
+            class="fas {key === 'onStopStreaming'
               ? 'fa-signal-stream'
               : 'fa-dice-d20'}"></i>
-          {formatKey(key)}</a>
+          {formatKey(key)}</a
+        >
       {/each}
     </nav>
     <hr />
@@ -63,7 +54,8 @@
           <div class="tab flexcol" data-tab="{key}" data-group="primary-tabs">
             <ObsTab
               bind:eventArray="{obssettings[getKey(key)]}"
-              useWebSocket="{useWebSocket}" />
+              useWebSocket="{useWebSocket}"
+            />
           </div>
         {/each}
       </section>
@@ -74,3 +66,13 @@
     </div>
   </main>
 </ApplicationShell>
+
+<style>
+  footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+  }
+</style>

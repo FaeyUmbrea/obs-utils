@@ -6,7 +6,7 @@
   onMount(() => {
     new externalClass({
       target: div,
-      props: $$props
+      props: $$props,
     });
   });
 </script>

@@ -7,6 +7,7 @@
 <div
   class="component plain-text-component"
   id="{'component' + componentIndex.toString()}"
-  style="{style}">
+  style="{style}"
+>
   <img alt="Component" src="{data}" />
 </div>

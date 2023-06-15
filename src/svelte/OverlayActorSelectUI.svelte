@@ -1,49 +1,5 @@
 <svelte:options accessors="{true}" />
 
-<style lang="stylus">
-  main {
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 35px auto 35px;
-
-    input[type='checkbox'] {
-      opacity: 0;
-      position: fixed;
-      width: 0;
-    }
-
-    label {
-      width: 100%;
-      height: 50px;
-      display: inline-flex;
-      border: 2px solid #444;
-      align-items: center;
-      border-radius: 4px;
-    }
-
-    img {
-      height: inherit;
-    }
-
-    label:hover {
-      background-color: rgb(0 0 0 / 10%);
-    }
-
-    input[type='checkbox']:checked + label {
-      background-color: rgb(0 0 0 / 20%);
-      border-color: rgb(0 0 0 / 37.8%);
-    }
-
-    footer {
-      position: absolute;
-      width: 100%;
-      bottom: 0;
-      left: 0;
-      padding: 10px;
-    }
-  }
-</style>
-
 <script>
   import VirtualList from "@sveltejs/svelte-virtual-list";
   import { getSetting, setSetting } from "../utils/settings.js";
@@ -89,10 +45,12 @@
           name="{item.id}"
           on:change="{change(item.id)}"
           type="checkbox"
-          value="{item.id}" />
+          value="{item.id}"
+        />
         <label for="{item.id}"
-        ><img alt="{item.name}" src="{item.img}" />
-          <span>{item.name}</span></label>
+          ><img alt="{item.name}" src="{item.img}" />
+          <span>{item.name}</span></label
+        >
       </div>
     </VirtualList>
 
@@ -101,3 +59,47 @@
     </footer>
   </main>
 </ApplicationShell>
+
+<style lang="stylus">
+  main {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 35px auto 35px;
+
+    input[type='checkbox'] {
+      opacity: 0;
+      position: fixed;
+      width: 0;
+    }
+
+    label {
+      width: 100%;
+      height: 50px;
+      display: inline-flex;
+      border: 2px solid #444;
+      align-items: center;
+      border-radius: 4px;
+    }
+
+    img {
+      height: inherit;
+    }
+
+    label:hover {
+      background-color: rgb(0 0 0 / 10%);
+    }
+
+    input[type='checkbox']:checked + label {
+      background-color: rgb(0 0 0 / 20%);
+      border-color: rgb(0 0 0 / 37.8%);
+    }
+
+    footer {
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      padding: 10px;
+    }
+  }
+</style>

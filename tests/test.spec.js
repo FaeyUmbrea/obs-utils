@@ -35,7 +35,7 @@ test.beforeAll(async ({ browser }) => {
   await gmPage.goto("/join");
 
   await gmPage
-    .locator("select[name=\"userid\"]")
+    .locator('select[name="userid"]')
     .selectOption({ label: "Gamemaster" });
   await gmPage
     .locator("input[name=password]")
@@ -59,7 +59,7 @@ test.beforeAll(async ({ browser }) => {
   await obsPage.goto("/join");
 
   await obsPage
-    .locator("select[name=\"userid\"]")
+    .locator('select[name="userid"]')
     .selectOption({ label: "Player2" });
   await obsPage
     .locator("input[name=password]")
@@ -180,7 +180,7 @@ test.describe("Multiclient UI", () => {
       (await gmPage.evaluate(() =>
         window["game"].settings.get("obs-utils", "popupCloseDelay")
       )) *
-      1000 +
+        1000 +
       1000;
 
     await gmPage.evaluate(() =>
@@ -424,7 +424,7 @@ test.describe("Player Client Additional Tests", () => {
     playerPage = await playerContext.newPage();
     playerPage.goto("/join");
     await playerPage
-      .locator("select[name=\"userid\"]")
+      .locator('select[name="userid"]')
       .selectOption({ label: "Player3" });
     await playerPage
       .locator("input[name=password]")
@@ -584,7 +584,7 @@ async function getOBSViewport() {
     window["canvas"].stage.position.scope.pivot.x,
     window["canvas"].stage.position.scope.pivot.y,
     window["canvas"].stage.position.scope.scale.x,
-    window["canvas"].stage.position.scope.scale.y
+    window["canvas"].stage.position.scope.scale.y,
   ]);
 }
 

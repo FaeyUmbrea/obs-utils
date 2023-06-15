@@ -28,7 +28,7 @@ export class OverlayComponentData {
 export function renderOverlays() {
   if (game.actors instanceof Actors) {
     new OverlayRenderer({
-      target: $("body").get(0)
+      target: $("body").get(0),
     });
   }
 }

@@ -26,4 +26,5 @@
   }}"
   items="{items}"
   on:filter="{handleFilter}"
-  value="{data}" />
+  value="{data}"
+/>

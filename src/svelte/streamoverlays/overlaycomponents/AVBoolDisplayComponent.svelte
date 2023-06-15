@@ -31,7 +31,8 @@
 <div
   class="component actor-val-component"
   id="{'component' + componentIndex.toString()}"
-  style="{style}">
+  style="{style}"
+>
   {#if value == true}
     <i class="fa-solid fa-check"></i>
   {:else}

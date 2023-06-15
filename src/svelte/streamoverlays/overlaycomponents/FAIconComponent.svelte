@@ -7,6 +7,7 @@
 <div
   class="component fa-icon-component"
   id="{'component' + componentIndex.toString()}"
-  style="{style}">
+  style="{style}"
+>
   <i class="{data}"></i>
 </div>

@@ -22,8 +22,8 @@ export default class StyleEditor extends SvelteApplication {
       //resizable: true,
       svelte: {
         class: StyleEditorUi,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 

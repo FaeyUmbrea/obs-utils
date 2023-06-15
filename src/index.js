@@ -2,14 +2,14 @@ import { expandTokenHud, isGM } from "./utils/canvas.js";
 import {
   rollOverlaySettings,
   runMigrations,
-  settings
+  settings,
 } from "./utils/settings.js";
 import { socketCanvas } from "./utils/socket.js";
 import { isOBS } from "./utils/helpers.js";
 import { ObsUtilsApi, registerDefaultTypes } from "./utils/api.js";
 
 function start() {
-  Hooks.once("init", async function() {
+  Hooks.once("init", async function () {
     // Register API
     const moduleData = game?.modules?.get("obs-utils");
     if (moduleData) {
@@ -32,7 +32,7 @@ function start() {
     }
   });
 
-  Hooks.once("ready", async function() {
+  Hooks.once("ready", async function () {
     if (isGM()) {
       Hooks.on("renderTokenHUD", expandTokenHud);
       runMigrations();

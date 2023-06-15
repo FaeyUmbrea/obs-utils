@@ -7,7 +7,7 @@ export const OBSAction = {
   SwitchScene: "Switch Scene",
   ToggleSource: "Toggle Source",
   EnableSource: "Enable Source",
-  DisableSource: "Disable Source"
+  DisableSource: "Disable Source",
 };
 
 export class OBSEvent {
@@ -77,21 +77,21 @@ export function generateDataBlockFromSetting() {
   const buttonData = {
     ic: [],
     ooc: [],
-    players: []
+    players: [],
   };
 
   for (const [key, value] of Object.entries(ICCHOICES)) {
     buttonData.ic.push({
       icon: NAME_TO_ICON[key],
       tooltip: value,
-      id: key
+      id: key,
     });
   }
   for (const [key, value] of Object.entries(OOCCHOICES)) {
     buttonData.ooc.push({
       icon: NAME_TO_ICON[key],
       tooltip: value,
-      id: key
+      id: key,
     });
   }
   buttonData.players = game.users?.filter((element) => !element.isGM);
@@ -113,10 +113,10 @@ class OBSUtilsSettings extends TJSGameSettings {
         range: {
           min: 0.01,
           max: 5,
-          step: 0.01
+          step: 0.01,
         },
         scope: "world",
-        config: true
+        config: true,
       })
     );
     settings.push(
@@ -126,10 +126,10 @@ class OBSUtilsSettings extends TJSGameSettings {
         range: {
           min: 0.01,
           max: 5,
-          step: 0.01
+          step: 0.01,
         },
         scope: "world",
-        config: true
+        config: true,
       })
     );
     settings.push(
@@ -139,7 +139,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         choices: OOCCHOICES,
         scope: "world",
         config: false,
-        onChange: changeMode
+        onChange: changeMode,
       })
     );
     settings.push(
@@ -149,7 +149,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         choices: ICCHOICES,
         scope: "world",
         config: false,
-        onChange: changeMode
+        onChange: changeMode,
       })
     );
     settings.push(
@@ -159,10 +159,10 @@ class OBSUtilsSettings extends TJSGameSettings {
         range: {
           min: 1,
           max: 300,
-          step: 1
+          step: 1,
         },
         scope: "world",
-        config: true
+        config: true,
       })
     );
     settings.push(
@@ -170,7 +170,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         default: false,
         type: Boolean,
         scope: "world",
-        config: true
+        config: true,
       })
     );
     settings.push(
@@ -179,7 +179,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: String,
         scope: "world",
         config: false,
-        onChange: changeMode
+        onChange: changeMode,
       })
     );
     settings.push(
@@ -187,7 +187,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Object,
         scope: "world",
         config: false,
-        default: new OBSRemoteSettings()
+        default: new OBSRemoteSettings(),
       })
     );
     settings.push(
@@ -195,7 +195,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Boolean,
         scope: "world",
         config: true,
-        default: false
+        default: false,
       })
     );
     settings.push(
@@ -203,7 +203,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Object,
         scope: "world",
         config: false,
-        default: new OBSWebsocketSettings()
+        default: new OBSWebsocketSettings(),
       })
     );
     settings.push(
@@ -211,7 +211,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Object,
         scope: "world",
         config: false,
-        default: []
+        default: [],
       })
     );
     settings.push(
@@ -219,7 +219,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Object,
         scope: "world",
         config: false,
-        default: []
+        default: [],
       })
     );
     settings.push(
@@ -227,7 +227,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: false,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -235,7 +235,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Boolean,
         scope: "world",
         config: true,
-        default: false
+        default: false,
       })
     );
     this.registerAll(settings, true);
@@ -255,7 +255,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -263,7 +263,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -271,7 +271,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -279,7 +279,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 5000
+        default: 5000,
       })
     );
     settings.push(
@@ -287,7 +287,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -295,7 +295,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -303,7 +303,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -311,7 +311,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -319,7 +319,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -327,7 +327,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: true,
-        default: 0
+        default: 0,
       })
     );
     settings.push(
@@ -335,7 +335,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: String,
         scope: "world",
         config: true,
-        default: ""
+        default: "",
       })
     );
     settings.push(
@@ -343,7 +343,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: String,
         scope: "world",
         config: true,
-        default: ""
+        default: "",
       })
     );
     settings.push(
@@ -351,7 +351,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: String,
         scope: "world",
         config: true,
-        default: ""
+        default: "",
       })
     );
     settings.push(
@@ -359,7 +359,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: String,
         scope: "world",
         config: true,
-        default: ""
+        default: "",
       })
     );
     settings.push(
@@ -367,7 +367,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Boolean,
         scope: "world",
         config: true,
-        default: false
+        default: false,
       })
     );
     settings.push(
@@ -375,7 +375,7 @@ class RollOverlaySettings extends TJSGameSettings {
         type: Boolean,
         scope: "world",
         config: true,
-        default: false
+        default: false,
       })
     );
     this.registerAll(settings, false);
@@ -389,8 +389,8 @@ function createSetting(settingName, config) {
     options: {
       name: `${moduleID}.settings.${settingName}.Name`,
       hint: `${moduleID}.settings.${settingName}.Hint`,
-      ...config
-    }
+      ...config,
+    },
   };
 }
 

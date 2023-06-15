@@ -17,7 +17,8 @@
           this="{getOverlayType(overlay.type)}"
           overlayData="{overlay}"
           actorID="{actorID}"
-          overlayIndex="{index}" />
+          overlayIndex="{index}"
+        />
       {/each}
     </div>
   {/each}

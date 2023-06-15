@@ -1,15 +1,5 @@
 <svelte:options accessors="{true}" />
 
-<style>
-    footer {
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        padding: 10px;
-    }
-</style>
-
 <script>
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import { getContext } from "svelte";
@@ -32,3 +22,13 @@
     <button on:click="{close}">Submit</button>
   </footer>
 </ApplicationShell>
+
+<style>
+  footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    padding: 10px;
+  }
+</style>

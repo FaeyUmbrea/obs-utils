@@ -1,28 +1,3 @@
-<style>
-    .setting {
-        height: 35px;
-        display: flex;
-        justify-content: center;
-        align-content: space-around;
-        flex-flow: row nowrap;
-        align-items: stretch;
-    }
-
-    .setting button {
-        width: 35px;
-        margin: auto;
-    }
-
-    .setting select {
-        height: auto;
-    }
-
-    li {
-        padding-top: 1px;
-        padding-bottom: 1px;
-    }
-</style>
-
 <script>
   import { OBSAction } from "../../utils/settings";
   import { fade } from "svelte/transition";
@@ -52,7 +27,8 @@
     <select
       bind:value="{event.targetAction}"
       name="types"
-      on:change="{changeEvent}">
+      on:change="{changeEvent}"
+    >
       {#each actionTypes as action}
         <option value="{action}">{action}</option>
       {/each}
@@ -61,14 +37,41 @@
       bind:value="{event.sceneName}"
       disabled="{sceneDisabled}"
       name="sceneNames"
-      placeholder="Scene Name" />
+      placeholder="Scene Name"
+    />
     <input
       bind:value="{event.targetName}"
       disabled="{idDisabled}"
       name="itemIDs"
-      placeholder="Source Name" />
+      placeholder="Source Name"
+    />
     <button on:click="{removeFn}" type="button">
       <i class="fas fa-trash"></i>
     </button>
   </div>
 </li>
+
+<style>
+  .setting {
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-content: space-around;
+    flex-flow: row nowrap;
+    align-items: stretch;
+  }
+
+  .setting button {
+    width: 35px;
+    margin: auto;
+  }
+
+  .setting select {
+    height: auto;
+  }
+
+  li {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+</style>

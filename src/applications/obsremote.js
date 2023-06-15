@@ -11,15 +11,15 @@ export default class OBSRemoteApplication extends SvelteApplication {
         {
           navSelector: ".tabs",
           contentSelector: ".content",
-          initial: "onLoad"
-        }
+          initial: "onLoad",
+        },
       ],
       height: 700,
       width: 520,
       svelte: {
         class: OBSRemote,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 }

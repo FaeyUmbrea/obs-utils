@@ -22,8 +22,8 @@ export default class DirectorApplication extends SvelteApplication {
       svelte: {
         class: DirectorApp,
         target: document.body,
-        intro: true
-      }
+        intro: true,
+      },
     });
   }
 

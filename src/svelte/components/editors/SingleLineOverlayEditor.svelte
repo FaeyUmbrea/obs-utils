@@ -1,33 +1,3 @@
-<style lang="stylus">
-  li {
-    padding-top: 1px;
-    padding-bottom: 1px;
-  }
-
-  .handle {
-    height: 35px;
-    width: 35px;
-    font-size: 25px;
-    text-align: center;
-    line-height: 35px;
-  }
-
-  .component {
-    display: grid;
-    grid-template-columns: 35px 150px auto 35px 35px;
-    grid-template-rows: 35px;
-
-    button {
-      width: 35px;
-      margin: auto;
-    }
-
-    select {
-      height: auto;
-    }
-  }
-</style>
-
 <script>
   import StyleEditor from "../../../applications/styleditor.js";
   import FallbackEditor from "./FallbackEditor.svelte";
@@ -69,20 +39,53 @@
       {/each}
     </select>
     <svelte:component
+      this="{getEditor(component.type)}"
       bind:data="{component.data}"
-      this="{getEditor(component.type)}" />
+    />
     <button
       on:click="{() => removeFn(index)}"
       title="Remove Component"
-      type="button">
+      type="button"
+    >
       <i class="fas fa-trash"></i>
     </button>
     <button
       class="add"
       on:click="{() => openStyleEditor()}"
       title="Edit Component Style"
-      type="button">
+      type="button"
+    >
       <i class="fas fa-pencil"></i>
     </button>
   </div>
 </li>
+
+<style lang="stylus">
+  li {
+    padding-top: 1px;
+    padding-bottom: 1px;
+  }
+
+  .handle {
+    height: 35px;
+    width: 35px;
+    font-size: 25px;
+    text-align: center;
+    line-height: 35px;
+  }
+
+  .component {
+    display: grid;
+    grid-template-columns: 35px 150px auto 35px 35px;
+    grid-template-rows: 35px;
+
+    button {
+      width: 35px;
+      margin: auto;
+    }
+
+    select {
+      height: auto;
+    }
+  }
+</style>

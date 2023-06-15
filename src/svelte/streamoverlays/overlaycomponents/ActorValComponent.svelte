@@ -31,6 +31,7 @@
 <div
   class="component actor-val-component"
   id="{'component' + componentIndex.toString()}"
-  style="{style}">
+  style="{style}"
+>
   {value}
 </div>

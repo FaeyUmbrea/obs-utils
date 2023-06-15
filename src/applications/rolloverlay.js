@@ -16,8 +16,8 @@ export default class RollOverlay extends SvelteApplication {
       focusKeep: true,
       svelte: {
         class: PlayerRollOverlayEditor,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 }

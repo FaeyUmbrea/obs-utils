@@ -11,8 +11,8 @@ export default class OverlayActorSelect extends SvelteApplication {
       width: 520,
       svelte: {
         class: NotificationCenterUI,
-        target: document.body
-      }
+        target: document.body,
+      },
     });
   }
 }

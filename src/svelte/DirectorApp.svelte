@@ -1,46 +1,11 @@
 <svelte:options accessors="{true}" />
 
-<style>
-    input[type="radio"] {
-        opacity: 0;
-        position: fixed;
-        width: 0;
-    }
-
-    label {
-        background-color: #ddd;
-        width: 40px;
-        height: 40px;
-        display: inline-flex;
-        border: 2px solid #444;
-        justify-content: center;
-        align-items: center;
-        border-radius: 4px;
-    }
-
-    label i {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 18px;
-    }
-
-    label:hover {
-        background-color: #dfd;
-    }
-
-    input[type="radio"]:checked + label {
-        background-color: #bfb;
-        border-color: #4c4;
-    }
-</style>
-
 <script>
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import {
     generateDataBlockFromSetting,
     getSetting,
-    setSetting
+    setSetting,
   } from "../utils/settings.js";
 
   let { ic, ooc, players } = generateDataBlockFromSetting();
@@ -74,9 +39,10 @@
           id="radioic{id}"
           name="currentIC"
           value="{id}"
-          on:change="{onChangeIC}" />
-        <label for="radioic{id}" title="{tooltip}"
-        ><i class="{icon}"></i></label>
+          on:change="{onChangeIC}"
+        />
+        <label for="radioic{id}" title="{tooltip}"><i class="{icon}"></i></label
+        >
       {/each}
     </div>
     <hr />
@@ -89,9 +55,11 @@
           id="radioooc{id}"
           name="currentOOC"
           value="{id}"
-          on:change="{onChangeOOC}" />
+          on:change="{onChangeOOC}"
+        />
         <label for="radioooc{id}" title="{tooltip}"
-        ><i class="{icon}"></i></label>
+          ><i class="{icon}"></i></label
+        >
       {/each}
     </div>
     <div>
@@ -101,7 +69,8 @@
       <select
         bind:value="{currentTrackedPlayer}"
         name="trackedPlayer"
-        on:change="{onChangePlayer}">
+        on:change="{onChangePlayer}"
+      >
         {#each players as { id, name }}
           <option value="{id}">{name}</option>
         {/each}
@@ -109,3 +78,38 @@
     </div>
   </main>
 </ApplicationShell>
+
+<style>
+  input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+  }
+
+  label {
+    background-color: #ddd;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    border: 2px solid #444;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+  }
+
+  label i {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+  }
+
+  label:hover {
+    background-color: #dfd;
+  }
+
+  input[type="radio"]:checked + label {
+    background-color: #bfb;
+    border-color: #4c4;
+  }
+</style>

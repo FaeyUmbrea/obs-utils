@@ -21,13 +21,15 @@
 <div
   class="single-line-overlay"
   id="{'overlay' + overlayIndex.toString()}"
-  style="{overlayData.style}">
+  style="{overlayData.style}"
+>
   {#each overlayData.components as component, index (overlayData.components.indexOf(component))}
     <svelte:component
       this="{getComponentType(component.type.toString())}"
       data="{component.data}"
       componentIndex="{index}"
       actorID="{actorID}"
-      style="{component.style}" />
+      style="{component.style}"
+    />
   {/each}
 </div>

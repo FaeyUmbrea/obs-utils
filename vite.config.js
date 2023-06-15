@@ -24,7 +24,7 @@ const s_MINIFY = true; // Set to true to compress the module bundle.
 // Used in bundling particularly during development. If you npm-link packages to your project add them here.
 const s_RESOLVE_CONFIG = {
   browser: true,
-  dedupe: ["svelte"]
+  dedupe: ["svelte"],
 };
 
 export default () => {
@@ -38,12 +38,12 @@ export default () => {
     resolve: { conditions: ["import", "browser"] },
 
     esbuild: {
-      target: ["es2022"]
+      target: ["es2022"],
     },
 
     css: {
       // Creates a standard configuration for PostCSS with autoprefixer & postcss-preset-env.
-      postcss: postcssConfig({ compress: s_TERSER, sourceMap: s_SOURCEMAPS })
+      postcss: postcssConfig({ compress: s_TERSER, sourceMap: s_SOURCEMAPS }),
     },
 
     // About server options:
@@ -67,8 +67,8 @@ export default () => {
         [`^(?!/${s_PACKAGE_ID}/)`]: "http://localhost:30000",
 
         // Enable socket.io from main Foundry server.
-        "/socket.io": { target: "ws://localhost:30000", ws: true }
-      }
+        "/socket.io": { target: "ws://localhost:30000", ws: true },
+      },
     },
     build: {
       outDir: "../dist",
@@ -81,8 +81,8 @@ export default () => {
       lib: {
         entry: "./index.js",
         formats: ["es"],
-        fileName: `index`
-      }
+        fileName: `index`,
+      },
     },
 
     plugins: [
@@ -92,15 +92,15 @@ export default () => {
           // This is reasonable to do as the framework styles in TRL compiled across `n` different packages will
           // be the same. Slightly modifying the hash ensures that your package has uniquely scoped styles for all
           // TRL components and makes it easier to review styles in the browser debugger.
-          cssHash: ({ hash, css }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`
+          cssHash: ({ hash, css }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
         },
-        preprocess: preprocess()
+        preprocess: preprocess(),
       }),
 
       resolve(s_RESOLVE_CONFIG), // Necessary when bundling npm-linked packages.
 
       minifyEs(),
-      visualizer()
+      visualizer(),
     ],
   };
 };
@@ -114,11 +114,11 @@ function minifyEs() {
         if (s_MINIFY) {
           return await transform(code, {
             minify: true,
-            sourcemap: s_SOURCEMAPS
+            sourcemap: s_SOURCEMAPS,
           });
         }
         return code;
-      }
-    }
+      },
+    },
   };
 }
