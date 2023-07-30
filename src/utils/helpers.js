@@ -60,6 +60,9 @@ export function getActorValues() {
   return actorValues;
 }
 
+export function setActorValues(actorValueArray) {
+  actorValues = actorValueArray;
+}
 /**
  * @returns {ObsUtilsApi}
  */

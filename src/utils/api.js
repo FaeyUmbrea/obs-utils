@@ -3,12 +3,14 @@ import PlaintextComponent from "../svelte/streamoverlays/overlaycomponents/Plain
 import FAIconComponent from "../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte";
 import ActorValComponent from "../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte";
 import AVBoolDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVBoolDisplayComponent.svelte";
-import { getApi } from "./helpers.js";
+import { getApi, setActorValues } from "./helpers.js";
 import PlayerRollOverlay from "../svelte/streamoverlays/PlayerRollOverlay.svelte";
 import AVImageDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVImageDisplayComponent.svelte";
 import ImageComponent from "../svelte/streamoverlays/overlaycomponents/ImageComponent.svelte";
+import { getSetting, setSetting } from "./settings.js";
 
 export class ObsUtilsApi {
+  actorValues = [];
   constructor() {
     /**
      * @type {Map<string, OverlayType>}
@@ -40,6 +42,18 @@ export class ObsUtilsApi {
    */
   registerUniqueOverlay(overlay) {
     this.singleInstanceOverlays.add(overlay);
+  }
+
+  getSelectedActors() {
+    return getSetting("overlayActors");
+  }
+
+  async setSelectedActors(actorArray) {
+    await setSetting("overlayActors", actorArray);
+  }
+
+  setAVData(actorValueArray) {
+    setActorValues(actorValueArray);
   }
 }
 

@@ -86,12 +86,12 @@
     }
 
     label:hover {
-      background-color: rgb(0 0 0 / 10%);
+      background-color: rgba(0 0 0 10%);
     }
 
     input[type='checkbox']:checked + label {
-      background-color: rgb(0 0 0 / 20%);
-      border-color: rgb(0 0 0 / 37.8%);
+      background-color: rgba(0 0 0 20%);
+      border-color: rgba(0 0 0 37.8%);
     }
 
     footer {

@@ -1,7 +1,7 @@
 import { scaleToFit, tokenMoved, viewportChanged } from "./canvas";
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from "./const";
 import { isOBS } from "./helpers";
-import { TJSGameSettings } from "@typhonjs-fvtt/svelte-standard/store";
+import { TJSGameSettings } from "@typhonjs-fvtt/runtime/svelte/store/fvtt/settings";
 
 export const OBSAction = {
   SwitchScene: "Switch Scene",
@@ -55,7 +55,7 @@ export function runMigrations() {
       // Code for Migration Setting Models
       obssettings = foundry.utils.mergeObject(
         new OBSRemoteSettings(),
-        obssettings
+        obssettings,
       );
       delete obssettings["onCloseObs"];
       setSetting("obsRemote", obssettings);
@@ -117,7 +117,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         },
         scope: "world",
         config: true,
-      })
+      }),
     );
     settings.push(
       createSetting("maxScale", {
@@ -130,7 +130,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         },
         scope: "world",
         config: true,
-      })
+      }),
     );
     settings.push(
       createSetting("defaultOutOfCombat", {
@@ -140,7 +140,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         onChange: changeMode,
-      })
+      }),
     );
     settings.push(
       createSetting("defaultInCombat", {
@@ -150,7 +150,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         onChange: changeMode,
-      })
+      }),
     );
     settings.push(
       createSetting("popupCloseDelay", {
@@ -163,7 +163,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         },
         scope: "world",
         config: true,
-      })
+      }),
     );
     settings.push(
       createSetting("showTrackerInCombat", {
@@ -171,7 +171,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Boolean,
         scope: "world",
         config: true,
-      })
+      }),
     );
     settings.push(
       createSetting("trackedUser", {
@@ -180,7 +180,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         onChange: changeMode,
-      })
+      }),
     );
     settings.push(
       createSetting("obsRemote", {
@@ -188,7 +188,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         default: new OBSRemoteSettings(),
-      })
+      }),
     );
     settings.push(
       createSetting("enableOBSWebsocket", {
@@ -196,7 +196,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: false,
-      })
+      }),
     );
     settings.push(
       createSetting("websocketSettings", {
@@ -204,7 +204,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         default: new OBSWebsocketSettings(),
-      })
+      }),
     );
     settings.push(
       createSetting("streamOverlays", {
@@ -212,7 +212,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         default: [],
-      })
+      }),
     );
     settings.push(
       createSetting("overlayActors", {
@@ -220,7 +220,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         default: [],
-      })
+      }),
     );
     settings.push(
       createSetting("settingsVersion", {
@@ -228,7 +228,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: false,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("showAV", {
@@ -236,7 +236,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: false,
-      })
+      }),
     );
     settings.push(
       createSetting("lastReadNotification", {
@@ -244,7 +244,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "client",
         config: false,
         default: 0,
-      })
+      }),
     );
     this.registerAll(settings, true);
   }
@@ -264,7 +264,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayRollFadeIn", {
@@ -272,7 +272,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayRollFadeOut", {
@@ -280,7 +280,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayRollStay", {
@@ -288,7 +288,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 5000,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPreRollFadeIn", {
@@ -296,7 +296,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPreRollFadeOut", {
@@ -304,7 +304,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPreRollStay", {
@@ -312,7 +312,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPostRollFadeIn", {
@@ -320,7 +320,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPostRollFadeOut", {
@@ -328,7 +328,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPostRollStay", {
@@ -336,7 +336,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 0,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPreRollImage", {
@@ -344,7 +344,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: "",
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayRollBackground", {
@@ -352,7 +352,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: "",
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayRollForeground", {
@@ -360,7 +360,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: "",
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPostRollImage", {
@@ -368,7 +368,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: "",
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPostRollEnabled", {
@@ -376,7 +376,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: false,
-      })
+      }),
     );
     settings.push(
       createSetting("rollOverlayPreRollEnabled", {
@@ -384,7 +384,7 @@ class RollOverlaySettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: false,
-      })
+      }),
     );
     this.registerAll(settings, false);
   }
