@@ -14,7 +14,7 @@ export default class OverlayEditor extends SvelteApplication {
       width: 1000,
       zIndex: 95,
       resizable: true,
-      focusKeep: true,
+      focusAuto: false,
       svelte: {
         class: OverlayEditorUI,
         target: document.body,

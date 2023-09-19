@@ -30,9 +30,9 @@
   }
 </script>
 
-<li data-list-key="{index}">
+<li data-list-key="{index}" draggable="true">
   <div class="component handle" draggable="true">
-    <i class="fa-light fa-bars grab"></i>
+    <i class="fa-light fa-bars grab" draggable="true"></i>
     <select bind:value="{component.type}" name="types">
       {#each [...componentNames] as [component, name]}
         <option value="{component}">{name}</option>
