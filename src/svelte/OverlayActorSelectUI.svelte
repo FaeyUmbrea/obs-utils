@@ -24,13 +24,13 @@
   }
 
   function change(id) {
-    let actors = $selectedActors
+    let actors = $selectedActors;
     if (actors.includes(id)) {
       actors = actors.filter((e) => e !== id);
     } else {
       actors.push(id);
     }
-    $selectedActors = actors
+    $selectedActors = actors;
   }
 </script>
 

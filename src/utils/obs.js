@@ -199,5 +199,11 @@ export async function initOBS() {
     ui.sidebar.collapse();
   });
 
+  Hooks.on("updateSetting", (setting) => {
+    if (setting.key === "obs-utils.clampCanvas") {
+      screenReload();
+    }
+  });
+
   await registerOBSEvents();
 }
