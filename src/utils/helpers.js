@@ -1,6 +1,6 @@
 // These are necessary because Game and Canvas are not always initialized so TypeScript complains
 
-import flatten from "flat";
+import { flatten } from "flat";
 
 export function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -51,10 +51,13 @@ export function getActorValues() {
       flatten(
         JSON.parse(
           JSON.stringify(
-            new CONFIG.Actor.documentClass({ name: "actor", type: "character" })
-          )
-        )
-      )
+            new CONFIG.Actor.documentClass({
+              name: "actor",
+              type: "character",
+            }),
+          ),
+        ),
+      ),
     );
   }
   return actorValues;

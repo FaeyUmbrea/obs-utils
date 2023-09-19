@@ -2,11 +2,11 @@
 
 <script>
   import VirtualList from "@sveltejs/svelte-virtual-list";
-  import { getSetting, setSetting } from "../utils/settings.js";
+  import { settings } from "../utils/settings.js";
   import { getContext } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
 
-  let selectedActors = getSetting("overlayActors");
+  let selectedActors = settings.getStore("overlayActors");
 
   let actors = game.actors;
   export let elementRoot = void 0;
@@ -14,22 +14,23 @@
   let searchTerm = "";
 
   $: filteredActors = actors.filter(
-    (item) => item.name?.indexOf(searchTerm) !== -1
+    (item) => item.name?.indexOf(searchTerm) !== -1,
   );
 
   const context = getContext("#external");
 
   async function submit() {
-    await setSetting("overlayActors", selectedActors);
     context.application.close();
   }
 
   function change(id) {
-    if (selectedActors.includes(id)) {
-      selectedActors = selectedActors.filter((e) => e !== id);
+    let actors = $selectedActors
+    if (actors.includes(id)) {
+      actors = actors.filter((e) => e !== id);
     } else {
-      selectedActors.push(id);
+      actors.push(id);
     }
+    $selectedActors = actors
   }
 </script>
 
@@ -40,7 +41,7 @@
     <VirtualList itemHeight="{50}" items="{filteredActors}" let:item>
       <div>
         <input
-          checked="{item.id ? selectedActors.includes(item.id) : false}"
+          checked="{item.id ? $selectedActors.includes(item.id) : false}"
           id="{item.id}"
           name="{item.id}"
           on:change="{change(item.id)}"
@@ -55,7 +56,7 @@
     </VirtualList>
 
     <footer>
-      <button on:click="{submit}">Submit</button>
+      <button on:click="{submit}">Close</button>
     </footer>
   </main>
 </ApplicationShell>

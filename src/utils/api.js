@@ -102,19 +102,19 @@ export function registerDefaultTypes() {
   singleLineOverlay.registerComponent(
     "fai",
     "Font Awesome Icon",
-    FAIconComponent
+    FAIconComponent,
   );
   singleLineOverlay.registerComponent("av", "Actor Value", ActorValComponent);
   singleLineOverlay.registerComponent(
     "bav",
     "Boolean Actor Value",
-    AVBoolDisplayComponent
+    AVBoolDisplayComponent,
   );
   singleLineOverlay.registerComponent("img", "Image", ImageComponent);
   singleLineOverlay.registerComponent(
     "iav",
     "Image Actor Value",
-    AVImageDisplayComponent
+    AVImageDisplayComponent,
   );
 
   // Register Legacy Names
@@ -123,7 +123,7 @@ export function registerDefaultTypes() {
   singleLineOverlay.overlayComponents.set("Actor Value", ActorValComponent);
   singleLineOverlay.overlayComponents.set(
     "Boolean Actor Value",
-    AVBoolDisplayComponent
+    AVBoolDisplayComponent,
   );
 
   getApi().registerOverlayType("sl", "Single Line", singleLineOverlay);

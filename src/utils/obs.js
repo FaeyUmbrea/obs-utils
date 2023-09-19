@@ -1,4 +1,4 @@
-import { OBSAction, getSetting } from "./settings.js";
+import { getSetting, OBSAction } from "./settings.js";
 import OBSWebSocket from "obs-websocket-js";
 import { isOBS } from "./helpers";
 import { renderOverlays } from "./stream.js";
@@ -8,7 +8,7 @@ import {
   hideSidebar,
   hideTokenBorder,
   preserveSideBar,
-  scaleToFit,
+  screenReload,
   showTracker,
   tokenMoved,
 } from "./canvas.js";
@@ -18,13 +18,13 @@ let obswebsocket;
 
 function getWSSettings() {
   const url = getComputedStyle(document.documentElement).getPropertyValue(
-    "--local-obs-host"
+    "--local-obs-host",
   );
   const port = getComputedStyle(document.documentElement).getPropertyValue(
-    "--local-obs-port"
+    "--local-obs-port",
   );
   const password = getComputedStyle(document.documentElement).getPropertyValue(
-    "--local-obs-password"
+    "--local-obs-password",
   );
   const setting = getSetting("websocketSettings");
   if (url) setting.url = url;
@@ -38,7 +38,7 @@ export async function handleOBS(event) {
   const obsEvents = getSetting("obsRemote")[event];
   const useWS = getSetting("enableOBSWebsocket");
   obsEvents.forEach(
-    async (obsEvent) => await triggerOBSAction(obsEvent, useWS)
+    async (obsEvent) => await triggerOBSAction(obsEvent, useWS),
   );
 }
 
@@ -54,7 +54,7 @@ async function triggerOBSAction(obsevent, useWS) {
           break;
         default:
           throw new Error(
-            "OBS Websocket is Disabled! How are you triggering this?!?"
+            "OBS Websocket is Disabled! How are you triggering this?!?",
           );
       }
     });
@@ -71,7 +71,7 @@ async function triggerOBSAction(obsevent, useWS) {
           sceneName: obsevent.sceneName,
           sceneItemId: await getSceneItemIdByName(
             obsevent.sceneName,
-            obsevent.targetName
+            obsevent.targetName,
           ),
           sceneItemEnabled: true,
         });
@@ -81,7 +81,7 @@ async function triggerOBSAction(obsevent, useWS) {
           sceneName: obsevent.sceneName,
           sceneItemId: await getSceneItemIdByName(
             obsevent.sceneName,
-            obsevent.targetName
+            obsevent.targetName,
           ),
           sceneItemEnabled: false,
         });
@@ -91,14 +91,14 @@ async function triggerOBSAction(obsevent, useWS) {
           sceneName: obsevent.sceneName,
           sceneItemId: await getSceneItemIdByName(
             obsevent.sceneName,
-            obsevent.targetName
+            obsevent.targetName,
           ),
         });
         await websocket.call("SetSceneItemEnabled", {
           sceneName: obsevent.sceneName,
           sceneItemId: await getSceneItemIdByName(
             obsevent.sceneName,
-            obsevent.targetName
+            obsevent.targetName,
           ),
           sceneItemEnabled: !sourcestatus,
         });
@@ -122,7 +122,7 @@ async function getWebsocket() {
   obswebsocket = new OBSWebSocket();
   await obswebsocket.connect(
     `ws://${wsSettings.url}:${wsSettings.port}`,
-    wsSettings.password
+    wsSettings.password,
   );
   return obswebsocket;
 }
@@ -137,7 +137,7 @@ async function registerOBSEvents() {
   } else {
     window.addEventListener(
       "obsStreamingStopped",
-      async () => await handleOBS("onStopStreaming")
+      async () => await handleOBS("onStopStreaming"),
     );
   }
 }
@@ -147,7 +147,7 @@ export async function initOBS() {
     Hooks.once("renderChatLog", () => renderOverlays());
   }
   if (game.view !== "game") return;
-  Hooks.once("canvasReady", scaleToFit);
+  Hooks.on("canvasReady", screenReload);
 
   Hooks.on("renderSidebar", hideApplication);
   Hooks.on("renderSceneNavigation", hideApplication);
@@ -194,7 +194,10 @@ export async function initOBS() {
       handleOBS("onUnpause");
     }
   });
-  Hooks.once("ready", () => handleOBS("onLoad"));
+  Hooks.once("ready", () => {
+    handleOBS("onLoad");
+    ui.sidebar.collapse();
+  });
 
   await registerOBSEvents();
 }

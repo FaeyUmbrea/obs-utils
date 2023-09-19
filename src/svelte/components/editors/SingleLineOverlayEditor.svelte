@@ -31,8 +31,8 @@
 </script>
 
 <li data-list-key="{index}">
-  <div class="component">
-    <i class="fa-light fa-bars handle"></i>
+  <div class="component handle" draggable="true">
+    <i class="fa-light fa-bars grab"></i>
     <select bind:value="{component.type}" name="types">
       {#each [...componentNames] as [component, name]}
         <option value="{component}">{name}</option>
@@ -66,7 +66,7 @@
     padding-bottom: 1px;
   }
 
-  .handle {
+  .grab {
     height: 35px;
     width: 35px;
     font-size: 25px;

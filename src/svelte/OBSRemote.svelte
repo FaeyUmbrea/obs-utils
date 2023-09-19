@@ -42,7 +42,8 @@
           ><i
             class="fas {key === 'onStopStreaming'
               ? 'fa-signal-stream'
-              : 'fa-dice-d20'}"></i>
+              : 'fa-dice-d20'}"
+          ></i>
           {formatKey(key)}</a
         >
       {/each}

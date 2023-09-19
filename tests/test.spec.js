@@ -21,7 +21,7 @@ test.beforeAll(async ({ browser }) => {
       .fill(
         process.env.TEST_INSTALL_PASSWORD
           ? process.env.TEST_INSTALL_PASSWORD
-          : ""
+          : "",
       );
     await gmPage.getByRole("button", { name: " Submit" }).click();
     await gmPage.waitForURL("/setup");
@@ -40,7 +40,9 @@ test.beforeAll(async ({ browser }) => {
   await gmPage
     .locator("input[name=password]")
     .fill(
-      process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : ""
+      process.env.TEST_INSTALL_PASSWORD
+        ? process.env.TEST_INSTALL_PASSWORD
+        : "",
     );
 
   await gmPage.getByRole("button", { name: " Join Game Session" }).click();
@@ -64,7 +66,9 @@ test.beforeAll(async ({ browser }) => {
   await obsPage
     .locator("input[name=password]")
     .fill(
-      process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : ""
+      process.env.TEST_INSTALL_PASSWORD
+        ? process.env.TEST_INSTALL_PASSWORD
+        : "",
     );
   await obsPage.getByRole("button", { name: " Join Game Session" }).click();
   await expect(obsPage).toHaveURL("/game");
@@ -88,16 +92,16 @@ test.describe("DM Client Only Tests", () => {
     await takeControlOfToken(gmPage);
     await gmPage.evaluate(() =>
       window["game"].canvas.hud.token.bind(
-        window["game"].canvas.tokens.controlled[0]
-      )
+        window["game"].canvas.tokens.controlled[0],
+      ),
     );
 
     let button = gmPage.locator("div#hud i[title='Track Token']");
     let before = await gmPage.evaluate(() =>
       window["Tagger"].hasTags(
         window["canvas"].tokens.controlled[0],
-        "obs_manual_track"
-      )
+        "obs_manual_track",
+      ),
     );
     if (!before) {
       button.click();
@@ -105,8 +109,8 @@ test.describe("DM Client Only Tests", () => {
         () =>
           window["Tagger"].hasTags(
             window["canvas"].tokens.controlled[0],
-            "obs_manual_track"
-          ) === true
+            "obs_manual_track",
+          ) === true,
       );
     }
     await button.click();
@@ -114,16 +118,16 @@ test.describe("DM Client Only Tests", () => {
       () =>
         window["Tagger"].hasTags(
           window["canvas"].tokens.controlled[0],
-          "obs_manual_track"
-        ) === false
+          "obs_manual_track",
+        ) === false,
     );
     await button.click();
     await gmPage.waitForFunction(
       () =>
         window["Tagger"].hasTags(
           window["canvas"].tokens.controlled[0],
-          "obs_manual_track"
-        ) === true
+          "obs_manual_track",
+        ) === true,
     );
   });
 });
@@ -148,7 +152,7 @@ test.describe("OBS Client Only Tests", () => {
 
     await expect(obsPage.locator("body.stream")).toHaveCSS(
       "background-color",
-      "rgba(0, 0, 0, 0)"
+      "rgba(0, 0, 0, 0)",
     );
   });
 });
@@ -166,47 +170,47 @@ test.describe("Multiclient UI", () => {
   test("Journal Popout Close Delay", async () => {
     let delay =
       (await gmPage.evaluate(() =>
-        window["game"].settings.get("obs-utils", "popupCloseDelay")
+        window["game"].settings.get("obs-utils", "popupCloseDelay"),
       )) * 1100;
 
     await gmPage.evaluate(() => [...window["game"].journal][0].show());
     await expect(
-      obsPage.locator("div.app.window-app.sheet.journal-sheet")
+      obsPage.locator("div.app.window-app.sheet.journal-sheet"),
     ).toBeVisible();
     await obsPage.waitForTimeout(delay);
     await expect(
-      obsPage.locator("div.app.window-app.sheet.journal-sheet")
+      obsPage.locator("div.app.window-app.sheet.journal-sheet"),
     ).not.toBeVisible();
   });
   test("Image Popout Close Delay", async () => {
     let delay =
       (await gmPage.evaluate(() =>
-        window["game"].settings.get("obs-utils", "popupCloseDelay")
+        window["game"].settings.get("obs-utils", "popupCloseDelay"),
       )) *
         1000 +
       1000;
 
     await gmPage.evaluate(() =>
       window["game"].journal.constructor.showImage(
-        "https://www.w3.org/People/mimasa/test/imgformat/img/w3c_home.png"
-      )
+        "https://www.w3.org/People/mimasa/test/imgformat/img/w3c_home.png",
+      ),
     );
     await expect(
-      obsPage.locator("div.app.window-app.image-popout")
+      obsPage.locator("div.app.window-app.image-popout"),
     ).toBeVisible();
     await obsPage.waitForTimeout(delay);
     await expect(
-      obsPage.locator("div.app.window-app.image-popout")
+      obsPage.locator("div.app.window-app.image-popout"),
     ).not.toBeVisible();
   });
   test("Toggle Show Combat Tracker", async () => {
     await gmPage.evaluate(() =>
-      window["game"].settings.set("obs-utils", "showTrackerInCombat", false)
+      window["game"].settings.set("obs-utils", "showTrackerInCombat", false),
     );
     await gmPage.waitForFunction(
       () =>
         window["game"].settings.get("obs-utils", "showTrackerInCombat") ===
-        false
+        false,
     );
 
     await startCombatWithAllTokens(gmPage);
@@ -216,11 +220,12 @@ test.describe("Multiclient UI", () => {
     await endCombat(gmPage);
 
     await gmPage.evaluate(() =>
-      window["game"].settings.set("obs-utils", "showTrackerInCombat", true)
+      window["game"].settings.set("obs-utils", "showTrackerInCombat", true),
     );
     await gmPage.waitForFunction(
       () =>
-        window["game"].settings.get("obs-utils", "showTrackerInCombat") === true
+        window["game"].settings.get("obs-utils", "showTrackerInCombat") ===
+        true,
     );
 
     await startCombatWithAllTokens(gmPage);
@@ -434,7 +439,7 @@ test.describe("Player Client Additional Tests", () => {
       .fill(
         process.env.TEST_INSTALL_PASSWORD
           ? process.env.TEST_INSTALL_PASSWORD
-          : ""
+          : "",
       );
     await playerPage
       .getByRole("button", { name: " Join Game Session" })
@@ -470,7 +475,7 @@ test.describe("Player Client Additional Tests", () => {
     await closeDirector(gmPage);
 
     await playerPage.evaluate(() =>
-      window["canvas"].pan({ x: 100, y: 100, scale: 0.5 })
+      window["canvas"].pan({ x: 100, y: 100, scale: 0.5 }),
     );
 
     await expect
@@ -480,7 +485,7 @@ test.describe("Player Client Additional Tests", () => {
       .toEqual([100, 100, 0.5, 0.5]);
 
     await playerPage.evaluate(() =>
-      window["canvas"].pan({ x: 200, y: 200, scale: 1 })
+      window["canvas"].pan({ x: 200, y: 200, scale: 1 }),
     );
 
     await expect
@@ -516,7 +521,7 @@ test.afterAll(async () => {
         "dist/" + file,
         undefined,
         undefined,
-        (path) => path.includes("node_modules")
+        (path) => path.includes("node_modules"),
       );
       await converter.load();
       for (const entry of coverage) {
@@ -527,7 +532,7 @@ test.afterAll(async () => {
 
       fs.writeFileSync(
         process.cwd() + "/.nyc_output/" + file + "data.json",
-        data
+        data,
       );
     }
   });
@@ -538,7 +543,7 @@ async function startCombatWithAllTokens(gmPage) {
 
   await gmPage.evaluate(() => {
     window["canvas"].tokens.ownedTokens.forEach((token) =>
-      token.control({ releaseOthers: false })
+      token.control({ releaseOthers: false }),
     );
   });
   await gmPage.evaluate(() => {
@@ -566,11 +571,11 @@ async function endCombat(gmPage) {
 
 async function closeNoficationCenter(gmPage) {
   await expect(
-    gmPage.locator("div[id=notification-application]")
+    gmPage.locator("div[id=notification-application]"),
   ).toBeVisible();
   await gmPage.locator("div[id=notification-application] a.close").click();
   await expect(
-    gmPage.locator("div[id=notification-application]")
+    gmPage.locator("div[id=notification-application]"),
   ).not.toBeVisible();
 }
 
@@ -582,13 +587,13 @@ async function openDirector(gmPage) {
 async function closeDirector(gmPage) {
   await gmPage.locator("li[data-tool=openStreamDirector]").click();
   await expect(
-    gmPage.locator("div[id=director-application]")
+    gmPage.locator("div[id=director-application]"),
   ).not.toBeVisible();
 }
 
 async function takeControlOfToken(gmPage) {
   await gmPage.evaluate(() =>
-    window["game"].canvas.tokens.ownedTokens[0].control()
+    window["game"].canvas.tokens.ownedTokens[0].control(),
   );
 }
 
@@ -604,6 +609,6 @@ async function getOBSViewport() {
 async function panGMViewport(gmPage, x, y, scale) {
   await gmPage.evaluate(
     (arg) => window["canvas"].pan({ x: arg.x, y: arg.y, scale: arg.scale }),
-    { x, y, scale }
+    { x, y, scale },
   );
 }

@@ -23,7 +23,7 @@ function getAutoTokens() {
 
 function getManualToken() {
   return Tagger.getByTag("obs_manual_track").map(
-    (manualToken) => manualToken.object
+    (manualToken) => manualToken.object,
   );
 }
 
@@ -77,7 +77,7 @@ export function tokenMoved() {
       case "trackone":
         trackTokenList([
           getAutoTokens()?.find(
-            (element) => element.id === game.combat?.combatant?.tokenId
+            (element) => element.id === game.combat?.combatant?.tokenId,
           ),
         ]);
         break;
@@ -168,7 +168,7 @@ export function expandTokenHud(_tokenHud, html, token) {
     const element = $(
       `<div class="control-icon ${
         isTracked ? "active" : ""
-      }"><i title="Track Token" class="fa-solid fa-signal-stream" /></div>`
+      }"><i title="Track Token" class="fa-solid fa-signal-stream" /></div>`,
     );
     element.on("click", function () {
       toggleToken(currenToken);
@@ -195,7 +195,7 @@ export function scaleToFit() {
   };
   const scale = Math.min(
     screenDimensions[0] / sceneDimensions.width,
-    screenDimensions[1] / sceneDimensions.height
+    screenDimensions[1] / sceneDimensions.height,
   );
 
   canvas.animatePan({ ...center, scale: scale });
@@ -219,4 +219,9 @@ export async function showTracker() {
 
 export async function hideSidebar() {
   UI_ELEMENTS.sidebar?.element.hide();
+}
+
+export async function screenReload() {
+  scaleToFit();
+  tokenMoved();
 }
