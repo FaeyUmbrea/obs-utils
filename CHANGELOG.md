@@ -1,3 +1,17 @@
+## Version 2.4.1
+
+- Add a reset button to the actor select.
+- Fixed a bug that caused the screen to move when a token was about to enter the hidden sidebar on /game
+- Fixed a bug that prevented the canvas from correctly resizing on scene load
+
+## Version 2.4.0
+
+Adding API Methods to allow setting AV Data and Selected Actors via external modules
+
+## Version 2.3.0
+
+V11 Compatibility
+
 ## Version 2.2.1
 
 Add an option to show or hide the Cameras
