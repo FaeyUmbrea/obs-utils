@@ -6,12 +6,14 @@
     generateDataBlockFromSetting,
     getSetting,
     setSetting,
+    settings,
   } from "../utils/settings.js";
 
   let { ic, ooc, players } = generateDataBlockFromSetting();
   let currentIC = getSetting("defaultInCombat");
   let currentOOC = getSetting("defaultOutOfCombat");
   let currentTrackedPlayer = getSetting("trackedUser");
+  let clampCanvas = settings.getStore("clampCanvas");
 
   async function onChangeIC(event) {
     await setSetting("defaultInCombat", event.target.value);
@@ -41,7 +43,8 @@
           value="{id}"
           on:change="{onChangeIC}"
         />
-        <label for="radioic{id}" title="{tooltip}"><i class="{icon}"></i></label
+        <label class="button" for="radioic{id}" title="{tooltip}"
+          ><i class="{icon}"></i></label
         >
       {/each}
     </div>
@@ -57,10 +60,26 @@
           value="{id}"
           on:change="{onChangeOOC}"
         />
-        <label for="radioooc{id}" title="{tooltip}"
+        <label class="button" for="radioooc{id}" title="{tooltip}"
           ><i class="{icon}"></i></label
         >
       {/each}
+    </div>
+    <div>
+      <hr />
+      <b>Canvas Options</b>
+      <hr />
+      <input
+        name="limitcanvas"
+        id="limitcanvas"
+        type="checkbox"
+        bind:checked="{$clampCanvas}"
+      />
+      <label
+        class="button"
+        title="Limit Canvas to Screen Edges"
+        for="limitcanvas"><i class="fas fa-arrows-maximize"></i></label
+      >
     </div>
     <div>
       <hr />
@@ -69,6 +88,7 @@
       <select
         bind:value="{currentTrackedPlayer}"
         name="trackedPlayer"
+        id="trackedPlayer"
         on:change="{onChangePlayer}"
       >
         {#each players as { id, name }}
@@ -80,13 +100,13 @@
 </ApplicationShell>
 
 <style>
-  input[type="radio"] {
+  input {
     opacity: 0;
     position: fixed;
     width: 0;
   }
 
-  label {
+  label.button {
     background-color: #ddd;
     width: 40px;
     height: 40px;
@@ -108,7 +128,7 @@
     background-color: #dfd;
   }
 
-  input[type="radio"]:checked + label {
+  input:checked + label {
     background-color: #bfb;
     border-color: #4c4;
   }

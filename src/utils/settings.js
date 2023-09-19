@@ -133,6 +133,14 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
+      createSetting("clampCanvas", {
+        default: false,
+        type: Boolean,
+        scope: "world",
+        config: false,
+      }),
+    );
+    settings.push(
       createSetting("defaultOutOfCombat", {
         default: "trackall",
         type: String,

@@ -65,7 +65,7 @@ function trackTokenList(tokens) {
   scale = Math.min(scale, getSetting("maxScale"));
   scale = Math.max(scale, getSetting("minScale"));
 
-  canvas.animatePan({ x: bounds.center.x, y: bounds.center.y, scale: scale });
+  clampAndApply({ x: bounds.center.x, y: bounds.center.y, scale: scale });
 }
 
 export function tokenMoved() {
@@ -128,15 +128,15 @@ export function viewportChanged(userId) {
     switch (getSetting("defaultInCombat")) {
       case "cloneDM":
         if (game.users?.get(userId)?.isGM)
-          canvas.animatePan(VIEWPORT_DATA.get(userId));
+          clampAndApply(VIEWPORT_DATA.get(userId));
         break;
       case "cloneTurnPlayer":
         if (getCurrentCombatants()?.some((e) => e.id === userId))
-          canvas.animatePan(VIEWPORT_DATA.get(userId));
+          clampAndApply(VIEWPORT_DATA.get(userId));
         break;
       case "clonePlayer":
         if (userId === getSetting("trackedUser"))
-          canvas.animatePan(VIEWPORT_DATA.get(userId));
+          clampAndApply(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -145,11 +145,11 @@ export function viewportChanged(userId) {
     switch (getSetting("defaultOutOfCombat")) {
       case "cloneDM":
         if (game.users?.get(userId)?.isGM)
-          canvas.animatePan(VIEWPORT_DATA.get(userId));
+          clampAndApply(VIEWPORT_DATA.get(userId));
         break;
       case "clonePlayer":
         if (userId === getSetting("trackedUser"))
-          canvas.animatePan(VIEWPORT_DATA.get(userId));
+          clampAndApply(VIEWPORT_DATA.get(userId));
         break;
       default:
         break;
@@ -198,7 +198,7 @@ export function scaleToFit() {
     screenDimensions[1] / sceneDimensions.height,
   );
 
-  canvas.animatePan({ ...center, scale: scale });
+  clampAndApply({ ...center, scale: scale });
 }
 
 export async function closePopupWithDelay(popout) {
@@ -224,4 +224,35 @@ export async function hideSidebar() {
 export async function screenReload() {
   scaleToFit();
   tokenMoved();
+}
+
+function clamp(canvasPos) {
+  const screenDimensions = canvas.screenDimensions;
+  const sceneDimensions = canvas.scene?.dimensions;
+  let { x, y, scale } = canvasPos;
+
+  const minScale = Math.max(
+    screenDimensions[0] / sceneDimensions.width,
+    screenDimensions[1] / sceneDimensions.height,
+  );
+  scale = Math.max(minScale, scale);
+
+  const offsetX =
+    (sceneDimensions.width * scale - screenDimensions[0]) / scale / 2;
+  const offsetY =
+    (sceneDimensions.height * scale - screenDimensions[1]) / scale / 2;
+  const centerX = sceneDimensions.width / 2;
+  const centerY = sceneDimensions.height / 2;
+
+  x = Math.min(centerX + offsetX, Math.max(centerX - offsetX, x));
+  y = Math.min(centerY + offsetY, Math.max(centerY - offsetY, y));
+
+  return { x, y, scale };
+}
+
+function clampAndApply(canvasPos) {
+  if (getSetting("clampCanvas")) {
+    canvasPos = clamp(canvasPos);
+  }
+  canvas.animatePan(canvasPos);
 }
