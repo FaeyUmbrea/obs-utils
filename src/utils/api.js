@@ -8,6 +8,8 @@ import PlayerRollOverlay from "../svelte/streamoverlays/PlayerRollOverlay.svelte
 import AVImageDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVImageDisplayComponent.svelte";
 import ImageComponent from "../svelte/streamoverlays/overlaycomponents/ImageComponent.svelte";
 import { getSetting, setSetting } from "./settings.js";
+import AVMultiIconComponent from "../svelte/streamoverlays/overlaycomponents/AVMultiIconComponent.svelte";
+import AVMultiImageComponent from "../svelte/streamoverlays/overlaycomponents/AVMultiImageComponent.svelte";
 
 export class ObsUtilsApi {
   actorValues = [];
@@ -68,6 +70,7 @@ export class OverlayType {
     this.overlayClass = overlayClass;
     this.overlayComponentNames = new Map();
     this.overlayComponentEditors = new Map();
+    this.compactEditorButtons = new Map();
   }
 
   /**
@@ -90,9 +93,11 @@ export class OverlayType {
   /**
    * @param key {string} The id of the Component
    * @param editor {SvelteComponent} The class for the Editor
+   * @param compactButtons {boolean} Do the buttons need to be compact?
    */
-  registerComponentEditor(key, editor) {
+  registerComponentEditor(key, editor, compactButtons = false) {
     this.overlayComponentEditors.set(key, editor);
+    this.compactEditorButtons.set(key, compactButtons);
   }
 }
 
@@ -115,6 +120,16 @@ export function registerDefaultTypes() {
     "iav",
     "Image Actor Value",
     AVImageDisplayComponent,
+  );
+  singleLineOverlay.registerComponent(
+    "micoav",
+    "Multi Icon AV",
+    AVMultiIconComponent,
+  );
+  singleLineOverlay.registerComponent(
+    "mimgav",
+    "Multi Image AV",
+    AVMultiImageComponent,
   );
 
   // Register Legacy Names

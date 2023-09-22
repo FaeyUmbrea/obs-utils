@@ -1,3 +1,19 @@
+## Version 2.5.0
+
+- Added a component to display two different icons depending on two numerical actor values
+- Added a component to display two different images depending on two numerical actor values
+
+Image/Icon 1 is displayed AV1 times, then Image/Icon 2 is displayed AV2-AV1 times immediately after.
+Great to visualize health in simpler systems.
+
+## Version 2.4.3
+
+- Fixing drag and drop sorting
+
+## Version 2.4.2
+
+- Add a feature that allows to limit zoom and pan to the map edges
+
 ## Version 2.4.1
 
 - Add a reset button to the actor select.

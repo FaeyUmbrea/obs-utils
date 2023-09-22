@@ -28,11 +28,15 @@
       return FallbackEditor;
     }
   }
+
+  function getCompactButtons(type) {
+    return !!getApi().overlayTypes.get("sl").compactEditorButtons.get(type);
+  }
 </script>
 
-<li data-list-key="{index}" draggable="true">
-  <div class="component handle" draggable="true">
-    <i class="fa-light fa-bars grab" draggable="true"></i>
+<li data-list-key="{index}">
+  <div class="component handle">
+    <i class="fa-light fa-bars grab"></i>
     <select bind:value="{component.type}" name="types">
       {#each [...componentNames] as [component, name]}
         <option value="{component}">{name}</option>
@@ -42,21 +46,23 @@
       this="{getEditor(component.type)}"
       bind:data="{component.data}"
     />
-    <button
-      on:click="{() => removeFn(index)}"
-      title="Remove Component"
-      type="button"
-    >
-      <i class="fas fa-trash"></i>
-    </button>
-    <button
-      class="add"
-      on:click="{() => openStyleEditor()}"
-      title="Edit Component Style"
-      type="button"
-    >
-      <i class="fas fa-pencil"></i>
-    </button>
+    <div class="{getCompactButtons(component.type) ? '' : 'buttons'}">
+      <button
+        on:click="{() => removeFn(index)}"
+        title="Remove Component"
+        type="button"
+      >
+        <i class="fas fa-trash"></i>
+      </button>
+      <button
+        class="add"
+        on:click="{() => openStyleEditor()}"
+        title="Edit Component Style"
+        type="button"
+      >
+        <i class="fas fa-pencil"></i>
+      </button>
+    </div>
   </div>
 </li>
 
@@ -71,13 +77,14 @@
     width: 35px;
     font-size: 25px;
     text-align: center;
+    align-self: center;
     line-height: 35px;
   }
 
   .component {
     display: grid;
     grid-template-columns: 35px 150px auto 35px 35px;
-    grid-template-rows: 35px;
+    grid-template-rows: auto;
 
     button {
       width: 35px;
@@ -86,6 +93,10 @@
 
     select {
       height: auto;
+    }
+    .buttons {
+      grid-column 4 / span 2;
+      display flex;
     }
   }
 </style>

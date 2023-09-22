@@ -16,6 +16,7 @@ import { getSetting } from "./settings.js";
  */
 import notifications from "./notifications.json";
 import NotificationCenter from "../applications/notificationCenter.js";
+import MultiAVIconEditor from "../svelte/components/editors/MultiAVIconEditor.svelte";
 
 let d;
 
@@ -91,6 +92,12 @@ export async function registerUI() {
   getApi().overlayTypes.get("sl").registerComponentEditor("av", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("bav", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("iav", AVEditor);
+  getApi()
+    .overlayTypes.get("sl")
+    .registerComponentEditor("micoav", MultiAVIconEditor, true);
+  getApi()
+    .overlayTypes.get("sl")
+    .registerComponentEditor("mimgav", MultiAVIconEditor, true);
 }
 
 export function showNotifications() {

@@ -2,7 +2,7 @@
   import { get } from "lodash-es";
   import { onDestroy } from "svelte";
 
-  export let data;
+  export let data = "";
   export let actorID = void 0;
   export let style;
   export let componentIndex;

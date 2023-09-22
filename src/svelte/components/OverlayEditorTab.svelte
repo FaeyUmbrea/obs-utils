@@ -42,7 +42,7 @@
 
 <div class="scroll">
   <ul>
-    <SortableList animation="{150}" handle=".handle" onEnd="{handleReorder}">
+    <SortableList animation="{150}" handle=".grab" onEnd="{handleReorder}">
       {#key rerender}
         {#each overlay.components as component, index (overlay.components.indexOf(component))}
           <OverlayComponentEditor
@@ -97,6 +97,7 @@
     width: 100%;
     padding-right: 10px;
     padding-left: 3px;
+    height: 100%;
 
     ul {
       list-style-type: none;

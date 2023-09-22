@@ -29,7 +29,7 @@
   {getValue()}
 {/key}
 <div
-  class="component actor-val-component"
+  class="component actor-val-component bool-component"
   id="{'component' + componentIndex.toString()}"
   style="{style}"
 >
