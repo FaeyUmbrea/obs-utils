@@ -1,3 +1,7 @@
+## Version 2.5.1
+
+- Fix a small issue with the new Multi-AV Editor where typing would alternate the cursor between both inputs
+
 ## Version 2.5.0
 
 - Added a component to display two different icons depending on two numerical actor values

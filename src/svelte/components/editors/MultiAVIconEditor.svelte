@@ -7,8 +7,10 @@
   let av1, av2, icon1, icon2;
   let values = getActorValues();
   let items = [...values];
+  let items2 = [...values];
 
   let filterText = "";
+  let filterText2 = "";
 
   function onChange() {
     data = `${av1};${icon1};${av2};${icon2}`;
@@ -17,6 +19,12 @@
   function handleFilter(e) {
     if (e.detail.length === 0 && filterText.length > 0) {
       items = [...values, filterText];
+    }
+  }
+
+  function handleFilter2(e) {
+    if (e.detail.length === 0 && filterText2.length > 0) {
+      items2 = [...values, filterText2];
     }
   }
 
@@ -29,9 +37,7 @@
   }
 </script>
 
-{#key data}
-  {getSplit()}
-{/key}
+{getSplit()}
 <div class="input">
   <Select
     --height="30px"
@@ -49,14 +55,14 @@
   <input type="text" on:change="{onChange}" bind:value="{icon1}" />
   <Select
     --height="30px"
-    bind:filterText="{filterText}"
+    bind:filterText="{filterText2}"
     bind:justValue="{av2}"
     closeListOnChange="false"
     floatingConfig="{{
       strategy: 'fixed',
     }}"
-    items="{items}"
-    on:filter="{handleFilter}"
+    items="{items2}"
+    on:filter="{handleFilter2}"
     value="{av2}"
     on:change="{onChange}"
   />
