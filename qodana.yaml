@@ -1,20 +1,22 @@
 version: "1.0"
 
-bootstrap: yarn install
+linter: jetbrains/qodana-js:2023.2
 
 include:
+  - name: CheckDependencyLicenses
   - name: Eslint
   - name: VulnerableLibrariesGlobal
-  - name: CheckDependencyLicenses
+
+bootstrap: yarn install
 
 licenseRules:
   - keys:
-      - "AGPL-3.0-only"
+      - AGPL-3.0-only
     allowed:
-      - "MIT-0"
-      - "LIL-1"
+      - LIL-1
+      - MIT-0
 
 dependencyIgnores:
-  - name: "caniuse-lite"
+  - name: caniuse-lite
 
 fixesStrategy: cleanup
