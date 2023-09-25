@@ -17,4 +17,4 @@ licenseRules:
 dependencyIgnores:
   - name: "caniuse-lite"
 
-fixesStrategy: cleanup/apply
+fixesStrategy: cleanup
