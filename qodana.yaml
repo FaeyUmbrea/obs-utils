@@ -6,3 +6,15 @@ include:
   - name: Eslint
   - name: VulnerableLibrariesGlobal
   - name: CheckDependencyLicenses
+
+licenseRules:
+  - keys:
+      - "AGPL-3.0-only"
+    allowed:
+      - "MIT-0"
+      - "LIL-1"
+
+dependencyIgnores:
+  - name: "caniuse-lite"
+
+fixesStrategy: cleanup/apply
