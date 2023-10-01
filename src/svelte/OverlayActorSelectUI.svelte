@@ -20,7 +20,7 @@
   const context = getContext("#external");
 
   async function submit() {
-    await setSetting("overlayActors", selectedActors);
+    await setSetting("overlayActors", $selectedActors);
     context.application.close();
   }
 
