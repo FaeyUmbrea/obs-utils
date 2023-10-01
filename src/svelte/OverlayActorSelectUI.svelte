@@ -2,7 +2,7 @@
 
 <script>
   import VirtualList from "@sveltejs/svelte-virtual-list";
-  import { settings } from "../utils/settings.js";
+  import { setSetting, settings } from "../utils/settings.js";
   import { getContext } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
 
@@ -20,6 +20,7 @@
   const context = getContext("#external");
 
   async function submit() {
+    await setSetting("overlayActors", selectedActors);
     context.application.close();
   }
 
