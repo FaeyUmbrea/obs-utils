@@ -19,7 +19,7 @@
       },
       "popupCloseDelay": {
         "Name": "Popout Close Delay",
-        "Hint": "Seconds until Popouts are automatically closed"
+        "Hint": "Seconds until Popouts are automatically closed. 0 to disable."
       },
       "showTrackerInCombat": {
         "Name": "Show Combat Tracker in Combat?",
@@ -112,7 +112,27 @@
       },
       "showAV": {
         "Name": "Show Video Overlay?",
-        "Hint": "If checked, the camera sidebar will be visible on OBS"
+        "Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)"
+      },
+      "fixedPopouts": {
+        "Name": "Use Fixed Popouts",
+        "Hint": "If enabled, all popouts are repositioned and resized to the configured values"
+      },
+      "fixedPopoutX": {
+        "Name": "Popout X",
+        "Hint": "The distance to the left screen edge in pixels"
+      },
+      "fixedPopoutY": {
+        "Hame": "Popout Y",
+        "Hint": "The distance to the top screen edge in pixels"
+      },
+      "fixedPopoutWidth": {
+        "Name": "Popout Width",
+        "Hint": "The width of the popout in pixels"
+      },
+      "fixedPopoutHeight": {
+        "Name": "Popout Height",
+        "Hint": "The height of the popout in pixels"
       }
     }
   }

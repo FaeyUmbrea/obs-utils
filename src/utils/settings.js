@@ -165,7 +165,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         default: 10,
         type: Number,
         range: {
-          min: 1,
+          min: 0,
           max: 300,
           step: 1,
         },
@@ -252,6 +252,46 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "client",
         config: false,
         default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopouts", {
+        type: Boolean,
+        scope: "world",
+        config: true,
+        default: false,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopoutX", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 1000,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopoutY", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 1000,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopoutWidth", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 1000,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopoutHeight", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 800,
       }),
     );
     this.registerAll(settings, true);
@@ -394,6 +434,7 @@ class RollOverlaySettings extends TJSGameSettings {
         default: false,
       }),
     );
+
     this.registerAll(settings, false);
   }
 }

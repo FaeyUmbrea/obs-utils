@@ -3,6 +3,7 @@ import OBSWebSocket from "obs-websocket-js";
 import { isOBS } from "./helpers";
 import { renderOverlays } from "./stream.js";
 import {
+  applyPopupConstrains,
   closePopupWithDelay,
   hideApplication,
   hideSidebar,
@@ -179,6 +180,10 @@ export async function initOBS() {
   // Close Popups after configurable Time
   Hooks.on("renderJournalSheet", closePopupWithDelay);
   Hooks.on("renderImagePopout", closePopupWithDelay);
+
+  // Resize and Reposition Popups if enabled
+  Hooks.on("renderJournalSheet", applyPopupConstrains);
+  Hooks.on("renderImagePopout", applyPopupConstrains);
 
   // Adding OBS Remote hooks;
   Hooks.on("updateCombat", (_combat, change) => {

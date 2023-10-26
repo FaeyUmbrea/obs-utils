@@ -202,8 +202,22 @@ export function scaleToFit() {
 }
 
 export async function closePopupWithDelay(popout) {
-  await sleep(getSetting("popupCloseDelay") * 1000);
-  popout.close();
+  const delay = getSetting("popupCloseDelay");
+  if (delay > 0) {
+    await sleep(delay * 1000);
+    popout.close();
+  }
+}
+
+export async function applyPopupConstrains(popout) {
+  if (getSetting("fixedPopouts")) {
+    const position = {};
+    position.left = getSetting("fixedPopoutX");
+    position.top = getSetting("fixedPopoutY");
+    position.width = getSetting("fixedPopoutWidth");
+    position.height = getSetting("fixedPopoutHeight");
+    popout.setPosition(position);
+  }
 }
 
 export async function preserveSideBar(sidebar) {
