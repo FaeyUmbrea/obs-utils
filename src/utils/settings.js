@@ -255,7 +255,7 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
-      createSetting("fixedPopouts", {
+      createSetting("fixedPopups", {
         type: Boolean,
         scope: "world",
         config: true,
@@ -263,7 +263,7 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
-      createSetting("fixedPopoutX", {
+      createSetting("fixedPopupX", {
         type: Number,
         scope: "world",
         config: true,
@@ -271,7 +271,7 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
-      createSetting("fixedPopoutY", {
+      createSetting("fixedPopupY", {
         type: Number,
         scope: "world",
         config: true,
@@ -279,7 +279,7 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
-      createSetting("fixedPopoutWidth", {
+      createSetting("fixedPopupWidth", {
         type: Number,
         scope: "world",
         config: true,
@@ -287,7 +287,7 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
-      createSetting("fixedPopoutHeight", {
+      createSetting("fixedPopupHeight", {
         type: Number,
         scope: "world",
         config: true,

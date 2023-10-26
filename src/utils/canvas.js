@@ -210,12 +210,12 @@ export async function closePopupWithDelay(popout) {
 }
 
 export async function applyPopupConstrains(popout) {
-  if (getSetting("fixedPopouts")) {
+  if (getSetting("fixedPopups")) {
     const position = {};
-    position.left = getSetting("fixedPopoutX");
-    position.top = getSetting("fixedPopoutY");
-    position.width = getSetting("fixedPopoutWidth");
-    position.height = getSetting("fixedPopoutHeight");
+    position.left = getSetting("fixedPopupX");
+    position.top = getSetting("fixedPopupY");
+    position.width = getSetting("fixedPopupWidth");
+    position.height = getSetting("fixedPopupHeight");
     popout.setPosition(position);
   }
 }
