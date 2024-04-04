@@ -68,8 +68,7 @@ export function runMigrations() {
       delete obssettings["onCloseObs"];
       setSetting("obsRemote", obssettings);
     }
-    if (version < 2)
-    {
+    if (version < 2) {
       console.warn("Migrations for Data-Model Version 2");
       let obssettings = getSetting("obsRemote");
       // Code for Migration Setting Models

@@ -5,7 +5,7 @@
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import { getSetting, setSetting } from "../utils/settings.js";
   import { getContext } from "svelte";
-    import SceneSelect from "./components/SceneSelect.svelte";
+  import SceneSelect from "./components/SceneSelect.svelte";
 
   const useWebSocket = getSetting("enableOBSWebsocket");
   let obssettings = getSetting("obsRemote");
@@ -54,16 +54,16 @@
       <section class="content">
         {#each entries as key}
           <div class="tab flexcol" data-tab="{key}" data-group="primary-tabs">
-            {#if key === 'onSceneLoad'}
-            <SceneSelect
-              bind:eventArray="{obssettings[getKey(key)]}"
-              useWebSocket="{useWebSocket}"
-            />
+            {#if key === "onSceneLoad"}
+              <SceneSelect
+                bind:eventArray="{obssettings[getKey(key)]}"
+                useWebSocket="{useWebSocket}"
+              />
             {:else}
-            <ObsTab
-              bind:eventArray="{obssettings[getKey(key)]}"
-              useWebSocket="{useWebSocket}"
-            />
+              <ObsTab
+                bind:eventArray="{obssettings[getKey(key)]}"
+                useWebSocket="{useWebSocket}"
+              />
             {/if}
           </div>
         {/each}

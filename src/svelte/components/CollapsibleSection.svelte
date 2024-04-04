@@ -13,7 +13,11 @@
 <div class="collapsable-section">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <section class="header" on:click="{click}">▼{#if editableTitle}<input type="text" bind:value={title}/>{:else}<span>{title}</span>{/if}▼</section>
+  <section class="header" on:click="{click}">
+    ▼{#if editableTitle}<input type="text" bind:value="{title}" />{:else}<span
+        >{title}</span
+      >{/if}▼
+  </section>
   {#if !collapsed}
     <section class="{`content`}" in:slide out:slide>
       <slot />
