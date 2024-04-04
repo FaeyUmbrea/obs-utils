@@ -22,14 +22,22 @@ export class OBSWebsocketSettings {
   password = "";
 }
 
+export class SceneLoadEvent {
+  sceneName = "";
+  obsActions = [];
+}
+
 export class OBSRemoteSettings {
   onLoad = [];
   onCombatStart = [];
   onCombatEnd = [];
   onPause = [];
   onUnpause = [];
+  onSceneLoad = [];
   onStopStreaming = [];
 }
+
+const SETTINGS_VERSION = 2;
 
 function getGM() {
   return game.users?.find((user) => user.isGM);
@@ -47,7 +55,7 @@ async function changeMode() {
 
 export function runMigrations() {
   const version = getSetting("settingsVersion");
-  if (version < 1) {
+  if (version < SETTINGS_VERSION) {
     console.warn("Running OBS Utils Migrations");
     if (version < 1) {
       console.warn("Migrations for Data-Model Version 1");
@@ -60,8 +68,19 @@ export function runMigrations() {
       delete obssettings["onCloseObs"];
       setSetting("obsRemote", obssettings);
     }
+    if (version < 2)
+    {
+      console.warn("Migrations for Data-Model Version 2");
+      let obssettings = getSetting("obsRemote");
+      // Code for Migration Setting Models
+      obssettings = foundry.utils.mergeObject(
+        new OBSRemoteSettings(),
+        obssettings,
+      );
+      setSetting("obsRemote", obssettings);
+    }
     console.warn("OBS Utils Migrations Finished");
-    setSetting("settingsVersion", 1);
+    setSetting("settingsVersion", SETTINGS_VERSION);
   }
 }
 
@@ -235,7 +254,7 @@ class OBSUtilsSettings extends TJSGameSettings {
         type: Number,
         scope: "world",
         config: false,
-        default: 0,
+        default: 2,
       }),
     );
     settings.push(

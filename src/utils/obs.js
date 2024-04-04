@@ -1,4 +1,4 @@
-import { getSetting, OBSAction } from "./settings.js";
+import { getSetting, OBSAction, SceneLoadEvent } from "./settings.js";
 import OBSWebSocket from "obs-websocket-js";
 import { isOBS } from "./helpers";
 import { renderOverlays } from "./stream.js";
@@ -41,6 +41,22 @@ export async function handleOBS(event) {
   obsEvents.forEach(
     async (obsEvent) => await triggerOBSAction(obsEvent, useWS),
   );
+}
+
+export async function handleOBSScene(sceneName) {
+  if (!isOBS()) return;
+  /**
+   * @type {Array<SceneLoadEvent>}
+   */
+  const obsEvents = getSetting("obsRemote").onSceneLoad;
+  const useWS = getSetting("enableOBSWebsocket");
+  obsEvents.forEach((event)=>{
+    if(event.sceneName === sceneName){
+      event.obsActions.forEach(
+        async (obsAction) => await triggerOBSAction(obsAction, useWS),
+      );
+    }
+  })
 }
 
 async function triggerOBSAction(obsevent, useWS) {
@@ -101,7 +117,7 @@ async function triggerOBSAction(obsevent, useWS) {
             obsevent.sceneName,
             obsevent.targetName,
           ),
-          sceneItemEnabled: !sourcestatus,
+          sceneItemEnabled: !sourcestatus.sceneItemEnabled,
         });
         break;
       }
@@ -149,6 +165,9 @@ export async function initOBS() {
   }
   if (game.view !== "game") return;
   Hooks.on("canvasReady", screenReload);
+  Hooks.on("canvasReady", (canvas)=>{
+    handleOBSScene(canvas.scene.name)
+  })
 
   Hooks.on("renderSidebar", hideApplication);
   Hooks.on("renderSceneNavigation", hideApplication);
