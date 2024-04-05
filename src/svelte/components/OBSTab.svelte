@@ -12,14 +12,11 @@
     ];
   }
 
-  function handleAdd() {
+  export const handleAdd = () => {
     eventArray = eventArray.concat(new OBSEvent());
-  }
+  };
 </script>
 
-<button class="add" on:click="{() => handleAdd()}" type="button"
-  ><i class="fas fa-plus"></i></button
->
 <div class="scroll">
   <ul>
     {#each eventArray as event, index (eventArray.indexOf(event))}

@@ -7,15 +7,9 @@ export default class OBSRemoteApplication extends SvelteApplication {
       classes: ["obsremote"],
       id: "obsremote-application",
       title: "OBS Remote Settings",
-      tabs: [
-        {
-          navSelector: ".tabs",
-          contentSelector: ".content",
-          initial: "onLoad",
-        },
-      ],
       height: 700,
       width: 520,
+      focusAuto: false,
       svelte: {
         class: OBSRemote,
         target: document.body,

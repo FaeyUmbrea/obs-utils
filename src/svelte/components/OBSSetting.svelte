@@ -37,13 +37,13 @@
       bind:value="{event.sceneName}"
       disabled="{sceneDisabled}"
       name="sceneNames"
-      placeholder="Scene Name"
+      placeholder="OBS Scene Name"
     />
     <input
       bind:value="{event.targetName}"
       disabled="{idDisabled}"
       name="itemIDs"
-      placeholder="Source Name"
+      placeholder="OBS Source Name"
     />
     <button on:click="{removeFn}" type="button">
       <i class="fas fa-trash"></i>
