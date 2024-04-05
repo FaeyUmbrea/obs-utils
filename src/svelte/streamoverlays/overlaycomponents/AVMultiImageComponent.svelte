@@ -13,7 +13,7 @@
   let value2 = "";
   let image1 = "";
   let image2 = "";
-  let hook = Hooks.on("updateActor", (actor) => {
+  let hook = Hooks.on("obs-utils.refreshActor", (actor) => {
     if (actor.id !== actorID) return;
     value1 = get(actor, data.split(";")[0], "");
     value2 = get(actor, data.split(";")[2], "");

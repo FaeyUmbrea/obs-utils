@@ -10,7 +10,7 @@
   let actor = game.actors?.get(actorID);
 
   let value = "";
-  let hook = Hooks.on("updateActor", (actor) => {
+  let hook = Hooks.on("obs-utils.refreshActor", (actor) => {
     if (actor.id !== actorID) return;
     value = get(actor, data, "");
   });

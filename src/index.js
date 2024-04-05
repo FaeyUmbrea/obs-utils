@@ -15,7 +15,7 @@ function start() {
     if (moduleData) {
       moduleData.api = new ObsUtilsApi();
       registerDefaultTypes();
-      Hooks.call("obsUtilsInit");
+      Hooks.call("obs-utils.init");
     }
 
     settings.init();
@@ -48,5 +48,8 @@ function start() {
   });
 
   Hooks.on("canvasPan", socketCanvas);
+
+  // Register updateActor for System agnostic default. This allows for custom and system-specific actor refresh triggers.
+  Hooks.on("updateActor",(actor) => Hooks.call("obs-utils.refreshActor",actor));
 }
 start();
