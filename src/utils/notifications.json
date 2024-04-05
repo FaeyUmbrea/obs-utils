@@ -1,5 +1,15 @@
 [
   {
+    "id": 2,
+    "title": "New Feature!",
+    "text": ["Hi Everyone! Thanks for you continued support of OBS Utils!",
+     "This Version introduces a new Trigger Event for the OBS Remote Control. You can now fire OBS Events on loading a specific Foundry Scene.",
+     "The events will also be triggered during the initial start of Foundry and on reload, so please be careful what Scenes you attach Events to!"],
+    "link": [{"title":  "Patreon",
+      "url": "https://www.patreon.com/voidmonster"
+    },{"title": "Github", "url": "https://github.com/FaeyUmbrea/obs-utils"}]
+  },
+  {
     "id": 1,
     "title": "Welcome to OBS Utils",
     "text": ["Hello and thank you so much for using OBS Utils!",
