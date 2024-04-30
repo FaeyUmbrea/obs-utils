@@ -1,3 +1,22 @@
+## Version 2.7.0
+
+Additions:
+
+- New Foundry Scene Load trigger for OBS Remote (#137)
+- Introduced special Hook event "obs-utils.init" that gets called after API initialization
+- Introduced special Hook event "obs-utils.refreshActor" that accepts a foundry actor as input and will upate the
+  overlay actor data
+
+## Version 2.6.0
+
+Additions:
+
+- Allow Setting all popups to a predetermined size and position (Closes #128)
+
+Fixes:
+
+- Several text Errors
+
 ## Version 2.5.1
 
 - Fix a small issue with the new Multi-AV Editor where typing would alternate the cursor between both inputs
@@ -70,6 +89,7 @@ Check the Wiki for more Information on the CSS Structure
 
 Added OBS Remote Functionality!
 Replaced original onExitObs with onStopStreaming because OBS would close before the final commands got executed.
+
 ## Version 1.1.1
 
 Fixes to the Director Window
