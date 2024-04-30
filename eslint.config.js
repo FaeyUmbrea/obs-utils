@@ -2,10 +2,12 @@ import prettier from "eslint-plugin-prettier";
 import globals from "globals";
 import js from "@eslint/js";
 import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
+import eslintPluginSvelte from "eslint-plugin-svelte";
 
 export default [
   js.configs.recommended,
   eslintPluginPrettierRecommended,
+  ...eslintPluginSvelte.configs["flat/recommended"],
   {
     ignores: [
       "node_modules",
@@ -34,6 +36,7 @@ export default [
         CONFIG: true,
         canvas: true,
         FormApplication: true,
+        FilePicker: true,
       },
     },
     plugins: {
