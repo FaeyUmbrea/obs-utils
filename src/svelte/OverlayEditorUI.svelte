@@ -61,6 +61,8 @@
             <!-- svelte-ignore a11y-missing-attribute -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <a
+              role="tab"
+              tabindex="{index}"
               class="item {index === activeIndex ? 'active' : ''}"
               data-tab="{index}"
               on:click="{() => changeTab(index)}">{index}</a
@@ -94,65 +96,65 @@
 
 <style lang="stylus">
 
-  footer {
-    position: absolute;
-    width: calc(100% - 20px);
-    bottom: 0;
-    left: 10px;
-    padding: 10px;
-    display: flex;
-  }
-
-  .add {
-    width: 35px;
-    align-self: flex-end;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: 40% 60%;
-    grid-template-rows: 100%;
-    height: calc(100% - 50px);
-    min-height: calc(100% - 50px);
-    max-height: calc(100% - 50px);
-  }
-
-  .preview {
-    background-color: black;
-    border-radius: 4px;
-  }
-
-  .editor {
-    height: 100%;
-    max-height: 100%;
-    overflow: hidden;
-    padding-left: 5px;
-
-    .content {
-      height: calc(100% - 110px);
-      max-height: calc(100% - 110px);
-      overflow: hidden;
+    footer {
+        position: absolute;
+        width: calc(100% - 20px);
+        bottom: 0;
+        left: 10px;
+        padding: 10px;
+        display: flex;
     }
 
-    .nav-with-add-button {
-      display: grid;
-      grid-template-columns: 35px calc(100% - 35px);
+    .add {
+        width: 35px;
+        align-self: flex-end;
+    }
 
-      .tabs {
-        justify-content: left;
-        overflow-x: scroll;
+    .grid {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        grid-template-rows: 100%;
+        height: calc(100% - 50px);
+        min-height: calc(100% - 50px);
+        max-height: calc(100% - 50px);
+    }
 
-        .item {
-          padding-inline: 10px;
-          align-self: center;
-          font-size: 20px;
-          padding-top: 6px;
+    .preview {
+        background-color: black;
+        border-radius: 4px;
+    }
+
+    .editor {
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        padding-left: 5px;
+
+        .content {
+            height: calc(100% - 110px);
+            max-height: calc(100% - 110px);
+            overflow: hidden;
         }
-      }
 
-      .add {
-        align-self: center;
-      }
+        .nav-with-add-button {
+            display: grid;
+            grid-template-columns: 35px calc(100% - 35px);
+
+            .tabs {
+                justify-content: left;
+                overflow-x: scroll;
+
+                .item {
+                    padding-inline: 10px;
+                    align-self: center;
+                    font-size: 20px;
+                    padding-top: 6px;
+                }
+            }
+
+            .add {
+                align-self: center;
+            }
+        }
     }
-  }
 </style>

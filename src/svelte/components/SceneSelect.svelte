@@ -102,11 +102,6 @@
     width: 400px;
   }
 
-  .add {
-    width: 35px;
-    align-self: flex-end;
-  }
-
   .scroll {
     overflow: auto;
     float: left;
