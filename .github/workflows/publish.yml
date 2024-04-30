@@ -1,0 +1,25 @@
+name: Publish to Foundry
+
+on:
+    release:
+        types:
+            - released
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3.3.0
+            - id: set_var
+              run: |
+                content=`cat ./public/module.json`
+                content="${content//'%'/'%25'}"
+                content="${content//$'\n'/'%0A'}"
+                content="${content//$'\r'/'%0D'}"
+                echo "::set-output name=moduleJson::$content"
+            - name: Publish Module
+              run: |
+                curl -H "Content-Type: application/json" \
+                     -H "Authorization: ${{ secrets.FVTT_TOKEN }}" \
+                     --request POST \
+                     --data '{"id": "${{fromJson(steps.set_var.moduleJson).id}}","dry-run":true,"release":{"version":"${{github.event.release.tag_name}}","manifest":"${{github.server_url}}/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json","notes":"${{github.server_url}}/${{github.repository}}/blob/main/CHANGELOG.md","compatibility":"${{toJson(fromJson(steps.set_var.moduleJson).compatibility)}}"}}'
