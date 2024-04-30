@@ -1634,13 +1634,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typhonjs-fvtt/eslint-config-foundry.js@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@typhonjs-fvtt/eslint-config-foundry.js@npm:0.8.0"
-  checksum: 42c35c89afb510108f0997e0c3373140fbf8bb7e337a147eeef163f6ade48c23a1f7f99c08bf4253c7cdc0cce98c73a50e173ab6162f3bdfda4446c5938e1ddb
-  languageName: node
-  linkType: hard
-
 "@typhonjs-fvtt/runtime@npm:^0.1.2":
   version: 0.1.2
   resolution: "@typhonjs-fvtt/runtime@npm:0.1.2"
@@ -3302,6 +3295,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"globals@npm:^15.1.0":
+  version: 15.1.0
+  resolution: "globals@npm:15.1.0"
+  checksum: 16a714da2b3bfa283d88a91f573006e8628a345fc37a5af0b332b31ea1f6af0c66afc2a515a1064fd5f736c49112e02159c1477de0f069a228b39d2853a1ae21
+  languageName: node
+  linkType: hard
+
 "graceful-fs@npm:^4.1.15, graceful-fs@npm:^4.1.3, graceful-fs@npm:^4.2.6":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
@@ -4331,7 +4331,6 @@ __metadata:
     "@sveltejs/svelte-virtual-list": ^3.0.1
     "@sveltejs/vite-plugin-svelte": ^3.1.0
     "@types/lodash-es": ^4.17.12
-    "@typhonjs-fvtt/eslint-config-foundry.js": ^0.8.0
     "@typhonjs-fvtt/runtime": ^0.1.2
     "@typhonjs-fvtt/svelte-standard": ^0.1.0
     cross-env: 7.0.3
@@ -4341,6 +4340,7 @@ __metadata:
     eslint-plugin-prettier: ^5.1.3
     eslint-plugin-svelte: ^2.38.0
     flat: ^6.0.1
+    globals: ^15.1.0
     lodash-es: ^4.17.21
     nyc: ^15.1.0
     obs-websocket-js: ^5.0.5
