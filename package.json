@@ -46,7 +46,7 @@
     "flat": "^6.0.1",
     "globals": "^15.1.0",
     "postcss": "^8.4.38",
-    "postcss-stylus": "^0.0.1",
+    "postcss-styl": "^0.12.3",
     "prettier": "^3.2.5",
     "prettier-plugin-svelte": "^3.2.3",
     "rollup-plugin-visualizer": "^5.12.0",
