@@ -18,6 +18,7 @@ export default [
       ".nyc_output",
       ".github",
       ".yarn",
+      "test-results/*",
     ],
   },
   {

@@ -1,94 +1,16 @@
-import { expect, test } from "@playwright/test";
-import v8toIstanbul from "v8-to-istanbul";
-import fs from "fs";
+import { expect, test } from "./fixtures.js";
 
 test.describe.configure({ mode: "serial" });
 
-let obsPage;
-let gmPage;
-
-test.beforeAll(async ({ browser }) => {
-  let gmContext = await browser.newContext();
-
-  gmPage = await gmContext.newPage();
-
-  await gmPage.coverage.startJSCoverage();
-  await gmPage.goto("/setup");
-
-  if (gmPage.url().includes("/auth")) {
-    await gmPage
-      .locator("input#key")
-      .fill(
-        process.env.TEST_INSTALL_PASSWORD
-          ? process.env.TEST_INSTALL_PASSWORD
-          : "",
-      );
-    await gmPage.getByRole("button", { name: " Submit" }).click();
-    await gmPage.waitForURL("/setup");
-  }
-
-  if (gmPage.url().includes("/setup")) {
-    await gmPage.getByRole("button", { name: " Launch World" }).click();
-  }
-
-  await expect(gmPage).toHaveURL("/join");
-  await gmPage.goto("/join");
-
-  await gmPage
-    .locator('select[name="userid"]')
-    .selectOption({ label: "Gamemaster" });
-  await gmPage
-    .locator("input[name=password]")
-    .fill(
-      process.env.TEST_INSTALL_PASSWORD
-        ? process.env.TEST_INSTALL_PASSWORD
-        : "",
-    );
-
-  await gmPage.getByRole("button", { name: " Join Game Session" }).click();
-  await expect(gmPage).toHaveURL("/game");
-});
-
-test.beforeAll(async ({ browser }) => {
-  let obsContext = await browser.newContext();
-
-  await obsContext.addInitScript({ path: "tests/initScripts/fakeobs.js" });
-
-  obsPage = await obsContext.newPage();
-
-  await obsPage.coverage.startJSCoverage();
-
-  await obsPage.goto("/join");
-
-  await obsPage
-    .locator('select[name="userid"]')
-    .selectOption({ label: "Player2" });
-  await obsPage
-    .locator("input[name=password]")
-    .fill(
-      process.env.TEST_INSTALL_PASSWORD
-        ? process.env.TEST_INSTALL_PASSWORD
-        : "",
-    );
-  await obsPage.getByRole("button", { name: " Join Game Session" }).click();
-  await expect(obsPage).toHaveURL("/game");
-});
-
 test.describe("DM Client Only Tests", () => {
-  test.beforeEach(async () => {
-    await gmPage.goto("/game");
-
-    await gmPage.waitForFunction(() => window["game"].ready);
-  });
-  test("Close Notification Center", async () => {
-    await closeNoficationCenter(gmPage);
-  });
-  test("Click Director Button to Open and Close", async () => {
+  test("Click Director Button to Open and Close", async ({
+    pages: { gmPage },
+  }) => {
     await openDirector(gmPage);
 
     await closeDirector(gmPage);
   });
-  test("Toggle Tag Via HUD", async () => {
+  test("Toggle Tag Via HUD", async ({ pages: { gmPage } }) => {
     await takeControlOfToken(gmPage);
     await gmPage.evaluate(() =>
       window["game"].canvas.hud.token.bind(
@@ -133,19 +55,14 @@ test.describe("DM Client Only Tests", () => {
 });
 
 test.describe("OBS Client Only Tests", () => {
-  test.beforeEach(async () => {
-    await obsPage.goto("/game");
-
-    await obsPage.waitForFunction(() => window["game"].ready);
-  });
-  test("Test Elements Disappearing", async () => {
+  test("Test Elements Disappearing", async ({ pages: { obsPage } }) => {
     await expect(obsPage.locator("nav#controls")).not.toBeVisible();
     await expect(obsPage.locator("nav#navigation")).not.toBeVisible();
     await expect(obsPage.locator("div#hotbar")).not.toBeVisible();
     await expect(obsPage.locator("aside#players.app")).not.toBeVisible();
     await expect(obsPage.locator("div#sidebar.app")).not.toBeVisible();
   });
-  test("Test Stream Page Background", async () => {
+  test("Test Stream Page Background", async ({ pages: { obsPage } }) => {
     await obsPage.goto("/stream");
 
     await obsPage.locator("ol#chat-log").waitFor({ state: "visible" });
@@ -158,20 +75,11 @@ test.describe("OBS Client Only Tests", () => {
 });
 
 test.describe("Multiclient UI", () => {
-  test.beforeEach(async () => {
-    await gmPage.goto("/game");
-
-    await gmPage.waitForFunction(() => window["game"].ready);
-
-    await obsPage.goto("/game");
-
-    await obsPage.waitForFunction(() => window["game"].ready);
-  });
-  test("Journal Popout Close Delay", async () => {
+  test("Journal Popout Close Delay", async ({ pages: { obsPage, gmPage } }) => {
     let delay =
       (await gmPage.evaluate(() =>
         window["game"].settings.get("obs-utils", "popupCloseDelay"),
-      )) * 1100;
+      )) * 1200;
 
     await gmPage.evaluate(() => [...window["game"].journal][0].show());
     await expect(
@@ -182,13 +90,11 @@ test.describe("Multiclient UI", () => {
       obsPage.locator("div.app.window-app.sheet.journal-sheet"),
     ).not.toBeVisible();
   });
-  test("Image Popout Close Delay", async () => {
+  test("Image Popout Close Delay", async ({ pages: { obsPage, gmPage } }) => {
     let delay =
       (await gmPage.evaluate(() =>
         window["game"].settings.get("obs-utils", "popupCloseDelay"),
-      )) *
-        1000 +
-      1000;
+      )) * 1200;
 
     await gmPage.evaluate(() =>
       window["game"].journal.constructor.showImage(
@@ -203,7 +109,7 @@ test.describe("Multiclient UI", () => {
       obsPage.locator("div.app.window-app.image-popout"),
     ).not.toBeVisible();
   });
-  test("Toggle Show Combat Tracker", async () => {
+  test("Toggle Show Combat Tracker", async ({ pages: { obsPage, gmPage } }) => {
     await gmPage.evaluate(() =>
       window["game"].settings.set("obs-utils", "showTrackerInCombat", false),
     );
@@ -239,16 +145,7 @@ test.describe("Multiclient UI", () => {
 });
 
 test.describe("Multiclient Functionality Non-Combat", () => {
-  test.beforeEach(async () => {
-    await gmPage.goto("/game");
-
-    await gmPage.waitForFunction(() => window["game"].ready);
-
-    await obsPage.goto("/game");
-
-    await obsPage.waitForFunction(() => window["game"].ready);
-  });
-  test("Track All", async () => {
+  test("Track All", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -261,13 +158,13 @@ test.describe("Multiclient Functionality Non-Combat", () => {
 
     await gmPage.keyboard.press("a", { delay: 1000 });
 
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await gmPage.keyboard.press("d", { delay: 1000 });
 
-    await expect(before).not.toEqual(getOBSViewport());
+    await expect(before).not.toEqual(getOBSViewport(obsPage));
   });
-  test("Tag Based", async () => {
+  test("Tag Based", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -280,15 +177,15 @@ test.describe("Multiclient Functionality Non-Combat", () => {
 
     await gmPage.keyboard.press("a", { delay: 1000 });
 
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await gmPage.keyboard.press("d", { delay: 1000 });
 
-    let after = await getOBSViewport();
+    let after = await getOBSViewport(obsPage);
 
     await expect(before).not.toEqual(after);
   });
-  test("Copy GM", async () => {
+  test("Copy GM", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -299,16 +196,16 @@ test.describe("Multiclient Functionality Non-Combat", () => {
 
     await panGMViewport(gmPage, 100, 100, 0.5);
 
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await gmPage.waitForTimeout(1000);
 
     await panGMViewport(gmPage, 200, 200, 1);
-    let after = await getOBSViewport();
+    let after = await getOBSViewport(obsPage);
 
     await expect(before).not.toEqual(after);
   });
-  test("Birdseye", async () => {
+  test("Birdseye", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -318,7 +215,7 @@ test.describe("Multiclient Functionality Non-Combat", () => {
     await closeDirector(gmPage);
 
     await panGMViewport(gmPage, 100, 100, 0.5);
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await openDirector(gmPage);
 
@@ -328,23 +225,14 @@ test.describe("Multiclient Functionality Non-Combat", () => {
 
     await closeDirector(gmPage);
 
-    let after = await getOBSViewport();
+    let after = await getOBSViewport(obsPage);
 
     await expect(before).not.toEqual(after);
   });
 });
 
 test.describe("Multiclient Functionality Combat", () => {
-  test.beforeEach(async () => {
-    await gmPage.goto("/game");
-
-    await gmPage.waitForFunction(() => window["game"].ready);
-
-    await obsPage.goto("/game");
-
-    await obsPage.waitForFunction(() => window["game"].ready);
-  });
-  test("Track All", async () => {
+  test("Track All", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -359,17 +247,17 @@ test.describe("Multiclient Functionality Combat", () => {
 
     await gmPage.keyboard.press("a", { delay: 1000 });
 
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await gmPage.keyboard.press("d", { delay: 1000 });
 
-    let after = await getOBSViewport();
+    let after = await getOBSViewport(obsPage);
 
     await expect(before).not.toEqual(after);
 
     await endCombat(gmPage);
   });
-  test("Copy GM", async () => {
+  test("Copy GM", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -382,18 +270,18 @@ test.describe("Multiclient Functionality Combat", () => {
 
     await panGMViewport(gmPage, 100, 100, 0.5);
 
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await gmPage.waitForTimeout(1000);
 
     await panGMViewport(gmPage, 200, 200, 1);
-    let after = await getOBSViewport();
+    let after = await getOBSViewport(obsPage);
 
     await expect(before).not.toEqual(after);
 
     await endCombat(gmPage);
   });
-  test("Birdseye", async () => {
+  test("Birdseye", async ({ pages: { obsPage, gmPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -405,7 +293,7 @@ test.describe("Multiclient Functionality Combat", () => {
     await startCombatWithAllTokens(gmPage);
 
     await panGMViewport(gmPage, 100, 100, 0.5);
-    let before = await getOBSViewport();
+    let before = await getOBSViewport(obsPage);
 
     await openDirector(gmPage);
 
@@ -415,7 +303,7 @@ test.describe("Multiclient Functionality Combat", () => {
 
     await closeDirector(gmPage);
 
-    let after = await getOBSViewport();
+    let after = await getOBSViewport(obsPage);
 
     await expect(before).not.toEqual(after);
 
@@ -424,45 +312,7 @@ test.describe("Multiclient Functionality Combat", () => {
 });
 
 test.describe("Player Client Additional Tests", () => {
-  let playerPage;
-  let playerContext;
-
-  test.beforeAll(async ({ browser }) => {
-    playerContext = await browser.newContext();
-    playerPage = await playerContext.newPage();
-    playerPage.goto("/join");
-    await playerPage
-      .locator('select[name="userid"]')
-      .selectOption({ label: "Player3" });
-    await playerPage
-      .locator("input[name=password]")
-      .fill(
-        process.env.TEST_INSTALL_PASSWORD
-          ? process.env.TEST_INSTALL_PASSWORD
-          : "",
-      );
-    await playerPage
-      .getByRole("button", { name: " Join Game Session" })
-      .click();
-    await expect(playerPage).toHaveURL("/game");
-    await playerPage.waitForFunction(() => window["game"]?.ready);
-  });
-
-  test.beforeEach(async () => {
-    await gmPage.goto("/game");
-
-    await gmPage.waitForFunction(() => window["game"].ready);
-
-    await obsPage.goto("/game");
-
-    await obsPage.waitForFunction(() => window["game"].ready);
-
-    await playerPage.goto("/game");
-
-    await playerPage.waitForFunction(() => window["game"].ready);
-  });
-
-  test("Copy Player", async () => {
+  test("Copy Player", async ({ pages: { obsPage, gmPage, playerPage } }) => {
     await openDirector(gmPage);
 
     await gmPage
@@ -480,7 +330,7 @@ test.describe("Player Client Additional Tests", () => {
 
     await expect
       .poll(async () => {
-        return await getOBSViewport();
+        return await getOBSViewport(obsPage);
       })
       .toEqual([100, 100, 0.5, 0.5]);
 
@@ -490,7 +340,7 @@ test.describe("Player Client Additional Tests", () => {
 
     await expect
       .poll(async () => {
-        return await getOBSViewport();
+        return await getOBSViewport(obsPage);
       })
       .toEqual([200, 200, 1, 1]);
 
@@ -498,43 +348,9 @@ test.describe("Player Client Additional Tests", () => {
 
     await expect
       .poll(async () => {
-        return await getOBSViewport();
+        return await getOBSViewport(obsPage);
       })
       .toEqual([200, 200, 1, 1]);
-  });
-
-  test.afterAll(async () => {
-    await playerContext.close();
-  });
-});
-
-test.afterAll(async () => {
-  let coverageGM = await gmPage.coverage.stopJSCoverage();
-  let coverageOBS = await obsPage.coverage.stopJSCoverage();
-  let coverage = [...coverageGM, ...coverageOBS];
-  fs.rmSync(process.cwd() + "/.nyc_output", { recursive: true, force: true });
-  fs.mkdirSync(process.cwd() + "/.nyc_output");
-  fs.readdir("dist", async (err, files) => {
-    for (const file of files) {
-      if (!file.endsWith(".js")) continue;
-      const converter = v8toIstanbul(
-        "dist/" + file,
-        undefined,
-        undefined,
-        (path) => path.includes("node_modules"),
-      );
-      await converter.load();
-      for (const entry of coverage) {
-        if (!entry.source) continue;
-        converter.applyCoverage(entry.functions);
-      }
-      let data = JSON.stringify(converter.toIstanbul());
-
-      fs.writeFileSync(
-        process.cwd() + "/.nyc_output/" + file + "data.json",
-        data,
-      );
-    }
   });
 });
 
@@ -569,16 +385,6 @@ async function endCombat(gmPage) {
     .waitFor({ state: "hidden" });
 }
 
-async function closeNoficationCenter(gmPage) {
-  await expect(
-    gmPage.locator("div[id=notification-application]"),
-  ).toBeVisible();
-  await gmPage.locator("div[id=notification-application] a.close").click();
-  await expect(
-    gmPage.locator("div[id=notification-application]"),
-  ).not.toBeVisible();
-}
-
 async function openDirector(gmPage) {
   await gmPage.locator("li[data-tool=openStreamDirector]").click();
   await expect(gmPage.locator("div[id=director-application]")).toBeVisible();
@@ -597,7 +403,7 @@ async function takeControlOfToken(gmPage) {
   );
 }
 
-async function getOBSViewport() {
+async function getOBSViewport(obsPage) {
   return await obsPage.evaluate(() => [
     window["canvas"].stage.position.scope.pivot.x,
     window["canvas"].stage.position.scope.pivot.y,

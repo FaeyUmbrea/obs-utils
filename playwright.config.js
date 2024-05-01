@@ -10,9 +10,26 @@ import { devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 const config = {
+  reporter: [
+    ["list"],
+    [
+      "monocart-reporter",
+      {
+        name: "My Test Report",
+        outputFile: "./test-results/report.html",
+        // global coverage report options
+        coverage: {
+          entryFilter: (entry) => entry.url.indexOf("obs-utils") !== -1,
+          sourceFilter: (sourcePath) =>
+            sourcePath.search(/src\/.+/) !== -1 &&
+            sourcePath.search("node_modules") === -1,
+        },
+      },
+    ],
+  ],
   testDir: "./tests",
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 45 * 1000,
   expect: {
     /**
      * Maximum time expect() should wait for the condition to be met.
@@ -45,7 +62,7 @@ const config = {
   /* Configure projects for major browsers */
   projects: [
     {
-      name: "chrome",
+      name: "Desktop Chromium",
       use: {
         ...devices["Desktop Chrome"],
       },

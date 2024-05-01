@@ -18,7 +18,7 @@
   "scripts": {
     "build": "vite build",
     "preview": "vite preview",
-    "test": "yarn playwright test --reporter=html",
+    "test": "yarn playwright test",
     "watch": "vite build --watch",
     "dev": "vite",
     "lint": "eslint .",
@@ -44,6 +44,7 @@
     "eslint-plugin-svelte": "^2.38.0",
     "flat": "^6.0.1",
     "globals": "^15.1.0",
+    "monocart-reporter": "^2.4.6",
     "postcss": "^8.4.38",
     "postcss-styl": "^0.12.3",
     "prettier": "^3.2.5",
