@@ -6,9 +6,9 @@
   "library": "false",
   "manifestPlusVersion": "1.2.0",
   "compatibility": {
-    "minimum": 10,
+    "minimum": 11,
     "verified": 11,
-    "maximum": 11
+    "maximum": 12
   },
   "authors": [
     {
