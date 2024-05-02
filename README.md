@@ -17,7 +17,7 @@ Most importantly its supposed to be as hands off on the OBS Side as possible.
 
 ## Usage
 
-Check the Wiki!
+Check the [Wiki](https://docs.void.monster/getting-started-obsu.html)!
 
 ## Features
 
