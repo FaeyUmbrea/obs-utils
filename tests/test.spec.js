@@ -52,6 +52,81 @@ test.describe("DM Client Only Tests", () => {
         ) === true,
     );
   });
+  test("Open Settings Pages", async ({ pages: { gmPage } }) => {
+    await gmPage.locator("a.item[data-tab=settings]").click();
+
+    await gmPage.locator("button[data-action='configure']").click();
+
+    await gmPage.locator("a[data-tab='obs-utils']").click();
+
+    // OBS Remote Menu
+
+    await gmPage.locator("button[data-key='obs-utils.obsRemoteMenu']").click();
+
+    await expect(
+      gmPage.locator("div[id='obsremote-application']"),
+    ).toBeVisible();
+
+    await gmPage
+      .locator("div[id='obsremote-application'] header a[aria-label=Close]")
+      .click();
+
+    // OBS Websocket Menu
+
+    await gmPage
+      .locator("button[data-key='obs-utils.obsWebsocketMenu']")
+      .click();
+
+    await expect(
+      gmPage.locator("div[id='obswebsocket-application']"),
+    ).toBeVisible();
+
+    await gmPage
+      .locator("div[id='obswebsocket-application'] header a[aria-label=Close]")
+      .click();
+
+    // Overlay Actor Menu
+
+    await gmPage
+      .locator("button[data-key='obs-utils.overlayActorSelect']")
+      .click();
+
+    await expect(
+      gmPage.locator("div[id='actorselect-application']"),
+    ).toBeVisible();
+
+    await gmPage
+      .locator("div[id='actorselect-application'] header a[aria-label=Close]")
+      .click();
+
+    // Overlay Editor
+
+    await gmPage.locator("button[data-key='obs-utils.overlayEditor']").click();
+
+    await expect(
+      gmPage.locator("div[id='overlayeditor-application']"),
+    ).toBeVisible();
+
+    await gmPage
+      .locator("div[id='overlayeditor-application'] header a[aria-label=Close]")
+      .click();
+
+    // Roll Overlay Editor
+
+    await gmPage
+      .locator("button[data-key='obs-utils.rollOverlayEditor']")
+      .click();
+
+    await expect(
+      gmPage.locator("div[id='rolloverlayeditor-application']"),
+    ).toBeVisible();
+
+    await gmPage
+      .locator(
+        "div[id='rolloverlayeditor-application'] header a[aria-label=Close]",
+      )
+      .click();
+  });
 });
 
 test.describe("OBS Client Only Tests", () => {

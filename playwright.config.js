@@ -23,6 +23,7 @@ const config = {
           sourceFilter: (sourcePath) =>
             sourcePath.search(/src\/.+/) !== -1 &&
             sourcePath.search("node_modules") === -1,
+          lcov: true,
         },
       },
     ],
