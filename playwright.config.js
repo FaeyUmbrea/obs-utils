@@ -56,7 +56,9 @@ const config = {
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    headless: !!process.env.CI,
+    launchOptions: {
+      args: ["--use-gl=angle"],
+    },
   },
 
   /* Configure projects for major browsers */
@@ -65,6 +67,11 @@ const config = {
       name: "Desktop Chromium",
       use: {
         ...devices["Desktop Chrome"],
+        args: ["--use-gl=desktop"],
+      },
+      viewport: {
+        width: 1920,
+        height: 1080,
       },
     },
 
