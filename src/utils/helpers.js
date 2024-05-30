@@ -8,7 +8,11 @@ export function sleep(milliseconds) {
 }
 
 export function isOBS() {
-  return !!window.obsstudio || getSetting("obsMode");
+  return (
+    !!window.obsstudio ||
+    getSetting("obsMode") ||
+    getSetting("obsModeUser") === game?.user.name
+  );
 }
 
 function getFontAwesomeVersion() {

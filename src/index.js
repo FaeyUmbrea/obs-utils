@@ -7,8 +7,14 @@ import {
 import { socketCanvas } from "./utils/socket.js";
 import { isOBS } from "./utils/helpers.js";
 import { ObsUtilsApi, registerDefaultTypes } from "./utils/api.js";
+import { initOBS } from "./utils/obs.js";
 
 function start() {
+  Hooks.once("setup", function () {
+    if (isOBS()) {
+      initOBS();
+    }
+  });
   Hooks.once("init", async function () {
     // Register API
     const moduleData = game?.modules?.get("obs-utils");
@@ -24,16 +30,13 @@ function start() {
     // Load UI Component only on /game
     if (game.view === "game") {
       const ui = await import("./utils/ui.js");
-      await ui.registerUI();
+      ui.registerUI();
 
       // Show notifications panel if UI is loaded
       Hooks.once("ready", () => ui.showNotifications());
     }
 
     // Load OBS Stuff only in OBS
-    if (isOBS()) {
-      await (await import("./utils/obs.js")).initOBS();
-    }
   });
 
   Hooks.once("ready", async function () {

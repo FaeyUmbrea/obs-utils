@@ -5,6 +5,11 @@
         "Name": "OBS Mode",
         "Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
       },
+      "obsModeUser":
+      {
+        "Name": "OBS Mode User (Username)",
+        "Hint": "Sets this User to always be in OBS Mode, regardless of browser"
+      },
       "minScale": {
         "Name": "Minimum Scale",
         "Hint": "The lowest that the screen can zoom to"

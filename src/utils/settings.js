@@ -321,6 +321,14 @@ class OBSUtilsSettings extends TJSGameSettings {
         onChange: () => foundry.utils.debouncedReload(),
       }),
     );
+    settings.push(
+      createSetting("obsModeUser", {
+        default: "",
+        type: String,
+        scope: "world",
+        config: true,
+      }),
+    );
     this.registerAll(settings, true);
   }
 }

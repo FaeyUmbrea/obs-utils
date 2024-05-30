@@ -159,14 +159,14 @@ async function registerOBSEvents() {
   }
 }
 
-export async function initOBS() {
+export function initOBS() {
   if (game.view === "stream") {
     Hooks.once("renderChatLog", () => renderOverlays());
   }
   if (game.view !== "game") return;
   Hooks.on("canvasReady", screenReload);
-  Hooks.on("canvasReady", (canvas) => {
-    handleOBSScene(canvas.scene.name);
+  Hooks.on("canvasReady", async (canvas) => {
+    await handleOBSScene(canvas.scene.name);
   });
 
   Hooks.on("renderSidebar", hideApplication);
@@ -205,29 +205,30 @@ export async function initOBS() {
   Hooks.on("renderImagePopout", applyPopupConstrains);
 
   // Adding OBS Remote hooks;
-  Hooks.on("updateCombat", (_combat, change) => {
-    if (change.turn === 0 && change.round === 1) handleOBS("onCombatStart");
+  Hooks.on("updateCombat", async (_combat, change) => {
+    if (change.turn === 0 && change.round === 1)
+      await handleOBS("onCombatStart");
   });
-  Hooks.on("deleteCombat", () => {
-    handleOBS("onCombatEnd");
+  Hooks.on("deleteCombat", async () => {
+    await handleOBS("onCombatEnd");
   });
-  Hooks.on("pauseGame", (pause) => {
+  Hooks.on("pauseGame", async (pause) => {
     if (pause) {
-      handleOBS("onPause");
+      await handleOBS("onPause");
     } else {
-      handleOBS("onUnpause");
+      await handleOBS("onUnpause");
     }
   });
-  Hooks.once("ready", () => {
-    handleOBS("onLoad");
+  Hooks.once("ready", async () => {
+    await handleOBS("onLoad");
     ui.sidebar.collapse();
   });
 
-  Hooks.on("updateSetting", (setting) => {
+  Hooks.on("updateSetting", async (setting) => {
     if (setting.key === "obs-utils.clampCanvas") {
-      screenReload();
+      await screenReload();
     }
   });
 
-  await registerOBSEvents();
+  registerOBSEvents().then();
 }

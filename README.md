@@ -51,16 +51,6 @@ Check the [Wiki](https://docs.void.monster/getting-started-obsu.html)!
 
 - theripper93's Levels [GitHub](https://github.com/theripper93/Levels)
 
-## Planned Features
-
-- Levels Support (out of Combat)
-- Roll Display Overlay
-
-## TODO (Smaller improvements that aren't Full Features)
-
-- Add configuration for automatic camera
--
-
 # Building
 
 This repository uses xc for task definitions! As such only nodejs, yarn and xc are required.

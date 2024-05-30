@@ -1,3 +1,17 @@
+## Version 2.8.0
+
+Additions:
+- Manual OBS Mode 
+  - In case you have to use a browser window instead of a browser source, you can now manually set that browser to be the OBS Client. Make sure to use a different browser or incognito tab. 
+- OBS Mode User
+  - In Addition to the Manual Mode, you can also set a single user by name to always launch in OBS Mode
+- V12 Support
+  - It should now properly work with V12!!
+
+Removal:
+- V10 Support
+  - From this release on, OBS Utils will no longer support V10
+
 ## Version 2.7.0
 
 Additions:

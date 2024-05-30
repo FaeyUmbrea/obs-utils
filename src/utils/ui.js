@@ -39,7 +39,7 @@ async function openDirector(button) {
   else d.close();
 }
 
-export async function registerUI() {
+export function registerUI() {
   game.settings.registerMenu(moduleID, "obsRemoteMenu", {
     name: `${moduleID}.settings.obsRemoteMenu.Name`,
     label: `${moduleID}.settings.obsRemoteMenu.Label`,
