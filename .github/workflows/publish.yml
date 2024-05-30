@@ -18,7 +18,8 @@ jobs:
                 content="${content//'%'/'%25'}"
                 content="${content//$'\n'/'%0A'}"
                 content="${content//$'\r'/'%0D'}"
-                echo "moduleJson=$content" >> $GITHUB_OUTPUT
+                echo "moduleJson=$content" >> $GITHUB_OUTPUT &&
+                cat $GITHUB_OUTPUT
             - name: Publish Module
               run: |
                 curl -H "Content-Type: application/json" \
