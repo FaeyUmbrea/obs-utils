@@ -14,7 +14,6 @@ jobs:
             - uses: actions/checkout@v4.1.4
             - id: set_var
               run: |
-                cat ./public/module.json
                 content=`cat ./public/module.json`
                 content="${content//'%'/'%25'}"
                 content="${content//$'\n'/'%0A'}"
