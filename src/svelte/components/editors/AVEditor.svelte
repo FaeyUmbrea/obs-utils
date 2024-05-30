@@ -17,6 +17,7 @@
 </script>
 
 <Select
+  containerStyles="background-color: white;"
   --height="30px"
   bind:filterText="{filterText}"
   bind:justValue="{data}"

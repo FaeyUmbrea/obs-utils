@@ -20,7 +20,7 @@
   <main>
     <hr />
     <div class="flexcol">
-      URL: <input bind:value="{websocketSettings.url}" name="url" type="text" />
+      URL:<input bind:value="{websocketSettings.url}" name="url" type="text" />
       <br />
       Port:
       <input bind:value="{websocketSettings.port}" name="port" type="number" />

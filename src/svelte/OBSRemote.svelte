@@ -44,6 +44,7 @@
         items="{entries}"
         searchable="{false}"
         clearable="{false}"
+        containerStyles="background-color: white;"
       >
         <div slot="selection" let:selection>
           <i

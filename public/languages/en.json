@@ -1,6 +1,10 @@
 {
   "obs-utils": {
     "settings": {
+      "obsMode": {
+        "Name": "OBS Mode",
+        "Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
+      },
       "minScale": {
         "Name": "Minimum Scale",
         "Hint": "The lowest that the screen can zoom to"
@@ -19,11 +23,11 @@
       },
       "popupCloseDelay": {
         "Name": "Pop-Up Close Delay",
-        "Hint": "Seconds until pop-ups are automatically closed. 0 to disable."
+        "Hint": "Seconds until pop-ups are automatically closed. 0 to disable"
       },
       "showTrackerInCombat": {
         "Name": "Show Combat Tracker in Combat?",
-        "Hint": "If checked, the Combat Tracker will be visible during Combat Turns."
+        "Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
       },
       "obsRemoteMenu": {
         "Label": "Open Menu",

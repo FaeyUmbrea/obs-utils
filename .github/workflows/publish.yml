@@ -16,10 +16,10 @@ jobs:
                 content="${content//'%'/'%25'}"
                 content="${content//$'\n'/'%0A'}"
                 content="${content//$'\r'/'%0D'}"
-                echo "::set-output name=moduleJson::$content"
+                echo "moduleJson=$content" >> $GITHUB_OUTPUT
             - name: Publish Module
               run: |
                 curl -H "Content-Type: application/json" \
                      -H "Authorization: ${{ secrets.FVTT_TOKEN }}" \
                      --request POST \
-                     --data '{"id": "${{fromJson(steps.set_var.moduleJson).id}}","dry-run":true,"release":{"version":"${{github.event.release.tag_name}}","manifest":"${{github.server_url}}/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json","notes":"${{github.server_url}}/${{github.repository}}/releases/tag/${{github.event.release.tag_name}}","compatibility":"${{toJson(fromJson(steps.set_var.moduleJson).compatibility)}}"}}'
+                     --data '{"id": "${{steps.set_var.moduleJson && fromJson(steps.set_var.moduleJson).id}}","dry-run":true,"release":{"version":"${{github.event.release.tag_name}}","manifest":"${{github.server_url}}/${{github.repository}}/releases/download/${{github.event.release.tag_name}}/module.json","notes":"${{github.server_url}}/${{github.repository}}/releases/tag/${{github.event.release.tag_name}}","compatibility":"${{steps.set_var.moduleJson && toJson(fromJson(steps.set_var.moduleJson).compatibility)}}"}}'

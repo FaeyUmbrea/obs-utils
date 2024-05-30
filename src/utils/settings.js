@@ -17,8 +17,8 @@ export class OBSEvent {
 }
 
 export class OBSWebsocketSettings {
-  url = "";
-  port = "";
+  url = "localhost";
+  port = "4455";
   password = "";
 }
 
@@ -310,6 +310,15 @@ class OBSUtilsSettings extends TJSGameSettings {
         scope: "world",
         config: true,
         default: 800,
+      }),
+    );
+    settings.push(
+      createSetting("obsMode", {
+        default: false,
+        type: Boolean,
+        scope: "client",
+        config: true,
+        onChange: () => foundry.utils.debouncedReload(),
       }),
     );
     this.registerAll(settings, true);

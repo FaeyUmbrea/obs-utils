@@ -40,6 +40,7 @@
 {getSplit()}
 <div class="input">
   <Select
+    containerStyles="background-color: white;"
     --height="30px"
     bind:filterText="{filterText}"
     bind:justValue="{av1}"
@@ -54,6 +55,7 @@
   />
   <input type="text" on:change="{onChange}" bind:value="{icon1}" />
   <Select
+    containerStyles="background-color: white;"
     --height="30px"
     bind:filterText="{filterText2}"
     bind:justValue="{av2}"

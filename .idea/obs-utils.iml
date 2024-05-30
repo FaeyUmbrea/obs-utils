@@ -5,9 +5,16 @@
       <excludeFolder url="file://$MODULE_DIR$/temp" />
       <excludeFolder url="file://$MODULE_DIR$/.tmp" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/.nyc_output" />
+      <excludeFolder url="file://$MODULE_DIR$/.vite-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/.yarn/cache" />
+      <excludeFolder url="file://$MODULE_DIR$/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/playwright-report" />
+      <excludeFolder url="file://$MODULE_DIR$/test-results" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Foundry" level="application" />
     <orderEntry type="library" name="Foundry" level="application" />
   </component>
 </module>

@@ -1,13 +1,14 @@
 // These are necessary because Game and Canvas are not always initialized so TypeScript complains
 
 import { flatten } from "flat";
+import { getSetting } from "./settings.js";
 
 export function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
 export function isOBS() {
-  return !!window.obsstudio;
+  return !!window.obsstudio || getSetting("obsMode");
 }
 
 function getFontAwesomeVersion() {

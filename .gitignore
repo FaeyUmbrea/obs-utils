@@ -137,3 +137,4 @@ coverage/*
 /stats.html
 
 .vite-cache/
+vite.config.js.timestamp-*
