@@ -15,9 +15,6 @@ jobs:
             - id: set_var
               run: |
                 content=`cat ./public/module.json`
-                content="${content//'%'/'%25'}"
-                content="${content//$'\n'/'%0A'}"
-                content="${content//$'\r'/'%0D'}"
                 echo "moduleJson=$content" >> $GITHUB_OUTPUT &&
                 cat $GITHUB_OUTPUT
             - name: Publish Module
