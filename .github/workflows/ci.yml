@@ -34,5 +34,6 @@ jobs:
               id: create_version_release
               uses: ncipollo/release-action@v1
               with:
+                  token: "${{secrets.RELEASE_TOKEN}}"
                   bodyFile: "body.md"
                   artifacts: './module.zip, ./dist/module.json'

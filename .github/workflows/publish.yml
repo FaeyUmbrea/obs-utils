@@ -3,7 +3,7 @@ name: Publish to Foundry
 on:
     release:
         types:
-            - created
+            - released
 
 jobs:
     publish:
