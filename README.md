@@ -5,7 +5,7 @@ As of the time of writing (30.05.2024) OBS Studio's browser source is using Chro
 
 ![Latest Release Download Count](https://img.shields.io/github/downloads/faeyumbrea/obs-utils/latest/module.zip) [![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fobs-utils&colorB=4aa94a)](https://forge-vtt.com/bazaar#package=obs-utils) [![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Fobs-utils%2Fshield%2Fendorsements)](https://www.foundryvtt-hub.com/package/obs-utils/) [![Supported Foundry Version](https://img.shields.io/endpoint?url=https%3A%2F%2Ffoundryshields.com%2Fversion%3Fstyle%3Dflat%26url%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2FFaeyUmbrea%2Fobs-utils%2Fmaster%2Fpublic%2Fmodule.json)](https://github.com/FaeyUmbrea/obs-utils/releases/latest)
 
-![Discord Banner 1](https://discord.com/api/guilds/1245779025931141292/widget.png?style=banner2)
+[![Discord Banner 1](https://discord.com/api/guilds/1245779025931141292/widget.png?style=banner2)](https://discord.com/invite/WfMaKPPdeM)
 
 This module was developed specifically for using OBS Browsers Sources as a spectator client for your FoundryVTT Game
 
