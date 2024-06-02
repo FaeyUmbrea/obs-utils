@@ -5,15 +5,15 @@
   import {
     generateDataBlockFromSetting,
     getSetting,
+    getStore,
     setSetting,
-    settings,
   } from "../utils/settings.js";
 
   let { ic, ooc, players } = generateDataBlockFromSetting();
   let currentIC = getSetting("defaultInCombat");
   let currentOOC = getSetting("defaultOutOfCombat");
   let currentTrackedPlayer = getSetting("trackedUser");
-  let clampCanvas = settings.getStore("clampCanvas");
+  let clampCanvas = getStore("clampCanvas");
 
   async function onChangeIC(event) {
     await setSetting("defaultInCombat", event.target.value);

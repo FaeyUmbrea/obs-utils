@@ -1,13 +1,13 @@
-import { expandTokenHud, isGM } from "./utils/canvas.js";
-import {
-  rollOverlaySettings,
-  runMigrations,
-  settings,
-} from "./utils/settings.js";
-import { socketCanvas } from "./utils/socket.js";
 import { isOBS } from "./utils/helpers.js";
-import { ObsUtilsApi, registerDefaultTypes } from "./utils/api.js";
 import { initOBS } from "./utils/obs.js";
+import { ObsUtilsApi, registerDefaultTypes } from "./utils/api.js";
+import {
+  registerOverlaySettings,
+  registerSettings,
+  runMigrations,
+} from "./utils/settings.js";
+import { expandTokenHud, isGM } from "./utils/canvas.js";
+import { socketCanvas } from "./utils/socket.js";
 
 function start() {
   Hooks.once("setup", function () {
@@ -24,8 +24,8 @@ function start() {
       Hooks.call("obs-utils.init");
     }
 
-    settings.init();
-    rollOverlaySettings.init();
+    registerSettings();
+    registerOverlaySettings();
 
     // Load UI Component only on /game
     if (game.view === "game") {
@@ -56,5 +56,23 @@ function start() {
   Hooks.on("updateActor", (actor) =>
     Hooks.call("obs-utils.refreshActor", actor),
   );
+
+  Hooks.on("getSceneControlButtons", buildButtons);
 }
 start();
+
+function buildButtons(buttons) {
+  if (!game.user?.isGM) return;
+  const buttonGroup = buttons.find((element) => element.name === "token");
+  const newButton = {
+    icon: "fa-solid fa-signal-stream",
+    name: "openStreamDirector",
+    title: "Open Stream Director",
+    toggle: true,
+    onClick: async () => {
+      const ui = await import("./utils/ui.js");
+      await ui.openDirector(newButton);
+    },
+  };
+  buttonGroup?.tools.push(newButton);
+}

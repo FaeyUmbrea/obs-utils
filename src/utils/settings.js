@@ -1,7 +1,7 @@
 import { scaleToFit, tokenMoved, viewportChanged } from "./canvas";
 import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from "./const";
 import { isOBS } from "./helpers";
-import { TJSGameSettings } from "@typhonjs-fvtt/runtime/svelte/store/fvtt/settings";
+import { writable } from "svelte/store";
 
 export const OBSAction = {
   SwitchScene: "Switch Scene",
@@ -116,375 +116,304 @@ export function generateDataBlockFromSetting() {
   return buttonData;
 }
 
-class OBSUtilsSettings extends TJSGameSettings {
-  constructor() {
-    super("obs-utils");
-  }
+var stores = new Map();
 
-  init() {
-    const settings = [];
-
-    settings.push(
-      createSetting("minScale", {
-        default: 0.1,
-        type: Number,
-        range: {
-          min: 0.01,
-          max: 5,
-          step: 0.01,
-        },
-        scope: "world",
-        config: true,
-      }),
-    );
-    settings.push(
-      createSetting("maxScale", {
-        default: 2,
-        type: Number,
-        range: {
-          min: 0.01,
-          max: 5,
-          step: 0.01,
-        },
-        scope: "world",
-        config: true,
-      }),
-    );
-    settings.push(
-      createSetting("clampCanvas", {
-        default: false,
-        type: Boolean,
-        scope: "world",
-        config: false,
-      }),
-    );
-    settings.push(
-      createSetting("defaultOutOfCombat", {
-        default: "trackall",
-        type: String,
-        choices: OOCCHOICES,
-        scope: "world",
-        config: false,
-        onChange: changeMode,
-      }),
-    );
-    settings.push(
-      createSetting("defaultInCombat", {
-        default: "trackall",
-        type: String,
-        choices: ICCHOICES,
-        scope: "world",
-        config: false,
-        onChange: changeMode,
-      }),
-    );
-    settings.push(
-      createSetting("popupCloseDelay", {
-        default: 10,
-        type: Number,
-        range: {
-          min: 0,
-          max: 300,
-          step: 1,
-        },
-        scope: "world",
-        config: true,
-      }),
-    );
-    settings.push(
-      createSetting("showTrackerInCombat", {
-        default: false,
-        type: Boolean,
-        scope: "world",
-        config: true,
-      }),
-    );
-    settings.push(
-      createSetting("trackedUser", {
-        default: game.userId,
-        type: String,
-        scope: "world",
-        config: false,
-        onChange: changeMode,
-      }),
-    );
-    settings.push(
-      createSetting("obsRemote", {
-        type: Object,
-        scope: "world",
-        config: false,
-        default: new OBSRemoteSettings(),
-      }),
-    );
-    settings.push(
-      createSetting("enableOBSWebsocket", {
-        type: Boolean,
-        scope: "world",
-        config: true,
-        default: false,
-      }),
-    );
-    settings.push(
-      createSetting("websocketSettings", {
-        type: Object,
-        scope: "world",
-        config: false,
-        default: new OBSWebsocketSettings(),
-      }),
-    );
-    settings.push(
-      createSetting("streamOverlays", {
-        type: Object,
-        scope: "world",
-        config: false,
-        default: [],
-      }),
-    );
-    settings.push(
-      createSetting("overlayActors", {
-        type: Object,
-        scope: "world",
-        config: false,
-        default: [],
-      }),
-    );
-    settings.push(
-      createSetting("settingsVersion", {
-        type: Number,
-        scope: "world",
-        config: false,
-        default: 2,
-      }),
-    );
-    settings.push(
-      createSetting("showAV", {
-        type: Boolean,
-        scope: "world",
-        config: true,
-        default: false,
-      }),
-    );
-    settings.push(
-      createSetting("lastReadNotification", {
-        type: Number,
-        scope: "client",
-        config: false,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("fixedPopups", {
-        type: Boolean,
-        scope: "world",
-        config: true,
-        default: false,
-      }),
-    );
-    settings.push(
-      createSetting("fixedPopupX", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 1000,
-      }),
-    );
-    settings.push(
-      createSetting("fixedPopupY", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 1000,
-      }),
-    );
-    settings.push(
-      createSetting("fixedPopupWidth", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 1000,
-      }),
-    );
-    settings.push(
-      createSetting("fixedPopupHeight", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 800,
-      }),
-    );
-    settings.push(
-      createSetting("obsMode", {
-        default: false,
-        type: Boolean,
-        scope: "client",
-        config: true,
-        onChange: () => foundry.utils.debouncedReload(),
-      }),
-    );
-    settings.push(
-      createSetting("obsModeUser", {
-        default: "",
-        type: String,
-        scope: "world",
-        config: true,
-      }),
-    );
-    this.registerAll(settings, true);
-  }
-}
-
-class RollOverlaySettings extends TJSGameSettings {
-  constructor() {
-    super("obs-utils");
-  }
-
-  init() {
-    const settings = [];
-
-    settings.push(
-      createSetting("rollOverlayPreRollDelay", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayRollFadeIn", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayRollFadeOut", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayRollStay", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 5000,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPreRollFadeIn", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPreRollFadeOut", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPreRollStay", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPostRollFadeIn", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPostRollFadeOut", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPostRollStay", {
-        type: Number,
-        scope: "world",
-        config: true,
-        default: 0,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPreRollImage", {
-        type: String,
-        scope: "world",
-        config: true,
-        default: "",
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayRollBackground", {
-        type: String,
-        scope: "world",
-        config: true,
-        default: "",
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayRollForeground", {
-        type: String,
-        scope: "world",
-        config: true,
-        default: "",
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPostRollImage", {
-        type: String,
-        scope: "world",
-        config: true,
-        default: "",
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPostRollEnabled", {
-        type: Boolean,
-        scope: "world",
-        config: true,
-        default: false,
-      }),
-    );
-    settings.push(
-      createSetting("rollOverlayPreRollEnabled", {
-        type: Boolean,
-        scope: "world",
-        config: true,
-        default: false,
-      }),
-    );
-
-    this.registerAll(settings, false);
-  }
-}
-
-function createSetting(settingName, config) {
-  return {
-    namespace: moduleID,
-    key: settingName,
-    options: {
-      name: `${moduleID}.settings.${settingName}.Name`,
-      hint: `${moduleID}.settings.${settingName}.Hint`,
-      ...config,
+export function registerSettings() {
+  registerSetting("minScale", {
+    default: 0.1,
+    type: Number,
+    range: {
+      min: 0.01,
+      max: 5,
+      step: 0.01,
     },
-  };
+    scope: "world",
+    config: true,
+  });
+  registerSetting("maxScale", {
+    default: 2,
+    type: Number,
+    range: {
+      min: 0.01,
+      max: 5,
+      step: 0.01,
+    },
+    scope: "world",
+    config: true,
+  });
+  registerSetting("clampCanvas", {
+    default: false,
+    type: Boolean,
+    scope: "world",
+    config: false,
+  });
+  registerSetting("defaultOutOfCombat", {
+    default: "trackall",
+    type: String,
+    choices: OOCCHOICES,
+    scope: "world",
+    config: false,
+    onChange: changeMode,
+  });
+  registerSetting("defaultInCombat", {
+    default: "trackall",
+    type: String,
+    choices: ICCHOICES,
+    scope: "world",
+    config: false,
+    onChange: changeMode,
+  });
+  registerSetting("popupCloseDelay", {
+    default: 10,
+    type: Number,
+    range: {
+      min: 0,
+      max: 300,
+      step: 1,
+    },
+    scope: "world",
+    config: true,
+  });
+  registerSetting("showTrackerInCombat", {
+    default: false,
+    type: Boolean,
+    scope: "world",
+    config: true,
+  });
+  registerSetting("trackedUser", {
+    default: game.userId,
+    type: String,
+    scope: "world",
+    config: false,
+    onChange: changeMode,
+  });
+  registerSetting("obsRemote", {
+    type: Object,
+    scope: "world",
+    config: false,
+    default: new OBSRemoteSettings(),
+  });
+  registerSetting("enableOBSWebsocket", {
+    type: Boolean,
+    scope: "world",
+    config: true,
+    default: false,
+  });
+  registerSetting("websocketSettings", {
+    type: Object,
+    scope: "world",
+    config: false,
+    default: new OBSWebsocketSettings(),
+  });
+  registerSetting("streamOverlays", {
+    type: Object,
+    scope: "world",
+    config: false,
+    default: [],
+  });
+  registerSetting("overlayActors", {
+    type: Object,
+    scope: "world",
+    config: false,
+    default: [],
+  });
+  registerSetting("settingsVersion", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 2,
+  });
+  registerSetting("showAV", {
+    type: Boolean,
+    scope: "world",
+    config: true,
+    default: false,
+  });
+  registerSetting("lastReadNotification", {
+    type: Number,
+    scope: "client",
+    config: false,
+    default: 0,
+  });
+  registerSetting("fixedPopups", {
+    type: Boolean,
+    scope: "world",
+    config: true,
+    default: false,
+  });
+  registerSetting("fixedPopupX", {
+    type: Number,
+    scope: "world",
+    config: true,
+    default: 1000,
+  });
+  registerSetting("fixedPopupY", {
+    type: Number,
+    scope: "world",
+    config: true,
+    default: 1000,
+  });
+  registerSetting("fixedPopupWidth", {
+    type: Number,
+    scope: "world",
+    config: true,
+    default: 1000,
+  });
+  registerSetting("fixedPopupHeight", {
+    type: Number,
+    scope: "world",
+    config: true,
+    default: 800,
+  });
+  registerSetting("obsMode", {
+    default: false,
+    type: Boolean,
+    scope: "client",
+    config: true,
+    onChange: () => foundry.utils.debouncedReload(),
+  });
+  registerSetting("obsModeUser", {
+    default: "",
+    type: String,
+    scope: "world",
+    config: true,
+  });
 }
 
-export const settings = new OBSUtilsSettings();
-export const rollOverlaySettings = new RollOverlaySettings();
+export function registerOverlaySettings() {
+  registerSetting("rollOverlayPreRollDelay", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayRollFadeIn", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayRollFadeOut", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayRollStay", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 5000,
+  });
+  registerSetting("rollOverlayPreRollFadeIn", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayPreRollFadeOut", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayPreRollStay", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayPostRollFadeIn", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayPostRollFadeOut", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayPostRollStay", {
+    type: Number,
+    scope: "world",
+    config: false,
+    default: 0,
+  });
+  registerSetting("rollOverlayPreRollImage", {
+    type: String,
+    scope: "world",
+    config: false,
+    default: "",
+  });
+  registerSetting("rollOverlayRollBackground", {
+    type: String,
+    scope: "world",
+    config: false,
+    default: "",
+  });
+  registerSetting("rollOverlayRollForeground", {
+    type: String,
+    scope: "world",
+    config: false,
+    default: "",
+  });
+  registerSetting("rollOverlayPostRollImage", {
+    type: String,
+    scope: "world",
+    config: false,
+    default: "",
+  });
+  registerSetting("rollOverlayPostRollEnabled", {
+    type: Boolean,
+    scope: "world",
+    config: false,
+    default: false,
+  });
+  registerSetting("rollOverlayPreRollEnabled", {
+    type: Boolean,
+    scope: "world",
+    config: false,
+    default: false,
+  });
+}
+
+function registerSetting(settingName, config) {
+  let store;
+
+  let debounce = false;
+
+  function changeListener(change) {
+    if (!debounce) {
+      config.onChange(change);
+      store?.set(change);
+    }
+    debounce = false;
+  }
+
+  game?.settings.register(moduleID, settingName, {
+    name: `${moduleID}.settings.${settingName}.Name`,
+    hint: `${moduleID}.settings.${settingName}.Hint`,
+    ...config,
+    onChange: changeListener,
+  });
+
+  const value =
+    game?.settings.get(moduleID, settingName) ??
+    config.default ??
+    new config.type();
+
+  store = writable(value);
+
+  store.subscribe((value) => {
+    debounce = true;
+    game?.settings.set(moduleID, settingName, value);
+  });
+
+  stores.set(settingName, store);
+}
+
+export function getStore(name) {
+  return stores.get(name);
+}

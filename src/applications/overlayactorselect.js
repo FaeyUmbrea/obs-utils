@@ -1,6 +1,6 @@
 import OverlayActorSelectUi from "../svelte/OverlayActorSelectUI.svelte";
 import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
-import { settings } from "../utils/settings.js";
+import { getStore } from "../utils/settings.js";
 
 export default class OverlayActorSelect extends SvelteApplication {
   static get defaultOptions() {
@@ -33,7 +33,7 @@ export default class OverlayActorSelect extends SvelteApplication {
       label: "Reset",
 
       onPress: function () {
-        settings.getStore("overlayActors").set([]);
+        getStore("overlayActors").set([]);
       },
     });
     return buttons;

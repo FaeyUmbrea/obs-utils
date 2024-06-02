@@ -2,11 +2,11 @@
 
 <script>
   import VirtualList from "@sveltejs/svelte-virtual-list";
-  import { setSetting, settings } from "../utils/settings.js";
+  import { getStore, setSetting } from "../utils/settings.js";
   import { getContext } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
 
-  let selectedActors = settings.getStore("overlayActors");
+  let selectedActors = getStore("overlayActors");
 
   let actors = game.actors;
   export let elementRoot = void 0;

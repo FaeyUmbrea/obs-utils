@@ -20,20 +20,7 @@ import MultiAVIconEditor from "../svelte/components/editors/MultiAVIconEditor.sv
 
 let d;
 
-function buildButtons(buttons) {
-  if (!game.user?.isGM) return;
-  const buttonGroup = buttons.find((element) => element.name === "token");
-  const newButton = {
-    icon: "fa-solid fa-signal-stream",
-    name: "openStreamDirector",
-    title: "Open Stream Director",
-    toggle: true,
-    onClick: () => openDirector(newButton),
-  };
-  buttonGroup?.tools.push(newButton);
-}
-
-async function openDirector(button) {
+export async function openDirector(button) {
   if (!d) d = new DirectorApplication(button);
   if (!d.rendered) d.render(true);
   else d.close();
@@ -80,8 +67,6 @@ export function registerUI() {
     type: SettingsShell(RollOverlay),
     restricted: true,
   });
-
-  Hooks.on("getSceneControlButtons", buildButtons);
 
   getApi()
     .overlayTypes.get("sl")
