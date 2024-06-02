@@ -10,6 +10,11 @@
         "Name": "OBS Mode User (Username)",
         "Hint": "Sets this User to always be in OBS Mode, regardless of browser"
       },
+      "obsModeGlobalDisable":
+      {
+        "Name": "OBS View Global Disable",
+        "Hint": "This will turn off the OBS features for all clients, regardless of method"
+      },
       "minScale": {
         "Name": "Minimum Scale",
         "Hint": "The lowest that the screen can zoom to"

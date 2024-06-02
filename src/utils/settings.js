@@ -270,13 +270,21 @@ export function registerSettings() {
     type: Boolean,
     scope: "client",
     config: true,
-    onChange: () => foundry.utils.debouncedReload(),
+    requiresReload: true,
   });
   registerSetting("obsModeUser", {
     default: "",
     type: String,
     scope: "world",
     config: true,
+    requiresReload: true,
+  });
+  registerSetting("obsModeGlobalDisable", {
+    default: false,
+    type: Boolean,
+    scope: "world",
+    config: true,
+    requiresReload: true,
   });
 }
 

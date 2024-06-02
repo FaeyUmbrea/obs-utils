@@ -1,3 +1,13 @@
+## Version 2.8.1
+
+Additions:
+- Global Disable Switch
+  - It is now possible to disable all OBS Features globally, to configure the obs client and make adjustments that require UI to load
+
+Fixes:
+- Fixing issues caused by lazy-loading the UI
+- Optimized bundle size to reduce load-times on OBS clients. 
+
 ## Version 2.8.0
 
 Additions:

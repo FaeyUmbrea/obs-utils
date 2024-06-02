@@ -9,9 +9,10 @@ export function sleep(milliseconds) {
 
 export function isOBS() {
   return (
-    !!window.obsstudio ||
-    getSetting("obsMode") ||
-    getSetting("obsModeUser") === game?.user.name
+    (!!window.obsstudio ||
+      getSetting("obsMode") ||
+      getSetting("obsModeUser") === game?.user.name) &&
+    !getSetting("obsModeGlobalDisable")
   );
 }
 
