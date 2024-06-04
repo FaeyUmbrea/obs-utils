@@ -96,6 +96,7 @@ export function generateDataBlockFromSetting() {
     ic: [],
     ooc: [],
     players: [],
+    onlineUsers: [],
   };
 
   for (const [key, value] of Object.entries(ICCHOICES)) {
@@ -113,6 +114,7 @@ export function generateDataBlockFromSetting() {
     });
   }
   buttonData.players = game.users?.filter((element) => !element.isGM);
+  buttonData.onlineUsers = game.users?.filter((element) => element.active);
   return buttonData;
 }
 
@@ -201,7 +203,7 @@ export function registerSettings() {
   });
   registerSetting("websocketSettings", {
     type: Object,
-    scope: "world",
+    scope: "client",
     config: false,
     default: new OBSWebsocketSettings(),
   });

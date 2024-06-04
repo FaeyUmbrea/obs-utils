@@ -1,9 +1,10 @@
 <svelte:options accessors="{true}" />
 
 <script>
-  import { getSetting, setSetting } from "../utils/settings.js";
-  import { getContext } from "svelte";
+  import { generateDataBlockFromSetting, getSetting, setSetting } from "../utils/settings.js";
+  import { getContext, onDestroy } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { sendOBSSetting } from "../utils/socket.js";
 
   let websocketSettings = getSetting("websocketSettings");
   export let elementRoot = void 0;
@@ -14,6 +15,25 @@
     await setSetting("websocketSettings", websocketSettings);
     context.application.close();
   }
+
+  let { onlineUsers } = generateDataBlockFromSetting();
+  let currentTrackedPlayer = game?.user.id;
+
+  let hook = Hooks.on('userConnected',_=>{
+    onlineUsers  = generateDataBlockFromSetting().onlineUsers;
+    if(onlineUsers.find(element => element.id === currentTrackedPlayer) === undefined){
+      currentTrackedPlayer = game?.user.id;
+    }
+  })
+
+  onDestroy(() => {
+    Hooks.off("userConnected", hook);
+  });
+  
+  function sync(){
+    sendOBSSetting(currentTrackedPlayer,websocketSettings)
+  }
+  
 </script>
 
 <ApplicationShell bind:elementRoot="{elementRoot}">
@@ -31,10 +51,23 @@
         name="password"
         type="password"
       />
-      <p style="color:red">This password is NOT stored securely</p>
       <hr />
       <button on:click="{submit}" type="submit">Save</button>
+      <hr/>
+      Sync to Client:
+      <div>
+        <select
+          bind:value="{currentTrackedPlayer}"
+          name="trackedPlayer"
+          id="trackedPlayer"
+        >
+          {#each onlineUsers as { id, name }}
+            <option value="{id}">{name}</option>
+          {/each}
+        </select>
+        <br />
+        <button on:click="{sync}" type="submit">Sync</button>
+      </div>
     </div>
-    <hr />
   </main>
 </ApplicationShell>
