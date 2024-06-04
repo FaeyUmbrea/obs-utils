@@ -206,6 +206,7 @@ export function registerSettings() {
     scope: "client",
     config: false,
     default: new OBSWebsocketSettings(),
+    onChange: () => foundry.utils.debouncedReload(),
   });
   registerSetting("streamOverlays", {
     type: Object,

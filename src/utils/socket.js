@@ -1,4 +1,4 @@
-import { VIEWPORT_DATA, getCurrentUser, viewportChanged } from "./canvas";
+import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from "./canvas";
 import { ID } from "./const";
 import { isOBS } from "./helpers";
 import { setSetting } from "./settings";
@@ -18,6 +18,7 @@ export async function getOBSData(user) {
 
 function changeOBSSettings(settings) {
   setSetting("websocketSettings", settings);
+  foundry.utils.debouncedReload();
 }
 
 export function sendOBSSetting(user, settings) {

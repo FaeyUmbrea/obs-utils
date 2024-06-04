@@ -1,3 +1,13 @@
+## Version 2.8.2
+
+Changes:
+- OBS Websocket Settings are now client-side
+  - The data in "OBS Websocket Settings" will no longer be stored in the world data. This means all previous data has been wiped and this may need to be reconfigured.
+
+Additions:
+- OBS Websocket Setting Sync
+  - The Settings data can now be synced to the browser storage of the OBS User via the settings menu, as long as the browser is connected.
+
 ## Version 2.8.1
 
 Additions:
