@@ -1,5 +1,3 @@
-/* global Tagger */
-
 import { getCurrentCombatants } from "./combat.js";
 import { UI_ELEMENTS } from "./const.js";
 import { sleep } from "./helpers.js";
@@ -22,13 +20,14 @@ function getAutoTokens() {
 }
 
 function getManualToken() {
-  return Tagger.getByTag("obs_manual_track").map(
-    (manualToken) => manualToken.object,
-  );
+  return game.canvas?.scene?.tokens
+    ?.filter((token) => !!token.getFlag("obs-utils", "tracked"))
+    .map((token) => token.object);
 }
 
-function toggleToken(token) {
-  Tagger.toggleTags(token, "obs_manual_track");
+function toggleToken(tokenDocument) {
+  const value = !tokenDocument.getFlag("obs-utils", "tracked");
+  tokenDocument.setFlag("obs-utils", "tracked", value);
 }
 
 export function getCurrentUser() {
@@ -160,18 +159,18 @@ export function viewportChanged(userId) {
 export function isGM() {
   return game.user?.isGM;
 }
+
 export function expandTokenHud(_tokenHud, html, token) {
   if (game.user?.isGM) {
-    const currenToken = canvas.tokens?.get(token._id);
     const rightSide = html.find("div.col.right");
-    const isTracked = Tagger.hasTags(currenToken, "obs_manual_track");
+    const isTracked = !!token.flags["obs-utils"]?.tracked;
     const element = $(
       `<div class="control-icon ${
         isTracked ? "active" : ""
       }"><i title="Track Token" class="fa-solid fa-signal-stream" /></div>`,
     );
     element.on("click", function () {
-      toggleToken(currenToken);
+      toggleToken(_tokenHud.object.document);
       $(this).toggleClass("active");
     });
     rightSide.append(element);

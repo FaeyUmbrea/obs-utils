@@ -1,31 +1,34 @@
 import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from "./canvas";
-import { ID } from "./const";
 import { isOBS } from "./helpers";
 import { setSetting } from "./settings";
 
-let modulesocket;
-
-Hooks.once("socketlib.ready", () => {
-  modulesocket = window.socketlib.registerModule(ID);
-
-  modulesocket.register("viewport", changeViewport);
-  modulesocket.register("websocketSettings", changeOBSSettings);
+Hooks.once("init", () => {
+  game.socket.on("module.obs-utils", handleEvent);
 });
+async function handleEvent({ eventType, targetUser, payload }) {
+  if (!!targetUser && game.userId !== targetUser) return;
 
-export async function getOBSData(user) {
-  return await modulesocket.executeAsUser("getOBSData", user);
+  if (eventType === "viewport") {
+    changeViewport(payload);
+  } else if (eventType === "websocketSettings") {
+    await changeOBSSettings(payload);
+  }
 }
 
-function changeOBSSettings(settings) {
-  setSetting("websocketSettings", settings);
+async function changeOBSSettings(settings) {
+  await setSetting("websocketSettings", settings);
   foundry.utils.debouncedReload();
 }
 
 export function sendOBSSetting(user, settings) {
-  modulesocket.executeAsUser("websocketSettings", user, settings);
+  game.socket.emit("module.obs-utils", {
+    eventType: "websocketSettings",
+    targetUser: user,
+    payload: settings,
+  });
 }
 
-function changeViewport(viewport, userId) {
+function changeViewport({ viewport, userId }) {
   if (!isOBS()) return;
   // First update the collection of viewport data
   VIEWPORT_DATA.set(userId, viewport);
@@ -34,5 +37,9 @@ function changeViewport(viewport, userId) {
 }
 
 export function socketCanvas(_canvas, position) {
-  modulesocket.executeForOthers("viewport", position, getCurrentUser());
+  game.socket.emit("module.obs-utils", {
+    eventType: "viewport",
+    targetUser: undefined,
+    payload: { viewport: position, userId: getCurrentUser() },
+  });
 }

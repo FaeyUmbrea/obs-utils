@@ -1,3 +1,12 @@
+## Version 2.8.3
+
+Replaced:
+- Dependency on SocketLib replaced by module internal code
+- Dependency on Tagger replaced by module internal code
+
+These changes do not affect any functionality; 
+however, all tokens will revert to being untracked in manual mode.
+
 ## Version 2.8.2
 
 Changes:

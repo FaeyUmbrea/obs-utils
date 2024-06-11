@@ -1,5 +1,14 @@
 [
   {
+    "id": 4,
+    "title": "Tagging Changes",
+    "text": ["This update has removed the dependency on Tagger (and socketlib).","Because Tagger was used to track the manual tracking, all tokens will now be untracked.",
+    "If you were using manual tracking, please make sure to tag your tokens again."],
+    "link": [{"title":  "Patreon",
+      "url": "https://www.patreon.com/voidmonster"
+    },{"title": "Github", "url": "https://github.com/FaeyUmbrea/obs-utils"}, {"title":  "Discord", "url":"https://discord.com/invite/WfMaKPPdeM"}]
+  },
+  {
     "id": 3,
     "title": "Discord and Settings Changes",
     "text": ["OBS Websocket Settings are now stored in the browser instead of the world. If you were using them, please load up the GM client and use the new sync button to transfer them to your stream client.",

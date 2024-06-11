@@ -397,7 +397,8 @@ function registerSetting(settingName, config) {
 
   function changeListener(change) {
     if (!debounce) {
-      config.onChange(change);
+      if (config.onChange) config.onChange(change);
+      debounce = true;
       store?.set(change);
     }
     debounce = false;
@@ -418,8 +419,11 @@ function registerSetting(settingName, config) {
   store = writable(value);
 
   store.subscribe((value) => {
-    debounce = true;
-    game?.settings.set(moduleID, settingName, value);
+    if (!debounce) {
+      debounce = true;
+      if (game?.ready) game?.settings.set(moduleID, settingName, value);
+    }
+    debounce = false;
   });
 
   stores.set(settingName, store);

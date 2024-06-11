@@ -22,12 +22,6 @@
     "requires": [
       {
         "id": "lib-wrapper"
-      },
-      {
-        "id": "socketlib"
-      },
-      {
-        "id": "tagger"
       }
     ]
   },

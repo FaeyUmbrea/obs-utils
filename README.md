@@ -49,8 +49,6 @@ Check the [Wiki](https://docs.void.monster/getting-started-obsu.html)!
 ## Requirements
 
 - libWrapper
-- Tagger
-- socketLib
 
 ### Optional Modules
 

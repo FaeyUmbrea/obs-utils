@@ -19,36 +19,37 @@ test.describe("DM Client Only Tests", () => {
     );
 
     let button = gmPage.locator("div#hud i[title='Track Token']");
-    let before = await gmPage.evaluate(() =>
-      window["Tagger"].hasTags(
-        window["canvas"].tokens.controlled[0],
-        "obs_manual_track",
-      ),
+    let before = await gmPage.evaluate(
+      () =>
+        !!window["canvas"].tokens.controlled[0].document.getFlag(
+          "obs-utils",
+          "tracked",
+        ),
     );
     if (!before) {
       button.click();
       await gmPage.waitForFunction(
-        () =>
-          window["Tagger"].hasTags(
-            window["canvas"].tokens.controlled[0],
-            "obs_manual_track",
+        () => () =>
+          !!window["canvas"].tokens.controlled[0].document.getFlag(
+            "obs-utils",
+            "tracked",
           ) === true,
       );
     }
     await button.click();
     await gmPage.waitForFunction(
-      () =>
-        window["Tagger"].hasTags(
-          window["canvas"].tokens.controlled[0],
-          "obs_manual_track",
+      () => () =>
+        !!window["canvas"].tokens.controlled[0].document.getFlag(
+          "obs-utils",
+          "tracked",
         ) === false,
     );
     await button.click();
     await gmPage.waitForFunction(
-      () =>
-        window["Tagger"].hasTags(
-          window["canvas"].tokens.controlled[0],
-          "obs_manual_track",
+      () => () =>
+        !!window["canvas"].tokens.controlled[0].document.getFlag(
+          "obs-utils",
+          "tracked",
         ) === true,
     );
   });
