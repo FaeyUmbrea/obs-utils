@@ -11,7 +11,7 @@ export function isOBS() {
   return (
     (!!window.obsstudio ||
       getSetting("obsMode") ||
-      getSetting("obsModeUser") === game?.user.name) &&
+      getSetting("obsModeUser") === game?.userId) &&
     !getSetting("obsModeGlobalDisable")
   );
 }

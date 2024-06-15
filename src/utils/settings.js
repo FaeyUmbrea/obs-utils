@@ -279,6 +279,7 @@ export function registerSettings() {
     default: "",
     type: String,
     scope: "world",
+    choices: {},
     config: true,
     requiresReload: true,
   });

@@ -1,7 +1,11 @@
 <svelte:options accessors="{true}" />
 
 <script>
-  import { generateDataBlockFromSetting, getSetting, setSetting } from "../utils/settings.js";
+  import {
+    generateDataBlockFromSetting,
+    getSetting,
+    setSetting,
+  } from "../utils/settings.js";
   import { getContext, onDestroy } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import { sendOBSSetting } from "../utils/socket.js";
@@ -19,21 +23,23 @@
   let { onlineUsers } = generateDataBlockFromSetting();
   let currentTrackedPlayer = game?.user.id;
 
-  let hook = Hooks.on('userConnected',_=>{
-    onlineUsers  = generateDataBlockFromSetting().onlineUsers;
-    if(onlineUsers.find(element => element.id === currentTrackedPlayer) === undefined){
+  let hook = Hooks.on("userConnected", () => {
+    onlineUsers = generateDataBlockFromSetting().onlineUsers;
+    if (
+      onlineUsers.find((element) => element.id === currentTrackedPlayer) ===
+      undefined
+    ) {
       currentTrackedPlayer = game?.user.id;
     }
-  })
+  });
 
   onDestroy(() => {
     Hooks.off("userConnected", hook);
   });
-  
-  function sync(){
-    sendOBSSetting(currentTrackedPlayer,websocketSettings)
+
+  function sync() {
+    sendOBSSetting(currentTrackedPlayer, websocketSettings);
   }
-  
 </script>
 
 <ApplicationShell bind:elementRoot="{elementRoot}">
@@ -53,7 +59,7 @@
       />
       <hr />
       <button on:click="{submit}" type="submit">Save</button>
-      <hr/>
+      <hr />
       Sync to Client:
       <div>
         <select

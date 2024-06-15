@@ -10,11 +10,6 @@ import { expandTokenHud, isGM } from "./utils/canvas.js";
 import { socketCanvas } from "./utils/socket.js";
 
 function start() {
-  Hooks.once("setup", function () {
-    if (isOBS()) {
-      initOBS();
-    }
-  });
   Hooks.once("init", async function () {
     // Register API
     const moduleData = game?.modules?.get("obs-utils");
@@ -37,6 +32,9 @@ function start() {
     }
 
     // Load OBS Stuff only in OBS
+    if (isOBS()) {
+      initOBS();
+    }
   });
 
   Hooks.once("ready", async function () {
@@ -48,6 +46,10 @@ function start() {
       //Simulate a user interaction to start video playback
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "a" }));
     }
+
+    // Update obsModeUser choice list once usernames are available
+    game.settings.settings.get("obs-utils.obsModeUser").choices =
+      Object.fromEntries(game.users.map((e) => [e.id, e.name]));
   });
 
   Hooks.on("canvasPan", socketCanvas);

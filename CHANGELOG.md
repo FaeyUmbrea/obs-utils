@@ -1,3 +1,8 @@
+## Version 2.8.4
+
+Fix:
+- Overlays would no longer render correctly in /strea mode
+
 ## Version 2.8.3
 
 Replaced:
