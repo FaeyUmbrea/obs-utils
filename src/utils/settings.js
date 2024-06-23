@@ -276,7 +276,7 @@ export function registerSettings() {
     requiresReload: true,
   });
   registerSetting("obsModeUser", {
-    default: "",
+    default: "none",
     type: String,
     scope: "world",
     choices: {},

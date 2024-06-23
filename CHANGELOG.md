@@ -1,3 +1,10 @@
+## Version 2.8.5
+
+Fix:
+- Fixes a critical issue that would set the GM Client to be the stream user
+  - It is now only possible to set a GM Client as the stream user if there is more than one
+  - Please ensure your GM client is not the stream user before deleting other GM clients
+
 ## Version 2.8.4
 
 Fix:
