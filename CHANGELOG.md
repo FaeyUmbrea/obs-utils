@@ -1,4 +1,4 @@
-## Version 2.8.6
+## Version 2.9.0
 
 Added:
 - Export and Import for Overlay Settings
