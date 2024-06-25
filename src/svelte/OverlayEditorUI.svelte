@@ -4,28 +4,26 @@
   import { OverlayData } from "../utils/stream";
   import OverlayEditorTab from "./components/OverlayEditorTab.svelte";
   import InformationOverlay from "./streamoverlays/PerActorOverlay.svelte";
-  import { getSetting, setSetting } from "../utils/settings";
+  import { getSetting, getStore } from "../utils/settings";
   import { getContext } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
 
-  let overlays = getSetting("streamOverlays");
+  let overlays = getStore("streamOverlays");
   let actorIDs = getSetting("overlayActors");
 
   let activeIndex = 0;
 
   function handleRemove(index) {
-    overlays.splice(index, 1);
-    // Make Svelte Rerender
-    overlays = overlays;
+    $overlays.splice(index, 1);
+    $overlays = $overlays;
     if (activeIndex === index) {
       activeIndex = Math.max(0, index - 1);
     }
   }
 
   function handleAdd() {
-    overlays.push(new OverlayData());
-    // Make Svelte Rerender
-    overlays = overlays;
+    $overlays.push(new OverlayData());
+    $overlays = $overlays;
   }
 
   function changeTab(tab) {
@@ -36,8 +34,7 @@
 
   const context = getContext("#external");
 
-  async function submit() {
-    await setSetting("streamOverlays", overlays);
+  async function close() {
     context.application.close();
   }
 </script>
@@ -45,7 +42,7 @@
 <ApplicationShell bind:elementRoot="{elementRoot}">
   <div class="grid">
     <div class="preview">
-      <InformationOverlay actorIDs="{actorIDs}" overlays="{overlays}" />
+      <InformationOverlay actorIDs="{actorIDs}" overlays="{$overlays}" />
     </div>
 
     <div class="editor">
@@ -57,7 +54,7 @@
           type="button"><i class="fas fa-plus"></i></button
         >
         <nav class="tabs" data-group="primary-tabs">
-          {#each overlays as overlay, index (overlays.indexOf(overlay))}
+          {#each $overlays as overlay, index ($overlays.indexOf(overlay))}
             <!-- svelte-ignore a11y-missing-attribute -->
             <!-- svelte-ignore a11y-click-events-have-key-events -->
             <a
@@ -72,7 +69,7 @@
       </div>
       <hr />
       <section class="content">
-        {#each overlays as overlay, index (overlays.indexOf(overlay))}
+        {#each $overlays as overlay, index ($overlays.indexOf(overlay))}
           <div
             class="tab {index === activeIndex ? 'active' : ''}"
             data-tab="{index}"
@@ -90,7 +87,7 @@
   </div>
   <hr />
   <footer>
-    <button on:click="{submit}">Submit</button>
+    <button on:click="{close}">Close</button>
   </footer>
 </ApplicationShell>
 

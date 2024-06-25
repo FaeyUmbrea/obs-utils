@@ -38,6 +38,10 @@ export default [
         canvas: true,
         FormApplication: true,
         FilePicker: true,
+        Dialog: true,
+        saveDataToFile: true,
+        readTextFromFile: true,
+        renderTemplate: true,
       },
     },
     plugins: {
