@@ -1,6 +1,7 @@
 <script>
-  import { get } from "lodash-es";
+  import { get, has } from "lodash-es";
   import { onDestroy } from "svelte";
+  import { removeQuotes } from "../../../utils/helpers.js";
 
   export let data = "";
   export let actorID = void 0;
@@ -10,13 +11,19 @@
   let actor = game.actors?.get(actorID);
 
   let value = "";
-  let hook = Hooks.on("obs-utils.refreshActor", (actor) => {
-    if (actor.id !== actorID) return;
-    value = get(actor, data, "");
+  let hook = Hooks.on("obs-utils.refreshActor", (changedactor) => {
+    if (changedactor.id !== actorID) return;
+    actor = changedactor;
+    getValue();
   });
 
   function getValue() {
-    value = get(actor, data, "");
+    let hasValue = has(actor, data);
+    if (hasValue) {
+      value = get(actor, data, "");
+    } else {
+      value = data !== undefined && data !== null ? removeQuotes(data) : "";
+    }
     return "";
   }
 

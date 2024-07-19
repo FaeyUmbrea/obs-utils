@@ -7,7 +7,6 @@ import DirectorApplication from "../applications/director.js";
 import { SettingsShell } from "../applications/settingsShell.js";
 import { getApi } from "./helpers.js";
 import SingleLineOverlayEditor from "../svelte/components/editors/SingleLineOverlayEditor.svelte";
-import PlainEditor from "../svelte/components/editors/PlainEditor.svelte";
 import AVEditor from "../svelte/components/editors/AVEditor.svelte";
 import RollOverlay from "../applications/rolloverlay.js";
 import { getSetting } from "./settings.js";
@@ -17,6 +16,7 @@ import { getSetting } from "./settings.js";
 import notifications from "./notifications.json";
 import NotificationCenter from "../applications/notificationCenter.js";
 import MultiAVIconEditor from "../svelte/components/editors/MultiAVIconEditor.svelte";
+import MultiAVEditor from "../svelte/components/editors/MultiAVEditor.svelte";
 
 let d;
 
@@ -71,18 +71,19 @@ export function registerUI() {
   getApi()
     .overlayTypes.get("sl")
     .registerOverlayEditor(SingleLineOverlayEditor);
-  getApi().overlayTypes.get("sl").registerComponentEditor("pt", PlainEditor);
-  getApi().overlayTypes.get("sl").registerComponentEditor("fai", PlainEditor);
-  getApi().overlayTypes.get("sl").registerComponentEditor("img", PlainEditor);
-  getApi().overlayTypes.get("sl").registerComponentEditor("av", AVEditor);
+  getApi().overlayTypes.get("sl").registerComponentEditor("pt", AVEditor);
+  getApi().overlayTypes.get("sl").registerComponentEditor("fai", AVEditor);
+  getApi().overlayTypes.get("sl").registerComponentEditor("img", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("bav", AVEditor);
-  getApi().overlayTypes.get("sl").registerComponentEditor("iav", AVEditor);
   getApi()
     .overlayTypes.get("sl")
     .registerComponentEditor("micoav", MultiAVIconEditor, true);
   getApi()
     .overlayTypes.get("sl")
     .registerComponentEditor("mimgav", MultiAVIconEditor, true);
+  getApi()
+    .overlayTypes.get("sl")
+    .registerComponentEditor("pb", MultiAVEditor, true);
 }
 
 export function showNotifications() {

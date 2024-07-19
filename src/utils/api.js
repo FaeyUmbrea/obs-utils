@@ -1,15 +1,14 @@
 import SingleLineOverlay from "../svelte/streamoverlays/SingleLineOverlay.svelte";
-import PlaintextComponent from "../svelte/streamoverlays/overlaycomponents/PlaintextComponent.svelte";
 import FAIconComponent from "../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte";
 import ActorValComponent from "../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte";
 import AVBoolDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVBoolDisplayComponent.svelte";
 import { getApi, setActorValues } from "./helpers.js";
 import PlayerRollOverlay from "../svelte/streamoverlays/PlayerRollOverlay.svelte";
 import AVImageDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVImageDisplayComponent.svelte";
-import ImageComponent from "../svelte/streamoverlays/overlaycomponents/ImageComponent.svelte";
 import { getSetting, setSetting } from "./settings.js";
 import AVMultiIconComponent from "../svelte/streamoverlays/overlaycomponents/AVMultiIconComponent.svelte";
 import AVMultiImageComponent from "../svelte/streamoverlays/overlaycomponents/AVMultiImageComponent.svelte";
+import ProgressBarComponent from "../svelte/streamoverlays/overlaycomponents/ProgressBarComponent.svelte";
 
 export class ObsUtilsApi {
   actorValues = [];
@@ -103,24 +102,18 @@ export class OverlayType {
 
 export function registerDefaultTypes() {
   const singleLineOverlay = new OverlayType(SingleLineOverlay);
-  singleLineOverlay.registerComponent("pt", "Plain Text", PlaintextComponent);
+  singleLineOverlay.registerComponent("pt", "Plain Text", ActorValComponent);
   singleLineOverlay.registerComponent(
     "fai",
     "Font Awesome Icon",
     FAIconComponent,
   );
-  singleLineOverlay.registerComponent("av", "Actor Value", ActorValComponent);
   singleLineOverlay.registerComponent(
     "bav",
     "Boolean Actor Value",
     AVBoolDisplayComponent,
   );
-  singleLineOverlay.registerComponent("img", "Image", ImageComponent);
-  singleLineOverlay.registerComponent(
-    "iav",
-    "Image Actor Value",
-    AVImageDisplayComponent,
-  );
+  singleLineOverlay.registerComponent("img", "Image", AVImageDisplayComponent);
   singleLineOverlay.registerComponent(
     "micoav",
     "Multi Icon AV",
@@ -131,15 +124,22 @@ export function registerDefaultTypes() {
     "Multi Image AV",
     AVMultiImageComponent,
   );
+  singleLineOverlay.registerComponent(
+    "pb",
+    "Progress Bar",
+    ProgressBarComponent,
+  );
 
   // Register Legacy Names
-  singleLineOverlay.overlayComponents.set("Plain Text", PlaintextComponent);
+  singleLineOverlay.overlayComponents.set("Plain Text", ActorValComponent);
   singleLineOverlay.overlayComponents.set("Font Awesome Icon", FAIconComponent);
   singleLineOverlay.overlayComponents.set("Actor Value", ActorValComponent);
   singleLineOverlay.overlayComponents.set(
     "Boolean Actor Value",
     AVBoolDisplayComponent,
   );
+  singleLineOverlay.overlayComponents.set("iav", AVImageDisplayComponent);
+  singleLineOverlay.overlayComponents.set("av", ActorValComponent);
 
   getApi().registerOverlayType("sl", "Single Line", singleLineOverlay);
   getApi().overlayTypes.set("Single Line", singleLineOverlay);

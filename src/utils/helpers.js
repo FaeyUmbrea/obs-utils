@@ -80,3 +80,11 @@ export function getApi() {
   if (moduleData) return moduleData.api;
   else throw new Error("Something went very wrong!");
 }
+
+export function removeQuotes(s) {
+  let matched = s.match(
+    /^(?<!\\)(["'«»‘’‚‛“”„‟‹›])(.*)(?<!\\)["'«»‘’‚‛“”„‟‹›]$/,
+  );
+  let matched2 = s.match(/^\\(["'«»‘’‚‛“”„‟‹›]?.*)\\(["'«»‘’‚‛“”„‟‹›]?)$/);
+  return matched ? matched[2] : matched2 ? matched2[1] + matched2[2] : s;
+}
