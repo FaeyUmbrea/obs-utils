@@ -17,6 +17,7 @@ import notifications from "./notifications.json";
 import NotificationCenter from "../applications/notificationCenter.js";
 import MultiAVIconEditor from "../svelte/components/editors/MultiAVIconEditor.svelte";
 import MultiAVEditor from "../svelte/components/editors/MultiAVEditor.svelte";
+import BooleanEditor from "../svelte/components/editors/BooleanEditor.svelte";
 
 let d;
 
@@ -74,7 +75,12 @@ export function registerUI() {
   getApi().overlayTypes.get("sl").registerComponentEditor("pt", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("fai", AVEditor);
   getApi().overlayTypes.get("sl").registerComponentEditor("img", AVEditor);
-  getApi().overlayTypes.get("sl").registerComponentEditor("bav", AVEditor);
+  getApi()
+    .overlayTypes.get("sl")
+    .registerComponentEditor("bav", BooleanEditor, true);
+  getApi()
+    .overlayTypes.get("sl")
+    .registerComponentEditor("bavimg", BooleanEditor, true);
   getApi()
     .overlayTypes.get("sl")
     .registerComponentEditor("micoav", MultiAVIconEditor, true);

@@ -10,13 +10,17 @@
   let actor = game.actors?.get(actorID);
 
   let value = "";
+  let image1 = "";
+  let image2 = "";
   let hook = Hooks.on("obs-utils.refreshActor", (actor) => {
     if (actor.id !== actorID) return;
-    value = get(actor, data, "");
+    getValue();
   });
 
   function getValue() {
-    value = get(actor, data, "");
+    value = get(actor, data.split(";")[0], "");
+    image1 = data.split(";")[1] ?? "fa-solid fa-check";
+    image2 = data.split(";")[2] ?? "fa-solid fa-x";
     return "";
   }
 
@@ -29,13 +33,13 @@
   {getValue()}
 {/key}
 <div
-  class="component actor-val-component bool-component"
+  class="component actor-val-component bool-component image-component"
   id="{'component' + componentIndex.toString()}"
   style="{style}"
 >
-  {#if value == true}
-    <i class="fa-solid fa-check"></i>
-  {:else}
-    <i class="fa-solid fa-x"></i>
+  {#if !!value && image1 !== ""}
+    <img alt="actor value img renderer" src="{image1}" />
+  {:else if !value && image2 !== ""}
+    <img alt="actor value img renderer" src="{image2}" />
   {/if}
 </div>

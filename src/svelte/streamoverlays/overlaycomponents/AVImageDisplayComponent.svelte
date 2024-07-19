@@ -36,7 +36,7 @@
   {getValue()}
 {/key}
 <div
-  class="component actor-val-component"
+  class="component actor-val-component image-component"
   id="{'component' + componentIndex.toString()}"
   style="{style}"
 >

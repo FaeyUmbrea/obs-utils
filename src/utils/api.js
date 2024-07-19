@@ -1,7 +1,7 @@
 import SingleLineOverlay from "../svelte/streamoverlays/SingleLineOverlay.svelte";
 import FAIconComponent from "../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte";
 import ActorValComponent from "../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte";
-import AVBoolDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVBoolDisplayComponent.svelte";
+import AVBoolIconComponent from "../svelte/streamoverlays/overlaycomponents/AVBoolIconComponent.svelte";
 import { getApi, setActorValues } from "./helpers.js";
 import PlayerRollOverlay from "../svelte/streamoverlays/PlayerRollOverlay.svelte";
 import AVImageDisplayComponent from "../svelte/streamoverlays/overlaycomponents/AVImageDisplayComponent.svelte";
@@ -9,6 +9,7 @@ import { getSetting, setSetting } from "./settings.js";
 import AVMultiIconComponent from "../svelte/streamoverlays/overlaycomponents/AVMultiIconComponent.svelte";
 import AVMultiImageComponent from "../svelte/streamoverlays/overlaycomponents/AVMultiImageComponent.svelte";
 import ProgressBarComponent from "../svelte/streamoverlays/overlaycomponents/ProgressBarComponent.svelte";
+import AVBoolImageComponent from "../svelte/streamoverlays/overlaycomponents/AVBoolImageComponent.svelte";
 
 export class ObsUtilsApi {
   actorValues = [];
@@ -110,8 +111,13 @@ export function registerDefaultTypes() {
   );
   singleLineOverlay.registerComponent(
     "bav",
-    "Boolean Actor Value",
-    AVBoolDisplayComponent,
+    "Boolean AV Icon",
+    AVBoolIconComponent,
+  );
+  singleLineOverlay.registerComponent(
+    "bavimg",
+    "Boolean AV Image",
+    AVBoolImageComponent,
   );
   singleLineOverlay.registerComponent("img", "Image", AVImageDisplayComponent);
   singleLineOverlay.registerComponent(
@@ -136,7 +142,7 @@ export function registerDefaultTypes() {
   singleLineOverlay.overlayComponents.set("Actor Value", ActorValComponent);
   singleLineOverlay.overlayComponents.set(
     "Boolean Actor Value",
-    AVBoolDisplayComponent,
+    AVBoolIconComponent,
   );
   singleLineOverlay.overlayComponents.set("iav", AVImageDisplayComponent);
   singleLineOverlay.overlayComponents.set("av", ActorValComponent);
