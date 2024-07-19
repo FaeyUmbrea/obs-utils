@@ -1,3 +1,17 @@
+## Version 3.0.0
+
+Added: 
+- A hook called "obs-utils.streamModeInit" that is called when stream mode initializes
+- Boolean AV Image Component, that can be used to display an image if an actor value is truthy or falsey. If there is no image specified, the display will remain empty.
+- Progress Bar Component, that can show an evaluated progress bar to visualize HP and similar values
+
+Changed:
+- Boolean AV Icon Component, now has changeable icons
+
+Fixed:
+- MultiIcon and MultiImage component editors would break under certain conditions
+- Some components would incorrectly unregister a listener on the wrong event, causing hooks to malfunction
+
 ## Version 2.9.0
 
 Added:
