@@ -25,7 +25,7 @@
   }
 
   onDestroy(() => {
-    Hooks.off("updateActor", hook);
+    Hooks.off("obs-utils.refreshActor", hook);
   });
 </script>
 
