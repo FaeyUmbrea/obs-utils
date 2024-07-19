@@ -160,6 +160,7 @@ async function registerOBSEvents() {
 }
 
 export function initOBS() {
+  Hooks.call("obs-utils.streamModeInit");
   if (game.view === "stream") {
     Hooks.once("renderChatLog", () => renderOverlays());
   }
