@@ -15,13 +15,15 @@
   let icon2 = "";
   let hook = Hooks.on("obs-utils.refreshActor", (actor) => {
     if (actor.id !== actorID) return;
-    value1 = get(actor, data.split(";")[0], "");
-    value2 = get(actor, data.split(";")[2], "");
+    getValue();
   });
 
   function getValue() {
     value1 = get(actor, data.split(";")[0], "");
-    value2 = get(actor, data.split(";")[2], "");
+    value2 = get(actor, data.split(";")[2], "") - value1;
+    if (isNaN(value2) || value2 < 0) {
+      value2 = 0;
+    }
     return "";
   }
 
@@ -48,7 +50,7 @@
   {#each [...Array(value1).keys()] as i}
     <i class="{icon1} icon-{i}"></i>
   {/each}
-  {#each [...Array(Math.max(0, value2 - value1)).keys()] as i}
+  {#each [...Array(value2).keys()] as i}
     <i class="{icon2} icon-{value1 + i}"></i>
   {/each}
 </div>
