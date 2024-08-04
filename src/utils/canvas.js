@@ -6,7 +6,11 @@ import { getSetting } from "./settings.js";
 export const VIEWPORT_DATA = new Map();
 
 export function hideApplication(_, html) {
-  html.hide();
+  try {
+    html.hide();
+  } catch {
+    html.style.display = "none";
+  }
 }
 
 export function hideTokenBorder(token) {

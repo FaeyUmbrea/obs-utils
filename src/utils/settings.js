@@ -232,6 +232,12 @@ export function registerSettings() {
     config: true,
     default: false,
   });
+  registerSetting("showUserConfig", {
+    type: Boolean,
+    scope: "world",
+    config: true,
+    default: false,
+  });
   registerSetting("lastReadNotification", {
     type: Number,
     scope: "client",

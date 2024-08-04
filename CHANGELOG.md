@@ -1,3 +1,8 @@
+## Version 3.0.1
+
+Added: 
+- Suppress User Config dialog (can be turned off in Settings)
+
 ## Version 3.0.0
 
 Added: 

@@ -180,6 +180,11 @@ export function initOBS() {
   }
   Hooks.on("renderPlayerList", hideApplication);
   Hooks.on("renderHotbar", hideApplication);
+  Hooks.on("renderUserConfig", (...args) => {
+    if (!getSetting("showUserConfig")) {
+      hideApplication(...args);
+    }
+  });
 
   Hooks.on("renderSidebar", preserveSideBar);
 

@@ -128,6 +128,10 @@
         "Name": "Show Video Overlay?",
         "Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)"
       },
+      "showUserConfig": {
+        "Name": "Allow User-Config to Render?",
+        "Hint": "If enabled, the user config dialog will not be suppressed"
+      },
       "fixedPopups": {
         "Name": "Use Fixed Pop-Ups",
         "Hint": "If enabled, all Popups are repositioned and resized to the configured values"
