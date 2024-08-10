@@ -226,7 +226,11 @@ export function initOBS() {
   });
   Hooks.once("ready", async () => {
     await handleOBS("onLoad");
-    ui.sidebar.collapse();
+    if (game.combat?.isActive) {
+      await showTracker();
+    } else {
+      ui.sidebar.collapse();
+    }
   });
 
   Hooks.on("updateSetting", async (setting) => {

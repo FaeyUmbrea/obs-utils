@@ -1,3 +1,8 @@
+## Version 3.0.2
+
+Fix:
+- Fixed issues that would cause Combat Tracker to misbehave
+
 ## Version 3.0.1
 
 Added: 

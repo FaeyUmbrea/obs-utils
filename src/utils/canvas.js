@@ -232,10 +232,13 @@ export async function showTracker() {
   UI_ELEMENTS.sidebar?.element.show();
   UI_ELEMENTS.sidebar?.tabs["combat"]?.element.show();
   UI_ELEMENTS.sidebar?.activateTab("combat");
+  UI_ELEMENTS.sidebar.element.removeClass("collapsed");
+  UI_ELEMENTS.sidebar.element.removeAttr("style");
 }
 
 export async function hideSidebar() {
   UI_ELEMENTS.sidebar?.element.hide();
+  ui.sidebar.collapse();
 }
 
 export async function screenReload() {
