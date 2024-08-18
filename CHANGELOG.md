@@ -1,3 +1,8 @@
+## Version 3.0.3
+
+Fix:
+- Fixes an issue with token data in V12 that causes the camera to lag behind in track target mode.
+
 ## Version 3.0.2
 
 Fix:

@@ -47,8 +47,8 @@ function trackTokenList(tokens) {
 
   tokens?.forEach((token) => {
     const object = {
-      x: token?.document.x,
-      y: token?.document.y,
+      x: token?.document._source.x,
+      y: token?.document._source.y,
       width: token?.w,
       height: token?.h,
     };
