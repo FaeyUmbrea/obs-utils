@@ -1,201 +1,111 @@
+## Version 3.0.4
+
+### Fixes:
+- Improved `ProgressBarComponent` to handle invalid numerical values gracefully by assigning default values. If the current value is invalid, the progress bar will now show `0.5`, and if the maximum value is invalid, its maximum value will be set to `1`.
+
+This ensures that the progress bar displays valid data and avoids rendering issues caused by incorrect numerical inputs.
+
 ## Version 3.0.3
 
-Fix:
-- Fixes an issue with token data in V12 that causes the camera to lag behind in track target mode.
+### Fixes:
+- Fixed an issue with token data in V12 that causes the camera to lag behind in track target mode.
 
 ## Version 3.0.2
 
-Fix:
-- Fixed issues that would cause Combat Tracker to misbehave
+### Fixes:
+- Resolved issues that would cause the Combat Tracker to misbehave.
 
 ## Version 3.0.1
 
-Added: 
-- Suppress User Config dialog (can be turned off in Settings)
+### Added:
+- Suppress User Config dialog (can be turned off in Settings).
 
 ## Version 3.0.0
 
-Added: 
-- A hook called "obs-utils.streamModeInit" that is called when stream mode initializes
-- Boolean AV Image Component, that can be used to display an image if an actor value is truthy or falsey. If there is no image specified, the display will remain empty.
-- Progress Bar Component, that can show an evaluated progress bar to visualize HP and similar values
+### Added:
+- A hook called `obs-utils.streamModeInit` that is called when stream mode initializes.
+- Boolean AV Image Component that can display an image if an actor's value is truthy or falsey. If no image is specified, the display will remain empty.
+- Progress Bar Component that can show an evaluated progress bar to visualize HP and similar values.
 
-Changed:
-- Boolean AV Icon Component, now has changeable icons
+### Changed:
+- Boolean AV Icon Component now has changeable icons.
 
-Fixed:
-- MultiIcon and MultiImage component editors would break under certain conditions
-- Some components would incorrectly unregister a listener on the wrong event, causing hooks to malfunction
+### Fixed:
+- MultiIcon and MultiImage component editors would break under certain conditions.
+- Some components would incorrectly unregister a listener on the wrong event, causing hooks to malfunction.
 
 ## Version 2.9.0
 
-Added:
-- Export and Import for Overlay Settings
+### Added:
+- Export and Import for Overlay Settings.
 
 ## Version 2.8.5
 
-Fix:
-- Fixes a critical issue that would set the GM Client to be the stream user
-  - It is now only possible to set a GM Client as the stream user if there is more than one
-  - Please ensure your GM client is not the stream user before deleting other GM clients
+### Fixes:
+- Fixed a critical issue that would set the GM Client to be the stream user. It is now only possible to set a GM Client as the stream user if there is more than one. Please ensure your GM client is not the stream user before deleting other GM clients.
 
 ## Version 2.8.4
 
-Fix:
-- Overlays would no longer render correctly in /strea mode
+### Fixes:
+- Overlays would no longer render correctly in stream mode.
 
 ## Version 2.8.3
 
-Replaced:
-- Dependency on SocketLib replaced by module internal code
-- Dependency on Tagger replaced by module internal code
+### Replaced:
+- Dependency on SocketLib replaced by module internal code.
+- Dependency on Tagger replaced by module internal code.
 
-These changes do not affect any functionality; 
-however, all tokens will revert to being untracked in manual mode.
+These changes do not affect any functionality; however, all tokens will revert to being untracked in manual mode.
 
 ## Version 2.8.2
 
-Changes:
-- OBS Websocket Settings are now client-side
-  - The data in "OBS Websocket Settings" will no longer be stored in the world data. This means all previous data has been wiped and this may need to be reconfigured.
+### Changes:
+- OBS Websocket Settings are now client-side. The data in "OBS Websocket Settings" will no longer be stored in the world data. This means all previous data has been wiped and this may need to be reconfigured.
 
-Additions:
-- OBS Websocket Setting Sync
-  - The Settings data can now be synced to the browser storage of the OBS User via the settings menu, as long as the browser is connected.
+### Additions:
+- OBS Websocket Setting Sync: The Settings data can now be synced to the browser storage of the OBS User via the settings menu, as long as the browser is connected.
 
 ## Version 2.8.1
 
-Additions:
-- Global Disable Switch
-  - It is now possible to disable all OBS Features globally, to configure the obs client and make adjustments that require UI to load
+### Additions:
+- Global Disable Switch: It is now possible to disable all OBS features globally to configure the OBS client and make adjustments that require the UI to load.
 
-Fixes:
-- Fixing issues caused by lazy-loading the UI
-- Optimized bundle size to reduce load-times on OBS clients. 
+### Fixes:
+- Fixing issues caused by lazy-loading the UI.
+- Optimized bundle size to reduce load times on OBS clients.
 
 ## Version 2.8.0
 
-Additions:
-- Manual OBS Mode 
-  - In case you have to use a browser window instead of a browser source, you can now manually set that browser to be the OBS Client. Make sure to use a different browser or incognito tab. 
-- OBS Mode User
-  - In Addition to the Manual Mode, you can also set a single user by name to always launch in OBS Mode
-- V12 Support
-  - It should now properly work with V12!!
+### Additions:
+- Manual OBS Mode: In case you have to use a browser window instead of a browser source, you can now manually set that browser to be the OBS Client. Make sure to use a different browser or incognito tab.
+- OBS Mode User: In addition to Manual Mode, you can also set a single user by name to always launch in OBS Mode.
+- V12 Support: It should now properly work with V12!
 
-Removal:
-- V10 Support
-  - From this release on, OBS Utils will no longer support V10
+### Removal:
+- V10 Support: From this release on, OBS Utils will no longer support V10.
 
 ## Version 2.7.0
 
-Additions:
-
-- New Foundry Scene Load trigger for OBS Remote (#137)
-- Introduced special Hook event "obs-utils.init" that gets called after API initialization
-- Introduced special Hook event "obs-utils.refreshActor" that accepts a foundry actor as input and will upate the
-  overlay actor data
+### Additions:
+- New Foundry Scene Load trigger for OBS Remote (#137).
+- Introduced special Hook event `obs-utils.init` that gets called after API initialization.
+- Introduced special Hook event `obs-utils.refreshActor` that accepts a Foundry actor as input and will update the overlay actor data.
 
 ## Version 2.6.0
 
-Additions:
+### Additions:
+- Allow setting all popups to a predetermined size and position (Closes #128).
 
-- Allow Setting all popups to a predetermined size and position (Closes #128)
-
-Fixes:
-
-- Several text Errors
+### Fixes:
+- Several text errors.
 
 ## Version 2.5.1
 
-- Fix a small issue with the new Multi-AV Editor where typing would alternate the cursor between both inputs
+### Fixes:
+- Fixed a small issue with the new Multi-AV Editor where typing would alternate the cursor between both inputs.
 
 ## Version 2.5.0
 
-- Added a component to display two different icons depending on two numerical actor values
-- Added a component to display two different images depending on two numerical actor values
-
-Image/Icon 1 is displayed AV1 times, then Image/Icon 2 is displayed AV2-AV1 times immediately after.
-Great to visualize health in simpler systems.
-
-## Version 2.4.3
-
-- Fixing drag and drop sorting
-
-## Version 2.4.2
-
-- Add a feature that allows to limit zoom and pan to the map edges
-
-## Version 2.4.1
-
-- Add a reset button to the actor select.
-- Fixed a bug that caused the screen to move when a token was about to enter the hidden sidebar on /game
-- Fixed a bug that prevented the canvas from correctly resizing on scene load
-
-## Version 2.4.0
-
-Adding API Methods to allow setting AV Data and Selected Actors via external modules
-
-## Version 2.3.0
-
-V11 Compatibility
-
-## Version 2.2.1
-
-Add an option to show or hide the Cameras
-
-## Version 2.2.0
-
-Added an Image Overlay
-
-## Version 2.1.0
-
-Added a new Roll Overlay
-
-## Version 2.0.0
-
-Added an API for Overlays
-Added single-render Overlays
-
-## Version 1.4.2
-
-Fixing pf2e compatbility
-
-## Version 1.4.0
-
-Added a new Feature to display Boolean Actor Values as Icons
-
-## Version 1.3.7
-
-Fixed some display issues in the Director
-
-## Version 1.3.6
-
-Implemented the Stream Overlay Funtionality along with a WYSIWYG Editor for it!
-Check the Wiki for more Information on the CSS Structure
-
-## Version 1.2.3
-
-Added OBS Remote Functionality!
-Replaced original onExitObs with onStopStreaming because OBS would close before the final commands got executed.
-
-## Version 1.1.1
-
-Fixes to the Director Window
-Adding "Track Selected Player" to Combat Mode
-Some Icon Changes to improve consistency
-Director Improvements to workflow and socket usage
-
-## Version 1.1.0
-
-Adding an option to show combat tracker during combats
-Automatically hiding Popouts after configurable amount of time
-Fixing some combat issues aswell
-
-## Version 1.0.4
-
-Fixing display issues with /stream view
-
-## Version 1.0.0
-
-Initial Release!
+### Additions:
+- Added a component to display two different icons depending on two numerical actor values.
+- Added a component to display two different images.

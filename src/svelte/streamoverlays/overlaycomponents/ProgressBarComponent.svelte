@@ -49,5 +49,8 @@
   id="{'component' + componentIndex.toString()}"
   style="{style}"
 >
-  <progress value="{value1}" max="{value2}"></progress>
+  <progress
+    value="{isNaN(value1) ? 0.5 : value1}"
+    max="{isNaN(value2) ? 1 : value2}"
+  ></progress>
 </div>
