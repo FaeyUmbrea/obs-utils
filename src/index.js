@@ -7,7 +7,11 @@ import {
   runMigrations,
 } from "./utils/settings.js";
 import { expandTokenHud, isGM } from "./utils/canvas.js";
-import { socketCanvas } from "./utils/socket.js";
+import {
+  activateViewportTracking,
+  deactivateViewportTracking,
+  socketCanvas,
+} from "./utils/socket.js";
 
 function start() {
   Hooks.once("init", async function () {
@@ -61,7 +65,9 @@ function start() {
       );
   });
 
+  Hooks.on("canvasTearDown", deactivateViewportTracking);
   Hooks.on("canvasPan", socketCanvas);
+  Hooks.on("canvasReady", activateViewportTracking);
 
   // Register updateActor for System agnostic default. This allows for custom and system-specific actor refresh triggers.
   Hooks.on("updateActor", (actor) =>

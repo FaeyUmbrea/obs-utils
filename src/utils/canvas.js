@@ -127,6 +127,9 @@ function calculateBoundsOfCoodinates(coordSet) {
 }
 
 export function viewportChanged(userId) {
+  if (game.users.get(userId).viewedScene !== game.user.viewedScene) {
+    return;
+  }
   if (game.combat?.started) {
     switch (getSetting("defaultInCombat")) {
       case "cloneDM":

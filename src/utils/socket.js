@@ -36,7 +36,20 @@ function changeViewport({ viewport, userId }) {
   viewportChanged(userId);
 }
 
+let viewportTrackingActive = false;
+
+export function activateViewportTracking() {
+  viewportTrackingActive = true;
+}
+
+export function deactivateViewportTracking() {
+  viewportTrackingActive = false;
+}
+
 export function socketCanvas(_canvas, position) {
+  if (!viewportTrackingActive) {
+    return;
+  }
   game.socket.emit("module.obs-utils", {
     eventType: "viewport",
     targetUser: undefined,
