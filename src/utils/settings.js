@@ -1,5 +1,11 @@
 import { scaleToFit, tokenMoved, viewportChanged } from "./canvas";
-import { ICCHOICES, ID as moduleID, NAME_TO_ICON, OOCCHOICES } from "./const";
+import {
+  ICCHOICES,
+  ID,
+  ID as moduleID,
+  NAME_TO_ICON,
+  OOCCHOICES,
+} from "./const";
 import { isOBS } from "./helpers";
 import { writable } from "svelte/store";
 
@@ -84,11 +90,11 @@ export function runMigrations() {
 }
 
 export function getSetting(settingName) {
-  return game.settings.get("obs-utils", settingName);
+  return game.settings.get(ID, settingName);
 }
 
 export async function setSetting(settingName, value) {
-  await game.settings.set("obs-utils", settingName, value);
+  await game.settings.set(ID, settingName, value);
 }
 
 export function generateDataBlockFromSetting() {
@@ -295,6 +301,13 @@ export function registerSettings() {
     scope: "world",
     config: true,
     requiresReload: true,
+  });
+
+  registerSetting("showKeybindingPopup", {
+    default: true,
+    type: Boolean,
+    scope: "client",
+    config: true,
   });
 }
 

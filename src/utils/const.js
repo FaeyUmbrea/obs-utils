@@ -1,19 +1,19 @@
 export const ID = "obs-utils";
 
 export const ICCHOICES = {
-  trackall: "Track all Owned Tokens",
-  trackone: "Track the currently active Owned Token",
-  clonePlayer: "Clone the Selected Player's Viewport",
-  cloneDM: "Clone the DM's Viewport",
-  birdseye: "Fit Map to Screen",
-  cloneTurnPlayer: "Clone the Turn Player's Viewport",
+  trackall: "obs-utils.strings.ic.trackAll",
+  trackone: "obs-utils.strings.ic.trackOne",
+  clonePlayer: "obs-utils.strings.ic.clonePlayer",
+  cloneDM: "obs-utils.strings.ic.cloneDM",
+  birdseye: "obs-utils.strings.ic.birdseye",
+  cloneTurnPlayer: "obs-utils.strings.ic.cloneTurnPlayer",
 };
 export const OOCCHOICES = {
-  trackall: "Track all Owned Tokens",
-  trackmanual: "Track a manual List of Tokens",
-  clonePlayer: "Clone a Player's Viewport",
-  cloneDM: "Clone the DM's Viewport",
-  birdseye: "Fit Map to Screen",
+  trackall: "obs-utils.strings.ooc.trackAll",
+  trackmanual: "obs-utils.strings.ooc.trackManual",
+  clonePlayer: "obs-utils.strings.ooc.clonePlayer",
+  cloneDM: "obs-utils.strings.ooc.cloneDM",
+  birdseye: "obs-utils.strings.ooc.birdseye",
 };
 export const NAME_TO_ICON = {
   trackall: "fa-solid fa-users",

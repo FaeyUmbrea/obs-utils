@@ -2,29 +2,25 @@
 
 <script>
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
-  import {
-    generateDataBlockFromSetting,
-    getSetting,
-    getStore,
-    setSetting,
-  } from "../utils/settings.js";
+  import { generateDataBlockFromSetting, getStore } from "../utils/settings.js";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   let { ic, ooc, players } = generateDataBlockFromSetting();
-  let currentIC = getSetting("defaultInCombat");
-  let currentOOC = getSetting("defaultOutOfCombat");
-  let currentTrackedPlayer = getSetting("trackedUser");
+  let currentIC = getStore("defaultInCombat");
+  let currentOOC = getStore("defaultOutOfCombat");
+  let currentTrackedPlayer = getStore("trackedUser");
   let clampCanvas = getStore("clampCanvas");
 
   async function onChangeIC(event) {
-    await setSetting("defaultInCombat", event.target.value);
+    $currentIC = event.target.value;
   }
 
   async function onChangeOOC(event) {
-    await setSetting("defaultOutOfCombat", event.target.value);
+    $currentOOC = event.target.value;
   }
 
   async function onChangePlayer(event) {
-    await setSetting("trackedUser", event.target.value);
+    $currentTrackedPlayer = event.target.value;
   }
 
   export let elementRoot = void 0;
@@ -37,13 +33,13 @@
       {#each ic as { id, tooltip, icon }}
         <input
           type="radio"
-          bind:group="{currentIC}"
+          bind:group="{$currentIC}"
           id="radioic{id}"
           name="currentIC"
           value="{id}"
           on:change="{onChangeIC}"
         />
-        <label class="button" for="radioic{id}" title="{tooltip}"
+        <label class="button" for="radioic{id}" title="{localize(tooltip)}"
           ><i class="{icon}"></i></label
         >
       {/each}
@@ -54,13 +50,13 @@
       {#each ooc as { id, tooltip, icon }}
         <input
           type="radio"
-          bind:group="{currentOOC}"
+          bind:group="{$currentOOC}"
           id="radioooc{id}"
           name="currentOOC"
           value="{id}"
           on:change="{onChangeOOC}"
         />
-        <label class="button" for="radioooc{id}" title="{tooltip}"
+        <label class="button" for="radioooc{id}" title="{localize(tooltip)}"
           ><i class="{icon}"></i></label
         >
       {/each}
@@ -77,7 +73,7 @@
       />
       <label
         class="button"
-        title="Limit Canvas to Screen Edges"
+        title="{localize('obs-utils.strings.limitCanvas')}"
         for="limitcanvas"><i class="fas fa-arrows-maximize"></i></label
       >
     </div>
@@ -86,7 +82,7 @@
       <b>Tracked Player</b>
       <hr />
       <select
-        bind:value="{currentTrackedPlayer}"
+        bind:value="{$currentTrackedPlayer}"
         name="trackedPlayer"
         id="trackedPlayer"
         on:change="{onChangePlayer}"

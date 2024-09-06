@@ -12,6 +12,7 @@ import {
   deactivateViewportTracking,
   socketCanvas,
 } from "./utils/socket.js";
+import { registerKeybindings } from "./utils/keybinds.js";
 
 function start() {
   Hooks.once("init", async function () {
@@ -25,6 +26,7 @@ function start() {
 
     registerSettings();
     registerOverlaySettings();
+    registerKeybindings();
 
     // Load UI Component only on /game
     if (game.view === "game") {

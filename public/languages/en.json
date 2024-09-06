@@ -1,5 +1,29 @@
 {
   "obs-utils": {
+    "strings": {
+      "module": "OBS Utils",
+      "ic": {
+        "name": "In Combat",
+        "trackAll": "Track all Owned Tokens",
+        "trackOne": "Track the currently active Owned Token",
+        "clonePlayer": "Clone the Selected Player's Viewport",
+        "cloneDM": "Clone the DM's Viewport",
+        "birdseye": "Fit Map to Screen",
+        "cloneTurnPlayer": "Clone the Turn Player's Viewport"
+      },
+      "ooc":
+      {
+        "name": "Out of Combat",
+        "trackAll": "Track all Owned Tokens",
+        "trackManual": "Track a manual List of Tokens",
+        "clonePlayer": "Clone a Player's Viewport",
+        "cloneDM": "Clone the DM's Viewport",
+        "birdseye": "Fit Map to Screen"
+      },
+      "limitCanvas": "Limit Canvas to Screen Edges",
+      "keypressInfo1": "Switched ",
+      "keypressInfo2": "Mode to "
+    },
     "settings": {
       "obsMode": {
         "Name": "OBS Mode",
@@ -151,6 +175,10 @@
       "fixedPopupHeight": {
         "Name": "Pop-Up Height",
         "Hint": "The height of the pop-up in pixels"
+      },
+      "showKeybindingPopup": {
+        "Name": "Show Keybinding Notification",
+        "Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected"
       }
     }
   }
