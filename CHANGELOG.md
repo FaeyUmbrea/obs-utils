@@ -1,3 +1,8 @@
+## Version 3.2.1
+
+### Localization
+- Support added for brazilian Portuguese
+
 ## Version 3.2.0
 
 ### Added
