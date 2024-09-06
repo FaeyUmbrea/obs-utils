@@ -244,6 +244,27 @@ export function registerSettings() {
     config: true,
     default: false,
   });
+  registerSetting("diceSoNice", {
+    default: !!game.modules.get("dice-so-nice")?.active,
+    type: Boolean,
+    scope: "world",
+    config: !!game.modules.get("dice-so-nice")?.active,
+    requiresReload: true,
+  });
+  registerSetting("diceSoNiceOverlayWidth", {
+    default: 500,
+    type: Number,
+    scope: "world",
+    config: !!game.modules.get("dice-so-nice")?.active,
+    requiresReload: true,
+  });
+  registerSetting("diceSoNiceOverlayHeight", {
+    default: 500,
+    type: Number,
+    scope: "world",
+    config: !!game.modules.get("dice-so-nice")?.active,
+    requiresReload: true,
+  });
   registerSetting("lastReadNotification", {
     type: Number,
     scope: "client",

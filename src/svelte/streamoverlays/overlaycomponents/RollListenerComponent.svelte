@@ -11,7 +11,7 @@
   let hook = Hooks.on("createChatMessage", (e) => {
     const uid = e.user.id;
     if (uid === id && e.whisper.length === 0) {
-      rollValue = e.roll.result;
+      rollValue = e.roll?.total;
       rollShow = false;
       rollShow = true;
     }

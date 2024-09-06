@@ -1,5 +1,6 @@
 import OverlayRenderer from "../svelte/OverlayRenderer.svelte";
 import "../less/overlayrenderer.styl";
+import { setupDiceSoNice } from "./dice.js";
 
 export class OverlayData {
   type;
@@ -31,4 +32,5 @@ export function renderOverlays() {
       target: $("body").get(0),
     });
   }
+  setupDiceSoNice();
 }

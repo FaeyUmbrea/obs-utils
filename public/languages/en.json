@@ -179,6 +179,18 @@
       "showKeybindingPopup": {
         "Name": "Show Keybinding Notification",
         "Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected"
+      },
+      "diceSoNice": {
+        "Name": "Enable Dice so Nice overlay",
+        "Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays"
+      },
+      "diceSoNiceOverlayWidth":{
+        "Name": "Dice so Nice Overlay Width",
+        "Hint": "Width of the element in pixels"
+      },
+      "diceSoNiceOverlayHeight":{
+        "Name": "Dice so Nice Overlay Height",
+        "Hint": "Width of the element in pixels"
       }
     }
   }
