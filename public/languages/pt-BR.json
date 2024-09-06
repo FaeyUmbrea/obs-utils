@@ -179,6 +179,18 @@
       "showKeybindingPopup": {
         "Name": "Mostrar Notificação de Atalho",
         "Hint": "Se ativado, o uso de um atalho de teclado mostrará uma notificação de qual modo foi selecionado."
+      },
+      "diceSoNice": {
+        "Name": "Sobreposição Dice so Nice",
+        "Hint": "Se ativado, uma seção do Dice so Nice será renderizada junto com outras sobreposições."
+      },
+      "diceSoNiceOverlayWidth":{
+        "Name": "Largura Sobreposição Dice so Nice",
+        "Hint": "Largura do elemento, em pixels."
+      },
+      "diceSoNiceOverlayHeight":{
+        "Name": "Altura Sobreposição Dice so Nice",
+        "Hint": "Altura do elemento, em pixels."
       }
     }
   }
