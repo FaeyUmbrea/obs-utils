@@ -29,7 +29,7 @@ jobs:
               run: xc build
             - run: (cd dist && zip -r ../module.zip *)
             - run: zip -ur module.zip LICENSE README.md
-            - run: awk '/## /{p++} p==2{exit} p>=1' ./CHANGELOG.md >> body.md
+            - run: awk '/^## /{p++} p==2{exit} p>=1' ./CHANGELOG.md >> body.md
             - name: Update Release with Files
               id: create_version_release
               uses: ncipollo/release-action@v1
