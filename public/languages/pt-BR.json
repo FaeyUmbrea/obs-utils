@@ -1,5 +1,29 @@
 {
   "obs-utils": {
+    "strings": {
+      "module": "OBS Utils",
+      "ic": {
+        "name": "Em Combate",
+        "trackAll": "Rastear Todos Tokens Controlados",
+        "trackOne": "Rastrear o Token Controlado atualmente ativo",
+        "clonePlayer": "Clonar a Visão do Jogador Selecionado",
+        "cloneDM": "Clonar a Visão do MJ",
+        "birdseye": "Ajustar Mapa à Tela",
+        "cloneTurnPlayer": "Clonar a Visão do Jogador deste Turno"
+      },
+      "ooc":
+      {
+        "name": "Fora de Combate",
+        "trackAll": "Rastear Todos Tokens Controlados",
+        "trackManual": "Rastrear uma Lista manual de Tokens",
+        "clonePlayer": "Clonar a Visão de um Jogador",
+        "cloneDM": "Clonar a Visão do MJ",
+        "birdseye": "Ajustar Mapa à Tela"
+      },
+      "limitCanvas": "Limitar Tela às Bordas da Tela",
+      "keypressInfo1": "Trocado Modo ",
+      "keypressInfo2": "para "
+    },
     "settings": {
       "obsMode": {
         "Name": "Modo OBS",
@@ -151,6 +175,10 @@
       "fixedPopupHeight": {
         "Name": "Pop-Up Altura",
         "Hint": "A altura da pop-up, em pixels."
+      },
+      "showKeybindingPopup": {
+        "Name": "Mostrar Notificação de Atalho",
+        "Hint": "Se ativado, o uso de um atalho de teclado mostrará uma notificação de qual modo foi selecionado."
       }
     }
   }
