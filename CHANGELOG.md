@@ -1,3 +1,8 @@
+## Version 3.2.0
+
+### Added
+- Preliminary support for Dice so Nice overlays! 
+
 ## Version 3.1.0
 
 ### Added
