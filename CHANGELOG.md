@@ -1,3 +1,12 @@
+## Version 3.1.0
+
+### Added
+- Introduced keybindings support for OBS Utils. Users can now switch director modes via keyboard shortcuts.
+- New setting `showKeybindingPopup` to enable or disable keybinding notifications.
+
+### Fixed
+- Tracking logic revised to only track a camera if the scene matches that of the stream user, ensuring better synchronization and performance.
+
 ## Version 3.0.4
 
 ### Fixes:
