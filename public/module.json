@@ -41,6 +41,11 @@
       "lang": "pt-BR",
       "name": "Português (Brasil)",
       "path": "languages/pt-BR.json"
+    },
+    {
+      "lang": "de-DE",
+      "name": "Deutsch",
+      "path": "languages/de-DE.json"
     }
   ],
   "url": "This is auto replaced",
