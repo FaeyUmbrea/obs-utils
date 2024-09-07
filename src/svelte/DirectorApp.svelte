@@ -28,7 +28,7 @@
 
 <ApplicationShell bind:elementRoot="{elementRoot}">
   <main>
-    <b>In Combat Type</b>
+    <b>{localize("obs-utils.applications.director.icTypeHeader")}</b>
     <div>
       {#each ic as { id, tooltip, icon }}
         <input
@@ -45,7 +45,7 @@
       {/each}
     </div>
     <hr />
-    <b>Out of Combat Types</b>
+    <b>{localize("obs-utils.applications.director.oocTypeHeader")}</b>
     <div>
       {#each ooc as { id, tooltip, icon }}
         <input
@@ -63,7 +63,7 @@
     </div>
     <div>
       <hr />
-      <b>Canvas Options</b>
+      <b>{localize("obs-utils.applications.director.canvasOptionsHeader")}</b>
       <hr />
       <input
         name="limitcanvas"
@@ -79,7 +79,7 @@
     </div>
     <div>
       <hr />
-      <b>Tracked Player</b>
+      <b>{localize("obs-utils.applications.director.trackedPlayerHeader")}</b>
       <hr />
       <select
         bind:value="{$currentTrackedPlayer}"

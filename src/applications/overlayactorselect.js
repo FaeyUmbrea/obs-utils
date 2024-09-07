@@ -7,7 +7,7 @@ export default class OverlayActorSelect extends SvelteApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["actorselect"],
       id: "actorselect-application",
-      title: "Actor Selection",
+      title: "obs-utils.applications.actorSelect.name",
       tabs: [
         {
           navSelector: ".tabs",
@@ -29,8 +29,8 @@ export default class OverlayActorSelect extends SvelteApplication {
 
     buttons.unshift({
       icon: "fas fa-rotate",
-      title: "Reset",
-      label: "Reset",
+      title: "obs-utils.applications.actorSelect.resetButton",
+      label: "obs-utils.applications.actorSelect.resetButton",
 
       onPress: function () {
         getStore("overlayActors").set([]);

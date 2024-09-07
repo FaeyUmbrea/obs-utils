@@ -15,7 +15,7 @@ export default class DirectorApplication extends SvelteApplication {
       minimizable: true,
       width: 275,
       id: "director-application",
-      title: "Director",
+      title: "obs-utils.applications.director.name",
       positionOrtho: false,
       transformOrigin: null,
       svelte: {

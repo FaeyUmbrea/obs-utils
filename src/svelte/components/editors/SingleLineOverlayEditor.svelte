@@ -2,6 +2,7 @@
   import StyleEditor from "../../../applications/styleditor.js";
   import FallbackEditor from "./FallbackEditor.svelte";
   import { getApi } from "../../../utils/helpers";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   export let component;
   export let removeFn;
@@ -39,7 +40,7 @@
     <i class="fa-light fa-bars grab"></i>
     <select bind:value="{component.type}" name="types">
       {#each [...componentNames] as [component, name]}
-        <option value="{component}">{name}</option>
+        <option value="{component}">{localize(name)}</option>
       {/each}
     </select>
     <svelte:component
@@ -49,7 +50,9 @@
     <div class="{getCompactButtons(component.type) ? '' : 'buttons'}">
       <button
         on:click="{() => removeFn(index)}"
-        title="Remove Component"
+        title="{localize(
+          'obs-utils.applications.overlayEditor.removeComponentButton',
+        )}"
         type="button"
       >
         <i class="fas fa-trash"></i>
@@ -57,7 +60,9 @@
       <button
         class="add"
         on:click="{() => openStyleEditor()}"
-        title="Edit Component Style"
+        title="{localize(
+          'obs-utils.applications.overlayEditor.editStyleButton',
+        )}"
         type="button"
       >
         <i class="fas fa-pencil"></i>

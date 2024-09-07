@@ -1,6 +1,7 @@
 <script>
   import { OBSAction } from "../../utils/settings";
   import { fade } from "svelte/transition";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   export let removeFn;
   export let event;
@@ -30,20 +31,20 @@
       on:change="{changeEvent}"
     >
       {#each actionTypes as action}
-        <option value="{action}">{action}</option>
+        <option value="{action}">{localize(action)}</option>
       {/each}
     </select>
     <input
       bind:value="{event.sceneName}"
       disabled="{sceneDisabled}"
       name="sceneNames"
-      placeholder="OBS Scene Name"
+      placeholder="{localize('obs-utils.applications.obsRemote.sceneName')}"
     />
     <input
       bind:value="{event.targetName}"
       disabled="{idDisabled}"
       name="itemIDs"
-      placeholder="OBS Source Name"
+      placeholder="{localize('obs-utils.applications.obsRemote.sourceName')}"
     />
     <button on:click="{removeFn}" type="button">
       <i class="fas fa-trash"></i>

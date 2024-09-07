@@ -3,6 +3,7 @@
   import OverlayComponentEditor from "./editors/SingleLineOverlayEditor.svelte";
   import StyleEditor from "../../applications/styleditor.js";
   import { SortableList } from "@jhubbardsf/svelte-sortablejs";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   export let overlay;
   export let removeFn;
@@ -59,19 +60,19 @@
   <button
     class="add"
     on:click="{() => handleAdd()}"
-    title="Add new Component"
+    title="{localize('obs-utils.applications.overlayEditor.addButton')}"
     type="button"><i class="fas fa-plus"></i></button
   >
   <button
     class="add"
     on:click="{() => openStyleEditor()}"
-    title="Edit Overlay Style"
+    title="{localize('obs-utils.applications.overlayEditor.editStyleButton')}"
     type="button"><i class="fas fa-pencil"></i></button
   >
   <button
     class="remove-tab"
     on:click="{() => removeFn(componentindex)}"
-    title="Remove Overlay"
+    title="{localize('obs-utils.applications.overlayEditor.removeButton')}"
     type="button"><i class="fas fa-trash"></i></button
   >
 </footer>

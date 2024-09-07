@@ -1,15 +1,14 @@
 import OverlayEditorUI from "../svelte/OverlayEditorUI.svelte";
 import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
 import { getSetting, setSetting } from "../utils/settings.js";
+import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
 export default class OverlayEditor extends SvelteApplication {
-  dataArray = [];
-
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["overlayeditor"],
       id: "overlayeditor-application",
-      title: "Overlay Editor",
+      title: localize("obs-utils.applications.overlayEditor.name"),
       //tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
       height: 600,
       width: 1000,
@@ -28,28 +27,36 @@ export default class OverlayEditor extends SvelteApplication {
     buttons.unshift(
       {
         icon: "fas fa-file-import",
-        title: "Import",
-        label: "Import",
+        title: localize("obs-utils.applications.overlayEditor.importButton"),
+        label: localize("obs-utils.applications.overlayEditor.importButton"),
 
         onPress: async function () {
           new Dialog(
             {
-              title: `Import Data: Overlays`,
+              title: localize(
+                "obs-utils.applications.overlayEditor.importDialog.title",
+              ),
               content: await renderTemplate("templates/apps/import-data.html", {
-                hint1:
-                  "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
-                hint2:
-                  "Please choose if you want to replace your existing overlays or add the imported list.",
+                hint1: localize(
+                  "obs-utils.applications.overlayEditor.importDialog.hint1",
+                ),
+                hint2: localize(
+                  "obs-utils.applications.overlayEditor.importDialog.hint2",
+                ),
               }),
               buttons: {
                 replace: {
                   icon: '<i class="fas fa-file-import"></i>',
-                  label: "Replace",
+                  label: localize(
+                    "obs-utils.applications.overlayEditor.importDialog.replaceButton",
+                  ),
                   callback: (html) => {
                     const form = html.find("form")[0];
                     if (!form.data.files.length)
                       return ui.notifications.error(
-                        "You did not upload a data file!",
+                        localize(
+                          "obs-utils.applications.overlayEditor.importDialog.fileError",
+                        ),
                       );
                     readTextFromFile(form.data.files[0]).then((json) =>
                       importChatCommands(json, false),
@@ -58,12 +65,16 @@ export default class OverlayEditor extends SvelteApplication {
                 },
                 append: {
                   icon: '<i class="fas fa-file-import"></i>',
-                  label: "Append",
+                  label: localize(
+                    "obs-utils.applications.overlayEditor.importDialog.appendButton",
+                  ),
                   callback: (html) => {
                     const form = html.find("form")[0];
                     if (!form.data.files.length)
                       return ui.notifications.error(
-                        "You did not upload a data file!",
+                        localize(
+                          "obs-utils.applications.overlayEditor.importDialog.fileError",
+                        ),
                       );
                     readTextFromFile(form.data.files[0]).then((json) =>
                       importChatCommands(json, true),
@@ -72,7 +83,9 @@ export default class OverlayEditor extends SvelteApplication {
                 },
                 no: {
                   icon: '<i class="fas fa-times"></i>',
-                  label: "Cancel",
+                  label: localize(
+                    "obs-utils.applications.overlayEditor.importDialog.cancelButton",
+                  ),
                 },
               },
               default: "import",
@@ -85,20 +98,28 @@ export default class OverlayEditor extends SvelteApplication {
       },
       {
         icon: "fas fa-file-export",
-        title: "Export",
-        label: "Export",
+        title: localize("obs-utils.applications.overlayEditor.exportButton"),
+        label: localize("obs-utils.applications.overlayEditor.exportButton"),
 
         onPress: function () {
           new Dialog({
-            title: "Export your settings?",
-            content: "Do you want to export your Overlay Settings?",
+            title: localize(
+              "obs-utils.applications.overlayEditor.exportDialog.title",
+            ),
+            content: localize(
+              "obs-utils.applications.overlayEditor.exportDialog.content",
+            ),
             buttons: {
               yes: {
-                label: "Yes",
+                label: localize(
+                  "obs-utils.applications.overlayEditor.exportDialog.yesButton",
+                ),
                 callback: () => exportChatCommands(),
               },
               no: {
-                label: "No",
+                label: localize(
+                  "obs-utils.applications.overlayEditor.exportDialog.noButton",
+                ),
               },
             },
           }).render(true);
@@ -144,10 +165,16 @@ async function importChatCommands(data, join) {
    */
   const imported = JSON.parse(data);
   if (imported.type !== "ObsUtilsOverlays") {
-    throw new Error("Imported file is not an OBS Utils Export");
+    throw new Error(
+      localize("obs-utils.applications.overlayEditor.importDialog.formatError"),
+    );
   }
   if (imported.version !== 1) {
-    throw new Error("Version unsupported");
+    throw new Error(
+      localize(
+        "obs-utils.applications.overlayEditor.importDialog.versionError",
+      ),
+    );
   }
   if (join) {
     const overlays = getSetting("streamOverlays");

@@ -1,3 +1,7 @@
+<script>
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+</script>
+
 <span>
-  Legacy/Missing Type. Please select a new type in the dropdown to edit.
+  {localize("obs-utils.strings.missingTypeNotice")}
 </span>;

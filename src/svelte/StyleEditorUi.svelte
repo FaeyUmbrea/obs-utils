@@ -3,6 +3,7 @@
 <script>
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import { getContext } from "svelte";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   export let elementRoot = void 0;
 
@@ -19,7 +20,9 @@
 <ApplicationShell bind:elementRoot="{elementRoot}">
   <input bind:value="{style}" name="style" type="text" />
   <footer>
-    <button on:click="{close}">Submit</button>
+    <button on:click="{close}"
+      >{localize("obs-utils.applications.styleEditor.submitButton")}</button
+    >
   </footer>
 </ApplicationShell>
 

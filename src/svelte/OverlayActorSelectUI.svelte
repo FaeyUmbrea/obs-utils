@@ -5,6 +5,7 @@
   import { getStore, setSetting } from "../utils/settings.js";
   import { getContext } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   let selectedActors = getStore("overlayActors");
 
@@ -37,7 +38,14 @@
 
 <ApplicationShell bind:elementRoot="{elementRoot}">
   <main>
-    <input bind:value="{searchTerm}" name="search" type="text" />
+    <input
+      bind:value="{searchTerm}"
+      name="search"
+      type="text"
+      placeholder="{localize(
+        'obs-utils.applications.actorSelect.searchPlaceholder',
+      )}"
+    />
 
     <VirtualList itemHeight="{50}" items="{filteredActors}" let:item>
       <div>
@@ -57,7 +65,9 @@
     </VirtualList>
 
     <footer>
-      <button on:click="{submit}">Close</button>
+      <button on:click="{submit}"
+        >{localize("obs-utils.applications.actorSelect.closeButton")}</button
+      >
     </footer>
   </main>
 </ApplicationShell>

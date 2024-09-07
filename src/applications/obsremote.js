@@ -6,7 +6,7 @@ export default class OBSRemoteApplication extends SvelteApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["obsremote"],
       id: "obsremote-application",
-      title: "OBS Remote Settings",
+      title: "obs-utils.applications.obsRemote.name",
       height: 700,
       width: 520,
       focusAuto: false,

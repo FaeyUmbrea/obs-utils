@@ -22,7 +22,127 @@
       },
       "limitCanvas": "Limit Canvas to Screen Edges",
       "keypressInfo1": "Switched ",
-      "keypressInfo2": "Mode to "
+      "keypressInfo2": "Mode to ",
+      "avInputPlaceholder": "Enter text or search",
+      "iconPlaceholder": "Icon",
+      "true": "True",
+      "false": "False",
+      "missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
+      "done": "Done"
+    },
+    "applications": {
+      "rollOverlayEditor": {
+        "name": "Roll Overlay Editor",
+        "test": "Test",
+        "preRollImage": "Pre Roll Image",
+        "rollImage": "Roll Image",
+        "postRollImage": "Post Roll Image",
+        "imageUrl": "Image Url",
+        "foregroundImageUrl": "Foreground Image URL",
+        "backgroundImageUrl": "Background Image URL",
+        "delay": "Delay (ms)",
+        "fadeIn": "Fade In (ms)",
+        "duration": "Duration (ms)",
+        "fadeOut": "Fade Out (ms)"
+      },
+      "director": {
+        "name": "Director",
+        "icTypeHeader": "In Combat Type",
+        "oocTypeHeader": "Out of Combat Type",
+        "canvasOptionsHeader": "Canvas Options",
+        "trackedPlayerHeader": "Tracked Player"
+      },
+      "obsRemote": {
+        "name": "OBS Remote Settings",
+        "sceneName": "Scene Name",
+        "sourceName": "OBS Source Name",
+        "switchScene": "Switch Scene",
+        "toggleSource": "Toggle Source",
+        "enableSource": "Enable Source",
+        "disableSource": "Disable Source",
+        "vttSceneLabel": "VTT Scene Name",
+        "vttScenePlaceholder": "Input name or drop a scene here",
+        "onLoad": "Load",
+        "onCombatStart": "Combat Start",
+        "onCombatEnd": "Combat End",
+        "onPause": "Pause",
+        "onUnpause": "Unpause",
+        "onSceneLoad": "Scene Load",
+        "onStopStreaming": "Stop Streaming"
+      },
+      "obsWebsocket": {
+        "name": "OBS Websocket Settings",
+        "urlLabel": "URL",
+        "portLabel": "Port",
+        "passwordLabel": "Password",
+        "syncLabel": "Sync Target Client",
+        "saveButton": "Save",
+        "syncButton": "Sync"
+      },
+      "actorSelect": {
+        "name": "Actor Selection",
+        "searchPlaceholder": "Search",
+        "closeButton": "Close",
+        "resetButton": "Reset"
+      },
+      "overlayEditor": {
+        "name": "Overlay Editor",
+        "addButton": "Add New Component",
+        "editStyleButton": "Edit Style",
+        "removeButton": "Remove Overlay",
+        "removeComponentButton": "Remove Component",
+        "importButton": "Import",
+        "exportButton": "Export",
+        "addOverlayButton": "Add New Overlay",
+        "closeButton": "Close",
+        "importDialog": {
+          "title": "Import Data: Overlays",
+          "hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
+          "hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
+          "replaceButton": "Replace",
+          "appendButton": "Append",
+          "fileError": "You did not upload a data file",
+          "versionError": "Version unsupported",
+          "formatError": "Imported file is not an OBS Utils Overlay Export",
+          "cancelButton": "Cancel"
+        },
+        "exportDialog": {
+          "title": "Export your settings?",
+          "content": "Do you want to export your Overlay Settings?",
+          "yesButton": "Yes",
+          "noButton": "No"
+        }
+      },
+      "styleEditor": {
+        "name": "Style Editor",
+        "submitButton": "Submit"
+      }
+    },
+    "overlays": {
+      "plainText": {
+        "name": "Plain Text"
+      },
+      "fontAwesomeIcon": {
+        "name": "Font Awesome Icon"
+      },
+      "booleanAVIcon": {
+        "name": "Boolean AV Icon"
+      },
+      "booleanAVImage": {
+        "name": "Boolean AV Image"
+      },
+      "image": {
+        "name": "Image"
+      },
+      "multiIconAV": {
+        "name": "Multi Icon AV"
+      },
+      "multiImageAV": {
+        "name": "Multi Image AV"
+      },
+      "progressBar": {
+        "name": "Progress Bar"
+      }
     },
     "settings": {
       "obsMode": {

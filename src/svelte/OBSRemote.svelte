@@ -7,6 +7,7 @@
   import { getContext } from "svelte";
   import SceneSelect from "./components/SceneSelect.svelte";
   import Select from "svelte-select";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   const useWebSocket = getSetting("enableOBSWebsocket");
   let obssettings = getSetting("obsRemote");
@@ -20,7 +21,7 @@
   }
 
   function formatKey(key) {
-    return key.replace(/([a-z])([A-Z])/g, "$1 $2").substring(2);
+    return localize(`obs-utils.applications.obsRemote.${key}`);
   }
 
   const context = getContext("#external");
@@ -93,7 +94,9 @@
       </section>
       <footer>
         <hr />
-        <button class="submit" on:click="{submit}">Submit</button>
+        <button class="submit" on:click="{submit}"
+          >{localize("obs-utils.strings.done")}</button
+        >
       </footer>
     </div>
   </main>

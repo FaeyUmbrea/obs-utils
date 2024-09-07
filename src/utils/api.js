@@ -103,36 +103,44 @@ export class OverlayType {
 
 export function registerDefaultTypes() {
   const singleLineOverlay = new OverlayType(SingleLineOverlay);
-  singleLineOverlay.registerComponent("pt", "Plain Text", ActorValComponent);
+  singleLineOverlay.registerComponent(
+    "pt",
+    "obs-utils.overlays.plainText.name",
+    ActorValComponent,
+  );
   singleLineOverlay.registerComponent(
     "fai",
-    "Font Awesome Icon",
+    "obs-utils.overlays.fontAwesomeIcon.name",
     FAIconComponent,
   );
   singleLineOverlay.registerComponent(
     "bav",
-    "Boolean AV Icon",
+    "obs-utils.overlays.booleanAVIcon.name",
     AVBoolIconComponent,
   );
   singleLineOverlay.registerComponent(
     "bavimg",
-    "Boolean AV Image",
+    "obs-utils.overlays.booleanAVImage.name",
     AVBoolImageComponent,
   );
-  singleLineOverlay.registerComponent("img", "Image", AVImageDisplayComponent);
+  singleLineOverlay.registerComponent(
+    "img",
+    "obs-utils.overlays.image.name",
+    AVImageDisplayComponent,
+  );
   singleLineOverlay.registerComponent(
     "micoav",
-    "Multi Icon AV",
+    "obs-utils.overlays.multiIconAV.name",
     AVMultiIconComponent,
   );
   singleLineOverlay.registerComponent(
     "mimgav",
-    "Multi Image AV",
+    "obs-utils.overlays.multiImageAV.name",
     AVMultiImageComponent,
   );
   singleLineOverlay.registerComponent(
     "pb",
-    "Progress Bar",
+    "obs-utils.overlays.progressBar.name",
     ProgressBarComponent,
   );
 

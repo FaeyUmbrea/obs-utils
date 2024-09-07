@@ -8,7 +8,7 @@ export default class RollOverlay extends SvelteApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["rolloverlayeditor"],
       id: "rolloverlayeditor-application",
-      title: "Roll Overlay Editor",
+      title: "obs-utils.applications.rollOverlayEditor.name",
       height: 600,
       width: 1000,
       zIndex: 95,

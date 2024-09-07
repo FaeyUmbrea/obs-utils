@@ -4,6 +4,7 @@
   import PlayerRollComponent from "../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import { getStore } from "../../../utils/settings";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   let preRollDelay = getStore("rollOverlayPreRollDelay");
   let preRollStay = getStore("rollOverlayPreRollStay");
@@ -114,78 +115,94 @@
         preRollShow="{rollShow}"
         rollShow="{rollShow}"
       />
-      <button on:click="{test}">Test</button>
+      <button on:click="{test}"
+        >{localize("obs-utils.applications.rollOverlayEditor.test")}</button
+      >
     </section>
     <section class="menu">
       <div class="pre">
         <section class="header">
           <input bind:checked="{$pre}" type="checkbox" />
 
-          <span>Pre Roll Image</span>
+          <span
+            >{localize(
+              "obs-utils.applications.rollOverlayEditor.preRollImage",
+            )}</span
+          >
         </section>
         <section class="content">
-          Image URL
+          {localize("obs-utils.applications.rollOverlayEditor.imageUrl")}
           <section class="filepicker">
             <input bind:value="{$preRollImage}" type="text" />
             <button on:click="{openFilePickerPreRoll}"
               ><i class="fa-solid fa-file"></i></button
             >
           </section>
-          Delay (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.delay")}
           <input bind:value="{$preRollDelay}" min="0" type="number" />
-          Fade In (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.fadeIn")}
           <input bind:value="{$preRollFadeIn}" min="0" type="number" />
-          Duration (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.duration")}
           <input bind:value="{$preRollStay}" min="0" type="number" />
-          Fade Out (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.fadeOut")}
           <input bind:value="{$preRollFadeOut}" min="0" type="number" />
         </section>
       </div>
       <div class="roll">
         <section class="header">
-          <span>Roll</span>
+          <span
+            >{localize(
+              "obs-utils.applications.rollOverlayEditor.rollImage",
+            )}</span
+          >
         </section>
         <section class="content">
-          Foreground Image URL
+          {localize(
+            "obs-utils.applications.rollOverlayEditor.foregroundImageUrl",
+          )}
           <section class="filepicker">
             <input bind:value="{$rollForegroundImage}" type="text" />
             <button on:click="{openFilePickerForeground}"
               ><i class="fa-solid fa-file"></i></button
             >
           </section>
-          Background Image URL
+          {localize(
+            "obs-utils.applications.rollOverlayEditor.backgroundImageUrl",
+          )}
           <section class="filepicker">
             <input bind:value="{$rollBackgroundImage}" type="text" />
             <button on:click="{openFilePickerBackground}"
               ><i class="fa-solid fa-file"></i></button
             >
           </section>
-          Fade In (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.fadeIn")}
           <input bind:value="{$rollFadeIn}" min="0" type="number" />
-          Duration (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.duration")}
           <input bind:value="{$rollStay}" min="0" type="number" />
-          Fade Out (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.fadeOut")}
           <input bind:value="{$rollFadeOut}" min="0" type="number" />
         </section>
       </div>
       <div class="post">
         <section class="header">
           <input bind:checked="{$post}" type="checkbox" />
-          <span>Post Roll Image</span>
+          <span>
+            {localize("obs-utils.applications.rollOverlayEditor.postRollImage")}
+          </span>
         </section>
         <section class="content">
-          Image URL
+          {localize("obs-utils.applications.rollOverlayEditor.imageUrl")}
           <section class="filepicker">
             <input bind:value="{$postRollImage}" type="text" />
             <button on:click="{openFilePickerPostRoll}"
               ><i class="fa-solid fa-file"></i></button
             >
           </section>
-          Fade In (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.fadeIn")}
           <input bind:value="{$postRollFadeIn}" min="0" type="number" />
-          Duration (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.duration")}
           <input bind:value="{$postRollStay}" min="0" type="number" />
-          Fade Out (ms)
+          {localize("obs-utils.applications.rollOverlayEditor.fadeOut")}
           <input bind:value="{$postRollFadeOut}" min="0" type="number" />
         </section>
       </div>

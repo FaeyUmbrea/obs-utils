@@ -9,6 +9,7 @@
   import { getContext, onDestroy } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
   import { sendOBSSetting } from "../utils/socket.js";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   let websocketSettings = getSetting("websocketSettings");
   export let elementRoot = void 0;
@@ -46,21 +47,27 @@
   <main>
     <hr />
     <div class="flexcol">
-      URL:<input bind:value="{websocketSettings.url}" name="url" type="text" />
+      {localize("obs-utils.applications.obsWebsocket.urlLabel")}<input
+        bind:value="{websocketSettings.url}"
+        name="url"
+        type="text"
+      />
       <br />
-      Port:
+      {localize("obs-utils.applications.obsWebsocket.portLabel")}
       <input bind:value="{websocketSettings.port}" name="port" type="number" />
       <br />
-      Password:
+      {localize("obs-utils.applications.obsWebsocket.passwordLabel")}
       <input
         bind:value="{websocketSettings.password}"
         name="password"
         type="password"
       />
       <hr />
-      <button on:click="{submit}" type="submit">Save</button>
+      <button on:click="{submit}" type="submit"
+        >{localize("obs-utils.applications.obsWebsocket.saveButton")}</button
+      >
       <hr />
-      Sync to Client:
+      {localize("obs-utils.applications.obsWebsocket.syncLabel")}
       <div>
         <select
           bind:value="{currentTrackedPlayer}"
@@ -72,7 +79,9 @@
           {/each}
         </select>
         <br />
-        <button on:click="{sync}" type="submit">Sync</button>
+        <button on:click="{sync}" type="submit"
+          >{localize("obs-utils.applications.obsWebsocket.syncButton")}</button
+        >
       </div>
     </div>
   </main>

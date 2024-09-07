@@ -7,6 +7,7 @@
   import { getSetting, getStore } from "../utils/settings";
   import { getContext } from "svelte";
   import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   let overlays = getStore("streamOverlays");
   let actorIDs = getSetting("overlayActors");
@@ -50,7 +51,9 @@
         <button
           class="add"
           on:click="{() => handleAdd()}"
-          title="Add new Overlay"
+          title="{localize(
+            'obs-utils.applications.overlayEditor.addOverlayButton',
+          )}"
           type="button"><i class="fas fa-plus"></i></button
         >
         <nav class="tabs" data-group="primary-tabs">
@@ -87,7 +90,9 @@
   </div>
   <hr />
   <footer>
-    <button on:click="{close}">Close</button>
+    <button on:click="{close}"
+      >{localize("obs-utils.applications.overlayEditor.closeButton")}</button
+    >
   </footer>
 </ApplicationShell>
 

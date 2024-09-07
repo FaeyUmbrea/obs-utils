@@ -10,10 +10,10 @@ import { isOBS } from "./helpers";
 import { writable } from "svelte/store";
 
 export const OBSAction = {
-  SwitchScene: "Switch Scene",
-  ToggleSource: "Toggle Source",
-  EnableSource: "Enable Source",
-  DisableSource: "Disable Source",
+  SwitchScene: "obs-utils.applications.obsRemote.switchScene",
+  ToggleSource: "obs-utils.applications.obsRemote.toggleSource",
+  EnableSource: "obs-utils.applications.obsRemote.enableSource",
+  DisableSource: "obs-utils.applications.obsRemote.disableSource",
 };
 
 export class OBSEvent {

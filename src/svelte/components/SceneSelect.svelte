@@ -2,6 +2,7 @@
   import { OBSEvent, SceneLoadEvent } from "../../utils/settings";
   import ObsSetting from "./OBSSetting.svelte";
   import { TJSDocument } from "@typhonjs-fvtt/runtime/svelte/store/fvtt/document";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   /**
    * @type {Array<SceneLoadEvent>}
@@ -57,9 +58,14 @@
     {#each eventArray as event, index (eventArray.indexOf(event))}
       <li>
         <div class="setting">
-          <span for="input-{index}">VTT Scene Name:</span><input
+          <span
+            >{localize("obs-utils.applications.obsRemote.vttSceneLabel")}</span
+          ><input
             name="input-{index}"
             bind:value="{event.sceneName}"
+            placeholder="{localize(
+              'obs-utils.applications.obsRemote.vttScenePlaceholder',
+            )}"
             on:drop|preventDefault|stopPropagation="{(event) =>
               dropScene(index, event)}"
           />

@@ -6,7 +6,7 @@ export default class OBSWebsocketApplication extends SvelteApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["obswebsocket"],
       id: "obswebsocket-application",
-      title: "OBS Websocket Settings",
+      title: "obs-utils.applications.obsWebsocket.name",
       tabs: [
         {
           navSelector: ".tabs",

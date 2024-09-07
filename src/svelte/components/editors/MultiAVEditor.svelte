@@ -2,6 +2,7 @@
   import { getActorValues } from "../../../utils/helpers";
 
   import Select from "svelte-select";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   export let data = "";
   let av1, av2;
@@ -50,6 +51,7 @@
     on:filter="{handleFilter}"
     value="{av1}"
     on:change="{onChange}"
+    placeholder="{localize('obs-utils.strings.avInputPlaceholder')}"
   />
   <Select
     containerStyles="background-color: white;"
@@ -64,6 +66,7 @@
     on:filter="{handleFilter2}"
     value="{av2}"
     on:change="{onChange}"
+    placeholder="{localize('obs-utils.strings.avInputPlaceholder')}"
   />
 </div>
 

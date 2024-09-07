@@ -2,6 +2,7 @@
   import { getActorValues } from "../../../utils/helpers";
 
   import Select from "svelte-select";
+  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
 
   export let data = "";
   let av1, icon1, icon2;
@@ -43,9 +44,10 @@
     on:filter="{handleFilter}"
     value="{av1}"
     on:change="{onChange}"
+    placeholder="{localize('obs-utils.strings.avInputPlaceholder')}"
   />
   <div class="labeled">
-    <label for="bool-icon1">True</label>
+    <label for="bool-icon1">{localize("obs-utils.strings.true")}</label>
     <input
       id="bool-icon1"
       type="text"
@@ -54,7 +56,7 @@
     />
   </div>
   <div class="labeled">
-    <label for="bool-icon2">False</label>
+    <label for="bool-icon2">{localize("obs-utils.strings.false")}</label>
     <input
       id="bool-icon2"
       type="text"
