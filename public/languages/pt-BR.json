@@ -1,197 +1,138 @@
 {
-  "obs-utils": {
-    "strings": {
-      "module": "OBS Utils",
-      "ic": {
-        "name": "Em Combate",
-        "trackAll": "Rastear Todos Tokens Controlados",
-        "trackOne": "Rastrear o Token Controlado atualmente ativo",
-        "clonePlayer": "Clonar a Visão do Jogador Selecionado",
-        "cloneDM": "Clonar a Visão do MJ",
-        "birdseye": "Ajustar Mapa à Tela",
-        "cloneTurnPlayer": "Clonar a Visão do Jogador deste Turno"
-      },
-      "ooc":
-      {
-        "name": "Fora de Combate",
-        "trackAll": "Rastear Todos Tokens Controlados",
-        "trackManual": "Rastrear uma Lista manual de Tokens",
-        "clonePlayer": "Clonar a Visão de um Jogador",
-        "cloneDM": "Clonar a Visão do MJ",
-        "birdseye": "Ajustar Mapa à Tela"
-      },
-      "limitCanvas": "Limitar Tela às Bordas da Tela",
-      "keypressInfo1": "Trocado Modo ",
-      "keypressInfo2": "para "
-    },
-    "settings": {
-      "obsMode": {
-        "Name": "Modo OBS",
-        "Hint": "Define este navegador como o navegador OBS. Habilite apenas se você não conseguir usar uma fonte do navegador."
-      },
-      "obsModeUser":
-      {
-        "Name": "Usuário Modo OBS (Nome de Usuário)",
-        "Hint": "Define este usuário para estar sempre no Modo OBS, independentemente do navegador."
-      },
-      "obsModeGlobalDisable":
-      {
-        "Name": "Desabilitar Visualização do OBS",
-        "Hint": "Isso desativa os recursos do OBS para todos os clientes, independentemente do método."
-      },
-      "minScale": {
-        "Name": "Escala Mínima",
-        "Hint": "O mínimo que a tela pode ampliar."
-      },
-      "maxScale": {
-        "Name": "Escala Máxima",
-        "Hint": "O máximo que a tela pode ampliar."
-      },
-      "defaultOutOfCombat": {
-        "Name": "Modo Fora de Combate",
-        "Hint": "O modo da câmera fora de combate."
-      },
-      "defaultInCombat": {
-        "Name": "Modo Em Combate",
-        "Hint": "O modo da câmera em combate."
-      },
-      "popupCloseDelay": {
-        "Name": "Atraso Fechamento de Pop-Up",
-        "Hint": "Segundos até que as pop-ups sejam fechadas automaticamente. 0 para desabilitar."
-      },
-      "showTrackerInCombat": {
-        "Name": "Mostrar Rastreador de Combate em Combate?",
-        "Hint": "Se marcado, o Rastreador de Combate ficará visível durante os turnos de combate."
-      },
-      "obsRemoteMenu": {
-        "Label": "Abrir Menu",
-        "Name": "Configurações OBS Remoto",
-        "Hint": "Configure o OBS Remoto."
-      },
-      "obsWebsocketMenu": {
-        "Label": "Abrir Menu",
-        "Name": "Configurações OBS Websocket",
-        "Hint": "Configure o OBS Websocket."
-      },
-      "overlayActorSelect": {
-        "Label": "Abrir Menu",
-        "Name": "Atores de Sobreposição",
-        "Hint": "Selecione os Atores para a Sobreposição."
-      },
-      "overlayEditor": {
-        "Label": "Abrir Editor",
-        "Name": "Editor do Overlay",
-        "Hint": "Edite os Overlays."
-      },
-      "enableOBSWebsocket": {
-        "Name": "Habilitar OBS Websocket?",
-        "Hint": "Se marcado, o OBS Websocket será usado para comunicação Remota."
-      },
-      "rollOverlayPostRollImage": {
-        "Name": "Imagem Pós-Rolagem (Opcional)",
-        "Hint": "Imagem a ser exibida após a Rolagem."
-      },
-      "rollOverlayRollForegroundImage": {
-        "Name": "Imagem Frontal Pós-Rolagem (Opcional)",
-        "Hint": "Imagem a ser exibida na frente da Rolagem."
-      },
-      "rollOverlayRollBackgroundImage": {
-        "Name": "Imagem de Fundo Pós-Rolagem (Opcional)",
-        "Hint": "Imagem a ser exibida atrás da Rolagem."
-      },
-      "rollOverlayPreRollImage": {
-        "Name": "Imagem Pré-Rolagem (Opcional)",
-        "Hint": "Imagem a ser exibida antes da Rolagem."
-      },
-      "rollOverlayPreRollDelay": {
-        "Name": "Atraso Pré-Rolagem",
-        "Hint": "O atraso em milissegundos (ms) até que a pré-rolagem seja exibida."
-      },
-      "rollOverlayPreRollStay": {
-        "Name": "Duração Pré-Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a pré-rolagem é exibida."
-      },
-      "rollOverlayPreRollFadeIn": {
-        "Name": "Duração Fade In Pré-Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a pré-rolagem aparece gradualmente."
-      },
-      "rollOverlayPreRollFadeOut": {
-        "Name": "Duração Fade Out Pré-Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a pré-rolagem desaparece gradualmente."
-      },
-      "rollOverlayRollStay": {
-        "Name": "Duração da Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a rolagem é exibida."
-      },
-      "rollOverlayRollFadeIn": {
-        "Name": "Duração Fade In Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a rolagem aparece gradualmente."
-      },
-      "rollOverlayRollFadeOut": {
-        "Name": "Duração Fade Out Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a rolagem desaparece gradualmente."
-      },
-      "rollOverlayPostRollStay": {
-        "Name": "Duração Pós-Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a pós-rolagem é exibida."
-      },
-      "rollOverlayPostRollFadeIn": {
-        "Name": "Duração Fade In Pós-Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a pós-rolagem aparece gradualmente."
-      },
-      "rollOverlayRollPostFadeOut": {
-        "Name": "Duração Fade Out Pós-Rolagem",
-        "Hint": "O tempo em milissegundos (ms) que a pós-rolagem desaparece gradualmente."
-      },
-      "rollOverlayEditor": {
-        "Name": "Editor Overlay de Rolagem",
-        "Hint": "Edite o Overlay de Rolagem.",
-        "Label": "Abrir Editor"
-      },
-      "showAV": {
-        "Name": "Mostrar Overlay de Vídeo?",
-        "Hint": "Se ativado, a Interface do Chat de Áudio/Vídeo ficará visível no OBS (pode ser necessário recarregar no OBS)."
-      },
-      "showUserConfig": {
-        "Name": "Permitir Renderização de Configuração de Usuário?",
-        "Hint": "Se ativado, a caixa de diálogo de configuração do usuário não será suprimida."
-      },
-      "fixedPopups": {
-        "Name": "Use Pop-Ups Fixos",
-        "Hint": "Se habilitado, todos os pop-ups são reposicionados e redimensionados para os valores configurados."
-      },
-      "fixedPopupX": {
-        "Name": "Pop-Up X",
-        "Hint": "A distância até a borda esquerda da tela, em pixels."
-      },
-      "fixedPopupY": {
-        "Name": "Pop-Up Y",
-        "Hint": "A distância até a borda superior da tela, em pixels."
-      },
-      "fixedPopupWidth": {
-        "Name": "Pop-Up Largura",
-        "Hint": "A largura da pop-up, em pixels."
-      },
-      "fixedPopupHeight": {
-        "Name": "Pop-Up Altura",
-        "Hint": "A altura da pop-up, em pixels."
-      },
-      "showKeybindingPopup": {
-        "Name": "Mostrar Notificação de Atalho",
-        "Hint": "Se ativado, o uso de um atalho de teclado mostrará uma notificação de qual modo foi selecionado."
-      },
-      "diceSoNice": {
-        "Name": "Sobreposição Dice so Nice",
-        "Hint": "Se ativado, uma seção do Dice so Nice será renderizada junto com outras sobreposições."
-      },
-      "diceSoNiceOverlayWidth":{
-        "Name": "Largura Sobreposição Dice so Nice",
-        "Hint": "Largura do elemento, em pixels."
-      },
-      "diceSoNiceOverlayHeight":{
-        "Name": "Altura Sobreposição Dice so Nice",
-        "Hint": "Altura do elemento, em pixels."
-      }
+    "obs-utils": {
+        "strings": {
+            "module": "OBS Utils",
+            "ic": {
+                "name": "Em Combate",
+                "trackAll": "Rastear Todos Tokens Controlados",
+                "trackOne": "Rastrear o Token Controlado atualmente ativo",
+                "clonePlayer": "Clonar a Visão do Jogador Selecionado",
+                "cloneDM": "Clonar a Visão do MJ",
+                "birdseye": "Ajustar Mapa à Tela",
+                "cloneTurnPlayer": "Clonar a Visão do Jogador deste Turno"
+            },
+            "ooc": {
+                "name": "Fora de Combate",
+                "trackAll": "Rastear Todos Tokens Controlados",
+                "trackManual": "Rastrear uma Lista manual de Tokens",
+                "clonePlayer": "Clonar a Visão de um Jogador",
+                "cloneDM": "Clonar a Visão do MJ",
+                "birdseye": "Ajustar Mapa à Tela"
+            },
+            "limitCanvas": "Limitar Tela às Bordas da Tela",
+            "keypressInfo1": "Trocado Modo ",
+            "keypressInfo2": "para "
+        },
+        "settings": {
+            "obsMode": {
+                "Name": "Modo OBS",
+                "Hint": "Define este navegador como o navegador OBS. Habilite apenas se você não conseguir usar uma fonte do navegador."
+            },
+            "obsModeUser": {
+                "Name": "Usuário Modo OBS (Nome de Usuário)",
+                "Hint": "Define este usuário para estar sempre no Modo OBS, independentemente do navegador."
+            },
+            "obsModeGlobalDisable": {
+                "Name": "Desabilitar Visualização do OBS",
+                "Hint": "Isso desativa os recursos do OBS para todos os clientes, independentemente do método."
+            },
+            "minScale": {
+                "Name": "Escala Mínima",
+                "Hint": "O mínimo que a tela pode ampliar."
+            },
+            "maxScale": {
+                "Name": "Escala Máxima",
+                "Hint": "O máximo que a tela pode ampliar."
+            },
+            "defaultOutOfCombat": {
+                "Name": "Modo Fora de Combate",
+                "Hint": "O modo da câmera fora de combate."
+            },
+            "defaultInCombat": {
+                "Name": "Modo Em Combate",
+                "Hint": "O modo da câmera em combate."
+            },
+            "popupCloseDelay": {
+                "Name": "Atraso Fechamento de Pop-Up",
+                "Hint": "Segundos até que as pop-ups sejam fechadas automaticamente. 0 para desabilitar."
+            },
+            "showTrackerInCombat": {
+                "Name": "Mostrar Rastreador de Combate em Combate?",
+                "Hint": "Se marcado, o Rastreador de Combate ficará visível durante os turnos de combate."
+            },
+            "obsRemoteMenu": {
+                "Label": "Abrir Menu",
+                "Name": "Configurações OBS Remoto",
+                "Hint": "Configure o OBS Remoto."
+            },
+            "obsWebsocketMenu": {
+                "Label": "Abrir Menu",
+                "Name": "Configurações OBS Websocket",
+                "Hint": "Configure o OBS Websocket."
+            },
+            "overlayActorSelect": {
+                "Label": "Abrir Menu",
+                "Name": "Atores de Sobreposição",
+                "Hint": "Selecione os Atores para a Sobreposição."
+            },
+            "overlayEditor": {
+                "Label": "Abrir Editor",
+                "Name": "Editor do Overlay",
+                "Hint": "Edite os Overlays."
+            },
+            "enableOBSWebsocket": {
+                "Name": "Habilitar OBS Websocket?",
+                "Hint": "Se marcado, o OBS Websocket será usado para comunicação Remota."
+            },
+            "rollOverlayEditor": {
+                "Name": "Editor Overlay de Rolagem",
+                "Hint": "Edite o Overlay de Rolagem.",
+                "Label": "Abrir Editor"
+            },
+            "showAV": {
+                "Name": "Mostrar Overlay de Vídeo?",
+                "Hint": "Se ativado, a Interface do Chat de Áudio/Vídeo ficará visível no OBS (pode ser necessário recarregar no OBS)."
+            },
+            "showUserConfig": {
+                "Name": "Permitir Renderização de Configuração de Usuário?",
+                "Hint": "Se ativado, a caixa de diálogo de configuração do usuário não será suprimida."
+            },
+            "fixedPopups": {
+                "Name": "Use Pop-Ups Fixos",
+                "Hint": "Se habilitado, todos os pop-ups são reposicionados e redimensionados para os valores configurados."
+            },
+            "fixedPopupX": {
+                "Name": "Pop-Up X",
+                "Hint": "A distância até a borda esquerda da tela, em pixels."
+            },
+            "fixedPopupY": {
+                "Name": "Pop-Up Y",
+                "Hint": "A distância até a borda superior da tela, em pixels."
+            },
+            "fixedPopupWidth": {
+                "Name": "Pop-Up Largura",
+                "Hint": "A largura da pop-up, em pixels."
+            },
+            "fixedPopupHeight": {
+                "Name": "Pop-Up Altura",
+                "Hint": "A altura da pop-up, em pixels."
+            },
+            "showKeybindingPopup": {
+                "Name": "Mostrar Notificação de Atalho",
+                "Hint": "Se ativado, o uso de um atalho de teclado mostrará uma notificação de qual modo foi selecionado."
+            },
+            "diceSoNice": {
+                "Name": "Sobreposição Dice so Nice",
+                "Hint": "Se ativado, uma seção do Dice so Nice será renderizada junto com outras sobreposições."
+            },
+            "diceSoNiceOverlayWidth": {
+                "Name": "Largura Sobreposição Dice so Nice",
+                "Hint": "Largura do elemento, em pixels."
+            },
+            "diceSoNiceOverlayHeight": {
+                "Name": "Altura Sobreposição Dice so Nice",
+                "Hint": "Altura do elemento, em pixels."
+            }
+        }
     }
-  }
 }
