@@ -22,12 +22,126 @@
             "limitCanvas": "Limitar Tela às Bordas da Tela",
             "keypressInfo1": "Trocado Modo ",
             "keypressInfo2": "para ",
-            "false": "False",
-            "missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
-            "true": "True",
-            "iconPlaceholder": "Icon",
-            "done": "Done",
-            "avInputPlaceholder": "Enter text or search"
+            "avInputPlaceholder": "Digite o texto ou pesquise",
+            "iconPlaceholder": "Ícone",
+            "true": "Verdadeiro",
+            "false": "Falso",
+            "missingTypeNotice": "Tipo Legado/Ausente. Selecione um novo tipo no menu suspenso para editar.",
+            "done": "Feito"
+        },
+        "applications": {
+            "rollOverlayEditor": {
+                "name": "Editor Sobreposição de Rolagem",
+                "test": "Teste",
+                "preRollImage": "Imagem Pré-Rolagem",
+                "rollImage": "Imagem Rolagem",
+                "postRollImage": "Imagem Pós-Rolagem",
+                "imageUrl": "URL da Imagem",
+                "foregroundImageUrl": "URL Imagem de Primeiro Plano",
+                "backgroundImageUrl": "URL Imagem de Fundo",
+                "delay": "Delay (ms)",
+                "fadeIn": "Fade In (ms)",
+                "duration": "Duração (ms)",
+                "fadeOut": "Fade Out (ms)"
+            },
+            "director": {
+                "name": "Diretor",
+                "icTypeHeader": "Tipo Em Combate",
+                "oocTypeHeader": "Tipo Fora de Combate",
+                "canvasOptionsHeader": "Opções de Tela",
+                "trackedPlayerHeader": "Jogador Rastreado"
+            },
+            "obsRemote": {
+                "name": "Configurações Remotas do OBS",
+                "sceneName": "Nome da Cena",
+                "sourceName": "Nome da Fonte no OBS",
+                "switchScene": "Trocar Cena",
+                "toggleSource": "Alternar Fonte",
+                "enableSource": "Habilitar Fonte",
+                "disableSource": "Desabilitar Fonte",
+                "vttSceneLabel": "Nome da Cena no VTT",
+                "vttScenePlaceholder": "Insira o nome ou solte uma cena aqui",
+                "onLoad": "Carregar",
+                "onCombatStart": "Início do Combate",
+                "onCombatEnd": "Fim do Combate",
+                "onPause": "Pausar",
+                "onUnpause": "Retomar",
+                "onSceneLoad": "Carregar Cena",
+                "onStopStreaming": "Parar Streaming"
+            },
+            "obsWebsocket": {
+                "name": "Configurações OBS Websocket",
+                "urlLabel": "URL",
+                "portLabel": "Porta",
+                "passwordLabel": "Senha",
+                "syncLabel": "Sincronizar Cliente Alvo",
+                "saveButton": "Salvar",
+                "syncButton": "Sincronizar"
+            },
+            "actorSelect": {
+                "name": "Seleção de Atores",
+                "searchPlaceholder": "Procurar",
+                "closeButton": "Fechar",
+                "resetButton": "Reiniciar"
+            },
+            "overlayEditor": {
+                "name": "Editor de Sobreposição",
+                "addButton": "Adicionar Novo Componente",
+                "editStyleButton": "Estilar Estilo",
+                "removeButton": "Remover Sobreposição",
+                "removeComponentButton": "Remover Componente",
+                "importButton": "Importar",
+                "exportButton": "Exportar",
+                "addOverlayButton": "Adicionar Nova Sobreposição",
+                "closeButton": "Fechar",
+                "importDialog": {
+                    "title": "Importar Dados: Sobreposições",
+                    "hint1": "Você está prestes a importar uma configuração de Sobreposição exportada. Certifique-se de que foi exportado no mesmo sistema ou as Sobreposições Áudio/Vídeo podem não funcionar.",
+                    "hint2": "Escolha se deseja substituir suas sobreposições existentes ou adicionar a lista importada.",
+                    "replaceButton": "Substituir",
+                    "appendButton": "Acrescentar",
+                    "fileError": "Você não carregou um arquivo de dados",
+                    "versionError": "Versão não-suportada",
+                    "formatError": "O arquivo importado não é um OBS Utils Overlay Export",
+                    "cancelButton": "Cancelar"
+                },
+                "exportDialog": {
+                    "title": "Exportar suas configurações?",
+                    "content": "Você deseja exportar suas Configurações de Sobreposição?",
+                    "yesButton": "Sim",
+                    "noButton": "Não"
+                }
+            },
+            "styleEditor": {
+                "name": "Editor de Estilo",
+                "submitButton": "Enviar"
+            }
+        },
+        "overlays": {
+            "plainText": {
+                "name": "Texto Simples"
+            },
+            "fontAwesomeIcon": {
+                "name": "Ícone Font Awesome"
+            },
+            "booleanAVIcon": {
+                "name": "Ícone Booleano Áudio/Vídeo"
+            },
+            "booleanAVImage": {
+                "name": "Imagem Booleana Áudio/Vídeo"
+            },
+            "image": {
+                "name": "Imagem"
+            },
+            "multiIconAV": {
+                "name": "Multiícone Áudio/Vídeo"
+            },
+            "multiImageAV": {
+                "name": "Multiimagem Áudio/Vídeo"
+            },
+            "progressBar": {
+                "name": "Barra de Progresso"
+            }
         },
         "settings": {
             "obsMode": {
@@ -83,20 +197,20 @@
             },
             "overlayEditor": {
                 "Label": "Abrir Editor",
-                "Name": "Editor do Overlay",
-                "Hint": "Edite os Overlays."
+                "Name": "Editor de Sobreposição",
+                "Hint": "Edite as Sobreposições."
             },
             "enableOBSWebsocket": {
                 "Name": "Habilitar OBS Websocket?",
                 "Hint": "Se marcado, o OBS Websocket será usado para comunicação Remota."
             },
             "rollOverlayEditor": {
-                "Name": "Editor Overlay de Rolagem",
-                "Hint": "Edite o Overlay de Rolagem.",
+                "Name": "Editor Sobreposição de Rolagem",
+                "Hint": "Edite a Sobreposição de Rolagem.",
                 "Label": "Abrir Editor"
             },
             "showAV": {
-                "Name": "Mostrar Overlay de Vídeo?",
+                "Name": "Mostrar Sobreposição de Vídeo?",
                 "Hint": "Se ativado, a Interface do Chat de Áudio/Vídeo ficará visível no OBS (pode ser necessário recarregar no OBS)."
             },
             "showUserConfig": {
@@ -138,120 +252,6 @@
             "diceSoNiceOverlayHeight": {
                 "Name": "Altura Sobreposição Dice so Nice",
                 "Hint": "Altura do elemento, em pixels."
-            }
-        },
-        "applications": {
-            "overlayEditor": {
-                "importDialog": {
-                    "replaceButton": "Replace",
-                    "hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
-                    "cancelButton": "Cancel",
-                    "formatError": "Imported file is not an OBS Utils Overlay Export",
-                    "hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
-                    "appendButton": "Append",
-                    "title": "Import Data: Overlays",
-                    "fileError": "You did not upload a data file",
-                    "versionError": "Version unsupported"
-                },
-                "importButton": "Import",
-                "exportDialog": {
-                    "content": "Do you want to export your Overlay Settings?",
-                    "noButton": "No",
-                    "title": "Export your settings?",
-                    "yesButton": "Yes"
-                },
-                "closeButton": "Close",
-                "name": "Overlay Editor",
-                "removeComponentButton": "Remove Component",
-                "removeButton": "Remove Overlay",
-                "addButton": "Add New Component",
-                "editStyleButton": "Edit Style",
-                "addOverlayButton": "Add New Overlay",
-                "exportButton": "Export"
-            },
-            "director": {
-                "oocTypeHeader": "Out of Combat Type",
-                "canvasOptionsHeader": "Canvas Options",
-                "trackedPlayerHeader": "Tracked Player",
-                "name": "Director",
-                "icTypeHeader": "In Combat Type"
-            },
-            "actorSelect": {
-                "resetButton": "Reset",
-                "name": "Actor Selection",
-                "closeButton": "Close",
-                "searchPlaceholder": "Search"
-            },
-            "obsWebsocket": {
-                "portLabel": "Port",
-                "name": "OBS Websocket Settings",
-                "passwordLabel": "Password",
-                "syncButton": "Sync",
-                "saveButton": "Save",
-                "syncLabel": "Sync Target Client",
-                "urlLabel": "URL"
-            },
-            "obsRemote": {
-                "vttSceneLabel": "VTT Scene Name",
-                "sourceName": "OBS Source Name",
-                "name": "OBS Remote Settings",
-                "disableSource": "Disable Source",
-                "onCombatEnd": "Combat End",
-                "switchScene": "Switch Scene",
-                "enableSource": "Enable Source",
-                "onLoad": "Load",
-                "onCombatStart": "Combat Start",
-                "sceneName": "Scene Name",
-                "vttScenePlaceholder": "Input name or drop a scene here",
-                "onPause": "Pause",
-                "onUnpause": "Unpause",
-                "onStopStreaming": "Stop Streaming",
-                "toggleSource": "Toggle Source",
-                "onSceneLoad": "Scene Load"
-            },
-            "rollOverlayEditor": {
-                "backgroundImageUrl": "Background Image URL",
-                "name": "Roll Overlay Editor",
-                "preRollImage": "Pre Roll Image",
-                "imageUrl": "Image Url",
-                "foregroundImageUrl": "Foreground Image URL",
-                "rollImage": "Roll Image",
-                "test": "Test",
-                "fadeOut": "Fade Out (ms)",
-                "postRollImage": "Post Roll Image",
-                "duration": "Duration (ms)",
-                "delay": "Delay (ms)",
-                "fadeIn": "Fade In (ms)"
-            },
-            "styleEditor": {
-                "submitButton": "Submit",
-                "name": "Style Editor"
-            }
-        },
-        "overlays": {
-            "fontAwesomeIcon": {
-                "name": "Font Awesome Icon"
-            },
-            "booleanAVImage": {
-                "name": "Boolean AV Image"
-            },
-            "plainText": {
-                "name": "Plain Text"
-            },
-            "image": {
-                "name": "Image"
-            },
-            "multiIconAV": {
-                "name": "Multi Icon AV"
-            },
-            "multiImageAV": {
-                "name": "Multi Image AV"
-            },
-            "progressBar": {
-                "name": "Progress Bar"
-            },
-            "booleanAVIcon": {
-                "name": "Boolean AV Icon"
             }
         }
     }
