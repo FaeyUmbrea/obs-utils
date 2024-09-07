@@ -1,3 +1,10 @@
+## Version 3.2.2
+
+### Localization
+- Added localization support for the entire module
+- Support added for german
+- Brazilian Portuguese updated
+
 ## Version 3.2.1
 
 ### Localization
