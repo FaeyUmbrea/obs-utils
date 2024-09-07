@@ -1,0 +1,258 @@
+{
+    "obs-utils": {
+        "applications": {
+            "actorSelect": {
+                "resetButton": "Reset",
+                "name": "Actor Selection",
+                "closeButton": "Close",
+                "searchPlaceholder": "Search"
+            },
+            "overlayEditor": {
+                "importDialog": {
+                    "cancelButton": "Cancel",
+                    "replaceButton": "Replace",
+                    "hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
+                    "formatError": "Imported file is not an OBS Utils Overlay Export",
+                    "hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
+                    "appendButton": "Append",
+                    "title": "Import Data: Overlays",
+                    "fileError": "You did not upload a data file",
+                    "versionError": "Version unsupported"
+                },
+                "importButton": "Import",
+                "exportDialog": {
+                    "content": "Do you want to export your Overlay Settings?",
+                    "noButton": "No",
+                    "title": "Export your settings?",
+                    "yesButton": "Yes"
+                },
+                "closeButton": "Close",
+                "name": "Overlay Editor",
+                "removeComponentButton": "Remove Component",
+                "removeButton": "Remove Overlay",
+                "addButton": "Add New Component",
+                "editStyleButton": "Edit Style",
+                "addOverlayButton": "Add New Overlay",
+                "exportButton": "Export"
+            },
+            "director": {
+                "oocTypeHeader": "Out of Combat Type",
+                "canvasOptionsHeader": "Canvas Options",
+                "trackedPlayerHeader": "Tracked Player",
+                "name": "Director",
+                "icTypeHeader": "In Combat Type"
+            },
+            "obsWebsocket": {
+                "portLabel": "Port",
+                "name": "OBS Websocket Settings",
+                "passwordLabel": "Password",
+                "syncButton": "Sync",
+                "saveButton": "Save",
+                "syncLabel": "Sync Target Client",
+                "urlLabel": "URL"
+            },
+            "obsRemote": {
+                "vttSceneLabel": "VTT Scene Name",
+                "sourceName": "OBS Source Name",
+                "name": "OBS Remote Settings",
+                "disableSource": "Disable Source",
+                "onCombatEnd": "Combat End",
+                "switchScene": "Switch Scene",
+                "enableSource": "Enable Source",
+                "onLoad": "Load",
+                "onCombatStart": "Combat Start",
+                "sceneName": "Scene Name",
+                "vttScenePlaceholder": "Input name or drop a scene here",
+                "onPause": "Pause",
+                "onUnpause": "Unpause",
+                "onStopStreaming": "Stop Streaming",
+                "toggleSource": "Toggle Source",
+                "onSceneLoad": "Scene Load"
+            },
+            "rollOverlayEditor": {
+                "backgroundImageUrl": "Background Image URL",
+                "name": "Roll Overlay Editor",
+                "preRollImage": "Pre Roll Image",
+                "imageUrl": "Image Url",
+                "foregroundImageUrl": "Foreground Image URL",
+                "rollImage": "Roll Image",
+                "test": "Test",
+                "fadeOut": "Fade Out (ms)",
+                "postRollImage": "Post Roll Image",
+                "duration": "Duration (ms)",
+                "delay": "Delay (ms)",
+                "fadeIn": "Fade In (ms)"
+            },
+            "styleEditor": {
+                "submitButton": "Submit",
+                "name": "Style Editor"
+            }
+        },
+        "settings": {
+            "obsModeUser": {
+                "Name": "OBS Mode User (Username)",
+                "Hint": "Sets this User to always be in OBS Mode, regardless of browser"
+            },
+            "popupCloseDelay": {
+                "Name": "Pop-Up Close Delay",
+                "Hint": "Seconds until pop-ups are automatically closed. 0 to disable"
+            },
+            "enableOBSWebsocket": {
+                "Hint": "If checked, OBS Websocket will be used for Remoting",
+                "Name": "Enable OBS Websocket?"
+            },
+            "diceSoNiceOverlayWidth": {
+                "Hint": "Width of the element in pixels",
+                "Name": "Dice so Nice Overlay Width"
+            },
+            "obsWebsocketMenu": {
+                "Hint": "Configure OBS Websocket",
+                "Label": "Open Menu",
+                "Name": "OBS Websocket Settings"
+            },
+            "minScale": {
+                "Name": "Minimum Scale",
+                "Hint": "The lowest that the screen can zoom to"
+            },
+            "fixedPopupX": {
+                "Hint": "The distance to the left screen edge in pixels",
+                "Name": "Pop-Up X"
+            },
+            "obsMode": {
+                "Name": "OBS Mode",
+                "Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
+            },
+            "fixedPopupHeight": {
+                "Hint": "The height of the pop-up in pixels",
+                "Name": "Pop-Up Height"
+            },
+            "showKeybindingPopup": {
+                "Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected",
+                "Name": "Show Keybinding Notification"
+            },
+            "fixedPopupY": {
+                "Name": "Pop-Up Y",
+                "Hint": "The distance to the top screen edge in pixels"
+            },
+            "showTrackerInCombat": {
+                "Name": "Show Combat Tracker in Combat?",
+                "Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
+            },
+            "rollOverlayEditor": {
+                "Name": "Roll Overlay Editor",
+                "Label": "Open Editor",
+                "Hint": "Edit the Roll Overlay"
+            },
+            "overlayEditor": {
+                "Name": "Overlay Editor",
+                "Hint": "Edit the Overlays",
+                "Label": "Open Editor"
+            },
+            "overlayActorSelect": {
+                "Label": "Open Menu",
+                "Name": "Overlay Actors",
+                "Hint": "Select the Actors for the Overlay"
+            },
+            "maxScale": {
+                "Name": "Maximum Scale",
+                "Hint": "The highest that the screen can zoom to"
+            },
+            "diceSoNiceOverlayHeight": {
+                "Name": "Dice so Nice Overlay Height",
+                "Hint": "Width of the element in pixels"
+            },
+            "diceSoNice": {
+                "Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
+                "Name": "Enable Dice so Nice overlay"
+            },
+            "showAV": {
+                "Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
+                "Name": "Show Video Overlay?"
+            },
+            "fixedPopups": {
+                "Hint": "If enabled, all Popups are repositioned and resized to the configured values",
+                "Name": "Use Fixed Pop-Ups"
+            },
+            "defaultInCombat": {
+                "Name": "In Combat Mode",
+                "Hint": "The in Combat Camera Mode"
+            },
+            "obsRemoteMenu": {
+                "Name": "OBS Remote Settings",
+                "Hint": "Configure the OBS Remote",
+                "Label": "Open Menu"
+            },
+            "defaultOutOfCombat": {
+                "Hint": "The out of Combat Camera Mode",
+                "Name": "Out Of Combat Mode"
+            },
+            "obsModeGlobalDisable": {
+                "Name": "OBS View Global Disable",
+                "Hint": "This will turn off the OBS features for all clients, regardless of method"
+            },
+            "fixedPopupWidth": {
+                "Hint": "The width of the pop-up in pixels",
+                "Name": "Pop-Up Width"
+            },
+            "showUserConfig": {
+                "Name": "Allow User-Config to Render?",
+                "Hint": "If enabled, the user config dialog will not be suppressed"
+            }
+        },
+        "strings": {
+            "false": "False",
+            "true": "True",
+            "ic": {
+                "name": "In Combat",
+                "trackAll": "Track all Owned Tokens",
+                "birdseye": "Fit Map to Screen",
+                "cloneTurnPlayer": "Clone the Turn Player's Viewport",
+                "clonePlayer": "Clone the Selected Player's Viewport",
+                "cloneDM": "Clone the DM's Viewport",
+                "trackOne": "Track the currently active Owned Token"
+            },
+            "missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
+            "keypressInfo2": "Mode to ",
+            "keypressInfo1": "Switched ",
+            "iconPlaceholder": "Icon",
+            "done": "Done",
+            "limitCanvas": "Limit Canvas to Screen Edges",
+            "ooc": {
+                "trackManual": "Track a manual List of Tokens",
+                "cloneDM": "Clone the DM's Viewport",
+                "trackAll": "Track all Owned Tokens",
+                "name": "Out of Combat",
+                "birdseye": "Fit Map to Screen",
+                "clonePlayer": "Clone a Player's Viewport"
+            },
+            "avInputPlaceholder": "Enter text or search",
+            "module": "OBS Utils"
+        },
+        "overlays": {
+            "fontAwesomeIcon": {
+                "name": "Font Awesome Icon"
+            },
+            "booleanAVImage": {
+                "name": "Boolean AV Image"
+            },
+            "plainText": {
+                "name": "Plain Text"
+            },
+            "image": {
+                "name": "Image"
+            },
+            "multiImageAV": {
+                "name": "Multi Image AV"
+            },
+            "multiIconAV": {
+                "name": "Multi Icon AV"
+            },
+            "progressBar": {
+                "name": "Progress Bar"
+            },
+            "booleanAVIcon": {
+                "name": "Boolean AV Icon"
+            }
+        }
+    }
+}
