@@ -38,12 +38,12 @@
       "path": "languages/en.json"
     },
     {
-      "lang": "pt_BR",
+      "lang": "pt-BR",
       "name": "Português (Brasil)",
       "path": "languages/pt_BR.json"
     },
     {
-      "lang": "de_DE",
+      "lang": "de-DE",
       "name": "Deutsch",
       "path": "languages/de_DE.json"
     },
@@ -53,7 +53,7 @@
       "path": "languages/ja.json"
     },
     {
-      "lang": "nb_NO",
+      "lang": "nb-NO",
       "name": "Bokmål",
       "path": "languages/nb_NO.json"
     }
