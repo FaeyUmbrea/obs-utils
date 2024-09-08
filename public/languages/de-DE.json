@@ -36,7 +36,7 @@
                 "preRollImage": "Vor-Würfel Bild",
                 "rollImage": "Würfel Bild",
                 "postRollImage": "Nach-Würfel Bild",
-                "imageUrl": "Bild Url",
+                "imageUrl": "Bild URL",
                 "foregroundImageUrl": "Vordergrundbild URL",
                 "backgroundImageUrl": "Hintergrundbild URL",
                 "delay": "Verzögerung (ms)",
