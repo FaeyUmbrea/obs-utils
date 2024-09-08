@@ -2,118 +2,118 @@
     "obs-utils": {
         "strings": {
             "ic": {
-                "name": "In Combat",
-                "birdseye": "Fit Map to Screen",
-                "trackAll": "Track all Owned Tokens",
+                "name": "I kamp",
+                "birdseye": "Strekk kartet til skjermkantene",
+                "trackAll": "Hold øye med alle eide symboler",
                 "cloneTurnPlayer": "Clone the Turn Player's Viewport",
-                "clonePlayer": "Clone the Selected Player's Viewport",
+                "clonePlayer": "Klon valgt spillers synsfelt",
                 "cloneDM": "Clone the DM's Viewport",
-                "trackOne": "Track the currently active Owned Token"
+                "trackOne": "Hold øye med det aktive symbolet som er i ditt eie nå"
             },
-            "done": "Done",
-            "false": "False",
-            "true": "True",
+            "done": "Ferdig",
+            "false": "Usant",
+            "true": "Sant",
             "missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
-            "keypressInfo2": "Mode to ",
+            "keypressInfo2": "Modus til ",
             "keypressInfo1": "Switched ",
-            "iconPlaceholder": "Icon",
+            "iconPlaceholder": "Ikon",
             "limitCanvas": "Limit Canvas to Screen Edges",
             "ooc": {
-                "trackManual": "Track a manual List of Tokens",
+                "trackManual": "Hold øye med en manuell liste over symboler",
                 "cloneDM": "Clone the DM's Viewport",
-                "trackAll": "Track all Owned Tokens",
-                "name": "Out of Combat",
-                "clonePlayer": "Clone the Selected Player's Viewport",
-                "birdseye": "Fit Map to Screen"
+                "trackAll": "Hold øye med alle eide symboler",
+                "name": "Ute av kamp",
+                "clonePlayer": "Klon valgt spillers synsfelt",
+                "birdseye": "Strekk kartet til skjermkantene"
             },
-            "avInputPlaceholder": "Enter text or search",
-            "module": "OBS Utils"
+            "avInputPlaceholder": "Skriv inn tekst eller søk",
+            "module": "OBS-verktøy"
         },
         "applications": {
             "rollOverlayEditor": {
                 "name": "Roll Overlay Editor",
-                "backgroundImageUrl": "Background Image URL",
+                "backgroundImageUrl": "Nettadresse for bakgrunnsbilde",
                 "preRollImage": "Pre Roll Image",
-                "imageUrl": "Image Url",
-                "foregroundImageUrl": "Foreground Image URL",
+                "imageUrl": "Bildenettadresse",
+                "foregroundImageUrl": "Nettadresse for forgrunnsbilde",
                 "rollImage": "Roll Image",
                 "test": "Test",
-                "fadeOut": "Fade Out (ms)",
+                "fadeOut": "Uttoning (ms)",
                 "postRollImage": "Post Roll Image",
-                "duration": "Duration (ms)",
-                "fadeIn": "Fade In (ms)",
-                "delay": "Delay (ms)"
+                "duration": "Varighet (ms)",
+                "fadeIn": "Inntoning (ms)",
+                "delay": "Forsinkelse (ms)"
             },
             "overlayEditor": {
                 "importDialog": {
-                    "replaceButton": "Replace",
+                    "replaceButton": "Erstatt",
                     "hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
-                    "cancelButton": "Cancel",
+                    "cancelButton": "Avbryt",
                     "formatError": "Imported file is not an OBS Utils Overlay Export",
                     "hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
-                    "appendButton": "Append",
+                    "appendButton": "Føy til",
                     "title": "Import Data: Overlays",
-                    "fileError": "You did not upload a data file",
-                    "versionError": "Version unsupported"
+                    "fileError": "Du lastet ikke opp en datafil",
+                    "versionError": "Ustøttet versjon"
                 },
-                "importButton": "Import",
+                "importButton": "Importer",
                 "exportDialog": {
                     "content": "Do you want to export your Overlay Settings?",
-                    "noButton": "No",
-                    "title": "Export your settings?",
-                    "yesButton": "Yes"
+                    "noButton": "Nei",
+                    "title": "Eksporter innstillingene dine?",
+                    "yesButton": "Ja"
                 },
-                "closeButton": "Close",
-                "removeComponentButton": "Remove Component",
+                "closeButton": "Lukk",
+                "removeComponentButton": "Fjern komponent",
                 "name": "Overlay Editor",
                 "removeButton": "Remove Overlay",
-                "addButton": "Add New Component",
-                "editStyleButton": "Edit Style",
+                "addButton": "Legg til ny komponent",
+                "editStyleButton": "Rediger stil",
                 "addOverlayButton": "Add New Overlay",
-                "exportButton": "Export"
+                "exportButton": "Eksporter"
             },
             "director": {
                 "oocTypeHeader": "Out of Combat Type",
                 "canvasOptionsHeader": "Canvas Options",
-                "trackedPlayerHeader": "Tracked Player",
+                "trackedPlayerHeader": "Spiller under oppsyn",
                 "name": "Director",
                 "icTypeHeader": "In Combat Type"
             },
             "actorSelect": {
-                "resetButton": "Reset",
+                "resetButton": "Tilbakestill",
                 "name": "Actor Selection",
-                "closeButton": "Close",
-                "searchPlaceholder": "Search"
+                "closeButton": "Lukk",
+                "searchPlaceholder": "Søk"
             },
             "obsWebsocket": {
                 "portLabel": "Port",
                 "name": "OBS Websocket Settings",
-                "passwordLabel": "Password",
-                "syncButton": "Sync",
-                "saveButton": "Save",
+                "passwordLabel": "Passord",
+                "syncButton": "Synkroniser",
+                "saveButton": "Lagre",
                 "syncLabel": "Sync Target Client",
-                "urlLabel": "URL"
+                "urlLabel": "Nettadresse"
             },
             "obsRemote": {
                 "vttSceneLabel": "VTT Scene Name",
-                "sourceName": "OBS Source Name",
+                "sourceName": "OBS-kildenavn",
                 "name": "OBS Remote Settings",
-                "disableSource": "Disable Source",
-                "onCombatEnd": "Combat End",
-                "switchScene": "Switch Scene",
-                "enableSource": "Enable Source",
-                "onLoad": "Load",
-                "onCombatStart": "Combat Start",
-                "sceneName": "Scene Name",
+                "disableSource": "Skru av kilde",
+                "onCombatEnd": "Kampslutt",
+                "switchScene": "Bytt scene",
+                "enableSource": "Skru på kilde",
+                "onLoad": "Last inn",
+                "onCombatStart": "Kampstart",
+                "sceneName": "Scenenavn",
                 "vttScenePlaceholder": "Input name or drop a scene here",
                 "onPause": "Pause",
                 "onUnpause": "Unpause",
-                "onStopStreaming": "Stop Streaming",
-                "toggleSource": "Toggle Source",
-                "onSceneLoad": "Scene Load"
+                "onStopStreaming": "Stopp strømming",
+                "toggleSource": "Veksle kilde",
+                "onSceneLoad": "Sceneinnlasting"
             },
             "styleEditor": {
-                "submitButton": "Submit",
+                "submitButton": "Send inn",
                 "name": "Style Editor"
             }
         },
@@ -132,16 +132,16 @@
             },
             "enableOBSWebsocket": {
                 "Hint": "If checked, OBS Websocket will be used for Remoting",
-                "Name": "Enable OBS Websocket?"
+                "Name": "Skru på OBS-websocket?"
             },
             "diceSoNiceOverlayWidth": {
-                "Hint": "Width of the element in pixels",
+                "Hint": "Antall pikslers bredde for elementet",
                 "Name": "Dice so Nice Overlay Width"
             },
             "obsWebsocketMenu": {
-                "Hint": "Configure OBS Websocket",
-                "Label": "Open Menu",
-                "Name": "OBS Websocket Settings"
+                "Hint": "Sett opp OBS-websocket",
+                "Label": "Åpne meny",
+                "Name": "Innstillinger for OBS-websocket"
             },
             "obsModeUser": {
                 "Name": "OBS Mode User (Username)",
@@ -152,16 +152,16 @@
                 "Name": "Pop-Up X"
             },
             "obsMode": {
-                "Name": "OBS Mode",
+                "Name": "OBS-modus",
                 "Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
             },
             "fixedPopupHeight": {
-                "Hint": "The height of the pop-up in pixels",
-                "Name": "Pop-Up Height"
+                "Hint": "Antall pikslers høyde for oppsprett",
+                "Name": "Oppsprettshøyde"
             },
             "showKeybindingPopup": {
                 "Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected",
-                "Name": "Show Keybinding Notification"
+                "Name": "Vis tastetilknytningsmerknad"
             },
             "fixedPopupY": {
                 "Name": "Pop-Up Y",
@@ -182,7 +182,7 @@
                 "Label": "Open Editor"
             },
             "overlayActorSelect": {
-                "Label": "Open Menu",
+                "Label": "Åpne meny",
                 "Name": "Overlay Actors",
                 "Hint": "Select the Actors for the Overlay"
             },
@@ -192,7 +192,7 @@
             },
             "diceSoNiceOverlayHeight": {
                 "Name": "Dice so Nice Overlay Height",
-                "Hint": "Width of the element in pixels"
+                "Hint": "Antall pikslers bredde for elementet"
             },
             "showAV": {
                 "Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
@@ -203,13 +203,13 @@
                 "Name": "Use Fixed Pop-Ups"
             },
             "defaultInCombat": {
-                "Name": "In Combat Mode",
+                "Name": "I kampmodus",
                 "Hint": "The in Combat Camera Mode"
             },
             "obsRemoteMenu": {
                 "Name": "OBS Remote Settings",
                 "Hint": "Configure the OBS Remote",
-                "Label": "Open Menu"
+                "Label": "Åpne meny"
             },
             "defaultOutOfCombat": {
                 "Hint": "The out of Combat Camera Mode",
@@ -220,8 +220,8 @@
                 "Hint": "This will turn off the OBS features for all clients, regardless of method"
             },
             "fixedPopupWidth": {
-                "Hint": "The width of the pop-up in pixels",
-                "Name": "Pop-Up Width"
+                "Hint": "Antall pikslers bredde for oppsprett",
+                "Name": "Oppsprettsbredde"
             },
             "showUserConfig": {
                 "Name": "Allow User-Config to Render?",
@@ -230,16 +230,16 @@
         },
         "overlays": {
             "fontAwesomeIcon": {
-                "name": "Font Awesome Icon"
+                "name": "Font Awesome-ikon"
             },
             "booleanAVImage": {
                 "name": "Boolean AV Image"
             },
             "plainText": {
-                "name": "Plain Text"
+                "name": "Klartekst"
             },
             "image": {
-                "name": "Image"
+                "name": "Bilde"
             },
             "multiImageAV": {
                 "name": "Multi Image AV"
@@ -248,7 +248,7 @@
                 "name": "Multi Icon AV"
             },
             "progressBar": {
-                "name": "Progress Bar"
+                "name": "Framdriftsindikator"
             },
             "booleanAVIcon": {
                 "name": "Boolean AV Icon"

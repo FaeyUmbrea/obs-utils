@@ -251,7 +251,7 @@
             },
             "diceSoNiceOverlayHeight": {
                 "Name": "Altura Sobreposição Dice so Nice",
-                "Hint": "Altura do elemento, em pixels."
+                "Hint": "Altura do elemento, em pixels"
             }
         }
     }
