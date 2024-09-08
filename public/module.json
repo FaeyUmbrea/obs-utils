@@ -38,14 +38,24 @@
       "path": "languages/en.json"
     },
     {
-      "lang": "pt-BR",
+      "lang": "pt_BR",
       "name": "Português (Brasil)",
-      "path": "languages/pt-BR.json"
+      "path": "languages/pt_BR.json"
     },
     {
-      "lang": "de-DE",
+      "lang": "de_DE",
       "name": "Deutsch",
-      "path": "languages/de-DE.json"
+      "path": "languages/de_DE.json"
+    },
+    {
+      "lang": "ja",
+      "name": "日本語",
+      "path": "languages/ja.json"
+    },
+    {
+      "lang": "nb_NO",
+      "name": "Bokmål",
+      "path": "languages/nb_NO.json"
     }
   ],
   "url": "This is auto replaced",
