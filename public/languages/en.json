@@ -36,7 +36,7 @@
                 "preRollImage": "Pre Roll Image",
                 "rollImage": "Roll Image",
                 "postRollImage": "Post Roll Image",
-                "imageUrl": "Image Url",
+                "imageUrl": "Image URL",
                 "foregroundImageUrl": "Foreground Image URL",
                 "backgroundImageUrl": "Background Image URL",
                 "delay": "Delay (ms)",
@@ -251,7 +251,7 @@
             },
             "diceSoNiceOverlayHeight": {
                 "Name": "Dice so Nice Overlay Height",
-                "Hint": "Width of the element in pixels"
+                "Hint": "Height of the element in pixels"
             }
         }
     }
