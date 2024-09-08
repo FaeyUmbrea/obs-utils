@@ -1,3 +1,9 @@
+## Version 3.2.4
+
+### Fixes
+
+- Fix typo in module json syntax
+
 ## Version 3.2.3
 
 ### Localization
