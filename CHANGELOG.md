@@ -1,8 +1,14 @@
+## Version 3.2.3
+
+### Localization
+- Brazilian Portuguese updated
+- Added partial support for Norwegian Bokmål
+
 ## Version 3.2.2
 
 ### Localization
 - Added localization support for the entire module
-- Support added for german
+- Support added for German
 - Brazilian Portuguese updated
 
 ## Version 3.2.1
