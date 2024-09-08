@@ -95,7 +95,7 @@
                 "urlLabel": "Nettadresse"
             },
             "obsRemote": {
-                "vttSceneLabel": "VTT Scene Name",
+                "vttSceneLabel": "VTT-scenenavn",
                 "sourceName": "OBS-kildenavn",
                 "name": "OBS Remote Settings",
                 "disableSource": "Skru av kilde",
@@ -105,9 +105,9 @@
                 "onLoad": "Last inn",
                 "onCombatStart": "Kampstart",
                 "sceneName": "Scenenavn",
-                "vttScenePlaceholder": "Input name or drop a scene here",
+                "vttScenePlaceholder": "Skriv inn navn eller slipp en scene her",
                 "onPause": "Pause",
-                "onUnpause": "Unpause",
+                "onUnpause": "Fortsett",
                 "onStopStreaming": "Stopp strømming",
                 "toggleSource": "Veksle kilde",
                 "onSceneLoad": "Sceneinnlasting"
