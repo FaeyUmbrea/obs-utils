@@ -42,10 +42,14 @@ export async function setupDiceSoNice() {
       return this._origGetFlag(scope, key);
     };
 
+    const boardContainer = document.createElement("div");
     const board = document.createElement("div");
     board.id = "board";
-    board.style.display = "none";
-    document.body.appendChild(board);
+    boardContainer.id = "boardContainer";
+    boardContainer.classList.add("obs-utils");
+    boardContainer.style.display = "none";
+    boardContainer.appendChild(board);
+    document.body.appendChild(boardContainer);
     await canvas.initialize();
     canvas.environment._backgroundColor = [0, 0, 0];
     canvas.primary._backgroundColor = [0, 0, 0];
