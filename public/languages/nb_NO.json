@@ -76,7 +76,7 @@
                 "oocTypeHeader": "Out of Combat Type",
                 "canvasOptionsHeader": "Canvas Options",
                 "trackedPlayerHeader": "Spiller under oppsyn",
-                "name": "Director",
+                "name": "Regissør",
                 "icTypeHeader": "In Combat Type"
             },
             "actorSelect": {
@@ -95,7 +95,7 @@
                 "urlLabel": "Nettadresse"
             },
             "obsRemote": {
-                "vttSceneLabel": "VTT Scene Name",
+                "vttSceneLabel": "VTT-scenenavn",
                 "sourceName": "OBS-kildenavn",
                 "name": "OBS Remote Settings",
                 "disableSource": "Skru av kilde",
@@ -105,9 +105,9 @@
                 "onLoad": "Last inn",
                 "onCombatStart": "Kampstart",
                 "sceneName": "Scenenavn",
-                "vttScenePlaceholder": "Input name or drop a scene here",
+                "vttScenePlaceholder": "Skriv inn navn eller slipp en scene her",
                 "onPause": "Pause",
-                "onUnpause": "Unpause",
+                "onUnpause": "Fortsett",
                 "onStopStreaming": "Stopp strømming",
                 "toggleSource": "Veksle kilde",
                 "onSceneLoad": "Sceneinnlasting"
@@ -119,12 +119,12 @@
         },
         "settings": {
             "minScale": {
-                "Name": "Minimum Scale",
-                "Hint": "The lowest that the screen can zoom to"
+                "Name": "Minimumsskala",
+                "Hint": "Det minste skjermen kan forstørre til"
             },
             "maxScale": {
-                "Name": "Maximum Scale",
-                "Hint": "The highest that the screen can zoom to"
+                "Name": "Maksimal skala",
+                "Hint": "Det største skjermen kan forstørre til"
             },
             "popupCloseDelay": {
                 "Name": "Pop-Up Close Delay",
@@ -148,8 +148,8 @@
                 "Hint": "Sets this User to always be in OBS Mode, regardless of browser"
             },
             "fixedPopupX": {
-                "Hint": "The distance to the left screen edge in pixels",
-                "Name": "Pop-Up X"
+                "Hint": "Antall pikslers avstand til venstre skjermkant",
+                "Name": "Oppsprett X"
             },
             "obsMode": {
                 "Name": "OBS-modus",
@@ -164,8 +164,8 @@
                 "Name": "Vis tastetilknytningsmerknad"
             },
             "fixedPopupY": {
-                "Name": "Pop-Up Y",
-                "Hint": "The distance to the top screen edge in pixels"
+                "Name": "Oppsprett Y",
+                "Hint": "Antall pikslers avstand til topp-skjermkant"
             },
             "showTrackerInCombat": {
                 "Name": "Show Combat Tracker in Combat?",
@@ -192,7 +192,7 @@
             },
             "diceSoNiceOverlayHeight": {
                 "Name": "Dice so Nice Overlay Height",
-                "Hint": "Antall pikslers bredde for elementet"
+                "Hint": "Antall pikslers høyde for elementet"
             },
             "showAV": {
                 "Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
@@ -204,7 +204,7 @@
             },
             "defaultInCombat": {
                 "Name": "I kampmodus",
-                "Hint": "The in Combat Camera Mode"
+                "Hint": "«I kamp»-modus"
             },
             "obsRemoteMenu": {
                 "Name": "OBS Remote Settings",
@@ -212,12 +212,12 @@
                 "Label": "Åpne meny"
             },
             "defaultOutOfCombat": {
-                "Hint": "The out of Combat Camera Mode",
-                "Name": "Out Of Combat Mode"
+                "Hint": "«Ute av kamp»-kameramodus",
+                "Name": "«Ute av kamp»-modus"
             },
             "obsModeGlobalDisable": {
                 "Name": "OBS View Global Disable",
-                "Hint": "This will turn off the OBS features for all clients, regardless of method"
+                "Hint": "Dette skrur av OBS-funksjoner for alle klienter, uavhengig av metode."
             },
             "fixedPopupWidth": {
                 "Hint": "Antall pikslers bredde for oppsprett",
