@@ -1,3 +1,12 @@
+## Version 3.2.5
+
+### Fixes
+
+- Fixed a bug that would cause the fake canvas required for dice-so-nice to reappear when the scene is changed. Blacking out the stream view.
+
+### Localization
+- Updated support for Norwegian Bokmål (58% complete)
+
 ## Version 3.2.4
 
 ### Fixes
