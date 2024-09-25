@@ -64,7 +64,6 @@ export async function setupDiceSoNice() {
 
     // Temporary workaround for odd dsn settings migration code
     game.ready = true;
-    game.modules.set("0streamutils", { active: true });
     Hooks.events.ready
       .filter((hook) => hook.fn.toString().includes("new Dice3D"))[0]
       .fn.call();

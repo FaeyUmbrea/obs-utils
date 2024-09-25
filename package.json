@@ -35,17 +35,17 @@
   },
   "devDependencies": {
     "@jhubbardsf/svelte-sortablejs": "^1.1.0",
-    "@playwright/test": "^1.47.0",
+    "@playwright/test": "^1.47.2",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
-    "esbuild": "^0.23.1",
-    "eslint": "^9.9.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.11.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "eslint-plugin-svelte": "^2.43.0",
+    "eslint-plugin-svelte": "^2.44.0",
     "flat": "^6.0.1",
     "globals": "^15.9.0",
-    "monocart-reporter": "^2.8.0",
-    "postcss": "^8.4.45",
+    "monocart-reporter": "^2.8.4",
+    "postcss": "^8.4.47",
     "postcss-styl": "^0.12.3",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.6",
@@ -53,8 +53,8 @@
     "stylus": "^0.63.0",
     "svelte": "^4.2.19",
     "svelte-preprocess": "^6.0.2",
-    "vite": "^5.4.6",
-    "vitest": "^2.0.5"
+    "vite": "^5.4.8",
+    "vitest": "^2.1.1"
   },
   "packageManager": "yarn@4.1.1"
 }
