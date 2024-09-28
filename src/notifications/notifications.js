@@ -61,9 +61,18 @@ export async function getLinks() {
 
   const linksQuery = {
     filter: {
-      tags: {
-        _contains: "obs-utils",
-      },
+      _and: [
+        {
+          tags: {
+            _contains: "obs-utils",
+          },
+        },
+        {
+          status: {
+            _eq: "published",
+          },
+        },
+      ],
     },
   };
   return await client.request(readItems("Links", linksQuery));
