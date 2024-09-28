@@ -479,6 +479,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@directus/sdk@npm:^17.0.1":
+  version: 17.0.1
+  resolution: "@directus/sdk@npm:17.0.1"
+  checksum: 10/d2c5f048d5afa43fbae06a4b1b3bb8408fdd8b68b1e4cefc12f92d9fc53d6ce854c8ce4a2d48e26cb4c0a775f05a206b1de7e2b5868c273466a9fc9fdf30bf47
+  languageName: node
+  linkType: hard
+
 "@esbuild/aix-ppc64@npm:0.20.2":
   version: 0.20.2
   resolution: "@esbuild/aix-ppc64@npm:0.20.2"
@@ -2966,9 +2973,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-svelte@npm:^2.44.0":
-  version: 2.44.0
-  resolution: "eslint-plugin-svelte@npm:2.44.0"
+"eslint-plugin-svelte@npm:^2.44.1":
+  version: 2.44.1
+  resolution: "eslint-plugin-svelte@npm:2.44.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.4.0"
     "@jridgewell/sourcemap-codec": "npm:^1.4.15"
@@ -2987,7 +2994,7 @@ __metadata:
   peerDependenciesMeta:
     svelte:
       optional: true
-  checksum: 10/d38d26a3b3159da04cf494c5726d6370a7e1e77cf4d0fb26c774c73648ed7e7ceff7a3d666f8b7f4cf00248a87ceeb349053a070e17a2ccd8b39a7f3135bd11f
+  checksum: 10/e1267a99f89d85cddaea72c5f5f07e86de4f21a7f5712446d75830a08ba3709375be88c443357ba15d16c1c3677562dff5df698ef51a000d1d8cc3834c0c59e5
   languageName: node
   linkType: hard
 
@@ -4376,6 +4383,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "obs-utils@workspace:."
   dependencies:
+    "@directus/sdk": "npm:^17.0.1"
     "@jhubbardsf/svelte-sortablejs": "npm:^1.1.0"
     "@playwright/test": "npm:^1.47.2"
     "@sveltejs/svelte-virtual-list": "npm:^3.0.1"
@@ -4387,7 +4395,7 @@ __metadata:
     eslint: "npm:^9.11.1"
     eslint-config-prettier: "npm:^9.1.0"
     eslint-plugin-prettier: "npm:^5.2.1"
-    eslint-plugin-svelte: "npm:^2.44.0"
+    eslint-plugin-svelte: "npm:^2.44.1"
     flat: "npm:^6.0.1"
     globals: "npm:^15.9.0"
     lodash-es: "npm:^4.17.21"
@@ -4396,11 +4404,11 @@ __metadata:
     postcss: "npm:^8.4.47"
     postcss-styl: "npm:^0.12.3"
     prettier: "npm:^3.3.3"
-    prettier-plugin-svelte: "npm:^3.2.6"
+    prettier-plugin-svelte: "npm:^3.2.7"
     rollup-plugin-visualizer: "npm:^5.12.0"
     stylus: "npm:^0.63.0"
     svelte: "npm:^4.2.19"
-    svelte-preprocess: "npm:^6.0.2"
+    svelte-preprocess: "npm:^6.0.3"
     svelte-select: "npm:^5.8.3"
     vite: "npm:^5.4.8"
     vitest: "npm:^2.1.1"
@@ -5430,13 +5438,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-svelte@npm:^3.2.6":
-  version: 3.2.6
-  resolution: "prettier-plugin-svelte@npm:3.2.6"
+"prettier-plugin-svelte@npm:^3.2.7":
+  version: 3.2.7
+  resolution: "prettier-plugin-svelte@npm:3.2.7"
   peerDependencies:
     prettier: ^3.0.0
     svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
-  checksum: 10/2a9365be867d4c59fe18454f980ed4eff790a57c1dce3ef160a6f38a80fd1552632bd7d7fbbdc3b09c28c780849d0fda3092dc0ee6f5d5570c8c0ee4a4462592
+  checksum: 10/53181d3e6b7352d11ae90bf83e24badf8669309aba32084de055ccb2f1b0293b290b6d4b23ad3aa5414607cf61d3eb05753206627bcfc3d2c1c07b1a58280dac
   languageName: node
   linkType: hard
 
@@ -6064,9 +6072,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"svelte-preprocess@npm:^6.0.2":
-  version: 6.0.2
-  resolution: "svelte-preprocess@npm:6.0.2"
+"svelte-preprocess@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "svelte-preprocess@npm:6.0.3"
   peerDependencies:
     "@babel/core": ^7.10.2
     coffeescript: ^2.5.1
@@ -6100,7 +6108,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10/681065c399474e07599d2b429a5fa0a0734b416c3b758556ac3a044ed806ec4041799dee7fef1c4d38d9faed7c12ac5f7d7e820ea49fd994749a76a814a1941b
+  checksum: 10/872fcf6013508a6abe7526d5fc69cac526f1005b1f2db2d38fc6a011c98767b533e154e178ae9cddbe90fbe058bee235918f473fb769d72df0057f3a738a1553
   languageName: node
   linkType: hard
 

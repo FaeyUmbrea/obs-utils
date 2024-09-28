@@ -7,8 +7,8 @@ export default class NotificationCenter extends SvelteApplication {
       classes: ["notification-center"],
       id: "notification-application",
       title: "OBS Utils Notification Center",
-      height: 420,
-      width: 520,
+      height: 600,
+      width: 900,
       resizable: true,
       svelte: {
         class: NotificationCenterUI,

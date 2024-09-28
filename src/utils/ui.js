@@ -9,15 +9,14 @@ import { getApi } from "./helpers.js";
 import SingleLineOverlayEditor from "../svelte/components/editors/SingleLineOverlayEditor.svelte";
 import AVEditor from "../svelte/components/editors/AVEditor.svelte";
 import RollOverlay from "../applications/rolloverlay.js";
-import { getSetting } from "./settings.js";
 /**
  * @type {Array<any>}
  */
-import notifications from "./notifications.json";
 import NotificationCenter from "../applications/notificationCenter.js";
 import MultiAVIconEditor from "../svelte/components/editors/MultiAVIconEditor.svelte";
 import MultiAVEditor from "../svelte/components/editors/MultiAVEditor.svelte";
 import BooleanEditor from "../svelte/components/editors/BooleanEditor.svelte";
+import { getLinks, getNotifications } from "../notifications/notifications.js";
 
 let d;
 
@@ -92,10 +91,13 @@ export function registerUI() {
     .registerComponentEditor("pb", MultiAVEditor, true);
 }
 
-export function showNotifications() {
+export async function showNotifications() {
   if (!game.user.isGM) return;
-  const lastRead = getSetting("lastReadNotification");
-  if (lastRead < notifications[0].id) {
-    new NotificationCenter().render(true);
+  const notifications = await getNotifications();
+  if (notifications.length > 0) {
+    const links = await getLinks();
+    new NotificationCenter({
+      svelte: { props: { notifications: notifications, links: links } },
+    }).render(true);
   }
 }

@@ -266,10 +266,10 @@ export function registerSettings() {
     requiresReload: true,
   });
   registerSetting("lastReadNotification", {
-    type: Number,
+    type: String,
     scope: "client",
     config: false,
-    default: 0,
+    default: "",
   });
   registerSetting("fixedPopups", {
     type: Boolean,
