@@ -1,3 +1,10 @@
+## Version 3.2.6
+
+### Changes
+
+- Dice so nice compatibility code was updated, please ensure your DSN is at least version 5.1.0 or it might no longer work
+- New notification center that can get notifications from a server instead of a local file
+
 ## Version 3.2.5
 
 ### Fixes

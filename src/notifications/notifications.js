@@ -4,7 +4,7 @@ import { getSetting } from "../utils/settings.js";
 export async function getNotifications() {
   const lastReadNotification = getSetting("lastReadNotification");
   const lastRunDate = Date.parse(lastReadNotification)
-    ? lastReadNotification
+    ? new Date(lastReadNotification)
     : "1990-01-01";
   const client = createDirectus("https://cms.void.monster").with(rest());
 
