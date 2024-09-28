@@ -92,12 +92,16 @@ export function registerUI() {
 }
 
 export async function showNotifications() {
-  if (!game.user.isGM) return;
-  const notifications = await getNotifications();
-  if (notifications.length > 0) {
-    const links = await getLinks();
-    new NotificationCenter({
-      svelte: { props: { notifications: notifications, links: links } },
-    }).render(true);
+  try {
+    if (!game.user.isGM) return;
+    const notifications = await getNotifications();
+    if (notifications.length > 0) {
+      const links = await getLinks();
+      new NotificationCenter({
+        svelte: { props: { notifications: notifications, links: links } },
+      }).render(true);
+    }
+  } catch (e) {
+    console.error(e);
   }
 }
