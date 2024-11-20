@@ -291,6 +291,7 @@ test.describe("Multiclient Functionality Non-Combat", () => {
     await closeDirector(gmPage);
 
     await panGMViewport(gmPage, 100, 100, 0.5);
+    await gmPage.waitForTimeout(1000);
     let before = await getOBSViewport(obsPage);
 
     await openDirector(gmPage);
