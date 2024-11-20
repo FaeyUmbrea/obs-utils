@@ -42,6 +42,7 @@ export default [
         saveDataToFile: true,
         readTextFromFile: true,
         renderTemplate: true,
+        PIXI: true,
       },
     },
     plugins: {

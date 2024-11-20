@@ -50,11 +50,15 @@ export async function setupDiceSoNice() {
     boardContainer.style.display = "none";
     boardContainer.appendChild(board);
     document.body.appendChild(boardContainer);
-    await canvas.initialize();
-    canvas.environment._backgroundColor = [0, 0, 0];
-    canvas.primary._backgroundColor = [0, 0, 0];
-    canvas.colors.ambientDarkness = { applyRGB: () => {} };
-    canvas.colors.ambientDaylight = { applyRGB: () => {} };
+    //await canvas.initialize();
+    canvas.primary = canvas.environment = {
+      _backgroundColor: [0, 0, 0],
+      colors: {
+        ambientDarkness: { applyRGB: () => {} },
+        ambientDaylight: { applyRGB: () => {} },
+      },
+    };
+    canvas.app = new PIXI.Application({});
 
     Hooks.once("diceSoNiceInit", (dice3d) => {
       game.ready = false;
