@@ -2,14 +2,14 @@
 
 <script>
   import { ApplicationShell } from "#runtime/svelte/component/application";
-  import { generateDataBlockFromSetting, getStore } from "../utils/settings.js";
+  import { generateDataBlockFromSetting, settings } from "../utils/settings.js";
   import { localize } from "#runtime/util/i18n";
 
   let { ic, ooc, players } = generateDataBlockFromSetting();
-  let currentIC = getStore("defaultInCombat");
-  let currentOOC = getStore("defaultOutOfCombat");
-  let currentTrackedPlayer = getStore("trackedUser");
-  let clampCanvas = getStore("clampCanvas");
+  let currentIC = settings.getStore("defaultInCombat");
+  let currentOOC = settings.getStore("defaultOutOfCombat");
+  let currentTrackedPlayer = settings.getStore("trackedUser");
+  let clampCanvas = settings.getStore("clampCanvas");
 
   async function onChangeIC(event) {
     $currentIC = event.target.value;

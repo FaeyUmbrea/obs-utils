@@ -1,10 +1,10 @@
-import { isOBS } from "./utils/helpers.js";
+import { isOBS, removeBG } from "./utils/helpers.js";
 import { initOBS } from "./utils/obs.js";
 import { ObsUtilsApi, registerDefaultTypes } from "./utils/api.js";
 import {
-  registerOverlaySettings,
-  registerSettings,
+  rollOverlaySettings,
   runMigrations,
+  settings,
 } from "./utils/settings.js";
 import { expandTokenHud, isGM } from "./utils/canvas.js";
 import {
@@ -15,6 +15,7 @@ import {
 import { registerKeybindings } from "./utils/keybinds.js";
 
 function start() {
+  removeBG();
   Hooks.once("init", async function () {
     // Register API
     const moduleData = game?.modules?.get("obs-utils");
@@ -24,8 +25,8 @@ function start() {
       Hooks.call("obs-utils.init");
     }
 
-    registerSettings();
-    registerOverlaySettings();
+    settings.init();
+    rollOverlaySettings.init();
     registerKeybindings();
 
     // Load UI Component only on /game

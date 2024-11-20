@@ -1,24 +1,19 @@
 <svelte:options accessors="{true}" />
 
 <script>
-  import {
-    generateDataBlockFromSetting,
-    getSetting,
-    setSetting,
-  } from "../utils/settings.js";
+  import { generateDataBlockFromSetting, settings } from "../utils/settings.js";
   import { getContext, onDestroy } from "svelte";
   import { ApplicationShell } from "#runtime/svelte/component/application";
   import { sendOBSSetting } from "../utils/socket.js";
   import { localize } from "#runtime/util/i18n";
 
-  let websocketSettings = getSetting("websocketSettings");
+  let websocketSettings = settings.getStore("websocketSettings");
   export let elementRoot = void 0;
 
   const context = getContext("#external");
 
   async function submit() {
-    await setSetting("websocketSettings", websocketSettings);
-    context.application.close();
+    await context.application.close();
   }
 
   let { onlineUsers } = generateDataBlockFromSetting();
@@ -39,7 +34,7 @@
   });
 
   function sync() {
-    sendOBSSetting(currentTrackedPlayer, websocketSettings);
+    sendOBSSetting(currentTrackedPlayer, $websocketSettings);
   }
 </script>
 
@@ -48,17 +43,17 @@
     <hr />
     <div class="flexcol">
       {localize("obs-utils.applications.obsWebsocket.urlLabel")}<input
-        bind:value="{websocketSettings.url}"
+        bind:value="{$websocketSettings.url}"
         name="url"
         type="text"
       />
       <br />
       {localize("obs-utils.applications.obsWebsocket.portLabel")}
-      <input bind:value="{websocketSettings.port}" name="port" type="number" />
+      <input bind:value="{$websocketSettings.port}" name="port" type="number" />
       <br />
       {localize("obs-utils.applications.obsWebsocket.passwordLabel")}
       <input
-        bind:value="{websocketSettings.password}"
+        bind:value="{$websocketSettings.password}"
         name="password"
         type="password"
       />

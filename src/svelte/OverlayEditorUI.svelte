@@ -4,13 +4,13 @@
   import { OverlayData } from "../utils/stream";
   import OverlayEditorTab from "./components/OverlayEditorTab.svelte";
   import InformationOverlay from "./streamoverlays/PerActorOverlay.svelte";
-  import { getSetting, getStore } from "../utils/settings";
+  import { settings } from "../utils/settings";
   import { getContext } from "svelte";
   import { ApplicationShell } from "#runtime/svelte/component/application";
   import { localize } from "#runtime/util/i18n";
 
-  let overlays = getStore("streamOverlays");
-  let actorIDs = getSetting("overlayActors");
+  let overlays = settings.getStore("streamOverlays");
+  let actorIDs = settings.getReadableStore("overlayActors");
 
   let activeIndex = 0;
 
@@ -43,7 +43,7 @@
 <ApplicationShell bind:elementRoot="{elementRoot}">
   <div class="grid">
     <div class="preview">
-      <InformationOverlay actorIDs="{actorIDs}" overlays="{$overlays}" />
+      <InformationOverlay actorIDs="{$actorIDs}" overlays="{$overlays}" />
     </div>
 
     <div class="editor">

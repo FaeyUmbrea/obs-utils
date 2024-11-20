@@ -1,26 +1,32 @@
 <script>
   import { fade } from "svelte/transition";
-  import { getStore } from "../../../utils/settings.js";
+  import { rollOverlaySettings } from "../../../utils/settings.js";
 
   export let id;
 
-  let pre = getStore("rollOverlayPostRollEnabled");
-  let post = getStore("rollOverlayPreRollEnabled");
+  let pre = rollOverlaySettings.getStore("rollOverlayPostRollEnabled");
+  let post = rollOverlaySettings.getStore("rollOverlayPreRollEnabled");
 
-  let preRollDelay = getStore("rollOverlayPreRollDelay");
-  let preRollStay = getStore("rollOverlayPreRollStay");
-  let preRollFadeIn = getStore("rollOverlayPreRollFadeIn");
-  let preRollFadeOut = getStore("rollOverlayPreRollFadeOut");
+  let preRollDelay = rollOverlaySettings.getStore("rollOverlayPreRollDelay");
+  let preRollStay = rollOverlaySettings.getStore("rollOverlayPreRollStay");
+  let preRollFadeIn = rollOverlaySettings.getStore("rollOverlayPreRollFadeIn");
+  let preRollFadeOut = rollOverlaySettings.getStore(
+    "rollOverlayPreRollFadeOut",
+  );
   let rollDelay = $pre
     ? $preRollDelay + $preRollFadeIn + $preRollStay + $preRollFadeOut
     : 0;
-  let rollStay = getStore("rollOverlayRollStay");
-  let rollFadeIn = getStore("rollOverlayRollFadeIn");
-  let rollFadeOut = getStore("rollOverlayRollFadeOut");
+  let rollStay = rollOverlaySettings.getStore("rollOverlayRollStay");
+  let rollFadeIn = rollOverlaySettings.getStore("rollOverlayRollFadeIn");
+  let rollFadeOut = rollOverlaySettings.getStore("rollOverlayRollFadeOut");
   let postRollDelay = rollDelay + $rollFadeIn + $rollStay + $rollFadeOut;
-  let postRollStay = getStore("rollOverlayPostRollStay");
-  let postRollFadeIn = getStore("rollOverlayPostRollFadeIn");
-  let postRollFadeOut = getStore("rollOverlayPostRollFadeOut");
+  let postRollStay = rollOverlaySettings.getStore("rollOverlayPostRollStay");
+  let postRollFadeIn = rollOverlaySettings.getStore(
+    "rollOverlayPostRollFadeIn",
+  );
+  let postRollFadeOut = rollOverlaySettings.getStore(
+    "rollOverlayPostRollFadeOut",
+  );
 
   function recalculateRollDelay() {
     rollDelay = $pre
@@ -42,10 +48,14 @@
   rollStay.subscribe(recalculatePostRollDelay);
   rollFadeOut.subscribe(recalculatePostRollDelay);
 
-  let preRollImage = getStore("rollOverlayPreRollImage");
-  let rollBackgroundImage = getStore("rollOverlayRollBackground");
-  let rollForegroundImage = getStore("rollOverlayRollForeground");
-  let postRollImage = getStore("rollOverlayPostRollImage");
+  let preRollImage = rollOverlaySettings.getStore("rollOverlayPreRollImage");
+  let rollBackgroundImage = rollOverlaySettings.getStore(
+    "rollOverlayRollBackground",
+  );
+  let rollForegroundImage = rollOverlaySettings.getStore(
+    "rollOverlayRollForeground",
+  );
+  let postRollImage = rollOverlaySettings.getStore("rollOverlayPostRollImage");
 
   export let rollValue = "0";
   export let preRollShow = false;

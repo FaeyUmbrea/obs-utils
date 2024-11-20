@@ -1,6 +1,6 @@
 import OverlayActorSelectUi from "../svelte/OverlayActorSelectUI.svelte";
 import { SvelteApplication } from "#runtime/svelte/application";
-import { getStore } from "../utils/settings.js";
+import { settings } from "../utils/settings.js";
 
 export default class OverlayActorSelect extends SvelteApplication {
   static get defaultOptions() {
@@ -33,7 +33,7 @@ export default class OverlayActorSelect extends SvelteApplication {
       label: "obs-utils.applications.actorSelect.resetButton",
 
       onPress: function () {
-        getStore("overlayActors").set([]);
+        settings.getStore("overlayActors").set([]);
       },
     });
     return buttons;

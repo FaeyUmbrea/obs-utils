@@ -16,6 +16,12 @@ export function isOBS() {
   );
 }
 
+export function removeBG() {
+  if (!!window.obsstudio && document.querySelector("body.stream") != null) {
+    document.querySelector("body.stream").classList.add("transparent-bg");
+  }
+}
+
 function getFontAwesomeVersion() {
   const version = Number.parseInt(game.version.split(".")[1]);
   if (version <= 290) {

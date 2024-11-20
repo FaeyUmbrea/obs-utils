@@ -1,6 +1,6 @@
 import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from "./canvas";
 import { isOBS } from "./helpers";
-import { setSetting } from "./settings";
+import { getSetting, setSetting } from "./settings";
 import { debounce } from "lodash-es";
 
 Hooks.once("init", () => {
@@ -47,7 +47,7 @@ export function deactivateViewportTracking() {
   viewportTrackingActive = false;
 }
 
-function socketCanvasInternal(_canvas, position) {
+function socketCanvasInternal(position) {
   if (!viewportTrackingActive) {
     return;
   }
@@ -58,6 +58,14 @@ function socketCanvasInternal(_canvas, position) {
   });
 }
 
-export const socketCanvas = debounce(socketCanvasInternal, 250, {
-  maxWait: 1000,
+const debouncedSocketCanvas = debounce(socketCanvasInternal, 100, {
+  maxWait: 500,
 });
+
+export const socketCanvas = (_canvas, position) => {
+  if (getSetting("smoothUserCamera")) {
+    debouncedSocketCanvas(position);
+  } else {
+    socketCanvasInternal();
+  }
+};

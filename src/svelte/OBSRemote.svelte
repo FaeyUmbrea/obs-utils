@@ -3,20 +3,20 @@
 <script>
   import ObsTab from "./components/OBSTab.svelte";
   import { ApplicationShell } from "#runtime/svelte/component/application";
-  import { getSetting, setSetting } from "../utils/settings.js";
+  import { settings } from "../utils/settings.js";
   import { getContext } from "svelte";
   import SceneSelect from "./components/SceneSelect.svelte";
   import Select from "svelte-select";
   import { localize } from "#runtime/util/i18n";
 
-  const useWebSocket = getSetting("enableOBSWebsocket");
-  let obssettings = getSetting("obsRemote");
+  let useWebSocket = settings.getReadableStore("enableOBSWebsocket");
+  let obsSettings = settings.getStore("obsRemote");
 
   export let elementRoot = void 0;
 
-  let entries = Object.getOwnPropertyNames(obssettings);
+  let entries = Object.getOwnPropertyNames($obsSettings);
 
-  if (!useWebSocket) {
+  if (!$useWebSocket) {
     entries = entries.filter((entry) => entry != "onStopStreaming");
   }
 
@@ -27,7 +27,6 @@
   const context = getContext("#external");
 
   async function submit() {
-    await setSetting("obsRemote", obssettings);
     context.application.close();
   }
 
@@ -79,15 +78,15 @@
         {#if selection === "onSceneLoad"}
           <SceneSelect
             bind:handleAdd="{handleAdd}"
-            bind:eventArray="{obssettings[selection]}"
-            useWebSocket="{useWebSocket}"
+            bind:eventArray="{$obsSettings[selection]}"
+            useWebSocket="{$useWebSocket}"
           ></SceneSelect>
         {:else if selection !== ""}
           {#key selection}
             <ObsTab
               bind:handleAdd="{handleAdd}"
-              bind:eventArray="{obssettings[selection]}"
-              useWebSocket="{useWebSocket}"
+              bind:eventArray="{$obsSettings[selection]}"
+              useWebSocket="{$useWebSocket}"
             />
           {/key}
         {/if}

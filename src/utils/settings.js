@@ -7,7 +7,7 @@ import {
   OOCCHOICES,
 } from "./const";
 import { isOBS } from "./helpers";
-import { writable } from "svelte/store";
+import { TJSGameSettings } from "@typhonjs-fvtt/runtime/svelte/store/fvtt/settings";
 
 export const OBSAction = {
   SwitchScene: "obs-utils.applications.obsRemote.switchScene",
@@ -124,352 +124,439 @@ export function generateDataBlockFromSetting() {
   return buttonData;
 }
 
-var stores = new Map();
-
-export function registerSettings() {
-  registerSetting("minScale", {
-    default: 0.1,
-    type: Number,
-    range: {
-      min: 0.01,
-      max: 5,
-      step: 0.01,
-    },
-    scope: "world",
-    config: true,
-  });
-  registerSetting("maxScale", {
-    default: 2,
-    type: Number,
-    range: {
-      min: 0.01,
-      max: 5,
-      step: 0.01,
-    },
-    scope: "world",
-    config: true,
-  });
-  registerSetting("clampCanvas", {
-    default: false,
-    type: Boolean,
-    scope: "world",
-    config: false,
-  });
-  registerSetting("defaultOutOfCombat", {
-    default: "trackall",
-    type: String,
-    choices: OOCCHOICES,
-    scope: "world",
-    config: false,
-    onChange: changeMode,
-  });
-  registerSetting("defaultInCombat", {
-    default: "trackall",
-    type: String,
-    choices: ICCHOICES,
-    scope: "world",
-    config: false,
-    onChange: changeMode,
-  });
-  registerSetting("popupCloseDelay", {
-    default: 10,
-    type: Number,
-    range: {
-      min: 0,
-      max: 300,
-      step: 1,
-    },
-    scope: "world",
-    config: true,
-  });
-  registerSetting("showTrackerInCombat", {
-    default: false,
-    type: Boolean,
-    scope: "world",
-    config: true,
-  });
-  registerSetting("trackedUser", {
-    default: game.userId,
-    type: String,
-    scope: "world",
-    config: false,
-    onChange: changeMode,
-  });
-  registerSetting("obsRemote", {
-    type: Object,
-    scope: "world",
-    config: false,
-    default: new OBSRemoteSettings(),
-  });
-  registerSetting("enableOBSWebsocket", {
-    type: Boolean,
-    scope: "world",
-    config: true,
-    default: false,
-  });
-  registerSetting("websocketSettings", {
-    type: Object,
-    scope: "client",
-    config: false,
-    default: new OBSWebsocketSettings(),
-    onChange: () => foundry.utils.debouncedReload(),
-  });
-  registerSetting("streamOverlays", {
-    type: Object,
-    scope: "world",
-    config: false,
-    default: [],
-  });
-  registerSetting("overlayActors", {
-    type: Object,
-    scope: "world",
-    config: false,
-    default: [],
-  });
-  registerSetting("settingsVersion", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 2,
-  });
-  registerSetting("showAV", {
-    type: Boolean,
-    scope: "world",
-    config: true,
-    default: false,
-  });
-  registerSetting("showUserConfig", {
-    type: Boolean,
-    scope: "world",
-    config: true,
-    default: false,
-  });
-  registerSetting("diceSoNice", {
-    default: !!game.modules.get("dice-so-nice")?.active,
-    type: Boolean,
-    scope: "world",
-    config: !!game.modules.get("dice-so-nice")?.active,
-    requiresReload: true,
-  });
-  registerSetting("diceSoNiceOverlayWidth", {
-    default: 500,
-    type: Number,
-    scope: "world",
-    config: !!game.modules.get("dice-so-nice")?.active,
-    requiresReload: true,
-  });
-  registerSetting("diceSoNiceOverlayHeight", {
-    default: 500,
-    type: Number,
-    scope: "world",
-    config: !!game.modules.get("dice-so-nice")?.active,
-    requiresReload: true,
-  });
-  registerSetting("lastReadNotification", {
-    type: String,
-    scope: "client",
-    config: false,
-    default: "",
-  });
-  registerSetting("fixedPopups", {
-    type: Boolean,
-    scope: "world",
-    config: true,
-    default: false,
-  });
-  registerSetting("fixedPopupX", {
-    type: Number,
-    scope: "world",
-    config: true,
-    default: 1000,
-  });
-  registerSetting("fixedPopupY", {
-    type: Number,
-    scope: "world",
-    config: true,
-    default: 1000,
-  });
-  registerSetting("fixedPopupWidth", {
-    type: Number,
-    scope: "world",
-    config: true,
-    default: 1000,
-  });
-  registerSetting("fixedPopupHeight", {
-    type: Number,
-    scope: "world",
-    config: true,
-    default: 800,
-  });
-  registerSetting("obsMode", {
-    default: false,
-    type: Boolean,
-    scope: "client",
-    config: true,
-    requiresReload: true,
-  });
-  registerSetting("obsModeUser", {
-    default: "none",
-    type: String,
-    scope: "world",
-    choices: {},
-    config: true,
-    requiresReload: true,
-  });
-  registerSetting("obsModeGlobalDisable", {
-    default: false,
-    type: Boolean,
-    scope: "world",
-    config: true,
-    requiresReload: true,
-  });
-
-  registerSetting("showKeybindingPopup", {
-    default: true,
-    type: Boolean,
-    scope: "client",
-    config: true,
-  });
-}
-
-export function registerOverlaySettings() {
-  registerSetting("rollOverlayPreRollDelay", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayRollFadeIn", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayRollFadeOut", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayRollStay", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 5000,
-  });
-  registerSetting("rollOverlayPreRollFadeIn", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayPreRollFadeOut", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayPreRollStay", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayPostRollFadeIn", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayPostRollFadeOut", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayPostRollStay", {
-    type: Number,
-    scope: "world",
-    config: false,
-    default: 0,
-  });
-  registerSetting("rollOverlayPreRollImage", {
-    type: String,
-    scope: "world",
-    config: false,
-    default: "",
-  });
-  registerSetting("rollOverlayRollBackground", {
-    type: String,
-    scope: "world",
-    config: false,
-    default: "",
-  });
-  registerSetting("rollOverlayRollForeground", {
-    type: String,
-    scope: "world",
-    config: false,
-    default: "",
-  });
-  registerSetting("rollOverlayPostRollImage", {
-    type: String,
-    scope: "world",
-    config: false,
-    default: "",
-  });
-  registerSetting("rollOverlayPostRollEnabled", {
-    type: Boolean,
-    scope: "world",
-    config: false,
-    default: false,
-  });
-  registerSetting("rollOverlayPreRollEnabled", {
-    type: Boolean,
-    scope: "world",
-    config: false,
-    default: false,
-  });
-}
-
-function registerSetting(settingName, config) {
-  let store;
-
-  let debounce = false;
-
-  function changeListener(change) {
-    if (!debounce) {
-      if (config.onChange) config.onChange(change);
-      debounce = true;
-      store?.set(change);
-    }
-    debounce = false;
+class OBSUtilsSettings extends TJSGameSettings {
+  constructor() {
+    super("obs-utils");
   }
 
-  game?.settings.register(moduleID, settingName, {
-    name: `${moduleID}.settings.${settingName}.Name`,
-    hint: `${moduleID}.settings.${settingName}.Hint`,
-    ...config,
-    onChange: changeListener,
-  });
+  init() {
+    const settings = [];
+    settings.push(
+      createSetting("minScale", {
+        default: 0.1,
+        type: Number,
+        range: {
+          min: 0.01,
+          max: 5,
+          step: 0.01,
+        },
+        scope: "world",
+        config: true,
+      }),
+    );
+    settings.push(
+      createSetting("maxScale", {
+        default: 2,
+        type: Number,
+        range: {
+          min: 0.01,
+          max: 5,
+          step: 0.01,
+        },
+        scope: "world",
+        config: true,
+      }),
+    );
+    settings.push(
+      createSetting("clampCanvas", {
+        default: false,
+        type: Boolean,
+        scope: "world",
+        config: false,
+      }),
+    );
+    settings.push(
+      createSetting("defaultOutOfCombat", {
+        default: "trackall",
+        type: String,
+        choices: OOCCHOICES,
+        scope: "world",
+        config: false,
+        onChange: changeMode,
+      }),
+    );
+    settings.push(
+      createSetting("defaultInCombat", {
+        default: "trackall",
+        type: String,
+        choices: ICCHOICES,
+        scope: "world",
+        config: false,
+        onChange: changeMode,
+      }),
+    );
+    settings.push(
+      createSetting("popupCloseDelay", {
+        default: 10,
+        type: Number,
+        range: {
+          min: 0,
+          max: 300,
+          step: 1,
+        },
+        scope: "world",
+        config: true,
+      }),
+    );
+    settings.push(
+      createSetting("showTrackerInCombat", {
+        default: false,
+        type: Boolean,
+        scope: "world",
+        config: true,
+      }),
+    );
+    settings.push(
+      createSetting("trackedUser", {
+        default: game.userId,
+        type: String,
+        scope: "world",
+        config: false,
+        onChange: changeMode,
+      }),
+    );
+    settings.push(
+      createSetting("obsRemote", {
+        type: Object,
+        scope: "world",
+        config: false,
+        default: new OBSRemoteSettings(),
+      }),
+    );
+    settings.push(
+      createSetting("enableOBSWebsocket", {
+        type: Boolean,
+        scope: "world",
+        config: true,
+        default: false,
+      }),
+    );
+    settings.push(
+      createSetting("websocketSettings", {
+        type: Object,
+        scope: "client",
+        config: false,
+        default: new OBSWebsocketSettings(),
+        onChange: () => foundry.utils.debouncedReload(),
+      }),
+    );
+    settings.push(
+      createSetting("streamOverlays", {
+        type: Object,
+        scope: "world",
+        config: false,
+        default: [],
+      }),
+    );
+    settings.push(
+      createSetting("overlayActors", {
+        type: Object,
+        scope: "world",
+        config: false,
+        default: [],
+      }),
+    );
+    settings.push(
+      createSetting("settingsVersion", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 2,
+      }),
+    );
+    settings.push(
+      createSetting("showAV", {
+        type: Boolean,
+        scope: "world",
+        config: true,
+        default: false,
+      }),
+    );
+    settings.push(
+      createSetting("showUserConfig", {
+        type: Boolean,
+        scope: "world",
+        config: true,
+        default: false,
+      }),
+    );
+    settings.push(
+      createSetting("diceSoNice", {
+        default: !!game.modules.get("dice-so-nice")?.active,
+        type: Boolean,
+        scope: "world",
+        config: !!game.modules.get("dice-so-nice")?.active,
+        requiresReload: true,
+      }),
+    );
+    settings.push(
+      createSetting("diceSoNiceOverlayWidth", {
+        default: 500,
+        type: Number,
+        scope: "world",
+        config: !!game.modules.get("dice-so-nice")?.active,
+        requiresReload: true,
+      }),
+    );
+    settings.push(
+      createSetting("diceSoNiceOverlayHeight", {
+        default: 500,
+        type: Number,
+        scope: "world",
+        config: !!game.modules.get("dice-so-nice")?.active,
+        requiresReload: true,
+      }),
+    );
+    settings.push(
+      createSetting("lastReadNotification", {
+        type: String,
+        scope: "client",
+        config: false,
+        default: "",
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopups", {
+        type: Boolean,
+        scope: "world",
+        config: true,
+        default: false,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopupX", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 1000,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopupY", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 1000,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopupWidth", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 1000,
+      }),
+    );
+    settings.push(
+      createSetting("fixedPopupHeight", {
+        type: Number,
+        scope: "world",
+        config: true,
+        default: 800,
+      }),
+    );
+    settings.push(
+      createSetting("obsMode", {
+        default: false,
+        type: Boolean,
+        scope: "client",
+        config: true,
+        requiresReload: true,
+      }),
+    );
+    settings.push(
+      createSetting("obsModeUser", {
+        default: "none",
+        type: String,
+        scope: "world",
+        choices: {},
+        config: true,
+        requiresReload: true,
+      }),
+    );
+    settings.push(
+      createSetting("obsModeGlobalDisable", {
+        default: false,
+        type: Boolean,
+        scope: "world",
+        config: true,
+        requiresReload: true,
+      }),
+    );
 
-  const value =
-    game?.settings.get(moduleID, settingName) ??
-    config.default ??
-    new config.type();
+    settings.push(
+      createSetting("showKeybindingPopup", {
+        default: true,
+        type: Boolean,
+        scope: "client",
+        config: true,
+      }),
+    );
 
-  store = writable(value);
+    settings.push(
+      createSetting("smoothUserCamera", {
+        type: Boolean,
+        scope: "world",
+        config: true,
+        default: true,
+      }),
+    );
 
-  store.subscribe((value) => {
-    if (!debounce) {
-      debounce = true;
-      if (game?.ready) game?.settings.set(moduleID, settingName, value);
-    }
-    debounce = false;
-  });
-
-  stores.set(settingName, store);
+    this.registerAll(settings, true);
+  }
 }
 
-export function getStore(name) {
-  return stores.get(name);
+class RollOverlaySettings extends TJSGameSettings {
+  constructor() {
+    super("obs-utils");
+  }
+
+  init() {
+    const settings = [];
+    settings.push(
+      createSetting("rollOverlayPreRollDelay", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayRollFadeIn", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayRollFadeOut", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayRollStay", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 5000,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPreRollFadeIn", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPreRollFadeOut", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPreRollStay", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPostRollFadeIn", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPostRollFadeOut", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPostRollStay", {
+        type: Number,
+        scope: "world",
+        config: false,
+        default: 0,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPreRollImage", {
+        type: String,
+        scope: "world",
+        config: false,
+        default: "",
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayRollBackground", {
+        type: String,
+        scope: "world",
+        config: false,
+        default: "",
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayRollForeground", {
+        type: String,
+        scope: "world",
+        config: false,
+        default: "",
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPostRollImage", {
+        type: String,
+        scope: "world",
+        config: false,
+        default: "",
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPostRollEnabled", {
+        type: Boolean,
+        scope: "world",
+        config: false,
+        default: false,
+      }),
+    );
+    settings.push(
+      createSetting("rollOverlayPreRollEnabled", {
+        type: Boolean,
+        scope: "world",
+        config: false,
+        default: false,
+      }),
+    );
+
+    this.registerAll(settings, false);
+  }
 }
+
+function createSetting(settingName, config) {
+  return {
+    namespace: moduleID,
+    key: settingName,
+    options: {
+      name: `${moduleID}.settings.${settingName}.Name`,
+      hint: `${moduleID}.settings.${settingName}.Hint`,
+      ...config,
+    },
+  };
+}
+
+export const settings = new OBSUtilsSettings();
+export const rollOverlaySettings = new RollOverlaySettings();

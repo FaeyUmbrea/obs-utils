@@ -3,27 +3,37 @@
 <script>
   import PlayerRollComponent from "../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte";
   import { ApplicationShell } from "#runtime/svelte/component/application";
-  import { getStore } from "../../../utils/settings";
   import { localize } from "#runtime/util/i18n";
+  import { rollOverlaySettings } from "../../../utils/settings.js";
 
-  let preRollDelay = getStore("rollOverlayPreRollDelay");
-  let preRollStay = getStore("rollOverlayPreRollStay");
-  let preRollFadeIn = getStore("rollOverlayPreRollFadeIn");
-  let preRollFadeOut = getStore("rollOverlayPreRollFadeOut");
-  let rollStay = getStore("rollOverlayRollStay");
-  let rollFadeIn = getStore("rollOverlayRollFadeIn");
-  let rollFadeOut = getStore("rollOverlayRollFadeOut");
-  let postRollStay = getStore("rollOverlayPostRollStay");
-  let postRollFadeIn = getStore("rollOverlayPostRollFadeIn");
-  let postRollFadeOut = getStore("rollOverlayPostRollFadeOut");
+  let preRollDelay = rollOverlaySettings.getStore("rollOverlayPreRollDelay");
+  let preRollStay = rollOverlaySettings.getStore("rollOverlayPreRollStay");
+  let preRollFadeIn = rollOverlaySettings.getStore("rollOverlayPreRollFadeIn");
+  let preRollFadeOut = rollOverlaySettings.getStore(
+    "rollOverlayPreRollFadeOut",
+  );
+  let rollStay = rollOverlaySettings.getStore("rollOverlayRollStay");
+  let rollFadeIn = rollOverlaySettings.getStore("rollOverlayRollFadeIn");
+  let rollFadeOut = rollOverlaySettings.getStore("rollOverlayRollFadeOut");
+  let postRollStay = rollOverlaySettings.getStore("rollOverlayPostRollStay");
+  let postRollFadeIn = rollOverlaySettings.getStore(
+    "rollOverlayPostRollFadeIn",
+  );
+  let postRollFadeOut = rollOverlaySettings.getStore(
+    "rollOverlayPostRollFadeOut",
+  );
 
-  let preRollImage = getStore("rollOverlayPreRollImage");
-  let rollBackgroundImage = getStore("rollOverlayRollBackground");
-  let rollForegroundImage = getStore("rollOverlayRollForeground");
-  let postRollImage = getStore("rollOverlayPostRollImage");
+  let preRollImage = rollOverlaySettings.getStore("rollOverlayPreRollImage");
+  let rollBackgroundImage = rollOverlaySettings.getStore(
+    "rollOverlayRollBackground",
+  );
+  let rollForegroundImage = rollOverlaySettings.getStore(
+    "rollOverlayRollForeground",
+  );
+  let postRollImage = rollOverlaySettings.getStore("rollOverlayPostRollImage");
 
-  let pre = getStore("rollOverlayPostRollEnabled");
-  let post = getStore("rollOverlayPreRollEnabled");
+  let pre = rollOverlaySettings.getStore("rollOverlayPostRollEnabled");
+  let post = rollOverlaySettings.getStore("rollOverlayPreRollEnabled");
 
   let rollValue = "20";
   let rollShow = false;

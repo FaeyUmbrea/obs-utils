@@ -252,6 +252,10 @@
             "diceSoNiceOverlayHeight": {
                 "Name": "Dice so Nice Overlay Height",
                 "Hint": "Height of the element in pixels"
+            },
+            "smoothUserCamera": {
+              "Name": "Smooth Camera Movement",
+              "Hint": "If enabled, manual camera movement will be smoothed by reducing update rate"
             }
         }
     }

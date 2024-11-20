@@ -2,12 +2,12 @@
 
 <script>
   import VirtualList from "@sveltejs/svelte-virtual-list";
-  import { getStore, setSetting } from "../utils/settings.js";
+  import { settings } from "../utils/settings.js";
   import { getContext } from "svelte";
   import { ApplicationShell } from "#runtime/svelte/component/application";
   import { localize } from "#runtime/util/i18n";
 
-  let selectedActors = getStore("overlayActors");
+  let selectedActors = settings.getStore("overlayActors");
 
   let actors = game.actors;
   export let elementRoot = void 0;
@@ -17,12 +17,10 @@
   $: filteredActors = actors.filter(
     (item) => item.name?.indexOf(searchTerm) !== -1,
   );
-
   const context = getContext("#external");
 
   async function submit() {
-    await setSetting("overlayActors", $selectedActors);
-    context.application.close();
+    await context.application.close();
   }
 
   function change(id) {
