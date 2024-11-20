@@ -1,5 +1,5 @@
 import ObsWebsocket from "../svelte/OBSWebsocket.svelte";
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 
 export default class OBSWebsocketApplication extends SvelteApplication {
   static get defaultOptions() {

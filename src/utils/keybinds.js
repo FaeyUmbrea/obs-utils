@@ -1,6 +1,6 @@
 import { ICCHOICES, ID, OOCCHOICES } from "./const.js";
 import { getSetting, setSetting } from "./settings.js";
-import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+import { localize } from "#runtime/util/i18n";
 
 export function registerKeybindings() {
   Object.entries(ICCHOICES).forEach(([choice, name], index) => {

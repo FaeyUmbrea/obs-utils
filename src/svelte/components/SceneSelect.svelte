@@ -1,8 +1,8 @@
 <script>
   import { OBSEvent, SceneLoadEvent } from "../../utils/settings";
   import ObsSetting from "./OBSSetting.svelte";
-  import { TJSDocument } from "@typhonjs-fvtt/runtime/svelte/store/fvtt/document";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { TJSDocument } from "#runtime/svelte/store/fvtt/document";
+  import { localize } from "#runtime/util/i18n";
 
   /**
    * @type {Array<SceneLoadEvent>}

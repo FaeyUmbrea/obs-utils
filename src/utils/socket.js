@@ -1,6 +1,7 @@
 import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from "./canvas";
 import { isOBS } from "./helpers";
 import { setSetting } from "./settings";
+import { debounce } from "lodash-es";
 
 Hooks.once("init", () => {
   game.socket.on("module.obs-utils", handleEvent);
@@ -46,7 +47,7 @@ export function deactivateViewportTracking() {
   viewportTrackingActive = false;
 }
 
-export function socketCanvas(_canvas, position) {
+function socketCanvasInternal(_canvas, position) {
   if (!viewportTrackingActive) {
     return;
   }
@@ -56,3 +57,7 @@ export function socketCanvas(_canvas, position) {
     payload: { viewport: position, userId: getCurrentUser() },
   });
 }
+
+export const socketCanvas = debounce(socketCanvasInternal, 250, {
+  maxWait: 1000,
+});

@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/FaeyUmbrea/obs-utils.git"
   },
+  "imports": {
+    "#runtime": "@typhonjs-fvtt/runtime"
+  },
   "type": "module",
   "license": "AGPL-3.0-only",
   "author": "Faey Umbrea",
@@ -22,7 +25,8 @@
     "watch": "vite build --watch",
     "dev": "vite",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "linkFoundry": "node tools/foundryLink.js"
   },
   "dependencies": {
     "@directus/sdk": "^18.0.0",
@@ -36,10 +40,12 @@
   },
   "devDependencies": {
     "@jhubbardsf/svelte-sortablejs": "^1.1.0",
-    "@playwright/test": "^1.48.2",
+    "@playwright/test": "^1.49.0",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
     "esbuild": "^0.24.0",
-    "eslint": "^9.14.0",
+    "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-svelte": "^2.46.0",
@@ -47,6 +53,7 @@
     "globals": "^15.12.0",
     "monocart-reporter": "^2.9.10",
     "postcss": "^8.4.49",
+    "postcss-preset-env": "^10.1.1",
     "postcss-styl": "^0.12.3",
     "prettier": "^3.3.3",
     "prettier-plugin-svelte": "^3.2.8",

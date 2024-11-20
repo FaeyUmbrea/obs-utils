@@ -9,7 +9,7 @@ import { transform } from "esbuild";
 
 // For convenience, you just need to modify the package ID below as it is used to fill in default proxy settings for
 // the dev server.
-const s_PACKAGE_ID = "modules/obs-utils";
+const s_PACKAGE_ID = "modules/ethereal-plane";
 
 // A short additional string to add to Svelte CSS hash values to make yours unique. This reduces the amount of
 // duplicated framework CSS overlap between many TRL packages enabled on Foundry VTT at the same time. 'ese' is chosen
@@ -21,14 +21,17 @@ const s_SOURCEMAPS = true; // Generate sourcemaps for the bundle (recommended).
 const s_MINIFY = true; // Set to true to compress the module bundle.
 
 export default () => {
-  /** @type {import("vite").UserConfig} */
+  /** @type {import('vite').UserConfig} */
   return {
     root: "src/", // Source location / esbuild root.
     base: `/${s_PACKAGE_ID}/`, // Base module path that 30001 / served dev directory.
     publicDir: "../public", // No public resources to copy.
     cacheDir: "../.vite-cache", // Relative from root directory.
 
-    resolve: { conditions: ["import", "browser"] },
+    resolve: {
+      conditions: ["import", "browser"],
+      alias: { "#runtime/": "@typhonjs-fvtt/runtime/" },
+    },
 
     esbuild: {
       target: ["es2022"],
@@ -53,7 +56,7 @@ export default () => {
       open: "/game",
       proxy: {
         // Serves static files from main Foundry server.
-        [`^(/${s_PACKAGE_ID}/(assets|lang|packs|style.css))`]:
+        [`^(/${s_PACKAGE_ID}/(assets|lang|packs|storage|style.css))`]:
           "http://localhost:30000",
 
         // All other paths besides package ID path are served from main Foundry server.

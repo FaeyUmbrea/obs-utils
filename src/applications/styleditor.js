@@ -1,4 +1,4 @@
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 import StyleEditorUi from "../svelte/StyleEditorUi.svelte";
 
 export default class StyleEditor extends SvelteApplication {

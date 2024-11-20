@@ -1,4 +1,4 @@
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 import PlayerRollOverlayEditor from "../svelte/components/editors/PlayerRollOverlayEditor.svelte";
 
 export default class RollOverlay extends SvelteApplication {

@@ -2,9 +2,9 @@
 
 <script>
   import PlayerRollComponent from "../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte";
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
   import { getStore } from "../../../utils/settings";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   let preRollDelay = getStore("rollOverlayPreRollDelay");
   let preRollStay = getStore("rollOverlayPreRollStay");

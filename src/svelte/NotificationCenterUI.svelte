@@ -1,7 +1,7 @@
 <svelte:options accessors="{true}" />
 
 <script>
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
   import { setSetting } from "../utils/settings.js";
   import { onDestroy } from "svelte";
   import { slide } from "svelte/transition";
@@ -67,7 +67,7 @@
   </main>
 </ApplicationShell>
 
-<style lang="sass">
+<style lang="stylus">
   main
     display: grid
     grid-template-rows: auto 36px

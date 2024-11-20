@@ -2,7 +2,7 @@
   import { getActorValues } from "../../../utils/helpers";
 
   import Select from "svelte-select";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   export let data = "";
   let av1, av2;

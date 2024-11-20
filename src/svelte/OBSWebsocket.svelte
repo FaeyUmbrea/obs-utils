@@ -7,9 +7,9 @@
     setSetting,
   } from "../utils/settings.js";
   import { getContext, onDestroy } from "svelte";
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
   import { sendOBSSetting } from "../utils/socket.js";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   let websocketSettings = getSetting("websocketSettings");
   export let elementRoot = void 0;

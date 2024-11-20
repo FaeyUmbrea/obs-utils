@@ -1,5 +1,5 @@
 import DirectorApp from "../svelte/DirectorApp.svelte";
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 
 export default class DirectorApplication extends SvelteApplication {
   sidebarButton;

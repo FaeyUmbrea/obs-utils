@@ -4,8 +4,8 @@
   import VirtualList from "@sveltejs/svelte-virtual-list";
   import { getStore, setSetting } from "../utils/settings.js";
   import { getContext } from "svelte";
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
+  import { localize } from "#runtime/util/i18n";
 
   let selectedActors = getStore("overlayActors");
 

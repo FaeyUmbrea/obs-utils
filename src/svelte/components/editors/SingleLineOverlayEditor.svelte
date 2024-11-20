@@ -2,7 +2,7 @@
   import StyleEditor from "../../../applications/styleditor.js";
   import FallbackEditor from "./FallbackEditor.svelte";
   import { getApi } from "../../../utils/helpers";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   export let component;
   export let removeFn;

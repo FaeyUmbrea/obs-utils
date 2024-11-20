@@ -1,9 +1,9 @@
 <svelte:options accessors="{true}" />
 
 <script>
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
   import { getContext } from "svelte";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   export let elementRoot = void 0;
 

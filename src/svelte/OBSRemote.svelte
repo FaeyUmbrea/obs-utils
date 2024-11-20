@@ -2,12 +2,12 @@
 
 <script>
   import ObsTab from "./components/OBSTab.svelte";
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
   import { getSetting, setSetting } from "../utils/settings.js";
   import { getContext } from "svelte";
   import SceneSelect from "./components/SceneSelect.svelte";
   import Select from "svelte-select";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   const useWebSocket = getSetting("enableOBSWebsocket");
   let obssettings = getSetting("obsRemote");

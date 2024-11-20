@@ -1,7 +1,7 @@
 import OverlayEditorUI from "../svelte/OverlayEditorUI.svelte";
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 import { getSetting, setSetting } from "../utils/settings.js";
-import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+import { localize } from "#runtime/util/i18n";
 
 export default class OverlayEditor extends SvelteApplication {
   static get defaultOptions() {

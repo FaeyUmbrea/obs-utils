@@ -1,4 +1,4 @@
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 import NotificationCenterUI from "../svelte/NotificationCenterUI.svelte";
 
 export default class NotificationCenter extends SvelteApplication {

@@ -6,8 +6,8 @@
   import InformationOverlay from "./streamoverlays/PerActorOverlay.svelte";
   import { getSetting, getStore } from "../utils/settings";
   import { getContext } from "svelte";
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
+  import { localize } from "#runtime/util/i18n";
 
   let overlays = getStore("streamOverlays");
   let actorIDs = getSetting("overlayActors");

@@ -1,5 +1,5 @@
 import OBSRemote from "../svelte/OBSRemote.svelte";
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 
 export default class OBSRemoteApplication extends SvelteApplication {
   static get defaultOptions() {

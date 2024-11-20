@@ -3,7 +3,7 @@
   import OverlayComponentEditor from "./editors/SingleLineOverlayEditor.svelte";
   import StyleEditor from "../../applications/styleditor.js";
   import { SortableList } from "@jhubbardsf/svelte-sortablejs";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   export let overlay;
   export let removeFn;

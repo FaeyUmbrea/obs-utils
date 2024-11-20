@@ -1,9 +1,9 @@
 <svelte:options accessors="{true}" />
 
 <script>
-  import { ApplicationShell } from "@typhonjs-fvtt/runtime/svelte/component/core";
+  import { ApplicationShell } from "#runtime/svelte/component/application";
   import { generateDataBlockFromSetting, getStore } from "../utils/settings.js";
-  import { localize } from "@typhonjs-fvtt/runtime/svelte/helper";
+  import { localize } from "#runtime/util/i18n";
 
   let { ic, ooc, players } = generateDataBlockFromSetting();
   let currentIC = getStore("defaultInCombat");

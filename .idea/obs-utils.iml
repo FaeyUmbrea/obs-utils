@@ -16,5 +16,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Foundry" level="application" />
     <orderEntry type="library" name="Foundry" level="application" />
+    <orderEntry type="library" name="Foundry" level="application" />
   </component>
 </module>

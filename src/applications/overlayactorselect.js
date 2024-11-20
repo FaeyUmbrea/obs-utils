@@ -1,5 +1,5 @@
 import OverlayActorSelectUi from "../svelte/OverlayActorSelectUI.svelte";
-import { SvelteApplication } from "@typhonjs-fvtt/runtime/svelte/application";
+import { SvelteApplication } from "#runtime/svelte/application";
 import { getStore } from "../utils/settings.js";
 
 export default class OverlayActorSelect extends SvelteApplication {
