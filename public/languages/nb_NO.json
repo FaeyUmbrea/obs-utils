@@ -226,6 +226,10 @@
             "showUserConfig": {
                 "Name": "Allow User-Config to Render?",
                 "Hint": "If enabled, the user config dialog will not be suppressed"
+            },
+            "smoothUserCamera": {
+                "Hint": "If enabled, manual camera movement will be smoothed by reducing update rate",
+                "Name": "Smooth Camera Movement"
             }
         },
         "overlays": {
