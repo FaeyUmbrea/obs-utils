@@ -13,7 +13,7 @@ export default class DirectorApplication extends SvelteApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["obsdirector"],
       minimizable: true,
-      width: 275,
+      width: 315,
       id: "director-application",
       title: "obs-utils.applications.director.name",
       positionOrtho: false,

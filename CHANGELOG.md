@@ -1,3 +1,19 @@
+## Version 3.3.0
+
+### Changes
+
+- The /stream view will now have a green background again if opened outside of an OBS browser source. This is to make OBS mode a bit more useful if capturing a browser window directly and chromakeying out the background
+
+### Added
+
+- New "Player Characters" tracking mode, that will track all characters that are configured as a players character in the "Setup Player" screen. This uses Foundrys builtin "players" filter, which means GMs are not selected for this
+- New "Pause Camera Tracking" Feature, that can, as the name suggest, temporarily pause the camera cloning so you can look around without affecting the stream view. Please keep in mind that this is enabled globally and also affects player viewport cloning
+- New "View Smoothing" Feature that reduces the viewport cloning update rate, to make the tracking a bit less jittery at the cost of it being more "robotic". This can be toggled off in settings and is on by default 
+
+### Fixes
+
+- Fixed an issue with DSN that would cause the overlays to break inexplicably when DSN was enabled and the actors token was placed on the scene
+
 ## Version 3.2.6
 
 ### Changes

@@ -216,6 +216,14 @@ class OBSUtilsSettings extends TJSGameSettings {
       }),
     );
     settings.push(
+      createSetting("pauseCameraTracking", {
+        type: Boolean,
+        scope: "world",
+        config: false,
+        default: false,
+      }),
+    );
+    settings.push(
       createSetting("obsRemote", {
         type: Object,
         scope: "world",

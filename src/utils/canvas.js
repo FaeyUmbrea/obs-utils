@@ -23,6 +23,15 @@ function getAutoTokens() {
   return game.canvas?.tokens?.ownedTokens;
 }
 
+function getPlayerTokens() {
+  const playerCharacters = game.users.players
+    .filter((e) => e.character != null)
+    .map((player) => player.character.id);
+  return game.canvas?.tokens?.children
+    .flatMap((child) => child.children)
+    .filter((token) => playerCharacters.includes(token?.actor?.id));
+}
+
 function getManualToken() {
   return game.canvas?.scene?.tokens
     ?.filter((token) => !!token.getFlag("obs-utils", "tracked"))
@@ -84,6 +93,9 @@ export function tokenMoved() {
           ),
         ]);
         break;
+      case "trackPlayerOwned":
+        trackTokenList(getPlayerTokens());
+        break;
       default:
         break;
     }
@@ -94,6 +106,9 @@ export function tokenMoved() {
         break;
       case "trackmanual":
         trackTokenList(getManualToken());
+        break;
+      case "trackPlayerOwned":
+        trackTokenList(getPlayerTokens());
         break;
       default:
         break;

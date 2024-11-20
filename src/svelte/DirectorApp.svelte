@@ -10,6 +10,7 @@
   let currentOOC = settings.getStore("defaultOutOfCombat");
   let currentTrackedPlayer = settings.getStore("trackedUser");
   let clampCanvas = settings.getStore("clampCanvas");
+  let pauseCameraTracking = settings.getStore("pauseCameraTracking");
 
   async function onChangeIC(event) {
     $currentIC = event.target.value;
@@ -66,15 +67,26 @@
       <b>{localize("obs-utils.applications.director.canvasOptionsHeader")}</b>
       <hr />
       <input
-        name="limitcanvas"
-        id="limitcanvas"
+        name="limitCanvas"
+        id="limitCanvas"
         type="checkbox"
         bind:checked="{$clampCanvas}"
       />
       <label
         class="button"
         title="{localize('obs-utils.strings.limitCanvas')}"
-        for="limitcanvas"><i class="fas fa-arrows-maximize"></i></label
+        for="limitCanvas"><i class="fas fa-arrows-maximize"></i></label
+      >
+      <input
+        name="pauseCameraTracking"
+        id="pauseCameraTracking"
+        type="checkbox"
+        bind:checked="{$pauseCameraTracking}"
+      />
+      <label
+        class="button"
+        title="{localize('obs-utils.strings.pauseCameraTracking')}"
+        for="pauseCameraTracking"><i class="fas fa-pause"></i></label
       >
     </div>
     <div>

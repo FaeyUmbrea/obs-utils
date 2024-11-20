@@ -48,7 +48,7 @@ export function deactivateViewportTracking() {
 }
 
 function socketCanvasInternal(position) {
-  if (!viewportTrackingActive) {
+  if (!viewportTrackingActive || getSetting("pauseCameraTracking")) {
     return;
   }
   game.socket.emit("module.obs-utils", {

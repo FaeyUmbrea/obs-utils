@@ -7,7 +7,7 @@ export function registerKeybindings() {
     registerKeybinding(
       choice,
       name,
-      "obs-utils.strings.ic.name",
+      "obs-utils.strings.ic",
       "Digit" + (index + 1),
       ["Shift", "Control"],
       "defaultInCombat",
@@ -17,7 +17,7 @@ export function registerKeybindings() {
     registerKeybinding(
       choice,
       name,
-      "obs-utils.strings.ooc.name",
+      "obs-utils.strings.ooc",
       "Digit" + (index + 1),
       ["Shift"],
       "defaultOutOfCombat",
