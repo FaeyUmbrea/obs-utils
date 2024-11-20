@@ -10,8 +10,12 @@
   let rollValue;
   let hook = Hooks.on("createChatMessage", (e) => {
     const uid = e.user.id;
-    if (uid === id && e.whisper.length === 0) {
-      rollValue = e.roll?.total;
+    if (uid === id && e.whisper.length === 0 && e.isRoll) {
+      rollValue = e.rolls.reduce(
+        (accumulator, currentValue) =>
+          accumulator + parseInt(currentValue.total),
+        0,
+      );
       rollShow = false;
       rollShow = true;
     }
