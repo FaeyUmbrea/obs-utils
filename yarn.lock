@@ -1284,7 +1284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@league-of-foundry-developers/foundry-vtt-types@https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git#commit=92ba05a6313c0bbc867613850a51ffdfdf0c95d0":
+"@league-of-foundry-developers/foundry-vtt-types@https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git":
   version: 12.331.2-beta
   resolution: "@league-of-foundry-developers/foundry-vtt-types@https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git#commit=92ba05a6313c0bbc867613850a51ffdfdf0c95d0"
   dependencies:
@@ -6405,7 +6405,7 @@ __metadata:
     "@antfu/eslint-config": "npm:^3.12.0"
     "@directus/sdk": "npm:^18.0.1"
     "@jhubbardsf/svelte-sortablejs": "npm:^1.1.0"
-    "@league-of-foundry-developers/foundry-vtt-types": "https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git#commit=92ba05a6313c0bbc867613850a51ffdfdf0c95d0"
+    "@league-of-foundry-developers/foundry-vtt-types": "https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git"
     "@playwright/test": "npm:^1.49.1"
     "@sveltejs/svelte-virtual-list": "npm:^3.0.1"
     "@sveltejs/vite-plugin-svelte": "npm:^3.1.2"

@@ -44,7 +44,7 @@
 	},
 	"devDependencies": {
 		"@jhubbardsf/svelte-sortablejs": "^1.1.0",
-		"@league-of-foundry-developers/foundry-vtt-types": "https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git#commit=92ba05a6313c0bbc867613850a51ffdfdf0c95d0",
+		"@league-of-foundry-developers/foundry-vtt-types": "https://github.com/League-of-Foundry-Developers/foundry-vtt-types.git",
 		"@playwright/test": "^1.49.1",
 		"@sveltejs/vite-plugin-svelte": "^3.1.2",
 		"@types/obs-studio": "^2.17.2",
