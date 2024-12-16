@@ -1,5 +1,5 @@
 <script>
-	import { OBSEvent } from '../../utils/settings.js';
+	import { OBSEvent } from '../../utils/types.ts';
 	import ObsSetting from './OBSSetting.svelte';
 
 	export let eventArray;

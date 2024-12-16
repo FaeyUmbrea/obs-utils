@@ -1,15 +1,15 @@
-import DirectorApplication from '../applications/director.js';
+import DirectorApplication from '../applications/director.ts';
 /**
  * @type {Array<any>}
  */
-import NotificationCenter from '../applications/notificationCenter.js';
-import OBSRemoteApplication from '../applications/obsremote.js';
-import OBSWebsocketApplication from '../applications/obswebsocket.js';
-import OverlayActorSelect from '../applications/overlayactorselect.js';
-import OverlayEditor from '../applications/overlayeditor.js';
-import RollOverlay from '../applications/rolloverlay.js';
-import { SettingsShell } from '../applications/settingsShell.js';
-import { getLinks, getNotifications } from '../notifications/notifications.js';
+import NotificationCenter from '../applications/notificationCenter.ts';
+import OBSRemoteApplication from '../applications/obsremote.ts';
+import OBSWebsocketApplication from '../applications/obswebsocket.ts';
+import OverlayActorSelect from '../applications/overlayactorselect.ts';
+import OverlayEditor from '../applications/overlayeditor.ts';
+import RollOverlay from '../applications/rolloverlay.ts';
+import { SettingsShell } from '../applications/settingsShell.ts';
+import { getLinks, getNotifications } from '../notifications/notifications.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
 import MultiAVEditor from '../svelte/components/editors/MultiAVEditor.svelte';
@@ -103,9 +103,7 @@ export async function showNotifications() {
 		const notifications = await getNotifications();
 		if (notifications.length > 0) {
 			const links = await getLinks();
-			new NotificationCenter({
-				svelte: { props: { notifications, links } },
-			}).render(true);
+			new NotificationCenter(notifications, links).render(true);
 		}
 	} catch (e) {
 		console.error(e);

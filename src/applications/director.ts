@@ -11,7 +11,7 @@ export default class DirectorApplication extends SvelteApplication {
 
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['obsdirector'],
+			classes: ['obs-director'],
 			minimizable: true,
 			width: 315,
 			id: 'director-application',

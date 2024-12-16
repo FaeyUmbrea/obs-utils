@@ -5,6 +5,7 @@
 	import { localize } from '#runtime/util/i18n';
 	import { getContext } from 'svelte';
 	import Select from 'svelte-select';
+	import { log } from '../utils/console.ts';
 	import { settings } from '../utils/settings.ts';
 	import ObsTab from './components/OBSTab.svelte';
 	import SceneSelect from './components/SceneSelect.svelte';
@@ -17,7 +18,7 @@
 	let entries = Object.getOwnPropertyNames($obsSettings);
 
 	if (!$useWebSocket) {
-		entries = entries.filter(entry => entry != 'onStopStreaming');
+		entries = entries.filter(entry => entry !== 'onStopStreaming');
 	}
 
 	function formatKey(key) {
@@ -66,7 +67,7 @@
 			<button
 				class='add'
 				on:click={() => {
-					console.log(handleAdd);
+					log(handleAdd);
 					if (handleAdd !== undefined) handleAdd();
 				}}
 				type='button'><i class='fas fa-plus'></i></button

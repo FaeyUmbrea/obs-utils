@@ -153,8 +153,7 @@ test.describe('OBS Client Only Tests', () => {
 test.describe('Multiclient UI', () => {
 	test('Journal Popout Close Delay', async ({ pages: { obsPage, gmPage } }) => {
 		const delay
-      = (await gmPage.evaluate(() =>
-      	window.game.settings.get('obs-utils', 'popupCloseDelay'),
+      = (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
       )) * 1200;
 
 		await gmPage.evaluate(() => [...window.game.journal][0].show());
@@ -168,8 +167,7 @@ test.describe('Multiclient UI', () => {
 	});
 	test('Image Popout Close Delay', async ({ pages: { obsPage, gmPage } }) => {
 		const delay
-      = (await gmPage.evaluate(() =>
-      	window.game.settings.get('obs-utils', 'popupCloseDelay'),
+      = (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
       )) * 1200;
 
 		await gmPage.evaluate(() =>

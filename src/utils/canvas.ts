@@ -1,14 +1,14 @@
-import { getCurrentCombatants } from './combat.js';
+import { getCurrentCombatants } from './combat.ts';
 import { sleep } from './helpers.js';
 import { getSetting } from './settings.ts';
 
 export const VIEWPORT_DATA = new Map();
 
-export function hideApplication(_, html) {
+export function hideApplication(_, html: JQuery<HTMLElement> | HTMLElement) {
 	try {
-		html.hide();
+		(html as JQuery).hide();
 	} catch {
-		html.style.display = 'none';
+		(html as HTMLElement).style.display = 'none';
 	}
 }
 

@@ -1,5 +1,5 @@
 export function stopCombat() {
-	canvas.tokens?.controlledObjects.forEach(token => token.release());
+	canvas?.tokens?.controlledObjects.forEach(token => token.release());
 }
 
 export function handleCombat(runningCombat) {

@@ -47,15 +47,15 @@ function start() {
 		}
 
 		// Update obsModeUser choice list once usernames are available
-		game.settings.settings.get('obs-utils.obsModeUser').choices
+		game!.settings!.settings!.get('obs-utils.obsModeUser')!.choices
       = Object.fromEntries(
 				[['none', 'None']].concat(
-					game.users
-						.filter(
+					game?.users
+						?.filter(
 							e =>
-								!e.isGM || game.users.filter(user => user.isGM).length > 1,
+								!(e as User).isGM || game.users.filter(user => (user as User).isGM).length > 1,
 						)
-						.map(e => [e.id, e.name]),
+						.map(e => [(e).id, (e as User).name]) ?? [[]],
 				),
 			);
 	});

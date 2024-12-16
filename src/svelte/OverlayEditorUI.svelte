@@ -4,8 +4,8 @@
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
 	import { getContext } from 'svelte';
-	import { settings } from '../utils/settings.js';
-	import { OverlayData } from '../utils/stream.js';
+	import { settings } from '../utils/settings.ts';
+	import { OverlayData } from '../utils/stream.ts';
 	import OverlayEditorTab from './components/OverlayEditorTab.svelte';
 	import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';
 

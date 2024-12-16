@@ -30,11 +30,11 @@ export default class OverlayActorSelect extends SvelteApplication {
 
 		buttons.unshift({
 			icon: 'fas fa-rotate',
-			title: 'obs-utils.applications.actorSelect.resetButton',
 			label: 'obs-utils.applications.actorSelect.resetButton',
+			class: 'obs-header',
 
-			onPress() {
-				settings.getStore('overlayActors').set([]);
+			onclick() {
+				settings.getStore('overlayActors')?.set([]);
 			},
 		});
 		return buttons;

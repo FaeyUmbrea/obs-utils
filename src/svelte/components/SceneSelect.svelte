@@ -1,7 +1,7 @@
 <script>
 	import { TJSDocument } from '#runtime/svelte/store/fvtt/document';
 	import { localize } from '#runtime/util/i18n';
-	import { OBSEvent, SceneLoadEvent } from '../../utils/settings.js';
+	import { OBSEvent, SceneLoadEvent } from '../../utils/types.ts';
 	import ObsSetting from './OBSSetting.svelte';
 
 	/**

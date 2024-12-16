@@ -1,5 +1,5 @@
 <script>
-	import { getApi } from '../../utils/helpers.js';
+	import { getApi } from '../../utils/helpers.ts';
 
 	export let overlays;
 	export let actorIDs;

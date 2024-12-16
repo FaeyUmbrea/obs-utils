@@ -1,7 +1,7 @@
 <script>
 	import { get, has } from 'lodash-es';
 	import { onDestroy } from 'svelte';
-	import { removeQuotes } from '../../../utils/helpers.js';
+	import { removeQuotes } from '../../../utils/helpers.ts';
 
 	export let data;
 	export let actorID;

@@ -1,7 +1,7 @@
 <script>
 	import { get, has } from 'lodash-es';
 	import { onDestroy } from 'svelte';
-	import { removeQuotes } from '../../../utils/helpers.js';
+	import { removeQuotes } from '../../../utils/helpers.ts';
 
 	export let data = '';
 	export let actorID;
@@ -50,7 +50,7 @@
 	style={style}
 >
 	<progress
-		value={isNaN(value1) ? 0.5 : value1}
-		max={isNaN(value2) ? 1 : value2}
+		value={Number.isNaN(value1) ? 0.5 : value1}
+		max={Number.isNaN(value2) ? 1 : value2}
 	></progress>
 </div>

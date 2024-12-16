@@ -1,5 +1,5 @@
 import OverlayRenderer from '../svelte/OverlayRenderer.svelte';
-import { setupDiceSoNice } from './dice.js';
+import { setupDiceSoNice } from './dice.ts';
 import '../less/overlayrenderer.styl';
 
 export class OverlayData {

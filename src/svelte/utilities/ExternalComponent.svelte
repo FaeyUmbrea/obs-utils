@@ -2,9 +2,10 @@
 	import { onMount } from 'svelte';
 
 	let div;
-	export let externalClass;
+	export let ExternalClass;
 	onMount(() => {
-		new externalClass({
+		// eslint-disable-next-line no-new
+		new ExternalClass({
 			target: div,
 			props: $$props,
 		});

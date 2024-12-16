@@ -73,16 +73,6 @@ async function startCoverage(page) {
 	]);
 }
 
-async function stopCoverage(page) {
-	const [jsCoverage, cssCoverage] = await Promise.all([
-		page.coverage.stopJSCoverage(),
-		page.coverage.stopCSSCoverage(),
-	]);
-	const coverageList = [...jsCoverage, ...cssCoverage];
-	// console.log(coverageList.map((item) => item.url));
-	await addCoverageReport(coverageList, test.info());
-}
-
 const test = testBase.extend({
 	pages: [
 		async ({ browser }, use) => {
@@ -140,3 +130,13 @@ const test = testBase.extend({
 	],
 });
 export { expect, test };
+
+async function stopCoverage(page) {
+	const [jsCoverage, cssCoverage] = await Promise.all([
+		page.coverage.stopJSCoverage(),
+		page.coverage.stopCSSCoverage(),
+	]);
+	const coverageList = [...jsCoverage, ...cssCoverage];
+	// console.log(coverageList.map((item) => item.url));
+	await addCoverageReport(coverageList, test.info());
+}

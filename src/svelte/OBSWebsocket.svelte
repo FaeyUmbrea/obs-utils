@@ -5,7 +5,7 @@
 	import { localize } from '#runtime/util/i18n';
 	import { getContext, onDestroy } from 'svelte';
 	import { generateDataBlockFromSetting, settings } from '../utils/settings.ts';
-	import { sendOBSSetting } from '../utils/socket.js';
+	import { sendOBSSetting } from '../utils/socket.ts';
 
 	const websocketSettings = settings.getStore('websocketSettings');
 	export let elementRoot = void 0;

@@ -32,7 +32,7 @@ export class ObsUtilsApi {
 	}
 
 	getSelectedActors() {
-		return game?.settings.get(MODULE_ID, 'overlayActors');
+		return game?.settings?.get(MODULE_ID, 'overlayActors');
 	}
 
 	async setSelectedActors(actorArray: string[]) {

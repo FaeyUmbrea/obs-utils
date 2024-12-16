@@ -28,10 +28,10 @@ export default class OverlayEditor extends SvelteApplication {
 		buttons.unshift(
 			{
 				icon: 'fas fa-file-import',
-				title: localize('obs-utils.applications.overlayEditor.importButton'),
 				label: localize('obs-utils.applications.overlayEditor.importButton'),
+				class: 'obs-button',
 
-				async onPress() {
+				async onclick() {
 					new Dialog(
 						{
 							title: localize(
@@ -52,9 +52,9 @@ export default class OverlayEditor extends SvelteApplication {
 										'obs-utils.applications.overlayEditor.importDialog.replaceButton',
 									),
 									callback: (html) => {
-										const form = html.find('form')[0];
+										const form = (html as JQuery<HTMLElement>).find('form')[0];
 										if (!form.data.files.length) {
-											return ui.notifications.error(
+											return ui?.notifications?.error(
 												localize(
 													'obs-utils.applications.overlayEditor.importDialog.fileError',
 												),
@@ -71,9 +71,9 @@ export default class OverlayEditor extends SvelteApplication {
 										'obs-utils.applications.overlayEditor.importDialog.appendButton',
 									),
 									callback: (html) => {
-										const form = html.find('form')[0];
+										const form = (html as JQuery<HTMLElement>).find('form')[0];
 										if (!form.data.files.length) {
-											return ui.notifications.error(
+											return ui?.notifications?.error(
 												localize(
 													'obs-utils.applications.overlayEditor.importDialog.fileError',
 												),
@@ -101,10 +101,11 @@ export default class OverlayEditor extends SvelteApplication {
 			},
 			{
 				icon: 'fas fa-file-export',
-				title: localize('obs-utils.applications.overlayEditor.exportButton'),
 				label: localize('obs-utils.applications.overlayEditor.exportButton'),
 
-				onPress() {
+				class: 'obs-button',
+
+				onclick() {
 					new Dialog({
 						title: localize(
 							'obs-utils.applications.overlayEditor.exportDialog.title',
@@ -147,7 +148,7 @@ function exportChatCommands() {
 	const filename = [
 		'obsu',
 		game.system?.id,
-		game.world.id,
+		game?.world?.name,
 		'overlays',
 		new Date().toString(),
 	].filterJoin('-');
@@ -181,7 +182,7 @@ async function importChatCommands(data, join) {
 	}
 	if (join) {
 		const overlays = getSetting('streamOverlays');
-		overlays.push(...imported.overlays);
+		overlays!.push(...imported.overlays);
 		await setSetting('streamOverlays', overlays);
 	} else {
 		await setSetting('streamOverlays', imported.overlays);

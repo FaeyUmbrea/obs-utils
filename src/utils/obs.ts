@@ -5,12 +5,11 @@ import {
 	hideApplication,
 	hideSidebar,
 	hideTokenBorder,
-	preserveSideBar,
 	screenReload,
 	showTracker,
 	tokenMoved,
 } from './canvas.ts';
-import { handleCombat, stopCombat } from './combat.js';
+import { handleCombat, stopCombat } from './combat.ts';
 import { isOBS } from './helpers';
 import { getSetting, OBSAction } from './settings.ts';
 import { renderOverlays } from './stream.ts';
@@ -177,13 +176,11 @@ export function initOBS() {
 	}
 	Hooks.on('renderPlayerList', hideApplication);
 	Hooks.on('renderHotbar', hideApplication);
-	Hooks.on('renderUserConfig', (...args) => {
+	Hooks.on('renderUserConfig', (_, html: JQuery<HTMLElement>) => {
 		if (!getSetting('showUserConfig')) {
-			hideApplication(...args);
+			hideApplication(_, html);
 		}
 	});
-
-	Hooks.on('renderSidebar', preserveSideBar);
 
 	$('section#ui-left img#logo').remove();
 

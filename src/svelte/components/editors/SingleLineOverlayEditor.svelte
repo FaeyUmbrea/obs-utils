@@ -1,6 +1,6 @@
 <script>
 	import { localize } from '#runtime/util/i18n';
-	import StyleEditor from '../../../applications/styleditor.js';
+	import StyleEditor from '../../../applications/styleditor.ts';
 	import { getApi } from '../../../utils/helpers';
 	import FallbackEditor from './FallbackEditor.svelte';
 

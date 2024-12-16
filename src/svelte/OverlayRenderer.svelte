@@ -1,6 +1,6 @@
 <script>
 	import { getApi } from '../utils/helpers';
-	import { settings } from '../utils/settings.js';
+	import { settings } from '../utils/settings.ts';
 	import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';
 	import ExternalComponent from './utilities/ExternalComponent.svelte';
 
@@ -13,6 +13,6 @@
 <div class='overlay-renderer'>
 	<InformationOverlay actorIDs={$actors} overlays={$overlays} />
 	{#each [...singleTimeOverlays] as overlay}
-		<ExternalComponent externalClass={overlay} />
+		<ExternalComponent ExternalClass={overlay} />
 	{/each}
 </div>

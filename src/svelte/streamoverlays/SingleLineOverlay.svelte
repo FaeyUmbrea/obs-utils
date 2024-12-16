@@ -10,7 +10,7 @@
 
 	function getComponentType(type) {
 		const resolvedType = overlayTypes.get(type);
-		if (resolvedType != undefined) {
+		if (resolvedType !== undefined) {
 			return resolvedType;
 		} else {
 			return EmptyComponent;

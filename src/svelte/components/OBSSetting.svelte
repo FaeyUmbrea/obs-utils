@@ -1,7 +1,7 @@
 <script>
 	import { localize } from '#runtime/util/i18n';
 	import { fade } from 'svelte/transition';
-	import { OBSAction } from '../../utils/settings.js';
+	import { OBSAction } from '../../utils/settings.ts';
 
 	export let removeFn;
 	export let event;
