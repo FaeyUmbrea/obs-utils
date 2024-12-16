@@ -1,28 +1,28 @@
 export function SettingsShell(Application) {
-  return class Shell extends FormApplication {
-    static #mceSettingsApp;
+	return class Shell extends FormApplication {
+		static #mceSettingsApp;
 
-    static showSettings() {
-      this.#mceSettingsApp = this.#mceSettingsApp
-        ? this.#mceSettingsApp
-        : new Application();
-      this.#mceSettingsApp.render(true, { focus: true });
+		static showSettings() {
+			this.#mceSettingsApp = this.#mceSettingsApp
+				? this.#mceSettingsApp
+				: new Application();
+			this.#mceSettingsApp.render(true, { focus: true });
 
-      return this.#mceSettingsApp;
-    }
+			return this.#mceSettingsApp;
+		}
 
-    /**
-     * @inheritDoc
-     */
-    constructor(options = {}) {
-      super({}, options);
-      Shell.showSettings();
-    }
+		/**
+		 * @inheritDoc
+		 */
+		constructor(options = {}) {
+			super({}, options);
+			Shell.showSettings();
+		}
 
-    async _updateObject() {}
+		async _updateObject() {}
 
-    render() {
-      this.close();
-    }
-  };
+		render() {
+			this.close();
+		}
+	};
 }

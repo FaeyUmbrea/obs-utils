@@ -1,77 +1,79 @@
 <script>
-  import StyleEditor from "../../../applications/styleditor.js";
-  import FallbackEditor from "./FallbackEditor.svelte";
-  import { getApi } from "../../../utils/helpers";
-  import { localize } from "#runtime/util/i18n";
+	import { localize } from '#runtime/util/i18n';
+	import StyleEditor from '../../../applications/styleditor.js';
+	import { getApi } from '../../../utils/helpers';
+	import FallbackEditor from './FallbackEditor.svelte';
 
-  export let component;
-  export let removeFn;
-  export let index;
+	export let component;
+	export let removeFn;
+	export let index;
 
-  const componentNames = getApi().overlayTypes.get("sl").overlayComponentNames;
+	const componentNames = getApi().overlayTypes.get('sl').overlayComponentNames;
 
-  //const componentEditors =  getApi().overlayTypes.get("sl").overlayComponentEditors;
+	// const componentEditors =  getApi().overlayTypes.get("sl").overlayComponentEditors;
 
-  function openStyleEditor() {
-    let editor = new StyleEditor(component.style, (styleNew) => {
-      component.style = styleNew;
-    });
-    editor.render(true);
-  }
+	function openStyleEditor() {
+		const editor = new StyleEditor(component.style, (styleNew) => {
+			component.style = styleNew;
+		});
+		editor.render(true);
+	}
 
-  function getEditor(type) {
-    const editor = getApi()
-      .overlayTypes.get("sl")
-      .overlayComponentEditors.get(type);
-    if (editor !== undefined) {
-      return editor;
-    } else {
-      return FallbackEditor;
-    }
-  }
+	function getEditor(type) {
+		const editor = getApi()
+			.overlayTypes
+			.get('sl')
+			.overlayComponentEditors
+			.get(type);
+		if (editor !== undefined) {
+			return editor;
+		} else {
+			return FallbackEditor;
+		}
+	}
 
-  function getCompactButtons(type) {
-    return !!getApi().overlayTypes.get("sl").compactEditorButtons.get(type);
-  }
+	function getCompactButtons(type) {
+		return !!getApi().overlayTypes.get('sl').compactEditorButtons.get(type);
+	}
 </script>
 
-<li data-list-key="{index}">
-  <div class="component handle">
-    <i class="fa-light fa-bars grab"></i>
-    <select bind:value="{component.type}" name="types">
-      {#each [...componentNames] as [component, name]}
-        <option value="{component}">{localize(name)}</option>
-      {/each}
-    </select>
-    <svelte:component
-      this="{getEditor(component.type)}"
-      bind:data="{component.data}"
-    />
-    <div class="{getCompactButtons(component.type) ? '' : 'buttons'}">
-      <button
-        on:click="{() => removeFn(index)}"
-        title="{localize(
-          'obs-utils.applications.overlayEditor.removeComponentButton',
-        )}"
-        type="button"
-      >
-        <i class="fas fa-trash"></i>
-      </button>
-      <button
-        class="add"
-        on:click="{() => openStyleEditor()}"
-        title="{localize(
-          'obs-utils.applications.overlayEditor.editStyleButton',
-        )}"
-        type="button"
-      >
-        <i class="fas fa-pencil"></i>
-      </button>
-    </div>
-  </div>
+<li data-list-key={index}>
+	<div class='component handle'>
+		<i class='fa-light fa-bars grab'></i>
+		<select bind:value={component.type} name='types'>
+			{#each [...componentNames] as [component, name]}
+				<option value={component}>{localize(name)}</option>
+			{/each}
+		</select>
+		<svelte:component
+			this={getEditor(component.type)}
+			bind:data={component.data}
+		/>
+		<div class={getCompactButtons(component.type) ? '' : 'buttons'}>
+			<button
+				on:click={() => removeFn(index)}
+				title={localize(
+					'obs-utils.applications.overlayEditor.removeComponentButton',
+				)}
+				type='button'
+			>
+				<i class='fas fa-trash'></i>
+			</button>
+			<button
+				class='add'
+				on:click={() => openStyleEditor()}
+				title={localize(
+					'obs-utils.applications.overlayEditor.editStyleButton',
+				)}
+				type='button'
+			>
+				<i class='fas fa-pencil'></i>
+			</button>
+		</div>
+	</div>
 </li>
 
-<style lang="stylus">
+<style lang='stylus'>
   li {
     padding-top: 1px;
     padding-bottom: 1px;

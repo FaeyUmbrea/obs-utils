@@ -1,79 +1,79 @@
-import { createDirectus, readItems, rest } from "@directus/sdk";
-import { getSetting } from "../utils/settings.js";
+import { createDirectus, readItems, rest } from '@directus/sdk';
+import { getSetting } from '../utils/settings.ts';
 
 export async function getNotifications() {
-  const lastReadNotification = getSetting("lastReadNotification");
-  const lastRunDate = Date.parse(lastReadNotification)
-    ? new Date(lastReadNotification)
-    : "1990-01-01";
-  const client = createDirectus("https://cms.void.monster").with(rest());
+	const lastReadNotification = getSetting('lastReadNotification');
+	const lastRunDate = Date.parse(lastReadNotification)
+		? new Date(lastReadNotification)
+		: '1990-01-01';
+	const client = createDirectus('https://cms.void.monster').with(rest());
 
-  const newsQuery = {
-    filter: {
-      _and: [
-        {
-          tags: {
-            _contains: "obs-utils",
-          },
-        },
-        {
-          _or: [
-            {
-              date_updated: {
-                _gte: lastRunDate,
-              },
-            },
-            {
-              date_created: {
-                _gte: lastRunDate,
-              },
-            },
-          ],
-        },
-        {
-          status: {
-            _eq: "published",
-          },
-        },
-      ],
-    },
-  };
+	const newsQuery = {
+		filter: {
+			_and: [
+				{
+					tags: {
+						_contains: 'obs-utils',
+					},
+				},
+				{
+					_or: [
+						{
+							date_updated: {
+								_gte: lastRunDate,
+							},
+						},
+						{
+							date_created: {
+								_gte: lastRunDate,
+							},
+						},
+					],
+				},
+				{
+					status: {
+						_eq: 'published',
+					},
+				},
+			],
+		},
+	};
 
-  if (lastReadNotification === "") {
-    newsQuery.filter._and.push({
-      new_users: {
-        _eq: true,
-      },
-    });
-  } else {
-    newsQuery.filter._and.push({
-      existing_users: {
-        _eq: lastReadNotification !== "",
-      },
-    });
-  }
+	if (lastReadNotification === '') {
+		newsQuery.filter._and.push({
+			new_users: {
+				_eq: true,
+			},
+		});
+	} else {
+		newsQuery.filter._and.push({
+			existing_users: {
+				_eq: lastReadNotification !== '',
+			},
+		});
+	}
 
-  return await client.request(readItems("News", newsQuery));
+	return await client.request(readItems('News', newsQuery));
 }
 
 export async function getLinks() {
-  const client = createDirectus("https://cms.void.monster").with(rest());
+	const client = createDirectus('https://cms.void.monster').with(rest());
 
-  const linksQuery = {
-    filter: {
-      _and: [
-        {
-          tags: {
-            _contains: "obs-utils",
-          },
-        },
-        {
-          status: {
-            _eq: "published",
-          },
-        },
-      ],
-    },
-  };
-  return await client.request(readItems("Links", linksQuery));
+	const linksQuery = {
+		filter: {
+			_and: [
+				{
+					tags: {
+						_contains: 'obs-utils',
+					},
+				},
+				{
+					status: {
+						_eq: 'published',
+					},
+				},
+			],
+		},
+	};
+	return await client.request(readItems('Links', linksQuery));
 }

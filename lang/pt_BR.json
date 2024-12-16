@@ -1,0 +1,249 @@
+{
+	"obs-utils": {
+		"strings": {
+			"module": "OBS Utils",
+			"ic": "Em Combate",
+			"trackAll": "Rastear Todos Tokens Controlados",
+			"trackOne": "Rastrear o Token Controlado atualmente ativo",
+			"clonePlayer": "Clonar a Visão do Jogador Selecionado",
+			"cloneDM": "Clonar a Visão do MJ",
+			"birdseye": "Ajustar Mapa à Tela",
+			"ooc": "Fora de Combate",
+			"trackManual": "Rastrear uma Lista manual de Tokens",
+			"limitCanvas": "Limitar Tela às Bordas da Tela",
+			"keypressInfo1": "Trocado Modo ",
+			"keypressInfo2": "para ",
+			"avInputPlaceholder": "Digite o texto ou pesquise",
+			"iconPlaceholder": "Ícone",
+			"true": "Verdadeiro",
+			"false": "Falso",
+			"missingTypeNotice": "Tipo Legado/Ausente. Selecione um novo tipo no menu suspenso para editar.",
+			"done": "Feito"
+		},
+		"applications": {
+			"rollOverlayEditor": {
+				"name": "Editor Sobreposição de Rolagem",
+				"test": "Teste",
+				"preRollImage": "Imagem Pré-Rolagem",
+				"rollImage": "Imagem Rolagem",
+				"postRollImage": "Imagem Pós-Rolagem",
+				"imageUrl": "URL da Imagem",
+				"foregroundImageUrl": "URL Imagem de Primeiro Plano",
+				"backgroundImageUrl": "URL Imagem de Fundo",
+				"delay": "Atraso (ms)",
+				"fadeIn": "Fade In (ms)",
+				"duration": "Duração (ms)",
+				"fadeOut": "Fade Out (ms)"
+			},
+			"director": {
+				"name": "Diretor",
+				"icTypeHeader": "Tipo Em Combate",
+				"oocTypeHeader": "Tipo Fora de Combate",
+				"canvasOptionsHeader": "Opções de Tela",
+				"trackedPlayerHeader": "Jogador Rastreado"
+			},
+			"obsRemote": {
+				"name": "Configurações Remotas do OBS",
+				"sceneName": "Nome da Cena",
+				"sourceName": "Nome da Fonte no OBS",
+				"switchScene": "Trocar Cena",
+				"toggleSource": "Alternar Fonte",
+				"enableSource": "Habilitar Fonte",
+				"disableSource": "Desabilitar Fonte",
+				"vttSceneLabel": "Nome da Cena no VTT",
+				"vttScenePlaceholder": "Insira o nome ou solte uma cena aqui",
+				"onLoad": "Carregar",
+				"onCombatStart": "Início do Combate",
+				"onCombatEnd": "Fim do Combate",
+				"onPause": "Pausar",
+				"onUnpause": "Retomar",
+				"onSceneLoad": "Carregar Cena",
+				"onStopStreaming": "Parar Streaming"
+			},
+			"obsWebsocket": {
+				"name": "Configurações OBS Websocket",
+				"urlLabel": "URL",
+				"portLabel": "Porta",
+				"passwordLabel": "Senha",
+				"syncLabel": "Sincronizar Cliente Alvo",
+				"saveButton": "Salvar",
+				"syncButton": "Sincronizar"
+			},
+			"actorSelect": {
+				"name": "Seleção de Atores",
+				"searchPlaceholder": "Procurar",
+				"closeButton": "Fechar",
+				"resetButton": "Reiniciar"
+			},
+			"overlayEditor": {
+				"name": "Editor de Sobreposição",
+				"addButton": "Adicionar Novo Componente",
+				"editStyleButton": "Estilar Estilo",
+				"removeButton": "Remover Sobreposição",
+				"removeComponentButton": "Remover Componente",
+				"importButton": "Importar",
+				"exportButton": "Exportar",
+				"addOverlayButton": "Adicionar Nova Sobreposição",
+				"closeButton": "Fechar",
+				"importDialog": {
+					"title": "Importar Dados: Sobreposições",
+					"hint1": "Você está prestes a importar uma configuração de Sobreposição exportada. Certifique-se de que foi exportado no mesmo sistema ou as Sobreposições Áudio/Vídeo podem não funcionar.",
+					"hint2": "Escolha se deseja substituir suas sobreposições existentes ou adicionar a lista importada.",
+					"replaceButton": "Substituir",
+					"appendButton": "Acrescentar",
+					"fileError": "Você não carregou um arquivo de dados",
+					"versionError": "Versão não-suportada",
+					"formatError": "O arquivo importado não é um OBS Utils Overlay Export",
+					"cancelButton": "Cancelar"
+				},
+				"exportDialog": {
+					"title": "Exportar suas configurações?",
+					"content": "Você deseja exportar suas Configurações de Sobreposição?",
+					"yesButton": "Sim",
+					"noButton": "Não"
+				}
+			},
+			"styleEditor": {
+				"name": "Editor de Estilo",
+				"submitButton": "Enviar"
+			}
+		},
+		"overlays": {
+			"plainText": {
+				"name": "Texto Simples"
+			},
+			"fontAwesomeIcon": {
+				"name": "Ícone Font Awesome"
+			},
+			"booleanAVIcon": {
+				"name": "Ícone Booleano Áudio/Vídeo"
+			},
+			"booleanAVImage": {
+				"name": "Imagem Booleana Áudio/Vídeo"
+			},
+			"image": {
+				"name": "Imagem"
+			},
+			"multiIconAV": {
+				"name": "Multiícone Áudio/Vídeo"
+			},
+			"multiImageAV": {
+				"name": "Multiimagem Áudio/Vídeo"
+			},
+			"progressBar": {
+				"name": "Barra de Progresso"
+			}
+		},
+		"settings": {
+			"obsMode": {
+				"Name": "Modo OBS",
+				"Hint": "Define este navegador como o navegador OBS. Habilite apenas se você não conseguir usar uma fonte do navegador."
+			},
+			"obsModeUser": {
+				"Name": "Usuário Modo OBS (Nome de Usuário)",
+				"Hint": "Define este usuário para estar sempre no Modo OBS, independentemente do navegador."
+			},
+			"obsModeGlobalDisable": {
+				"Name": "Desabilitar Visualização do OBS",
+				"Hint": "Isso desativa os recursos do OBS para todos os clientes, independentemente do método."
+			},
+			"minScale": {
+				"Name": "Escala Mínima",
+				"Hint": "O mínimo que a tela pode ampliar."
+			},
+			"maxScale": {
+				"Name": "Escala Máxima",
+				"Hint": "O máximo que a tela pode ampliar."
+			},
+			"defaultOutOfCombat": {
+				"Name": "Modo Fora de Combate",
+				"Hint": "O modo da câmera fora de combate."
+			},
+			"defaultInCombat": {
+				"Name": "Modo Em Combate",
+				"Hint": "O modo da câmera em combate."
+			},
+			"popupCloseDelay": {
+				"Name": "Atraso Fechamento de Pop-Up",
+				"Hint": "Segundos até que as pop-ups sejam fechadas automaticamente. 0 para desabilitar."
+			},
+			"showTrackerInCombat": {
+				"Name": "Mostrar Rastreador de Combate em Combate?",
+				"Hint": "Se marcado, o Rastreador de Combate ficará visível durante os turnos de combate."
+			},
+			"obsRemoteMenu": {
+				"Label": "Abrir Menu",
+				"Name": "Configurações OBS Remoto",
+				"Hint": "Configure o OBS Remoto."
+			},
+			"obsWebsocketMenu": {
+				"Label": "Abrir Menu",
+				"Name": "Configurações OBS Websocket",
+				"Hint": "Configure o OBS Websocket."
+			},
+			"overlayActorSelect": {
+				"Label": "Abrir Menu",
+				"Name": "Atores de Sobreposição",
+				"Hint": "Selecione os Atores para a Sobreposição."
+			},
+			"overlayEditor": {
+				"Label": "Abrir Editor",
+				"Name": "Editor de Sobreposição",
+				"Hint": "Edite as Sobreposições."
+			},
+			"enableOBSWebsocket": {
+				"Name": "Habilitar OBS Websocket?",
+				"Hint": "Se marcado, o OBS Websocket será usado para comunicação Remota."
+			},
+			"rollOverlayEditor": {
+				"Name": "Editor Sobreposição de Rolagem",
+				"Hint": "Edite a Sobreposição de Rolagem.",
+				"Label": "Abrir Editor"
+			},
+			"showAV": {
+				"Name": "Mostrar Sobreposição de Vídeo?",
+				"Hint": "Se ativado, a Interface do Chat de Áudio/Vídeo ficará visível no OBS (pode ser necessário recarregar no OBS)."
+			},
+			"showUserConfig": {
+				"Name": "Permitir Renderização de Configuração de Usuário?",
+				"Hint": "Se ativado, a caixa de diálogo de configuração do usuário não será suprimida."
+			},
+			"fixedPopups": {
+				"Name": "Use Pop-Ups Fixos",
+				"Hint": "Se habilitado, todos os pop-ups são reposicionados e redimensionados para os valores configurados."
+			},
+			"fixedPopupX": {
+				"Name": "Pop-Up X",
+				"Hint": "A distância até a borda esquerda da tela, em pixels."
+			},
+			"fixedPopupY": {
+				"Name": "Pop-Up Y",
+				"Hint": "A distância até a borda superior da tela, em pixels."
+			},
+			"fixedPopupWidth": {
+				"Name": "Pop-Up Largura",
+				"Hint": "A largura da pop-up, em pixels."
+			},
+			"fixedPopupHeight": {
+				"Name": "Pop-Up Altura",
+				"Hint": "A altura da pop-up, em pixels."
+			},
+			"showKeybindingPopup": {
+				"Name": "Mostrar Notificação de Atalho",
+				"Hint": "Se ativado, o uso de um atalho de teclado mostrará uma notificação de qual modo foi selecionado."
+			},
+			"diceSoNice": {
+				"Name": "Sobreposição Dice so Nice",
+				"Hint": "Se ativado, uma seção do Dice so Nice será renderizada junto com outras sobreposições."
+			},
+			"diceSoNiceOverlayWidth": {
+				"Name": "Largura Sobreposição Dice so Nice",
+				"Hint": "Largura do elemento, em pixels."
+			},
+			"diceSoNiceOverlayHeight": {
+				"Name": "Altura Sobreposição Dice so Nice",
+				"Hint": "Altura do elemento, em pixels"
+			}
+		}
+	}
+}

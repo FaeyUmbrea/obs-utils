@@ -1,65 +1,45 @@
-import prettier from "eslint-plugin-prettier";
-import globals from "globals";
-import js from "@eslint/js";
-import eslintPluginPrettierRecommended from "eslint-plugin-prettier/recommended";
-import eslintPluginSvelte from "eslint-plugin-svelte";
+import antfu from '@antfu/eslint-config';
 
-export default [
-  js.configs.recommended,
-  eslintPluginPrettierRecommended,
-  ...eslintPluginSvelte.configs["flat/recommended"],
-  {
-    ignores: [
-      "node_modules",
-      "dist/*",
-      "coverage",
-      "playwright-report",
-      ".vite-cache",
-      ".nyc_output",
-      ".github",
-      ".yarn",
-      "test-results/*",
-    ],
-  },
-  {
-    files: ["**/*"],
-    languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "module",
-      globals: {
-        ...globals.browser,
-        $: true,
-        Hooks: true,
-        game: true,
-        foundry: true,
-        Actors: true,
-        ui: true,
-        CONFIG: true,
-        canvas: true,
-        FormApplication: true,
-        FilePicker: true,
-        Dialog: true,
-        saveDataToFile: true,
-        readTextFromFile: true,
-        renderTemplate: true,
-        PIXI: true,
-      },
-    },
-    plugins: {
-      prettier,
-    },
-    rules: {
-      "prettier/prettier": "error",
-    },
-  },
-  {
-    languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "module",
-      globals: {
-        ...globals.node,
-      },
-    },
-    files: ["tests/**/*", "playwright*"],
-  },
-];
+export default antfu(
+	{
+		formatters: true,
+		svelte: true,
+
+		stylistic: {
+			indent: 'tab',
+			quotes: 'single',
+			semi: true,
+		},
+
+		rules: {
+			'import/order': 'off',
+			'sort-imports': 'off',
+			'unicorn/consistent-function-scoping': 'off',
+			'svelte/html-self-closing': [
+				'error',
+				{
+					void: 'always', // or "never" or "ignore"
+					normal: 'never',
+					component: 'always',
+					svelte: 'always',
+				},
+			],
+			'svelte/prefer-style-directive': 'warn',
+			'antfu/consistent-list-newline': 'warn',
+			'antfu/if-newline': 'off',
+			'import/no-mutable-exports': 'off',
+			'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+			'unused-imports/no-unused-vars': 'warn',
+			'node/prefer-global/process': 'off',
+			'svelte/valid-compile': 'warn',
+		},
+
+		ignores: [],
+	},
+	{
+		files: ['**/*.svelte'],
+		rules: {
+			'no-self-assign': 'off',
+		},
+	},
+);

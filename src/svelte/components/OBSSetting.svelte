@@ -1,55 +1,55 @@
 <script>
-  import { OBSAction } from "../../utils/settings";
-  import { fade } from "svelte/transition";
-  import { localize } from "#runtime/util/i18n";
+	import { localize } from '#runtime/util/i18n';
+	import { fade } from 'svelte/transition';
+	import { OBSAction } from '../../utils/settings.js';
 
-  export let removeFn;
-  export let event;
-  export let useWebSocket;
+	export let removeFn;
+	export let event;
+	export let useWebSocket;
 
-  let idDisabled = true;
-  let sceneDisabled = false;
+	let idDisabled = true;
+	const sceneDisabled = false;
 
-  let actionTypes = Object.values(OBSAction);
+	let actionTypes = Object.values(OBSAction);
 
-  if (!useWebSocket) {
-    actionTypes = actionTypes.filter((type) => type === OBSAction.SwitchScene);
-  }
+	if (!useWebSocket) {
+		actionTypes = actionTypes.filter(type => type === OBSAction.SwitchScene);
+	}
 
-  function changeEvent() {
-    idDisabled = event.targetAction === OBSAction.SwitchScene;
-  }
+	function changeEvent() {
+		idDisabled = event.targetAction === OBSAction.SwitchScene;
+	}
 
-  changeEvent();
+	changeEvent();
 </script>
 
 <li transition:fade>
-  <div class="setting">
-    <select
-      bind:value="{event.targetAction}"
-      name="types"
-      on:change="{changeEvent}"
-    >
-      {#each actionTypes as action}
-        <option value="{action}">{localize(action)}</option>
-      {/each}
-    </select>
-    <input
-      bind:value="{event.sceneName}"
-      disabled="{sceneDisabled}"
-      name="sceneNames"
-      placeholder="{localize('obs-utils.applications.obsRemote.sceneName')}"
-    />
-    <input
-      bind:value="{event.targetName}"
-      disabled="{idDisabled}"
-      name="itemIDs"
-      placeholder="{localize('obs-utils.applications.obsRemote.sourceName')}"
-    />
-    <button on:click="{removeFn}" type="button">
-      <i class="fas fa-trash"></i>
-    </button>
-  </div>
+	<div class='setting'>
+		<select
+			bind:value={event.targetAction}
+			name='types'
+			on:change={changeEvent}
+		>
+			{#each actionTypes as action}
+				<option value={action}>{localize(action)}</option>
+			{/each}
+		</select>
+		<input
+			bind:value={event.sceneName}
+			disabled={sceneDisabled}
+			name='sceneNames'
+			placeholder={localize('obs-utils.applications.obsRemote.sceneName')}
+		/>
+		<input
+			bind:value={event.targetName}
+			disabled={idDisabled}
+			name='itemIDs'
+			placeholder={localize('obs-utils.applications.obsRemote.sourceName')}
+		/>
+		<button on:click={removeFn} type='button'>
+			<i class='fas fa-trash'></i>
+		</button>
+	</div>
 </li>
 
 <style>

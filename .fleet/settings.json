@@ -1,3 +1,3 @@
 {
-    "nodejs.editor.formatOnSave.eslint.glob": "{**/*,*}.{js,ts,jsx,tsx,svelte}"
+	"nodejs.editor.formatOnSave.eslint.glob": "{**/*,*}.{js,ts,jsx,tsx,svelte}"
 }

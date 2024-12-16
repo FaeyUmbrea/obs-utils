@@ -1,33 +1,33 @@
 <script>
-  import { getActorValues } from "../../../utils/helpers";
+	import { localize } from '#runtime/util/i18n';
 
-  import Select from "svelte-select";
-  import { localize } from "#runtime/util/i18n";
+	import Select from 'svelte-select';
+	import { getActorValues } from '../../../utils/helpers';
 
-  export let data;
-  let values = getActorValues();
-  let items = [...values];
+	export let data;
+	const values = getActorValues();
+	let items = [...values];
 
-  let filterText = "";
+	let filterText = '';
 
-  function handleFilter(e) {
-    if (e.detail.length === 0 && filterText.length > 0) {
-      items = [...values, filterText];
-    }
-  }
+	function handleFilter(e) {
+		if (e.detail.length === 0 && filterText.length > 0) {
+			items = [...values, filterText];
+		}
+	}
 </script>
 
 <Select
-  containerStyles="background-color: white;"
-  --height="30px"
-  bind:filterText="{filterText}"
-  bind:justValue="{data}"
-  closeListOnChange="false"
-  floatingConfig="{{
-    strategy: 'fixed',
-  }}"
-  items="{items}"
-  on:filter="{handleFilter}"
-  value="{data}"
-  placeholder="{localize('obs-utils.strings.avInputPlaceholder')}"
+	containerStyles='background-color: white;'
+	--height='30px'
+	bind:filterText={filterText}
+	bind:justValue={data}
+	closeListOnChange='false'
+	floatingConfig={{
+		strategy: 'fixed',
+	}}
+	items={items}
+	on:filter={handleFilter}
+	value={data}
+	placeholder={localize('obs-utils.strings.avInputPlaceholder')}
 />

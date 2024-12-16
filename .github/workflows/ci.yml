@@ -1,39 +1,39 @@
 name: Release Creation
 
 on:
-    push:
-        tags:
-            - '*'
+  push:
+    tags:
+      - '*'
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
-    build:
-        permissions:
-            contents: write
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4.1.4
-            - uses: pkgxdev/setup@v2
-              with:
-                +: xc
-                   node
-                   yarnpkg.com
-            - name: Substitute Manifest and Download Links For Versioned Ones
-              run: |
-                cat ./public/module.json | jq '.version="${{ github.ref_name }}" | .url="https://github.com/${{github.repository}}" | .manifest="https://github.com/${{github.repository}}/releases/latest/download/module.json" | .download="https://github.com/${{github.repository}}/releases/download/${{github.ref_name}}/module.zip"' > ./public/module.json.tmp
-                rm ./public/module.json
-                mv ./public/module.json.tmp ./public/module.json
-            - name: Build
-              run: xc build
-            - run: (cd dist && zip -r ../module.zip *)
-            - run: zip -ur module.zip LICENSE README.md
-            - run: awk '/^## /{p++} p==2{exit} p>=1' ./CHANGELOG.md >> body.md
-            - name: Update Release with Files
-              id: create_version_release
-              uses: ncipollo/release-action@v1
-              with:
-                  token: "${{secrets.RELEASE_TOKEN}}"
-                  bodyFile: "body.md"
-                  artifacts: './module.zip, ./dist/module.json'
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.4
+      - uses: pkgxdev/setup@v2
+        with:
+          +: xc
+            node
+            yarnpkg.com
+      - name: Substitute Manifest and Download Links For Versioned Ones
+        run: |
+          cat ./public/module.json | jq '.version="${{ github.ref_name }}" | .url="https://github.com/${{github.repository}}" | .manifest="https://github.com/${{github.repository}}/releases/latest/download/module.json" | .download="https://github.com/${{github.repository}}/releases/download/${{github.ref_name}}/module.zip"' > ./public/module.json.tmp
+          rm ./public/module.json
+          mv ./public/module.json.tmp ./public/module.json
+      - name: Build
+        run: xc build
+      - run: (cd dist && zip -r ../module.zip *)
+      - run: zip -ur module.zip LICENSE README.md
+      - run: awk '/^## /{p++} p==2{exit} p>=1' ./CHANGELOG.md >> body.md
+      - name: Update Release with Files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
+          token: '${{secrets.RELEASE_TOKEN}}'
+          bodyFile: body.md
+          artifacts: './module.zip, ./dist/module.json'

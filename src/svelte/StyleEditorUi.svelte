@@ -1,29 +1,29 @@
-<svelte:options accessors="{true}" />
+<svelte:options accessors={true} />
 
 <script>
-  import { ApplicationShell } from "#runtime/svelte/component/application";
-  import { getContext } from "svelte";
-  import { localize } from "#runtime/util/i18n";
+	import { ApplicationShell } from '#runtime/svelte/component/application';
+	import { localize } from '#runtime/util/i18n';
+	import { getContext } from 'svelte';
 
-  export let elementRoot = void 0;
+	export let elementRoot = void 0;
 
-  let application = getContext("#external").application;
+	const application = getContext('#external').application;
 
-  let style = application.style;
+	let style = application.style;
 
-  function close() {
-    application.style = style;
-    application.close();
-  }
+	function close() {
+		application.style = style;
+		application.close();
+	}
 </script>
 
-<ApplicationShell bind:elementRoot="{elementRoot}">
-  <input bind:value="{style}" name="style" type="text" />
-  <footer>
-    <button on:click="{close}"
-      >{localize("obs-utils.applications.styleEditor.submitButton")}</button
-    >
-  </footer>
+<ApplicationShell bind:elementRoot={elementRoot}>
+	<input bind:value={style} name='style' type='text' />
+	<footer>
+		<button on:click={close}
+		>{localize('obs-utils.applications.styleEditor.submitButton')}</button
+		>
+	</footer>
 </ApplicationShell>
 
 <style>

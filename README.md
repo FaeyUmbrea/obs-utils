@@ -1,4 +1,5 @@
 # !!!!!V12 NOTES!!!!!!
+
 As of the time of writing (30.05.2024) OBS Studio's browser source is using Chrome 103. The minimum officially supported version for FoundryVTT is 105. Before reporting issues, please confirm if the problem persists if using a modern browser through manual mode.
 
 # OBS Utils
@@ -36,13 +37,10 @@ Check the [Wiki](https://docs.void.monster/getting-started-obsu.html)!
 - Birds-Eye Mode: Fit Map to Screen
 - Mode Select both in and out of Combat
 
-
 - Make /stream Background Transparent
 - /stream Information Overlays
 
-
 - Levels Support (in Combat)
-
 
 - OBS Remote Controls via Websocket or Browser Source
 
@@ -69,7 +67,7 @@ This repository uses xc for task definitions! As such only nodejs, yarn and xc a
 ### Dependencies
 
 | Project     | Version  |
-|-------------|----------|
+| ----------- | -------- |
 | nodejs.org  | ^18.12.1 |
 | xcfile.dev  | ^0.0.159 |
 | yarnpkg.com | ^3.5.1   |

@@ -1,0 +1,256 @@
+{
+	"obs-utils": {
+		"strings": {
+			"module": "OBS Utils",
+			"ic": "Im Kampf",
+			"trackOne": "Verfolge das aktuelle Zug-Spieler Token",
+			"cloneTurnPlayer": "Klone die Ansicht des Zugspielers",
+			"ooc": "Außerhalb des Kampfs",
+			"trackAll": "Verfolge alle eigenen Tokens",
+			"trackManual": "Verfolge alle manuell gewählten Tokens",
+			"clonePlayer": "Klone die Ansicht des gewählten Spielers",
+			"cloneDM": "Klone die Ansicht des DMs",
+			"birdseye": "Zeige die gesamte Karte",
+			"limitCanvas": "Begrenze den Zoom anhand der Bildschirmränder",
+			"keypressInfo1": "Wechsele den ",
+			"keypressInfo2": "Modus auf ",
+			"avInputPlaceholder": "Freitexteingabe oder Suche",
+			"iconPlaceholder": "Icon",
+			"true": "Wahr",
+			"false": "Falsch",
+			"missingTypeNotice": "Veralteter/Entfernter Overlay-Typ. Bitte wähle einen neuen aus der Liste um zu bearbeiten.",
+			"done": "Fertig",
+			"trackPlayerOwned": "Verfolge alle Spieler-Tokens",
+			"pauseCameraTracking": "Kamera-Verfolgung pausieren"
+		},
+		"applications": {
+			"rollOverlayEditor": {
+				"name": "Würfel Overlay Editor",
+				"test": "Test",
+				"preRollImage": "Vor-Würfel Bild",
+				"rollImage": "Würfel Bild",
+				"postRollImage": "Nach-Würfel Bild",
+				"imageUrl": "Bild URL",
+				"foregroundImageUrl": "Vordergrundbild URL",
+				"backgroundImageUrl": "Hintergrundbild URL",
+				"delay": "Verzögerung (ms)",
+				"fadeIn": "Einblendezeit (ms)",
+				"duration": "Dauer (ms)",
+				"fadeOut": "Ausblendezeit (ms)"
+			},
+			"director": {
+				"name": "Director",
+				"icTypeHeader": "Verhalten im Kampf",
+				"oocTypeHeader": "Verhalten außerhalb des Kampfs",
+				"canvasOptionsHeader": "Bildflächen Einstellungen",
+				"trackedPlayerHeader": "Verfolgter Spieler"
+			},
+			"obsRemote": {
+				"name": "OBS Fernbedienungseinstellungen",
+				"sceneName": "Szenen Name",
+				"sourceName": "OBS Quellen Name",
+				"switchScene": "Szene Ändern",
+				"toggleSource": "Quelle Umschalten",
+				"enableSource": "Quelle Einschalten",
+				"disableSource": "Quelle Ausschalten",
+				"vttSceneLabel": "VTT Szenen Name",
+				"vttScenePlaceholder": "Name eingeben oder Szene hierhin ziehen",
+				"onLoad": "Laden",
+				"onCombatStart": "Kampfbeginn",
+				"onCombatEnd": "Kampfende",
+				"onPause": "Pause",
+				"onUnpause": "Fortsetzen",
+				"onSceneLoad": "Szene Laden",
+				"onStopStreaming": "Stream Beenden"
+			},
+			"obsWebsocket": {
+				"name": "OBS Websocket Einstellungen",
+				"urlLabel": "URL",
+				"portLabel": "Port",
+				"passwordLabel": "Passwort",
+				"syncLabel": "An Zielclient übertragen",
+				"saveButton": "Speichern",
+				"syncButton": "Synchronisieren"
+			},
+			"actorSelect": {
+				"name": "Charakterauswahl",
+				"searchPlaceholder": "Suche",
+				"closeButton": "Schließen",
+				"resetButton": "Zurücksetzen"
+			},
+			"overlayEditor": {
+				"name": "Overlay Editor",
+				"addButton": "Neue Komponente hinzufügen",
+				"editStyleButton": "Style Bearbeiten",
+				"removeButton": "Overlay Entfernen",
+				"removeComponentButton": "Komponente Entfernen",
+				"importButton": "Import",
+				"exportButton": "Export",
+				"addOverlayButton": "Neues Overlay hinzufügen",
+				"closeButton": "Schließen",
+				"importDialog": {
+					"title": "Import: Overlays",
+					"hint1": "Du bist dabei eine Overlay Konfiguration zu importieren. Bitte stelle sicher das diese im gleichen system exportiert wurde, andernfalls kann es zu Problemen mit Charakterwert-Overlays kommen.",
+					"hint2": "Bitte wähle aus, ob du die existierende Konfiguration ersetzen oder erweitern willst.",
+					"replaceButton": "Ersetzen",
+					"appendButton": "Erweitern",
+					"fileError": "Du hast keine Datei hochgeladen",
+					"versionError": "Version nicht unterstützt",
+					"formatError": "Die Datei ist keine OBS Utils Overlay Exportdatei",
+					"cancelButton": "Abbrechen"
+				},
+				"exportDialog": {
+					"title": "Einstellungen exportieren?",
+					"content": "Willst du deine Overlay Einstellungen exportieren?",
+					"yesButton": "Ja",
+					"noButton": "Nein"
+				}
+			},
+			"styleEditor": {
+				"name": "Style Editor",
+				"submitButton": "Absenden"
+			}
+		},
+		"overlays": {
+			"plainText": {
+				"name": "Text"
+			},
+			"fontAwesomeIcon": {
+				"name": "Font Awesome Icon"
+			},
+			"booleanAVIcon": {
+				"name": "Ja/Nein Charakterwert Icon"
+			},
+			"booleanAVImage": {
+				"name": "Ja/Nein Charakterwert Bild"
+			},
+			"image": {
+				"name": "Bild"
+			},
+			"multiIconAV": {
+				"name": "Ja/Nein Charakterwert Icon (Multi)"
+			},
+			"multiImageAV": {
+				"name": "Ja/Nein Charakterwert Bild (Multi)"
+			},
+			"progressBar": {
+				"name": "Fortschrittsleiste"
+			}
+		},
+		"settings": {
+			"obsMode": {
+				"Name": "OBS Modus",
+				"Hint": "Legt diesen Browser als OBS Browser fest. Nicht benötigt, wenn eine OBS Browserquelle verwendet wird"
+			},
+			"obsModeUser": {
+				"Name": "OBS Modus Nutzer (Nutzername)",
+				"Hint": "Dieser Nutzer wird immer im OBS Modus ausgeführt, ungeachtet des Browsers"
+			},
+			"obsModeGlobalDisable": {
+				"Name": "OBS Modus Deaktivieren",
+				"Hint": "Schaltet die OBS Ansicht vollständig ab"
+			},
+			"minScale": {
+				"Name": "Minimaler Zoom",
+				"Hint": "Der kleinste erlaubte Wert für den Zoom"
+			},
+			"maxScale": {
+				"Name": "Maximaler Zoom",
+				"Hint": "Der größte erlaubte Wert für den Zoom"
+			},
+			"defaultOutOfCombat": {
+				"Name": "Modus Außerhalb des Kampfs",
+				"Hint": "Der Kameramodus, wenn kein Kampf stattfindet"
+			},
+			"defaultInCombat": {
+				"Name": "Modus im Kampf",
+				"Hint": "Der Kameramodus, wenn ein Kampf stattfindet"
+			},
+			"popupCloseDelay": {
+				"Name": "Pop-Up Ausblendeverzögerung",
+				"Hint": "Sekunden bis Pop-Ups auf der OBS Ansicht automatisch geschlossen werden (0 zum deaktivieren)"
+			},
+			"showTrackerInCombat": {
+				"Name": "Kampfliste im Kampf anzeigen?",
+				"Hint": "Wenn ausgewählt, wird die Kampfliste bei laufendem Kampf eingeblendet"
+			},
+			"obsRemoteMenu": {
+				"Label": "Menü Öffnen",
+				"Name": "OBS Fernbedienungseinstellungen",
+				"Hint": "Konfiguriert die OBS Fernbediengungsfunktion"
+			},
+			"obsWebsocketMenu": {
+				"Label": "Menü Öffnen",
+				"Name": "OBS Websocket Einstellungen",
+				"Hint": "Konfiguriert OBS Websocket"
+			},
+			"overlayActorSelect": {
+				"Label": "Menü Öffnen",
+				"Name": "Overlay Charaktere",
+				"Hint": "Wähle Charaktere für das Overlay"
+			},
+			"overlayEditor": {
+				"Label": "Editor Öffnen",
+				"Name": "Overlay Editor",
+				"Hint": "Bearbeite die Overlays"
+			},
+			"enableOBSWebsocket": {
+				"Name": "Aktiviere OBS Websocket?",
+				"Hint": "Falls gewählt, wird OBS Websockets für die Fernsteuerung verwendet"
+			},
+			"rollOverlayEditor": {
+				"Name": "Würfel Overlay Editor",
+				"Hint": "Bearbeitet das Würfel Overlay",
+				"Label": "Editor Öffnen"
+			},
+			"showAV": {
+				"Name": "Video Overlay Anzeigen?",
+				"Hint": "Wenn aktiv, wird das Video Fenster von Foundry auch in OBS angezeigt (kann einen Neustart voraussetzen)"
+			},
+			"showUserConfig": {
+				"Name": "Erlaube Anzeige der Nutzerkonfiguration?",
+				"Hint": "Wenn aktiv wird der Dialog für die Nutzerkonfiguration nicht ausgeblendet"
+			},
+			"fixedPopups": {
+				"Name": "Verwende feste Pop-Ups",
+				"Hint": "Wenn aktiv, werden alle Pop-Ups mit festen Einstellungen erzeugt und nicht dynamisch geöffnet"
+			},
+			"fixedPopupX": {
+				"Name": "Pop-Up X Koordinate",
+				"Hint": "Abstand zum linken Rand in Pixeln"
+			},
+			"fixedPopupY": {
+				"Name": "Pop-Up Y Koordinate",
+				"Hint": "Abstand zum oberen Rand in Pixeln"
+			},
+			"fixedPopupWidth": {
+				"Name": "Pop-Up Breite",
+				"Hint": "Breite des Pop-Up Fensters in Pixeln"
+			},
+			"fixedPopupHeight": {
+				"Name": "Pop-Up Höhe",
+				"Hint": "Höhe des Pop-Up Fensters in Pixeln"
+			},
+			"showKeybindingPopup": {
+				"Name": "Tastaturlürzel-Benachrichtigung anzeigen",
+				"Hint": "Falls aktiv, wird bei Verwendung eines Tastaturkürzels eine Benachrichtigung eingeblendet"
+			},
+			"diceSoNice": {
+				"Name": "Dice so Nice Overlay anzeigen",
+				"Hint": "Wenn aktiv, wird ein Overlay für Dice so Nice neben den anderen Overlays angezeigt"
+			},
+			"diceSoNiceOverlayWidth": {
+				"Name": "Dice so Nice Overlay Breite",
+				"Hint": "Breite des Overlays in Pixeln"
+			},
+			"diceSoNiceOverlayHeight": {
+				"Name": "Dice so Nice Overlay Höhe",
+				"Hint": "Höhe des Overlays in Pixeln"
+			},
+			"smoothUserCamera": {
+				"Name": "Flüssige Kamerabewegung",
+				"Hint": "Wenn aktiv, wird die Aktualisierungsrate der manuellen Kamerasteuerung reduziert"
+			}
+		}
+	}
+}

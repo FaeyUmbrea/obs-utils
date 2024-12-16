@@ -1,226 +1,226 @@
-<svelte:options accessors="{true}" />
+<svelte:options accessors={true} />
 
 <script>
-  import PlayerRollComponent from "../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte";
-  import { ApplicationShell } from "#runtime/svelte/component/application";
-  import { localize } from "#runtime/util/i18n";
-  import { rollOverlaySettings } from "../../../utils/settings.js";
+	import { ApplicationShell } from '#runtime/svelte/component/application';
+	import { localize } from '#runtime/util/i18n';
+	import { rollOverlaySettings } from '../../../utils/settings.ts';
+	import PlayerRollComponent from '../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte';
 
-  let preRollDelay = rollOverlaySettings.getStore("rollOverlayPreRollDelay");
-  let preRollStay = rollOverlaySettings.getStore("rollOverlayPreRollStay");
-  let preRollFadeIn = rollOverlaySettings.getStore("rollOverlayPreRollFadeIn");
-  let preRollFadeOut = rollOverlaySettings.getStore(
-    "rollOverlayPreRollFadeOut",
-  );
-  let rollStay = rollOverlaySettings.getStore("rollOverlayRollStay");
-  let rollFadeIn = rollOverlaySettings.getStore("rollOverlayRollFadeIn");
-  let rollFadeOut = rollOverlaySettings.getStore("rollOverlayRollFadeOut");
-  let postRollStay = rollOverlaySettings.getStore("rollOverlayPostRollStay");
-  let postRollFadeIn = rollOverlaySettings.getStore(
-    "rollOverlayPostRollFadeIn",
-  );
-  let postRollFadeOut = rollOverlaySettings.getStore(
-    "rollOverlayPostRollFadeOut",
-  );
+	const preRollDelay = rollOverlaySettings.getStore('rollOverlayPreRollDelay');
+	const preRollStay = rollOverlaySettings.getStore('rollOverlayPreRollStay');
+	const preRollFadeIn = rollOverlaySettings.getStore('rollOverlayPreRollFadeIn');
+	const preRollFadeOut = rollOverlaySettings.getStore(
+		'rollOverlayPreRollFadeOut',
+	);
+	const rollStay = rollOverlaySettings.getStore('rollOverlayRollStay');
+	const rollFadeIn = rollOverlaySettings.getStore('rollOverlayRollFadeIn');
+	const rollFadeOut = rollOverlaySettings.getStore('rollOverlayRollFadeOut');
+	const postRollStay = rollOverlaySettings.getStore('rollOverlayPostRollStay');
+	const postRollFadeIn = rollOverlaySettings.getStore(
+		'rollOverlayPostRollFadeIn',
+	);
+	const postRollFadeOut = rollOverlaySettings.getStore(
+		'rollOverlayPostRollFadeOut',
+	);
 
-  let preRollImage = rollOverlaySettings.getStore("rollOverlayPreRollImage");
-  let rollBackgroundImage = rollOverlaySettings.getStore(
-    "rollOverlayRollBackground",
-  );
-  let rollForegroundImage = rollOverlaySettings.getStore(
-    "rollOverlayRollForeground",
-  );
-  let postRollImage = rollOverlaySettings.getStore("rollOverlayPostRollImage");
+	const preRollImage = rollOverlaySettings.getStore('rollOverlayPreRollImage');
+	const rollBackgroundImage = rollOverlaySettings.getStore(
+		'rollOverlayRollBackground',
+	);
+	const rollForegroundImage = rollOverlaySettings.getStore(
+		'rollOverlayRollForeground',
+	);
+	const postRollImage = rollOverlaySettings.getStore('rollOverlayPostRollImage');
 
-  let pre = rollOverlaySettings.getStore("rollOverlayPostRollEnabled");
-  let post = rollOverlaySettings.getStore("rollOverlayPreRollEnabled");
+	const pre = rollOverlaySettings.getStore('rollOverlayPostRollEnabled');
+	const post = rollOverlaySettings.getStore('rollOverlayPreRollEnabled');
 
-  let rollValue = "20";
-  let rollShow = false;
+	let rollValue = '20';
+	let rollShow = false;
 
-  export let elementRoot = void 0;
+	export let elementRoot = void 0;
 
-  function test() {
-    rollValue = Math.round(Math.random() * 20);
-    rollShow = false;
-    rollShow = true;
-  }
+	function test() {
+		rollValue = Math.round(Math.random() * 20);
+		rollShow = false;
+		rollShow = true;
+	}
 
-  let filePickerAppPreRoll;
+	let filePickerAppPreRoll;
 
-  function openFilePickerPreRoll() {
-    if (filePickerAppPreRoll) {
-      filePickerAppPreRoll.bringToTop();
-    } else {
-      filePickerAppPreRoll = new FilePicker({
-        type: "image",
-        callback: (path) => {
-          $preRollImage = path;
-          filePickerAppPreRoll = null;
-        },
-        title: "Select an Image",
-      }).render(true);
-    }
-  }
+	function openFilePickerPreRoll() {
+		if (filePickerAppPreRoll) {
+			filePickerAppPreRoll.bringToTop();
+		} else {
+			filePickerAppPreRoll = new FilePicker({
+				type: 'image',
+				callback: (path) => {
+					$preRollImage = path;
+					filePickerAppPreRoll = null;
+				},
+				title: 'Select an Image',
+			}).render(true);
+		}
+	}
 
-  let filePickerAppForeground;
+	let filePickerAppForeground;
 
-  function openFilePickerForeground() {
-    if (filePickerAppForeground) {
-      filePickerAppForeground.bringToTop();
-    } else {
-      filePickerAppForeground = new FilePicker({
-        type: "image",
-        callback: (path) => {
-          $rollForegroundImage = path;
-          filePickerAppForeground = null;
-        },
-        title: "Select an Image",
-      }).render(true);
-    }
-  }
+	function openFilePickerForeground() {
+		if (filePickerAppForeground) {
+			filePickerAppForeground.bringToTop();
+		} else {
+			filePickerAppForeground = new FilePicker({
+				type: 'image',
+				callback: (path) => {
+					$rollForegroundImage = path;
+					filePickerAppForeground = null;
+				},
+				title: 'Select an Image',
+			}).render(true);
+		}
+	}
 
-  let filePickerAppBackground;
+	let filePickerAppBackground;
 
-  function openFilePickerBackground() {
-    if (filePickerAppBackground) {
-      filePickerAppBackground.bringToTop();
-      filePickerAppBackground = null;
-    } else {
-      filePickerAppBackground = new FilePicker({
-        type: "image",
-        callback: (path) => {
-          $rollBackgroundImage = path;
-        },
-        title: "Select an Image",
-      }).render(true);
-    }
-  }
+	function openFilePickerBackground() {
+		if (filePickerAppBackground) {
+			filePickerAppBackground.bringToTop();
+			filePickerAppBackground = null;
+		} else {
+			filePickerAppBackground = new FilePicker({
+				type: 'image',
+				callback: (path) => {
+					$rollBackgroundImage = path;
+				},
+				title: 'Select an Image',
+			}).render(true);
+		}
+	}
 
-  let filePickerAppPostRoll;
+	let filePickerAppPostRoll;
 
-  function openFilePickerPostRoll() {
-    if (filePickerAppPostRoll) {
-      filePickerAppPostRoll.bringToTop();
-      filePickerAppPostRoll = null;
-    } else {
-      filePickerAppPostRoll = new FilePicker({
-        type: "image",
-        callback: (path) => {
-          $postRollImage = path;
-        },
-        title: "Select an Image",
-      }).render(true);
-    }
-  }
+	function openFilePickerPostRoll() {
+		if (filePickerAppPostRoll) {
+			filePickerAppPostRoll.bringToTop();
+			filePickerAppPostRoll = null;
+		} else {
+			filePickerAppPostRoll = new FilePicker({
+				type: 'image',
+				callback: (path) => {
+					$postRollImage = path;
+				},
+				title: 'Select an Image',
+			}).render(true);
+		}
+	}
 </script>
 
-<ApplicationShell bind:elementRoot="{elementRoot}">
-  <div class="editor">
-    <section class="preview obs-utils roll-overlay">
-      <PlayerRollComponent
-        bind:rollValue="{rollValue}"
-        id="preview"
-        postRollShow="{rollShow}"
-        preRollShow="{rollShow}"
-        rollShow="{rollShow}"
-      />
-      <button on:click="{test}"
-        >{localize("obs-utils.applications.rollOverlayEditor.test")}</button
-      >
-    </section>
-    <section class="menu">
-      <div class="pre">
-        <section class="header">
-          <input bind:checked="{$pre}" type="checkbox" />
+<ApplicationShell bind:elementRoot={elementRoot}>
+	<div class='editor'>
+		<section class='preview obs-utils roll-overlay'>
+			<PlayerRollComponent
+				bind:rollValue={rollValue}
+				id='preview'
+				postRollShow={rollShow}
+				preRollShow={rollShow}
+				rollShow={rollShow}
+			/>
+			<button on:click={test}
+			>{localize('obs-utils.applications.rollOverlayEditor.test')}</button
+			>
+		</section>
+		<section class='menu'>
+			<div class='pre'>
+				<section class='header'>
+					<input bind:checked={$pre} type='checkbox' />
 
-          <span
-            >{localize(
-              "obs-utils.applications.rollOverlayEditor.preRollImage",
-            )}</span
-          >
-        </section>
-        <section class="content">
-          {localize("obs-utils.applications.rollOverlayEditor.imageUrl")}
-          <section class="filepicker">
-            <input bind:value="{$preRollImage}" type="text" />
-            <button on:click="{openFilePickerPreRoll}"
-              ><i class="fa-solid fa-file"></i></button
-            >
-          </section>
-          {localize("obs-utils.applications.rollOverlayEditor.delay")}
-          <input bind:value="{$preRollDelay}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.fadeIn")}
-          <input bind:value="{$preRollFadeIn}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.duration")}
-          <input bind:value="{$preRollStay}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.fadeOut")}
-          <input bind:value="{$preRollFadeOut}" min="0" type="number" />
-        </section>
-      </div>
-      <div class="roll">
-        <section class="header">
-          <span
-            >{localize(
-              "obs-utils.applications.rollOverlayEditor.rollImage",
-            )}</span
-          >
-        </section>
-        <section class="content">
-          {localize(
-            "obs-utils.applications.rollOverlayEditor.foregroundImageUrl",
-          )}
-          <section class="filepicker">
-            <input bind:value="{$rollForegroundImage}" type="text" />
-            <button on:click="{openFilePickerForeground}"
-              ><i class="fa-solid fa-file"></i></button
-            >
-          </section>
-          {localize(
-            "obs-utils.applications.rollOverlayEditor.backgroundImageUrl",
-          )}
-          <section class="filepicker">
-            <input bind:value="{$rollBackgroundImage}" type="text" />
-            <button on:click="{openFilePickerBackground}"
-              ><i class="fa-solid fa-file"></i></button
-            >
-          </section>
-          {localize("obs-utils.applications.rollOverlayEditor.fadeIn")}
-          <input bind:value="{$rollFadeIn}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.duration")}
-          <input bind:value="{$rollStay}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.fadeOut")}
-          <input bind:value="{$rollFadeOut}" min="0" type="number" />
-        </section>
-      </div>
-      <div class="post">
-        <section class="header">
-          <input bind:checked="{$post}" type="checkbox" />
-          <span>
-            {localize("obs-utils.applications.rollOverlayEditor.postRollImage")}
-          </span>
-        </section>
-        <section class="content">
-          {localize("obs-utils.applications.rollOverlayEditor.imageUrl")}
-          <section class="filepicker">
-            <input bind:value="{$postRollImage}" type="text" />
-            <button on:click="{openFilePickerPostRoll}"
-              ><i class="fa-solid fa-file"></i></button
-            >
-          </section>
-          {localize("obs-utils.applications.rollOverlayEditor.fadeIn")}
-          <input bind:value="{$postRollFadeIn}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.duration")}
-          <input bind:value="{$postRollStay}" min="0" type="number" />
-          {localize("obs-utils.applications.rollOverlayEditor.fadeOut")}
-          <input bind:value="{$postRollFadeOut}" min="0" type="number" />
-        </section>
-      </div>
-    </section>
-  </div>
+					<span
+					>{localize(
+						'obs-utils.applications.rollOverlayEditor.preRollImage',
+					)}</span
+					>
+				</section>
+				<section class='content'>
+					{localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
+					<section class='filepicker'>
+						<input bind:value={$preRollImage} type='text' />
+						<button on:click={openFilePickerPreRoll}
+						><i class='fa-solid fa-file'></i></button
+						>
+					</section>
+					{localize('obs-utils.applications.rollOverlayEditor.delay')}
+					<input bind:value={$preRollDelay} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+					<input bind:value={$preRollFadeIn} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.duration')}
+					<input bind:value={$preRollStay} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+					<input bind:value={$preRollFadeOut} min='0' type='number' />
+				</section>
+			</div>
+			<div class='roll'>
+				<section class='header'>
+					<span
+					>{localize(
+						'obs-utils.applications.rollOverlayEditor.rollImage',
+					)}</span
+					>
+				</section>
+				<section class='content'>
+					{localize(
+						'obs-utils.applications.rollOverlayEditor.foregroundImageUrl',
+					)}
+					<section class='filepicker'>
+						<input bind:value={$rollForegroundImage} type='text' />
+						<button on:click={openFilePickerForeground}
+						><i class='fa-solid fa-file'></i></button
+						>
+					</section>
+					{localize(
+						'obs-utils.applications.rollOverlayEditor.backgroundImageUrl',
+					)}
+					<section class='filepicker'>
+						<input bind:value={$rollBackgroundImage} type='text' />
+						<button on:click={openFilePickerBackground}
+						><i class='fa-solid fa-file'></i></button
+						>
+					</section>
+					{localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+					<input bind:value={$rollFadeIn} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.duration')}
+					<input bind:value={$rollStay} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+					<input bind:value={$rollFadeOut} min='0' type='number' />
+				</section>
+			</div>
+			<div class='post'>
+				<section class='header'>
+					<input bind:checked={$post} type='checkbox' />
+					<span>
+						{localize('obs-utils.applications.rollOverlayEditor.postRollImage')}
+					</span>
+				</section>
+				<section class='content'>
+					{localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
+					<section class='filepicker'>
+						<input bind:value={$postRollImage} type='text' />
+						<button on:click={openFilePickerPostRoll}
+						><i class='fa-solid fa-file'></i></button
+						>
+					</section>
+					{localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+					<input bind:value={$postRollFadeIn} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.duration')}
+					<input bind:value={$postRollStay} min='0' type='number' />
+					{localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+					<input bind:value={$postRollFadeOut} min='0' type='number' />
+				</section>
+			</div>
+		</section>
+	</div>
 </ApplicationShell>
 
-<style lang="stylus">
+<style lang='stylus'>
   .editor
     display grid
     grid-template-rows 2fr 1fr
@@ -272,7 +272,6 @@
           border-top 2px solid gray
           border-top-left-radius 6px
           border-top-right-radius 6px
-
 
         .content
           margin 2px
