@@ -14,10 +14,12 @@ jobs:
       - uses: actions/checkout@v4.1.4
       - id: set_var
         run: |
-          delimiter="$(openssl rand -hex 8)"
-          echo "moduleJson<<${delimiter}" >> "${GITHUB_OUTPUT}"
-          cat ./public/module.json >> ${GITHUB_OUTPUT}
-          echo "${delimiter}" >> "${GITHUB_OUTPUT}"
+          delimiter=$(openssl rand -hex 8)
+          {
+            echo "moduleJson<<$delimiter"
+            sed -e '$a\' ./module.json
+            echo "$delimiter"
+          } >> "${GITHUB_OUTPUT}"
       - name: Publish Module
         run: |
           curl https://api.foundryvtt.com/_api/packages/release_version/ \
