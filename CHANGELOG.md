@@ -1,3 +1,13 @@
+## Version 3.3.1
+
+### Added
+
+- Introduced additional values for boolean components to make targeting based on value easier.
+
+### Changed
+
+- Moved the codebase to TS, it has been tested as thoroughly as I can, but issues might arise.
+
 ## Version 3.3.0
 
 ### Changes
