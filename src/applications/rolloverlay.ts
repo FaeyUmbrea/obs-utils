@@ -4,6 +4,7 @@ import PlayerRollOverlayEditor from '../svelte/components/editors/PlayerRollOver
 export default class RollOverlay extends SvelteApplication {
 	dataArray = [];
 
+	// @ts-expect-error Excessive stack depth
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ['rolloverlayeditor'],

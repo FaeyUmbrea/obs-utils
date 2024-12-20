@@ -1,11 +1,12 @@
 <svelte:options accessors={true} />
 
-<script>
+<script lang='ts'>
+	import { type SvelteApp } from '#runtime/svelte/application';
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
 	import { getContext } from 'svelte';
 	import { settings } from '../utils/settings.ts';
-	import { OverlayData } from '../utils/stream.ts';
+	import { OverlayData } from '../utils/types.ts';
 	import OverlayEditorTab from './components/OverlayEditorTab.svelte';
 	import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';
 
@@ -33,10 +34,10 @@
 
 	export let elementRoot = void 0;
 
-	const context = getContext('#external');
+	const context = getContext<SvelteApp.Context.External>('#external');
 
 	async function close() {
-		context.application.close();
+		await context.application.close();
 	}
 </script>
 

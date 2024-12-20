@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
 	import { getApi } from '../utils/helpers';
 	import { settings } from '../utils/settings.ts';
 	import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';

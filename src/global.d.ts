@@ -46,7 +46,7 @@ declare global {
 		'obs-utils.obsRemote': typeof OBSRemoteSettings;
 		'obs-utils.enableOBSWebsocket': boolean;
 		'obs-utils.websocketSettings': typeof OBSWebsocketSettings;
-		'obs-utils.streamOverlays': Array<any>;
+		'obs-utils.streamOverlays': typeof OverlayData[];
 		'obs-utils.overlayActors': string[];
 		'obs-utils.settingsVersion': number;
 		'obs-utils.showAV': boolean;

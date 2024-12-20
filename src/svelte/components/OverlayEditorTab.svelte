@@ -2,7 +2,7 @@
 	import { localize } from '#runtime/util/i18n';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import StyleEditor from '../../applications/styleditor.ts';
-	import { OverlayComponentData } from '../../utils/stream.ts';
+	import { OverlayComponentData } from '../../utils/types.ts';
 	import OverlayComponentEditor from './editors/SingleLineOverlayEditor.svelte';
 
 	export let overlay;

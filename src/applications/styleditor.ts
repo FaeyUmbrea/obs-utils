@@ -1,16 +1,17 @@
 import { SvelteApplication } from '#runtime/svelte/application';
 import StyleEditorUi from '../svelte/StyleEditorUi.svelte';
 
-export default class StyleEditor extends SvelteApplication {
-	style;
-	callback;
+export default class StyleEditor extends SvelteApplication<Options> {
+	style: string;
+	callback: (style: string) => void | Promise<void>;
 
-	constructor(style, callback) {
+	constructor(style: string, callback: (style: string) => void | Promise<void>) {
 		super();
 		this.style = style;
 		this.callback = callback;
 	}
 
+	// @ts-expect-error Excessive stack depth
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ['styleeditor'],
@@ -31,4 +32,9 @@ export default class StyleEditor extends SvelteApplication {
 		this.callback(this.style);
 		return super.close(options);
 	}
+}
+
+export type External = SvelteApp.Context.External<StyleEditor>;
+export interface Options extends SvelteApp.Options {
+	style: string;
 }

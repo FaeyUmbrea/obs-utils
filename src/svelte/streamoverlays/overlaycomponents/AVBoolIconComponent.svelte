@@ -33,7 +33,7 @@
 	{getValue()}
 {/key}
 <div
-	class='component actor-val-component bool-component fa-icon-component'
+	class='component actor-val-component bool-component bool-{(!!value).toString()} fa-icon-component'
 	id={`component${componentIndex.toString()}`}
 	style={style}
 >

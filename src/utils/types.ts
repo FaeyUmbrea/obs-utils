@@ -26,3 +26,27 @@ export class OBSRemoteSettings {
 	onSceneLoad: SceneLoadEvent[] = [];
 	onStopStreaming: OBSEvent[] = [];
 }
+
+export class OverlayData {
+	type: string;
+	components: OverlayComponentData[];
+	style: string;
+
+	constructor(type = 'sl', components = [], style = '') {
+		this.type = type;
+		this.components = components;
+		this.style = style;
+	}
+}
+
+export class OverlayComponentData {
+	type: string;
+	data: string;
+	style: string;
+
+	constructor(type = 'pt', data = '', style = '') {
+		this.type = type;
+		this.data = data;
+		this.style = style;
+	}
+}
