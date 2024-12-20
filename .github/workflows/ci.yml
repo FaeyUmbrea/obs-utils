@@ -41,7 +41,7 @@ jobs:
 
       # Create a zip file with all files required by the module to add to the release.
       - name: Bundle into ZIP file
-        run: zip -r ./module.zip module.json assets/ dist/ lang/ packs/ LICENSE
+        run: zip -r ./module.zip module.json assets/ templates/ dist/ lang/ packs/ LICENSE
 
       # Generate changelog
       - run: awk '/^## /{p++} p==2{exit} p>=1' ./CHANGELOG.md >> body.md
