@@ -47,10 +47,10 @@
 	id={`component${componentIndex.toString()}`}
 	style={style}
 >
-	{#each [...Array.from(value1).keys()] as i}
+	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
 		<img alt='actor value multi img renderer image-{i}' src={image1} />
 	{/each}
-	{#each [...Array.from(value2).keys()] as i}
+	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
 		<img
 			alt='actor value multi img renderer image-{value1 + i}'
 			src={image2}
