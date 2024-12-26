@@ -1,3 +1,9 @@
+## Version 3.3.2
+
+### Fixed
+
+- Fixed an error introduced by the typescript conversion that would cause multi icon and multi image components to fail
+
 ## Version 3.3.1
 
 ### Added
