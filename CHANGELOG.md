@@ -1,3 +1,9 @@
+## Version 3.3.3
+
+### Fixed
+
+- Added a failsafe for the progress-bar component in case the value passed to it is infinite.
+
 ## Version 3.3.2
 
 ### Fixed

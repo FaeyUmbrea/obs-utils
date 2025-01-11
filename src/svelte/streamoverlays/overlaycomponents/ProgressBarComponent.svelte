@@ -50,7 +50,7 @@
 	style={style}
 >
 	<progress
-		value={Number.isNaN(value1) ? 0.5 : value1}
-		max={Number.isNaN(value2) ? 1 : value2}
+		value={Number.isNaN(value1) || !Number.isFinite(value1) ? 0.5 : value1}
+		max={Number.isNaN(value2) || !Number.isFinite(value2) ? 1 : value2}
 	></progress>
 </div>
