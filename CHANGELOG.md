@@ -1,3 +1,9 @@
+## Version 3.3.4
+
+### Added
+
+- French translation courtesy of wirgeen. Many thanks for your contribution!
+
 ## Version 3.3.3
 
 ### Fixed
