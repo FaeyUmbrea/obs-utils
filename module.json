@@ -56,7 +56,12 @@
 			"lang": "nb-NO",
 			"name": "Bokmål",
 			"path": "lang/nb_NO.json"
-		}
+		},
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
 	],
 	"url": "This is auto replaced",
 	"socket": true,
