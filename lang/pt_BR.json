@@ -18,7 +18,10 @@
 			"true": "Verdadeiro",
 			"false": "Falso",
 			"missingTypeNotice": "Tipo Legado/Ausente. Selecione um novo tipo no menu suspenso para editar.",
-			"done": "Feito"
+			"done": "Feito",
+			"cloneTurnPlayer": "Clone the Turn Player's Viewport",
+			"trackPlayerOwned": "Track Player-Owned Tokens",
+			"pauseCameraTracking": "Pause Camera Tracking"
 		},
 		"applications": {
 			"rollOverlayEditor": {
@@ -243,6 +246,10 @@
 			"diceSoNiceOverlayHeight": {
 				"Name": "Altura Sobreposição Dice so Nice",
 				"Hint": "Altura do elemento, em pixels"
+			},
+			"smoothUserCamera": {
+				"Name": "Smooth Camera Movement",
+				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate"
 			}
 		}
 	}
