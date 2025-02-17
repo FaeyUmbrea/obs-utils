@@ -50,7 +50,7 @@
 	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
 		<img alt='actor value multi img renderer image-{i}' src={image1} />
 	{/each}
-	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
+	{#each Array.from({ length: value2 }, (_, i) => i + 1) as i}
 		<img
 			alt='actor value multi img renderer image-{value1 + i}'
 			src={image2}

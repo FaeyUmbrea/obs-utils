@@ -50,7 +50,7 @@
 	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
 		<i class='{icon1} icon-{i}'></i>
 	{/each}
-	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
+	{#each Array.from({ length: value2 }, (_, i) => i + 1) as i}
 		<i class='{icon2} icon-{value1 + i}'></i>
 	{/each}
 </div>
