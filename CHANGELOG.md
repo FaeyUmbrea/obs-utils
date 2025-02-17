@@ -1,3 +1,9 @@
+## Version 3.3.5
+
+### Fixed
+
+- Fixed an issue that caused Multi-AV Components to output incorrect amounts of icons/images
+
 ## Version 3.3.4
 
 ### Added
