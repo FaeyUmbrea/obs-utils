@@ -1,10 +1,10 @@
 <svelte:options accessors={true} />
 
 <script lang='ts'>
+	import type { External } from '../applications/styleditor.ts';
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
 	import { getContext } from 'svelte';
-	import { type External } from '../applications/styleditor.ts';
 
 	export let elementRoot = void 0;
 

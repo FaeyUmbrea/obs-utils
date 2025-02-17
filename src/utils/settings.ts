@@ -1,8 +1,4 @@
-import {
-	type GameSetting,
-	type GameSettingOptions,
-	TJSGameSettings,
-} from '@typhonjs-fvtt/runtime/svelte/store/fvtt/settings';
+import { TJSGameSettings } from '#runtime/svelte/store/fvtt/settings';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
 import { isOBS } from './helpers';
@@ -110,7 +106,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 	}
 
 	init() {
-		const settings: GameSetting[] = [];
+		const settings: TJSGameSettings.Data.GameSetting[] = [];
 		settings.push(
 			createSetting('minScale', {
 				default: 0.1,
@@ -188,7 +184,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 		);
 		settings.push(
 			createSetting('trackedUser', {
-				default: game.userId,
+				default: game.userId ?? '',
 				type: String,
 				scope: 'world',
 				config: false,
@@ -400,7 +396,7 @@ class RollOverlaySettings extends TJSGameSettings {
 	}
 
 	init() {
-		const settings: GameSetting[] = [];
+		const settings: TJSGameSettings.Data.GameSetting[] = [];
 		settings.push(
 			createSetting('rollOverlayPreRollDelay', {
 				type: Number,
@@ -534,7 +530,7 @@ class RollOverlaySettings extends TJSGameSettings {
 	}
 }
 
-function createSetting(settingName: string, config: GameSettingOptions) {
+function createSetting(settingName: string, config: TJSGameSettings.Options.CoreSetting) {
 	return {
 		namespace: MODULE_ID,
 		key: settingName,

@@ -1,7 +1,7 @@
 <svelte:options accessors={true} />
 
 <script lang='ts'>
-	import { type SvelteApp } from '#runtime/svelte/application';
+	import type { SvelteApp } from '#runtime/svelte/application';
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
 	import { getContext } from 'svelte';

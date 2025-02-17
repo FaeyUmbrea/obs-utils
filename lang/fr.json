@@ -1,256 +1,256 @@
 {
-  "obs-utils": {
-    "strings": {
-      "module": "OBS Utils",
-      "ic": "En Combat",
-      "trackOne": "Suivre le jeton possédé actuellement actif",
-      "cloneTurnPlayer": "Cloner la vue du joueur actif",
-      "ooc": "Hors Combat",
-      "trackAll": "Suivre tous les jetons possédés",
-      "trackManual": "Suivre une liste manuelle de jetons",
-      "clonePlayer": "Cloner la vue du joueur sélectionné",
-      "cloneDM": "Cloner la vue du MJ",
-      "birdseye": "Ajuster la carte à l'écran",
-      "limitCanvas": "Limiter la carte aux bords de l'écran",
-      "keypressInfo1": "Mode changé",
-      "keypressInfo2": "en",
-      "avInputPlaceholder": "Entrer du texte ou rechercher",
-      "iconPlaceholder": "Icône",
-      "true": "Vrai",
-      "false": "Faux",
-      "missingTypeNotice": "Type ancien/manquant. Veuillez sélectionner un nouveau type dans le menu déroulant pour modifier.",
-      "done": "Terminé",
-      "trackPlayerOwned": "Suivre les jetons possédés par les joueurs",
-      "pauseCameraTracking": "Mettre en pause le suivi de la caméra"
-    },
-    "applications": {
-      "rollOverlayEditor": {
-        "name": "Éditeur de Superposition de Jet",
-        "test": "Test",
-        "preRollImage": "Image Avant Jet",
-        "rollImage": "Image de Jet",
-        "postRollImage": "Image Après Jet",
-        "imageUrl": "URL de l'Image",
-        "foregroundImageUrl": "URL de l'Image de Premier Plan",
-        "backgroundImageUrl": "URL de l'Image d'Arrière-Plan",
-        "delay": "Délai (ms)",
-        "fadeIn": "Fondu Entrant (ms)",
-        "duration": "Durée (ms)",
-        "fadeOut": "Fondu Sortant (ms)"
-      },
-      "director": {
-        "name": "Directeur",
-        "icTypeHeader": "Type en Combat",
-        "oocTypeHeader": "Type Hors Combat",
-        "canvasOptionsHeader": "Options de la Carte",
-        "trackedPlayerHeader": "Joueur Suivi"
-      },
-      "obsRemote": {
-        "name": "Paramètres OBS Remote",
-        "sceneName": "Nom de la Scène",
-        "sourceName": "Nom de la Source OBS",
-        "switchScene": "Changer de Scène",
-        "toggleSource": "Activer/Désactiver la Source",
-        "enableSource": "Activer la Source",
-        "disableSource": "Désactiver la Source",
-        "vttSceneLabel": "Nom de la Scène VTT",
-        "vttScenePlaceholder": "Entrer un nom ou glisser une scène ici",
-        "onLoad": "Chargement",
-        "onCombatStart": "Début du Combat",
-        "onCombatEnd": "Fin du Combat",
-        "onPause": "Pause",
-        "onUnpause": "Reprise",
-        "onSceneLoad": "Chargement de la Scène",
-        "onStopStreaming": "Arrêter le Streaming"
-      },
-      "obsWebsocket": {
-        "name": "Paramètres OBS Websocket",
-        "urlLabel": "URL",
-        "portLabel": "Port",
-        "passwordLabel": "Mot de Passe",
-        "syncLabel": "Synchroniser le Client Cible",
-        "saveButton": "Enregistrer",
-        "syncButton": "Synchroniser"
-      },
-      "actorSelect": {
-        "name": "Sélection d'Acteur",
-        "searchPlaceholder": "Rechercher",
-        "closeButton": "Fermer",
-        "resetButton": "Réinitialiser"
-      },
-      "overlayEditor": {
-        "name": "Éditeur de Superposition",
-        "addButton": "Ajouter un Nouveau Composant",
-        "editStyleButton": "Modifier le Style",
-        "removeButton": "Supprimer la Superposition",
-        "removeComponentButton": "Supprimer le Composant",
-        "importButton": "Importer",
-        "exportButton": "Exporter",
-        "addOverlayButton": "Ajouter une Nouvelle Superposition",
-        "closeButton": "Fermer",
-        "importDialog": {
-          "title": "Importer des Données : Superpositions",
-          "hint1": "Vous êtes sur le point d'importer une configuration de superposition exportée. Assurez-vous qu'elle a été exportée dans le même système, sinon les superpositions AV pourraient ne pas fonctionner.",
-          "hint2": "Veuillez choisir si vous souhaitez remplacer vos superpositions existantes ou ajouter la liste importée.",
-          "replaceButton": "Remplacer",
-          "appendButton": "Ajouter",
-          "fileError": "Vous n'avez pas téléchargé de fichier de données",
-          "versionError": "Version non prise en charge",
-          "formatError": "Le fichier importé n'est pas une exportation de superposition OBS Utils",
-          "cancelButton": "Annuler"
-        },
-        "exportDialog": {
-          "title": "Exporter vos paramètres ?",
-          "content": "Voulez-vous exporter vos paramètres de superposition ?",
-          "yesButton": "Oui",
-          "noButton": "Non"
-        }
-      },
-      "styleEditor": {
-        "name": "Éditeur de Style",
-        "submitButton": "Valider"
-      }
-    },
-    "overlays": {
-      "plainText": {
-        "name": "Texte Simple"
-      },
-      "fontAwesomeIcon": {
-        "name": "Icône Font Awesome"
-      },
-      "booleanAVIcon": {
-        "name": "Icône AV Booléenne"
-      },
-      "booleanAVImage": {
-        "name": "Image AV Booléenne"
-      },
-      "image": {
-        "name": "Image"
-      },
-      "multiIconAV": {
-        "name": "Icône AV Multiple"
-      },
-      "multiImageAV": {
-        "name": "Image AV Multiple"
-      },
-      "progressBar": {
-        "name": "Barre de Progression"
-      }
-    },
-    "settings": {
-      "obsMode": {
-        "Name": "Mode OBS",
-        "Hint": "Définit ce navigateur comme navigateur OBS. Activez-le uniquement si vous ne pouvez pas utiliser une source de navigateur"
-      },
-      "obsModeUser": {
-        "Name": "Utilisateur Mode OBS (Nom d'utilisateur)",
-        "Hint": "Définit cet utilisateur pour qu'il soit toujours en Mode OBS, quel que soit le navigateur"
-      },
-      "obsModeGlobalDisable": {
-        "Name": "Désactiver Globalement la Vue OBS",
-        "Hint": "Désactivera les fonctionnalités OBS pour tous les clients, quelle que soit la méthode"
-      },
-      "minScale": {
-        "Name": "Échelle Minimale",
-        "Hint": "Zoom le plus bas que l'écran peut atteindre"
-      },
-      "maxScale": {
-        "Name": "Échelle Maximale",
-        "Hint": "Zoom le plus haut que l'écran peut atteindre"
-      },
-      "defaultOutOfCombat": {
-        "Name": "Mode Hors Combat",
-        "Hint": "Mode de caméra hors combat"
-      },
-      "defaultInCombat": {
-        "Name": "Mode En Combat",
-        "Hint": "Mode de caméra en combat"
-      },
-      "popupCloseDelay": {
-        "Name": "Délai de Fermeture des Pop-Ups",
-        "Hint": "Secondes avant la fermeture automatique des pop-ups. 0 pour désactiver"
-      },
-      "showTrackerInCombat": {
-        "Name": "Afficher le Suivi en Combat ?",
-        "Hint": "Si activé, le suivi de combat sera visible pendant les tours de combat"
-      },
-      "obsRemoteMenu": {
-        "Label": "Ouvrir le Menu",
-        "Name": "Paramètres OBS Remote",
-        "Hint": "Configurer OBS Remote"
-      },
-      "obsWebsocketMenu": {
-        "Label": "Ouvrir le Menu",
-        "Name": "Paramètres OBS Websocket",
-        "Hint": "Configurer OBS Websocket"
-      },
-      "overlayActorSelect": {
-        "Label": "Ouvrir le Menu",
-        "Name": "Acteurs de Superposition",
-        "Hint": "Sélectionner les acteurs pour la superposition"
-      },
-      "overlayEditor": {
-        "Label": "Ouvrir l'Éditeur",
-        "Name": "Éditeur de Superposition",
-        "Hint": "Modifier les superpositions"
-      },
-      "enableOBSWebsocket": {
-        "Name": "Activer OBS Websocket ?",
-        "Hint": "Si activé, OBS Websocket sera utilisé pour le contrôle à distance"
-      },
-      "rollOverlayEditor": {
-        "Name": "Éditeur de Superposition de Jet",
-        "Hint": "Modifier la superposition de jet",
-        "Label": "Ouvrir l'Éditeur"
-      },
-      "showAV": {
-        "Name": "Afficher la Superposition Vidéo ?",
-        "Hint": "Si activé, l'interface de chat audio/vidéo sera visible sur OBS (peut nécessiter un rechargement dans OBS)"
-      },
-      "showUserConfig": {
-        "Name": "Autoriser l'Affichage de la Configuration Utilisateur ?",
-        "Hint": "Si activé, la boîte de dialogue de configuration utilisateur ne sera pas supprimée"
-      },
-      "fixedPopups": {
-        "Name": "Utiliser des Pop-Ups Fixes",
-        "Hint": "Si activé, toutes les pop-ups seront repositionnées et redimensionnées selon les valeurs configurées"
-      },
-      "fixedPopupX": {
-        "Name": "Position X du Pop-Up",
-        "Hint": "Distance en pixels depuis le bord gauche de l'écran"
-      },
-      "fixedPopupY": {
-        "Name": "Position Y du Pop-Up",
-        "Hint": "Distance en pixels depuis le haut de l'écran"
-      },
-      "fixedPopupWidth": {
-        "Name": "Largeur du Pop-Up",
-        "Hint": "Largeur de la pop-up en pixels"
-      },
-      "fixedPopupHeight": {
-        "Name": "Hauteur du Pop-Up",
-        "Hint": "Hauteur de la pop-up en pixels"
-      },
-      "showKeybindingPopup": {
-        "Name": "Afficher la Notification de Raccourci",
-        "Hint": "Si activé, l'utilisation d'un raccourci clavier affichera une notification indiquant le mode sélectionné"
-      },
-      "diceSoNice": {
-        "Name": "Activer la Superposition Dice so Nice",
-        "Hint": "Si activé, une section Dice so Nice sera affichée en complément des autres superpositions"
-      },
-      "diceSoNiceOverlayWidth": {
-        "Name": "Largeur de la Superposition Dice so Nice",
-        "Hint": "Largeur de l'élément en pixels"
-      },
-      "diceSoNiceOverlayHeight": {
-        "Name": "Hauteur de la Superposition Dice so Nice",
-        "Hint": "Hauteur de l'élément en pixels"
-      },
-      "smoothUserCamera": {
-        "Name": "Mouvement Fluide de la Caméra",
-        "Hint": "Si activé, le mouvement manuel de la caméra sera lissé en réduisant le taux de mise à jour"
-      }
-    }
-  }
+	"obs-utils": {
+		"strings": {
+			"module": "OBS Utils",
+			"ic": "En Combat",
+			"trackOne": "Suivre le jeton possédé actuellement actif",
+			"cloneTurnPlayer": "Cloner la vue du joueur actif",
+			"ooc": "Hors Combat",
+			"trackAll": "Suivre tous les jetons possédés",
+			"trackManual": "Suivre une liste manuelle de jetons",
+			"clonePlayer": "Cloner la vue du joueur sélectionné",
+			"cloneDM": "Cloner la vue du MJ",
+			"birdseye": "Ajuster la carte à l'écran",
+			"limitCanvas": "Limiter la carte aux bords de l'écran",
+			"keypressInfo1": "Mode changé",
+			"keypressInfo2": "en",
+			"avInputPlaceholder": "Entrer du texte ou rechercher",
+			"iconPlaceholder": "Icône",
+			"true": "Vrai",
+			"false": "Faux",
+			"missingTypeNotice": "Type ancien/manquant. Veuillez sélectionner un nouveau type dans le menu déroulant pour modifier.",
+			"done": "Terminé",
+			"trackPlayerOwned": "Suivre les jetons possédés par les joueurs",
+			"pauseCameraTracking": "Mettre en pause le suivi de la caméra"
+		},
+		"applications": {
+			"rollOverlayEditor": {
+				"name": "Éditeur de Superposition de Jet",
+				"test": "Test",
+				"preRollImage": "Image Avant Jet",
+				"rollImage": "Image de Jet",
+				"postRollImage": "Image Après Jet",
+				"imageUrl": "URL de l'Image",
+				"foregroundImageUrl": "URL de l'Image de Premier Plan",
+				"backgroundImageUrl": "URL de l'Image d'Arrière-Plan",
+				"delay": "Délai (ms)",
+				"fadeIn": "Fondu Entrant (ms)",
+				"duration": "Durée (ms)",
+				"fadeOut": "Fondu Sortant (ms)"
+			},
+			"director": {
+				"name": "Directeur",
+				"icTypeHeader": "Type en Combat",
+				"oocTypeHeader": "Type Hors Combat",
+				"canvasOptionsHeader": "Options de la Carte",
+				"trackedPlayerHeader": "Joueur Suivi"
+			},
+			"obsRemote": {
+				"name": "Paramètres OBS Remote",
+				"sceneName": "Nom de la Scène",
+				"sourceName": "Nom de la Source OBS",
+				"switchScene": "Changer de Scène",
+				"toggleSource": "Activer/Désactiver la Source",
+				"enableSource": "Activer la Source",
+				"disableSource": "Désactiver la Source",
+				"vttSceneLabel": "Nom de la Scène VTT",
+				"vttScenePlaceholder": "Entrer un nom ou glisser une scène ici",
+				"onLoad": "Chargement",
+				"onCombatStart": "Début du Combat",
+				"onCombatEnd": "Fin du Combat",
+				"onPause": "Pause",
+				"onUnpause": "Reprise",
+				"onSceneLoad": "Chargement de la Scène",
+				"onStopStreaming": "Arrêter le Streaming"
+			},
+			"obsWebsocket": {
+				"name": "Paramètres OBS Websocket",
+				"urlLabel": "URL",
+				"portLabel": "Port",
+				"passwordLabel": "Mot de Passe",
+				"syncLabel": "Synchroniser le Client Cible",
+				"saveButton": "Enregistrer",
+				"syncButton": "Synchroniser"
+			},
+			"actorSelect": {
+				"name": "Sélection d'Acteur",
+				"searchPlaceholder": "Rechercher",
+				"closeButton": "Fermer",
+				"resetButton": "Réinitialiser"
+			},
+			"overlayEditor": {
+				"name": "Éditeur de Superposition",
+				"addButton": "Ajouter un Nouveau Composant",
+				"editStyleButton": "Modifier le Style",
+				"removeButton": "Supprimer la Superposition",
+				"removeComponentButton": "Supprimer le Composant",
+				"importButton": "Importer",
+				"exportButton": "Exporter",
+				"addOverlayButton": "Ajouter une Nouvelle Superposition",
+				"closeButton": "Fermer",
+				"importDialog": {
+					"title": "Importer des Données : Superpositions",
+					"hint1": "Vous êtes sur le point d'importer une configuration de superposition exportée. Assurez-vous qu'elle a été exportée dans le même système, sinon les superpositions AV pourraient ne pas fonctionner.",
+					"hint2": "Veuillez choisir si vous souhaitez remplacer vos superpositions existantes ou ajouter la liste importée.",
+					"replaceButton": "Remplacer",
+					"appendButton": "Ajouter",
+					"fileError": "Vous n'avez pas téléchargé de fichier de données",
+					"versionError": "Version non prise en charge",
+					"formatError": "Le fichier importé n'est pas une exportation de superposition OBS Utils",
+					"cancelButton": "Annuler"
+				},
+				"exportDialog": {
+					"title": "Exporter vos paramètres ?",
+					"content": "Voulez-vous exporter vos paramètres de superposition ?",
+					"yesButton": "Oui",
+					"noButton": "Non"
+				}
+			},
+			"styleEditor": {
+				"name": "Éditeur de Style",
+				"submitButton": "Valider"
+			}
+		},
+		"overlays": {
+			"plainText": {
+				"name": "Texte Simple"
+			},
+			"fontAwesomeIcon": {
+				"name": "Icône Font Awesome"
+			},
+			"booleanAVIcon": {
+				"name": "Icône AV Booléenne"
+			},
+			"booleanAVImage": {
+				"name": "Image AV Booléenne"
+			},
+			"image": {
+				"name": "Image"
+			},
+			"multiIconAV": {
+				"name": "Icône AV Multiple"
+			},
+			"multiImageAV": {
+				"name": "Image AV Multiple"
+			},
+			"progressBar": {
+				"name": "Barre de Progression"
+			}
+		},
+		"settings": {
+			"obsMode": {
+				"Name": "Mode OBS",
+				"Hint": "Définit ce navigateur comme navigateur OBS. Activez-le uniquement si vous ne pouvez pas utiliser une source de navigateur"
+			},
+			"obsModeUser": {
+				"Name": "Utilisateur Mode OBS (Nom d'utilisateur)",
+				"Hint": "Définit cet utilisateur pour qu'il soit toujours en Mode OBS, quel que soit le navigateur"
+			},
+			"obsModeGlobalDisable": {
+				"Name": "Désactiver Globalement la Vue OBS",
+				"Hint": "Désactivera les fonctionnalités OBS pour tous les clients, quelle que soit la méthode"
+			},
+			"minScale": {
+				"Name": "Échelle Minimale",
+				"Hint": "Zoom le plus bas que l'écran peut atteindre"
+			},
+			"maxScale": {
+				"Name": "Échelle Maximale",
+				"Hint": "Zoom le plus haut que l'écran peut atteindre"
+			},
+			"defaultOutOfCombat": {
+				"Name": "Mode Hors Combat",
+				"Hint": "Mode de caméra hors combat"
+			},
+			"defaultInCombat": {
+				"Name": "Mode En Combat",
+				"Hint": "Mode de caméra en combat"
+			},
+			"popupCloseDelay": {
+				"Name": "Délai de Fermeture des Pop-Ups",
+				"Hint": "Secondes avant la fermeture automatique des pop-ups. 0 pour désactiver"
+			},
+			"showTrackerInCombat": {
+				"Name": "Afficher le Suivi en Combat ?",
+				"Hint": "Si activé, le suivi de combat sera visible pendant les tours de combat"
+			},
+			"obsRemoteMenu": {
+				"Label": "Ouvrir le Menu",
+				"Name": "Paramètres OBS Remote",
+				"Hint": "Configurer OBS Remote"
+			},
+			"obsWebsocketMenu": {
+				"Label": "Ouvrir le Menu",
+				"Name": "Paramètres OBS Websocket",
+				"Hint": "Configurer OBS Websocket"
+			},
+			"overlayActorSelect": {
+				"Label": "Ouvrir le Menu",
+				"Name": "Acteurs de Superposition",
+				"Hint": "Sélectionner les acteurs pour la superposition"
+			},
+			"overlayEditor": {
+				"Label": "Ouvrir l'Éditeur",
+				"Name": "Éditeur de Superposition",
+				"Hint": "Modifier les superpositions"
+			},
+			"enableOBSWebsocket": {
+				"Name": "Activer OBS Websocket ?",
+				"Hint": "Si activé, OBS Websocket sera utilisé pour le contrôle à distance"
+			},
+			"rollOverlayEditor": {
+				"Name": "Éditeur de Superposition de Jet",
+				"Hint": "Modifier la superposition de jet",
+				"Label": "Ouvrir l'Éditeur"
+			},
+			"showAV": {
+				"Name": "Afficher la Superposition Vidéo ?",
+				"Hint": "Si activé, l'interface de chat audio/vidéo sera visible sur OBS (peut nécessiter un rechargement dans OBS)"
+			},
+			"showUserConfig": {
+				"Name": "Autoriser l'Affichage de la Configuration Utilisateur ?",
+				"Hint": "Si activé, la boîte de dialogue de configuration utilisateur ne sera pas supprimée"
+			},
+			"fixedPopups": {
+				"Name": "Utiliser des Pop-Ups Fixes",
+				"Hint": "Si activé, toutes les pop-ups seront repositionnées et redimensionnées selon les valeurs configurées"
+			},
+			"fixedPopupX": {
+				"Name": "Position X du Pop-Up",
+				"Hint": "Distance en pixels depuis le bord gauche de l'écran"
+			},
+			"fixedPopupY": {
+				"Name": "Position Y du Pop-Up",
+				"Hint": "Distance en pixels depuis le haut de l'écran"
+			},
+			"fixedPopupWidth": {
+				"Name": "Largeur du Pop-Up",
+				"Hint": "Largeur de la pop-up en pixels"
+			},
+			"fixedPopupHeight": {
+				"Name": "Hauteur du Pop-Up",
+				"Hint": "Hauteur de la pop-up en pixels"
+			},
+			"showKeybindingPopup": {
+				"Name": "Afficher la Notification de Raccourci",
+				"Hint": "Si activé, l'utilisation d'un raccourci clavier affichera une notification indiquant le mode sélectionné"
+			},
+			"diceSoNice": {
+				"Name": "Activer la Superposition Dice so Nice",
+				"Hint": "Si activé, une section Dice so Nice sera affichée en complément des autres superpositions"
+			},
+			"diceSoNiceOverlayWidth": {
+				"Name": "Largeur de la Superposition Dice so Nice",
+				"Hint": "Largeur de l'élément en pixels"
+			},
+			"diceSoNiceOverlayHeight": {
+				"Name": "Hauteur de la Superposition Dice so Nice",
+				"Hint": "Hauteur de l'élément en pixels"
+			},
+			"smoothUserCamera": {
+				"Name": "Mouvement Fluide de la Caméra",
+				"Hint": "Si activé, le mouvement manuel de la caméra sera lissé en réduisant le taux de mise à jour"
+			}
+		}
+	}
 }
