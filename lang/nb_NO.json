@@ -1,256 +1,256 @@
 {
-    "obs-utils": {
-        "strings": {
-            "ic": "I kamp",
-            "birdseye": "Strekk kartet til skjermkantene",
-            "trackAll": "Hold øye med alle eide symboler",
-            "cloneTurnPlayer": "Clone the Turn Player's Viewport",
-            "clonePlayer": "Klon valgt spillers synsfelt",
-            "trackOne": "Hold øye med det aktive symbolet som er i ditt eie nå",
-            "done": "Ferdig",
-            "false": "Usant",
-            "true": "Sant",
-            "missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
-            "keypressInfo2": "Modus til ",
-            "keypressInfo1": "Switched ",
-            "iconPlaceholder": "Ikon",
-            "limitCanvas": "Limit Canvas to Screen Edges",
-            "trackManual": "Hold øye med en manuell liste over symboler",
-            "cloneDM": "Clone the DM's Viewport",
-            "ooc": "Ute av kamp",
-            "avInputPlaceholder": "Skriv inn tekst eller søk",
-            "module": "OBS-verktøy",
-            "trackPlayerOwned": "Track Player-Owned Tokens",
-            "pauseCameraTracking": "Pause Camera Tracking"
-        },
-        "applications": {
-            "rollOverlayEditor": {
-                "name": "Roll Overlay Editor",
-                "backgroundImageUrl": "Nettadresse for bakgrunnsbilde",
-                "preRollImage": "Pre Roll Image",
-                "imageUrl": "Bildenettadresse",
-                "foregroundImageUrl": "Nettadresse for forgrunnsbilde",
-                "rollImage": "Roll Image",
-                "test": "Test",
-                "fadeOut": "Uttoning (ms)",
-                "postRollImage": "Post Roll Image",
-                "duration": "Varighet (ms)",
-                "fadeIn": "Inntoning (ms)",
-                "delay": "Forsinkelse (ms)"
-            },
-            "overlayEditor": {
-                "importDialog": {
-                    "replaceButton": "Erstatt",
-                    "hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
-                    "cancelButton": "Avbryt",
-                    "formatError": "Imported file is not an OBS Utils Overlay Export",
-                    "hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
-                    "appendButton": "Føy til",
-                    "title": "Import Data: Overlays",
-                    "fileError": "Du lastet ikke opp en datafil",
-                    "versionError": "Ustøttet versjon"
-                },
-                "importButton": "Importer",
-                "exportDialog": {
-                    "content": "Do you want to export your Overlay Settings?",
-                    "noButton": "Nei",
-                    "title": "Eksporter innstillingene dine?",
-                    "yesButton": "Ja"
-                },
-                "closeButton": "Lukk",
-                "removeComponentButton": "Fjern komponent",
-                "name": "Overlay Editor",
-                "removeButton": "Remove Overlay",
-                "addButton": "Legg til ny komponent",
-                "editStyleButton": "Rediger stil",
-                "addOverlayButton": "Add New Overlay",
-                "exportButton": "Eksporter"
-            },
-            "director": {
-                "oocTypeHeader": "Out of Combat Type",
-                "canvasOptionsHeader": "Canvas Options",
-                "trackedPlayerHeader": "Spiller under oppsyn",
-                "name": "Regissør",
-                "icTypeHeader": "In Combat Type"
-            },
-            "actorSelect": {
-                "resetButton": "Tilbakestill",
-                "name": "Actor Selection",
-                "closeButton": "Lukk",
-                "searchPlaceholder": "Søk"
-            },
-            "obsWebsocket": {
-                "portLabel": "Port",
-                "name": "OBS Websocket Settings",
-                "passwordLabel": "Passord",
-                "syncButton": "Synkroniser",
-                "saveButton": "Lagre",
-                "syncLabel": "Sync Target Client",
-                "urlLabel": "Nettadresse"
-            },
-            "obsRemote": {
-                "vttSceneLabel": "VTT-scenenavn",
-                "sourceName": "OBS-kildenavn",
-                "name": "OBS Remote Settings",
-                "disableSource": "Skru av kilde",
-                "onCombatEnd": "Kampslutt",
-                "switchScene": "Bytt scene",
-                "enableSource": "Skru på kilde",
-                "onLoad": "Last inn",
-                "onCombatStart": "Kampstart",
-                "sceneName": "Scenenavn",
-                "vttScenePlaceholder": "Skriv inn navn eller slipp en scene her",
-                "onPause": "Pause",
-                "onUnpause": "Fortsett",
-                "onStopStreaming": "Stopp strømming",
-                "toggleSource": "Veksle kilde",
-                "onSceneLoad": "Sceneinnlasting"
-            },
-            "styleEditor": {
-                "submitButton": "Send inn",
-                "name": "Style Editor"
-            }
-        },
-        "settings": {
-            "minScale": {
-                "Name": "Minimumsskala",
-                "Hint": "Det minste skjermen kan forstørre til"
-            },
-            "maxScale": {
-                "Name": "Maksimal skala",
-                "Hint": "Det største skjermen kan forstørre til"
-            },
-            "popupCloseDelay": {
-                "Name": "Pop-Up Close Delay",
-                "Hint": "Seconds until pop-ups are automatically closed. 0 to disable"
-            },
-            "enableOBSWebsocket": {
-                "Hint": "If checked, OBS Websocket will be used for Remoting",
-                "Name": "Skru på OBS-websocket?"
-            },
-            "diceSoNiceOverlayWidth": {
-                "Hint": "Antall pikslers bredde for elementet",
-                "Name": "Dice so Nice Overlay Width"
-            },
-            "obsWebsocketMenu": {
-                "Hint": "Sett opp OBS-websocket",
-                "Label": "Åpne meny",
-                "Name": "Innstillinger for OBS-websocket"
-            },
-            "obsModeUser": {
-                "Name": "OBS Mode User (Username)",
-                "Hint": "Sets this User to always be in OBS Mode, regardless of browser"
-            },
-            "fixedPopupX": {
-                "Hint": "Antall pikslers avstand til venstre skjermkant",
-                "Name": "Oppsprett X"
-            },
-            "obsMode": {
-                "Name": "OBS-modus",
-                "Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
-            },
-            "fixedPopupHeight": {
-                "Hint": "Antall pikslers høyde for oppsprett",
-                "Name": "Oppsprettshøyde"
-            },
-            "showKeybindingPopup": {
-                "Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected",
-                "Name": "Vis tastetilknytningsmerknad"
-            },
-            "fixedPopupY": {
-                "Name": "Oppsprett Y",
-                "Hint": "Antall pikslers avstand til topp-skjermkant"
-            },
-            "showTrackerInCombat": {
-                "Name": "Show Combat Tracker in Combat?",
-                "Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
-            },
-            "rollOverlayEditor": {
-                "Name": "Roll Overlay Editor",
-                "Label": "Open Editor",
-                "Hint": "Edit the Roll Overlay"
-            },
-            "overlayEditor": {
-                "Name": "Overlay Editor",
-                "Hint": "Edit the Overlays",
-                "Label": "Open Editor"
-            },
-            "overlayActorSelect": {
-                "Label": "Åpne meny",
-                "Name": "Overlay Actors",
-                "Hint": "Select the Actors for the Overlay"
-            },
-            "diceSoNice": {
-                "Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
-                "Name": "Enable Dice so Nice overlay"
-            },
-            "diceSoNiceOverlayHeight": {
-                "Name": "Dice so Nice Overlay Height",
-                "Hint": "Antall pikslers høyde for elementet"
-            },
-            "showAV": {
-                "Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
-                "Name": "Show Video Overlay?"
-            },
-            "fixedPopups": {
-                "Hint": "If enabled, all Popups are repositioned and resized to the configured values",
-                "Name": "Use Fixed Pop-Ups"
-            },
-            "defaultInCombat": {
-                "Name": "I kampmodus",
-                "Hint": "«I kamp»-modus"
-            },
-            "obsRemoteMenu": {
-                "Name": "OBS Remote Settings",
-                "Hint": "Configure the OBS Remote",
-                "Label": "Åpne meny"
-            },
-            "defaultOutOfCombat": {
-                "Hint": "«Ute av kamp»-kameramodus",
-                "Name": "«Ute av kamp»-modus"
-            },
-            "obsModeGlobalDisable": {
-                "Name": "OBS View Global Disable",
-                "Hint": "Dette skrur av OBS-funksjoner for alle klienter, uavhengig av metode."
-            },
-            "fixedPopupWidth": {
-                "Hint": "Antall pikslers bredde for oppsprett",
-                "Name": "Oppsprettsbredde"
-            },
-            "showUserConfig": {
-                "Name": "Allow User-Config to Render?",
-                "Hint": "If enabled, the user config dialog will not be suppressed"
-            },
-            "smoothUserCamera": {
-                "Hint": "If enabled, manual camera movement will be smoothed by reducing update rate",
-                "Name": "Smooth Camera Movement"
-            }
-        },
-        "overlays": {
-            "fontAwesomeIcon": {
-                "name": "Font Awesome-ikon"
-            },
-            "booleanAVImage": {
-                "name": "Boolean AV Image"
-            },
-            "plainText": {
-                "name": "Klartekst"
-            },
-            "image": {
-                "name": "Bilde"
-            },
-            "multiImageAV": {
-                "name": "Multi Image AV"
-            },
-            "multiIconAV": {
-                "name": "Multi Icon AV"
-            },
-            "progressBar": {
-                "name": "Framdriftsindikator"
-            },
-            "booleanAVIcon": {
-                "name": "Boolean AV Icon"
-            }
-        }
-    }
+	"obs-utils": {
+		"strings": {
+			"ic": "I kamp",
+			"birdseye": "Strekk kartet til skjermkantene",
+			"trackAll": "Hold øye med alle eide symboler",
+			"cloneTurnPlayer": "Clone the Turn Player's Viewport",
+			"clonePlayer": "Klon valgt spillers synsfelt",
+			"trackOne": "Hold øye med det aktive symbolet som er i ditt eie nå",
+			"done": "Ferdig",
+			"false": "Usant",
+			"true": "Sant",
+			"missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
+			"keypressInfo2": "Modus til ",
+			"keypressInfo1": "Switched ",
+			"iconPlaceholder": "Ikon",
+			"limitCanvas": "Limit Canvas to Screen Edges",
+			"trackManual": "Hold øye med en manuell liste over symboler",
+			"cloneDM": "Clone the DM's Viewport",
+			"ooc": "Ute av kamp",
+			"avInputPlaceholder": "Skriv inn tekst eller søk",
+			"module": "OBS-verktøy",
+			"trackPlayerOwned": "Track Player-Owned Tokens",
+			"pauseCameraTracking": "Pause Camera Tracking"
+		},
+		"applications": {
+			"rollOverlayEditor": {
+				"name": "Roll Overlay Editor",
+				"backgroundImageUrl": "Nettadresse for bakgrunnsbilde",
+				"preRollImage": "Pre Roll Image",
+				"imageUrl": "Bildenettadresse",
+				"foregroundImageUrl": "Nettadresse for forgrunnsbilde",
+				"rollImage": "Roll Image",
+				"test": "Test",
+				"fadeOut": "Uttoning (ms)",
+				"postRollImage": "Post Roll Image",
+				"duration": "Varighet (ms)",
+				"fadeIn": "Inntoning (ms)",
+				"delay": "Forsinkelse (ms)"
+			},
+			"overlayEditor": {
+				"importDialog": {
+					"replaceButton": "Erstatt",
+					"hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
+					"cancelButton": "Avbryt",
+					"formatError": "Imported file is not an OBS Utils Overlay Export",
+					"hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
+					"appendButton": "Føy til",
+					"title": "Import Data: Overlays",
+					"fileError": "Du lastet ikke opp en datafil",
+					"versionError": "Ustøttet versjon"
+				},
+				"importButton": "Importer",
+				"exportDialog": {
+					"content": "Do you want to export your Overlay Settings?",
+					"noButton": "Nei",
+					"title": "Eksporter innstillingene dine?",
+					"yesButton": "Ja"
+				},
+				"closeButton": "Lukk",
+				"removeComponentButton": "Fjern komponent",
+				"name": "Overlay Editor",
+				"removeButton": "Remove Overlay",
+				"addButton": "Legg til ny komponent",
+				"editStyleButton": "Rediger stil",
+				"addOverlayButton": "Add New Overlay",
+				"exportButton": "Eksporter"
+			},
+			"director": {
+				"oocTypeHeader": "Out of Combat Type",
+				"canvasOptionsHeader": "Canvas Options",
+				"trackedPlayerHeader": "Spiller under oppsyn",
+				"name": "Regissør",
+				"icTypeHeader": "In Combat Type"
+			},
+			"actorSelect": {
+				"resetButton": "Tilbakestill",
+				"name": "Actor Selection",
+				"closeButton": "Lukk",
+				"searchPlaceholder": "Søk"
+			},
+			"obsWebsocket": {
+				"portLabel": "Port",
+				"name": "OBS Websocket Settings",
+				"passwordLabel": "Passord",
+				"syncButton": "Synkroniser",
+				"saveButton": "Lagre",
+				"syncLabel": "Sync Target Client",
+				"urlLabel": "Nettadresse"
+			},
+			"obsRemote": {
+				"vttSceneLabel": "VTT-scenenavn",
+				"sourceName": "OBS-kildenavn",
+				"name": "OBS Remote Settings",
+				"disableSource": "Skru av kilde",
+				"onCombatEnd": "Kampslutt",
+				"switchScene": "Bytt scene",
+				"enableSource": "Skru på kilde",
+				"onLoad": "Last inn",
+				"onCombatStart": "Kampstart",
+				"sceneName": "Scenenavn",
+				"vttScenePlaceholder": "Skriv inn navn eller slipp en scene her",
+				"onPause": "Pause",
+				"onUnpause": "Fortsett",
+				"onStopStreaming": "Stopp strømming",
+				"toggleSource": "Veksle kilde",
+				"onSceneLoad": "Sceneinnlasting"
+			},
+			"styleEditor": {
+				"submitButton": "Send inn",
+				"name": "Style Editor"
+			}
+		},
+		"settings": {
+			"minScale": {
+				"Name": "Minimumsskala",
+				"Hint": "Det minste skjermen kan forstørre til"
+			},
+			"maxScale": {
+				"Name": "Maksimal skala",
+				"Hint": "Det største skjermen kan forstørre til"
+			},
+			"popupCloseDelay": {
+				"Name": "Pop-Up Close Delay",
+				"Hint": "Seconds until pop-ups are automatically closed. 0 to disable"
+			},
+			"enableOBSWebsocket": {
+				"Hint": "If checked, OBS Websocket will be used for Remoting",
+				"Name": "Skru på OBS-websocket?"
+			},
+			"diceSoNiceOverlayWidth": {
+				"Hint": "Antall pikslers bredde for elementet",
+				"Name": "Dice so Nice Overlay Width"
+			},
+			"obsWebsocketMenu": {
+				"Hint": "Sett opp OBS-websocket",
+				"Label": "Åpne meny",
+				"Name": "Innstillinger for OBS-websocket"
+			},
+			"obsModeUser": {
+				"Name": "OBS Mode User (Username)",
+				"Hint": "Sets this User to always be in OBS Mode, regardless of browser"
+			},
+			"fixedPopupX": {
+				"Hint": "Antall pikslers avstand til venstre skjermkant",
+				"Name": "Oppsprett X"
+			},
+			"obsMode": {
+				"Name": "OBS-modus",
+				"Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
+			},
+			"fixedPopupHeight": {
+				"Hint": "Antall pikslers høyde for oppsprett",
+				"Name": "Oppsprettshøyde"
+			},
+			"showKeybindingPopup": {
+				"Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected",
+				"Name": "Vis tastetilknytningsmerknad"
+			},
+			"fixedPopupY": {
+				"Name": "Oppsprett Y",
+				"Hint": "Antall pikslers avstand til topp-skjermkant"
+			},
+			"showTrackerInCombat": {
+				"Name": "Show Combat Tracker in Combat?",
+				"Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
+			},
+			"rollOverlayEditor": {
+				"Name": "Roll Overlay Editor",
+				"Label": "Open Editor",
+				"Hint": "Edit the Roll Overlay"
+			},
+			"overlayEditor": {
+				"Name": "Overlay Editor",
+				"Hint": "Edit the Overlays",
+				"Label": "Open Editor"
+			},
+			"overlayActorSelect": {
+				"Label": "Åpne meny",
+				"Name": "Overlay Actors",
+				"Hint": "Select the Actors for the Overlay"
+			},
+			"diceSoNice": {
+				"Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
+				"Name": "Enable Dice so Nice overlay"
+			},
+			"diceSoNiceOverlayHeight": {
+				"Name": "Dice so Nice Overlay Height",
+				"Hint": "Antall pikslers høyde for elementet"
+			},
+			"showAV": {
+				"Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
+				"Name": "Show Video Overlay?"
+			},
+			"fixedPopups": {
+				"Hint": "If enabled, all Popups are repositioned and resized to the configured values",
+				"Name": "Use Fixed Pop-Ups"
+			},
+			"defaultInCombat": {
+				"Name": "I kampmodus",
+				"Hint": "«I kamp»-modus"
+			},
+			"obsRemoteMenu": {
+				"Name": "OBS Remote Settings",
+				"Hint": "Configure the OBS Remote",
+				"Label": "Åpne meny"
+			},
+			"defaultOutOfCombat": {
+				"Hint": "«Ute av kamp»-kameramodus",
+				"Name": "«Ute av kamp»-modus"
+			},
+			"obsModeGlobalDisable": {
+				"Name": "OBS View Global Disable",
+				"Hint": "Dette skrur av OBS-funksjoner for alle klienter, uavhengig av metode."
+			},
+			"fixedPopupWidth": {
+				"Hint": "Antall pikslers bredde for oppsprett",
+				"Name": "Oppsprettsbredde"
+			},
+			"showUserConfig": {
+				"Name": "Allow User-Config to Render?",
+				"Hint": "If enabled, the user config dialog will not be suppressed"
+			},
+			"smoothUserCamera": {
+				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate",
+				"Name": "Smooth Camera Movement"
+			}
+		},
+		"overlays": {
+			"fontAwesomeIcon": {
+				"name": "Font Awesome-ikon"
+			},
+			"booleanAVImage": {
+				"name": "Boolean AV Image"
+			},
+			"plainText": {
+				"name": "Klartekst"
+			},
+			"image": {
+				"name": "Bilde"
+			},
+			"multiImageAV": {
+				"name": "Multi Image AV"
+			},
+			"multiIconAV": {
+				"name": "Multi Icon AV"
+			},
+			"progressBar": {
+				"name": "Framdriftsindikator"
+			},
+			"booleanAVIcon": {
+				"name": "Boolean AV Icon"
+			}
+		}
+	}
 }
