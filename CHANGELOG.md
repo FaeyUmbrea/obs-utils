@@ -1,3 +1,17 @@
+## Version 3.6
+
+### Major Changes
+
+- **Actor Selection Index Display**: Added functionality to show the selection index of actors in the selection UI
+- **OBS Mode Enhancements**:
+    - Introduced a permanent setting to enforce OBS mode on `/stream`.
+    - Fixed WebSocket Settings reload issues for OBS
+    - Added a force settings button to the director
+
+### Languages
+
+- **Russian**: Added at 0.6% completeness, contributions to Weblate would be very welcome
+
 ## Version 3.3.5
 
 ### Fixed
