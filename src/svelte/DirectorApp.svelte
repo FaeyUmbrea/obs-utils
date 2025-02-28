@@ -4,6 +4,7 @@
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
 	import { generateDataBlockFromSetting, settings } from '../utils/settings.ts';
+	import { sendOpenSettingsConfig } from '../utils/socket.ts';
 
 	const { ic, ooc, players } = generateDataBlockFromSetting();
 	const currentIC = settings.getStore('defaultInCombat');
@@ -104,6 +105,22 @@
 				{/each}
 			</select>
 		</div>
+		<div>
+			<hr />
+			<b>{localize('obs-utils.applications.director.obsUserCommands')}</b>
+			<hr />
+			<input
+				name='forceOpenSettingsForOBSUser'
+				id='forceOpenSettingsForOBSUser'
+				type='button'
+				on:click={() => sendOpenSettingsConfig()}
+			/>
+			<label
+				class='button'
+				title={localize('obs-utils.applications.director.forceOpenSettingsForOBSUser')}
+				for='forceOpenSettingsForOBSUser'><i class='fas fa-cog'></i></label
+			>
+		</div>
 	</main>
 </ApplicationShell>
 
@@ -139,5 +156,27 @@
   input:checked + label {
     background-color: #bfb;
     border-color: #4c4;
+  }
+
+  button {
+      background-color: #ddd;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      border: 2px solid #444;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+  }
+
+  button:hover {
+      background-color: #dfd;
+  }
+
+  button i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
   }
 </style>

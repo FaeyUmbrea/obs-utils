@@ -13,7 +13,18 @@ async function handleEvent({ eventType, targetUser, payload }) {
 		changeViewport(payload);
 	} else if (eventType === 'websocketSettings') {
 		await changeOBSSettings(payload);
+	} else if (eventType === 'openSettingsConfig') {
+		openSettingsConfig();
 	}
+}
+
+export function sendOpenSettingsConfig() {
+	game?.socket?.emit('module.obs-utils', { eventType: 'openSettingsConfig', targetUser: undefined });
+}
+
+function openSettingsConfig() {
+	if (!isOBS()) return;
+	(new SettingsConfig({})).render(true);
 }
 
 async function changeOBSSettings(settings) {
