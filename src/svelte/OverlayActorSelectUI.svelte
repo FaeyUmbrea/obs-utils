@@ -32,6 +32,10 @@
 		}
 		$selectedActors = actors;
 	}
+
+	function getIndex(id) {
+		return $selectedActors.indexOf(id) + 1;
+	}
 </script>
 
 <ApplicationShell bind:elementRoot={elementRoot}>
@@ -57,8 +61,14 @@
 				/>
 				<label for={item.id}
 				><img alt={item.name} src={item.img} />
-					<span>{item.name}</span></label
-				>
+					<span>{item.name}</span>
+					{#key $selectedActors}
+						{#if getIndex(item.id) > 0}
+							<div class='selectionCountWrapper'>
+								<span class='selectionCount'>{getIndex(item.id)}</span></div>
+						{/if}
+					{/key}
+				</label>
 			</div>
 		</VirtualList>
 
@@ -89,6 +99,7 @@
       border: 2px solid #444;
       align-items: center;
       border-radius: 4px;
+      position: relative;
     }
 
     img {
@@ -110,6 +121,28 @@
       bottom: 0;
       left: 0;
       padding: 10px;
+    }
+
+    .selectionCountWrapper {
+      position: absolute;
+      top: -9px;
+      left: -9px;
+    }
+
+    .selectionCount {
+      position: fixed;
+      background-color: darkorange;
+      border-radius: 0.8em;
+      -moz-border-radius: 0.8em;
+      -webkit-border-radius: 0.8em;
+      color: #ffffff;
+      display: inline-block;
+      font-weight: bold;
+      line-height: 1.6em;
+      margin-right: 5px;
+      text-align: center;
+      width: 1.6em;
+      font-size: 16px;
     }
   }
 </style>
