@@ -53,7 +53,7 @@ function trackAll() {
 }
 
 function trackTokenList(tokens: Token[]) {
-	const coordinates: { x: number;y: number;width: number; height: number }[] = [];
+	const coordinates: { x: number; y: number; width: number; height: number }[] = [];
 
 	tokens?.forEach((token) => {
 		const object = {

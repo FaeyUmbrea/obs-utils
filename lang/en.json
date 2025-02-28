@@ -140,10 +140,10 @@
 			}
 		},
 		"settings": {
-      "forceStreamPageOBSMode": {
-        "Name": "Force OBS Mode on Stream Page",
-        "Hint": "Forces the /stream output to be in OBS mode at all times"
-      },
+			"forceStreamPageOBSMode": {
+				"Name": "Force OBS Mode on Stream Page",
+				"Hint": "Forces the /stream output to be in OBS mode at all times"
+			},
 			"obsMode": {
 				"Name": "OBS Mode",
 				"Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
