@@ -48,7 +48,9 @@
 				"canvasOptionsHeader": "Canvas Options",
 				"trackedPlayerHeader": "Tracked Player",
 				"name": "Director",
-				"icTypeHeader": "In Combat Type"
+				"icTypeHeader": "In Combat Type",
+				"obsUserCommands": "OBS User Commands",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"actorSelect": {
 				"resetButton": "Reset",
@@ -201,6 +203,10 @@
 			"showUserConfig": {
 				"Name": "Allow User-Config to Render?",
 				"Hint": "If enabled, the user config dialog will not be suppressed"
+			},
+			"forceStreamPageOBSMode": {
+				"Name": "Force OBS Mode on Stream Page",
+				"Hint": "Forces the /stream output to be in OBS mode at all times"
 			}
 		},
 		"overlays": {

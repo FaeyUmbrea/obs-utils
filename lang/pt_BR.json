@@ -43,7 +43,9 @@
 				"icTypeHeader": "Tipo Em Combate",
 				"oocTypeHeader": "Tipo Fora de Combate",
 				"canvasOptionsHeader": "Opções de Tela",
-				"trackedPlayerHeader": "Jogador Rastreado"
+				"trackedPlayerHeader": "Jogador Rastreado",
+				"obsUserCommands": "OBS User Commands",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"obsRemote": {
 				"name": "Configurações Remotas do OBS",
@@ -250,6 +252,10 @@
 			"smoothUserCamera": {
 				"Name": "Smooth Camera Movement",
 				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate"
+			},
+			"forceStreamPageOBSMode": {
+				"Name": "Force OBS Mode on Stream Page",
+				"Hint": "Forces the /stream output to be in OBS mode at all times"
 			}
 		}
 	}

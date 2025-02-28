@@ -43,7 +43,9 @@
 				"icTypeHeader": "Verhalten im Kampf",
 				"oocTypeHeader": "Verhalten außerhalb des Kampfs",
 				"canvasOptionsHeader": "Bildflächen Einstellungen",
-				"trackedPlayerHeader": "Verfolgter Spieler"
+				"trackedPlayerHeader": "Verfolgter Spieler",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"obsUserCommands": "OBS User Commands"
 			},
 			"obsRemote": {
 				"name": "OBS Fernbedienungseinstellungen",
@@ -250,6 +252,10 @@
 			"smoothUserCamera": {
 				"Name": "Flüssige Kamerabewegung",
 				"Hint": "Wenn aktiv, wird die Aktualisierungsrate der manuellen Kamerasteuerung reduziert"
+			},
+			"forceStreamPageOBSMode": {
+				"Name": "Force OBS Mode on Stream Page",
+				"Hint": "Forces the /stream output to be in OBS mode at all times"
 			}
 		}
 	}

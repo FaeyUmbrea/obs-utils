@@ -43,7 +43,9 @@
 				"icTypeHeader": "In Combat Type",
 				"oocTypeHeader": "Out of Combat Type",
 				"canvasOptionsHeader": "Canvas Options",
-				"trackedPlayerHeader": "Tracked Player"
+				"trackedPlayerHeader": "Tracked Player",
+				"obsUserCommands": "OBS User Commands",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"obsRemote": {
 				"name": "OBS Remote Settings",
@@ -250,6 +252,10 @@
 			"smoothUserCamera": {
 				"Name": "Smooth Camera Movement",
 				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate"
+			},
+			"forceStreamPageOBSMode": {
+				"Name": "Force OBS Mode on Stream Page",
+				"Hint": "Forces the /stream output to be in OBS mode at all times"
 			}
 		}
 	}
