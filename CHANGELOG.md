@@ -1,4 +1,10 @@
-## Version 3.6
+## Version 3.6.1
+
+### Fixed
+
+- Fixed a UI display issue caused by the new sort order display elements
+
+## Version 3.6.0
 
 ### Major Changes
 
