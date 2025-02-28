@@ -43,7 +43,9 @@
 				"icTypeHeader": "Verhalten im Kampf",
 				"oocTypeHeader": "Verhalten außerhalb des Kampfs",
 				"canvasOptionsHeader": "Bildflächen Einstellungen",
-				"trackedPlayerHeader": "Verfolgter Spieler"
+				"trackedPlayerHeader": "Verfolgter Spieler",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"obsUserCommands": "OBS User Commands"
 			},
 			"obsRemote": {
 				"name": "OBS Fernbedienungseinstellungen",
