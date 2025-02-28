@@ -81,6 +81,7 @@ declare global {
 		'obs-utils.rollOverlayPostRollImage': string;
 		'obs-utils.rollOverlayPostRollEnabled': boolean;
 		'obs-utils.rollOverlayPreRollEnabled': boolean;
+		'obs-utils.forceStreamPageOBSMode': boolean;
 	}
 
 }

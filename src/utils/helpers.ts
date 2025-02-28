@@ -12,7 +12,8 @@ export function isOBS() {
 	return (
 		(!!window.obsstudio
 			|| game?.settings?.get(MODULE_ID, 'obsMode')
-			|| game?.settings?.get(MODULE_ID, 'obsModeUser') === game?.userId)
+			|| game?.settings?.get(MODULE_ID, 'obsModeUser') === game?.userId
+			|| (game?.settings?.get(MODULE_ID, 'forceStreamPageOBSMode') && game.view === 'stream'))
 		&& !game?.settings?.get(MODULE_ID, 'obsModeGlobalDisable')
 	);
 }

@@ -157,26 +157,4 @@
     background-color: #bfb;
     border-color: #4c4;
   }
-
-  button {
-      background-color: #ddd;
-      width: 40px;
-      height: 40px;
-      display: inline-flex;
-      border: 2px solid #444;
-      justify-content: center;
-      align-items: center;
-      border-radius: 4px;
-  }
-
-  button:hover {
-      background-color: #dfd;
-  }
-
-  button i {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-  }
 </style>

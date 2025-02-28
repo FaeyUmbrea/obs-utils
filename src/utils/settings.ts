@@ -367,6 +367,15 @@ class OBSUtilsSettings extends TJSGameSettings {
 				requiresReload: true,
 			}),
 		);
+		settings.push(
+			createSetting('forceStreamPageOBSMode', {
+				default: false,
+				type: Boolean,
+				scope: 'world',
+				config: true,
+				requiresReload: true,
+			}),
+		);
 
 		settings.push(
 			createSetting('showKeybindingPopup', {

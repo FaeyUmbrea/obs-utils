@@ -62,11 +62,11 @@
 			"name": "Français",
 			"path": "lang/fr.json"
 		},
-    {
-      "lang": "ru",
-      "name": "Pусский",
-      "path": "lang/ru.json"
-    }
+		{
+			"lang": "ru",
+			"name": "Pусский",
+			"path": "lang/ru.json"
+		}
 	],
 	"url": "This is auto replaced",
 	"socket": true,
