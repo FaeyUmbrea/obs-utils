@@ -48,30 +48,30 @@
 				'obs-utils.applications.actorSelect.searchPlaceholder',
 			)}
 		/>
-
-		<VirtualList itemHeight={50} items={filteredActors} let:item>
-			<div>
-				<input
-					checked={item.id ? $selectedActors.includes(item.id) : false}
-					id={item.id}
-					name={item.id}
-					on:change={change(item.id)}
-					type='checkbox'
-					value={item.id}
-				/>
-				<label for={item.id}
-				><img alt={item.name} src={item.img} />
-					<span>{item.name}</span>
-					{#key $selectedActors}
-						{#if getIndex(item.id) > 0}
-							<div class='selectionCountWrapper'>
-								<span class='selectionCount'>{getIndex(item.id)}</span></div>
-						{/if}
-					{/key}
-				</label>
-			</div>
-		</VirtualList>
-
+		<div class='list-wrapper'>
+			<VirtualList itemHeight={50} items={filteredActors} let:item>
+				<div>
+					<input
+						checked={item.id ? $selectedActors.includes(item.id) : false}
+						id={item.id}
+						name={item.id}
+						on:change={change(item.id)}
+						type='checkbox'
+						value={item.id}
+					/>
+					<label for={item.id}
+					><img alt={item.name} src={item.img} />
+						<span>{item.name}</span>
+						{#key $selectedActors}
+							{#if getIndex(item.id) > 0}
+								<div class='selectionCountWrapper'>
+									<span class='selectionCount'>{getIndex(item.id)}</span></div>
+							{/if}
+						{/key}
+					</label>
+				</div>
+			</VirtualList>
+		</div>
 		<footer>
 			<button on:click={submit}
 			>{localize('obs-utils.applications.actorSelect.closeButton')}</button
@@ -84,7 +84,8 @@
   main {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 35px auto 35px;
+    grid-template-rows: 35px auto 40px;
+    height 100%
 
     input[type='checkbox'] {
       opacity: 0;
@@ -125,13 +126,12 @@
 
     .selectionCountWrapper {
       position: absolute;
-      top: -9px;
-      left: -9px;
+      top: -2px;
+      left: -1px;
     }
 
     .selectionCount {
-      position: fixed;
-      background-color: darkorange;
+      background-color: #ff8c00dd;
       border-radius: 0.8em;
       -moz-border-radius: 0.8em;
       -webkit-border-radius: 0.8em;
@@ -144,5 +144,10 @@
       width: 1.6em;
       font-size: 16px;
     }
+  }
+
+  .list-wrapper {
+    height 100%
+    overflow-y: scroll;
   }
 </style>
