@@ -43,7 +43,9 @@
 				"icTypeHeader": "In Combat Type",
 				"oocTypeHeader": "Out of Combat Type",
 				"canvasOptionsHeader": "Canvas Options",
-				"trackedPlayerHeader": "Tracked Player"
+				"trackedPlayerHeader": "Tracked Player",
+				"obsUserCommands": "OBS User Commands",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"obsRemote": {
 				"name": "OBS Remote Settings",
