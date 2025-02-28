@@ -252,6 +252,10 @@
 			"smoothUserCamera": {
 				"Name": "Mouvement Fluide de la Caméra",
 				"Hint": "Si activé, le mouvement manuel de la caméra sera lissé en réduisant le taux de mise à jour"
+			},
+			"forceStreamPageOBSMode": {
+				"Hint": "Forces the /stream output to be in OBS mode at all times",
+				"Name": "Force OBS Mode on Stream Page"
 			}
 		}
 	}
