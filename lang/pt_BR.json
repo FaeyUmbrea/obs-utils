@@ -43,7 +43,9 @@
 				"icTypeHeader": "Tipo Em Combate",
 				"oocTypeHeader": "Tipo Fora de Combate",
 				"canvasOptionsHeader": "Opções de Tela",
-				"trackedPlayerHeader": "Jogador Rastreado"
+				"trackedPlayerHeader": "Jogador Rastreado",
+				"obsUserCommands": "OBS User Commands",
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"obsRemote": {
 				"name": "Configurações Remotas do OBS",
