@@ -200,10 +200,10 @@
 				"Name": "Aktiviere OBS Websocket?",
 				"Hint": "Falls gewählt, wird OBS Websockets für die Fernsteuerung verwendet"
 			},
-      "allowWebsocketAPI": {
-        "Name": "Erlaube OBS Websocket API Zugriff?",
-        "Hint": "Falls gewählt, können andere Module direkt auf OBS Websocket zugreifen"
-      },
+			"allowWebsocketAPI": {
+				"Name": "Erlaube OBS Websocket API Zugriff?",
+				"Hint": "Falls gewählt, können andere Module direkt auf OBS Websocket zugreifen"
+			},
 			"rollOverlayEditor": {
 				"Name": "Würfel Overlay Editor",
 				"Hint": "Bearbeitet das Würfel Overlay",
