@@ -31,6 +31,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.obsRemoteMenu.Name`,
 		label: `${moduleID}.settings.obsRemoteMenu.Label`,
 		hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
+		// @ts-expect-error mixins dont work
 		type: SettingsShell(OBSRemoteApplication),
 		icon: 'fas fa-bars',
 		restricted: true,
@@ -39,6 +40,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.obsWebsocketMenu.Name`,
 		label: `${moduleID}.settings.obsWebsocketMenu.Label`,
 		hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
+		// @ts-expect-error mixins dont work
 		type: SettingsShell(OBSWebsocketApplication),
 		icon: 'fas fa-bars',
 		restricted: true,
@@ -47,6 +49,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.overlayActorSelect.Name`,
 		label: `${moduleID}.settings.overlayActorSelect.Label`,
 		hint: `${moduleID}.settings.overlayActorSelect.Hint`,
+		// @ts-expect-error mixins dont work
 		type: SettingsShell(OverlayActorSelect),
 		icon: 'fas fa-bars',
 		restricted: true,
@@ -55,6 +58,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.overlayEditor.Name`,
 		label: `${moduleID}.settings.overlayEditor.Label`,
 		hint: `${moduleID}.settings.overlayEditor.Hint`,
+		// @ts-expect-error mixins dont work
 		type: SettingsShell(OverlayEditor),
 		icon: 'fas fa-bars',
 		restricted: true,
@@ -64,6 +68,7 @@ export function registerUI() {
 		label: `${moduleID}.settings.rollOverlayEditor.Label`,
 		hint: `${moduleID}.settings.rollOverlayEditor.Hint`,
 		icon: 'fas fa-bars',
+		// @ts-expect-error mixins dont work
 		type: SettingsShell(RollOverlay),
 		restricted: true,
 	});
@@ -99,7 +104,8 @@ export function registerUI() {
 
 export async function showNotifications() {
 	try {
-		if (!game.user?.isGM) return;
+		// @ts-expect-error mixins dont work
+		if (!(game as ReadyGame).user?.isGM) return;
 		const notifications = await getNotifications();
 		if (notifications.length > 0) {
 			const links = await getLinks();

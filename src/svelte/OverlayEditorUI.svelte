@@ -2,6 +2,7 @@
 
 <script lang='ts'>
 	import type { SvelteApp } from '#runtime/svelte/application';
+	import type { MinimalWritable } from '@typhonjs-fvtt/runtime/svelte/store/util';
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
 	import { getContext } from 'svelte';
@@ -10,7 +11,7 @@
 	import OverlayEditorTab from './components/OverlayEditorTab.svelte';
 	import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';
 
-	const overlays = settings.getStore('streamOverlays');
+	const overlays = settings.getStore('streamOverlays') as MinimalWritable<OverlayData[]>;
 	const actorIDs = settings.getReadableStore('overlayActors');
 
 	let activeIndex = 0;

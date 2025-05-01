@@ -1,6 +1,8 @@
+import type { SvelteApp } from '#runtime/svelte/application';
 import { SvelteApplication } from '#runtime/svelte/application';
 import StyleEditorUi from '../svelte/StyleEditorUi.svelte';
 
+// @ts-expect-error mixins dont work
 export default class StyleEditor extends SvelteApplication<Options> {
 	style: string;
 	callback: (style: string) => void | Promise<void>;
@@ -11,7 +13,6 @@ export default class StyleEditor extends SvelteApplication<Options> {
 		this.callback = callback;
 	}
 
-	// @ts-expect-error Excessive stack depth
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			classes: ['styleeditor'],

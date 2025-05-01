@@ -19,24 +19,19 @@ export function hideTokenBorder(token) {
 }
 
 function getAutoTokens() {
-	return game.canvas?.tokens?.ownedTokens;
+	return (game as ReadyGame).canvas?.tokens?.ownedTokens;
 }
 
 function getPlayerTokens() {
-	const playerCharacters = game.users?.players
-		.filter(e => (e as User).character != null)
-		.map(player => (player as User).character!.id);
-	return game.canvas?.tokens?.children
-		.flatMap(child => (child.children as Token[]))
-		.filter(token => playerCharacters?.includes(token?.actor?.id ?? null))
-		.filter(token => token !== undefined);
+	// @ts-expect-error mixins dont work
+	const playerCharacters = (game as ReadyGame).users?.players.filter(e => (e as User).character != null).map(player => (player as User).character!.id);
+	// @ts-expect-error mixins dont work
+	return (game as ReadyGame).canvas?.tokens?.children.flatMap(child => (child.children as Token[])).filter(token => playerCharacters?.includes(token?.actor?.id ?? null)).filter(token => token !== undefined);
 }
 
 function getManualToken() {
-	return game.canvas?.scene?.tokens
-		?.filter(token => !!token.getFlag('obs-utils', 'tracked'))
-	// @ts-expect-error token.object missing on type
-		.map(token => token.object as Token);
+	// @ts-expect-error mixins dont work
+	return (game as ReadyGame).canvas?.scene?.tokens?.filter(token => !!token.getFlag('obs-utils', 'tracked')).map(token => token.object as Token);
 }
 
 function toggleToken(tokenDocument) {
@@ -45,7 +40,7 @@ function toggleToken(tokenDocument) {
 }
 
 export function getCurrentUser() {
-	return game.userId;
+	return (game as ReadyGame).userId;
 }
 
 function trackAll() {
@@ -82,7 +77,8 @@ function trackTokenList(tokens: Token[]) {
 }
 
 export function tokenMoved() {
-	if (game.combat?.started) {
+	// @ts-expect-error mixins dont work
+	if ((game as ReadyGame).combat?.started) {
 		switch (getSetting('defaultInCombat')) {
 			case 'trackall':
 				trackAll();
@@ -90,7 +86,8 @@ export function tokenMoved() {
 			case 'trackone':
 				trackTokenList([
 					getAutoTokens()!.find(
-						element => element.id === game.combat?.combatant?.tokenId,
+						// @ts-expect-error mixins dont work
+						element => element.id === (game as ReadyGame).combat?.combatant?.tokenId,
 					)!,
 				]);
 				break;
@@ -144,13 +141,16 @@ function calculateBoundsOfCoodinates(coordSet) {
 }
 
 export function viewportChanged(userId) {
-	const user = game.users?.get(userId) as User | undefined;
+	const user = (game as ReadyGame).users?.get(userId) as User | undefined;
+	// @ts-expect-error mixins dont work
 	if (user?.viewedScene !== (game as ReadyGame | undefined)?.user?.viewedScene) {
 		return;
 	}
-	if (game.combat?.started) {
+	// @ts-expect-error mixins dont work
+	if ((game as ReadyGame).combat?.started) {
 		switch (getSetting('defaultInCombat')) {
 			case 'cloneDM':
+				// @ts-expect-error mixins dont work
 				if (user?.isGM)
 					clampAndApply(VIEWPORT_DATA.get(userId));
 				break;
@@ -168,6 +168,7 @@ export function viewportChanged(userId) {
 	} else {
 		switch (getSetting('defaultOutOfCombat')) {
 			case 'cloneDM':
+				// @ts-expect-error mixins dont work
 				if (user?.isGM)
 					clampAndApply(VIEWPORT_DATA.get(userId));
 				break;
@@ -182,11 +183,13 @@ export function viewportChanged(userId) {
 }
 
 export function isGM() {
-	return game.user?.isGM;
+	// @ts-expect-error mixins dont work
+	return (game as ReadyGame).user?.isGM;
 }
 
 export function expandTokenHud(_tokenHud, html, token) {
-	if (game.user?.isGM) {
+	// @ts-expect-error mixins dont work
+	if ((game as ReadyGame).user?.isGM) {
 		const rightSide = html.find('div.col.right');
 		const isTracked = !!token.flags['obs-utils']?.tracked;
 		const element = $(
@@ -205,8 +208,10 @@ export function expandTokenHud(_tokenHud, html, token) {
 export function scaleToFit() {
 	if (
 		!(
-			(game.combat?.started && getSetting('defaultInCombat') === 'birdseye')
-			|| (!game.combat?.started && getSetting('defaultOutOfCombat') === 'birdseye')
+		// @ts-expect-error mixins dont work
+			((game as ReadyGame).combat?.started && getSetting('defaultInCombat') === 'birdseye')
+			// @ts-expect-error mixins dont work
+			|| (!(game as ReadyGame).combat?.started && getSetting('defaultOutOfCombat') === 'birdseye')
 		)
 	) {
 		return;

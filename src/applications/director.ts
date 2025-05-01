@@ -1,6 +1,7 @@
 import { SvelteApplication } from '#runtime/svelte/application';
 import DirectorApp from '../svelte/DirectorApp.svelte';
 
+// @ts-expect-error mixins dont work
 export default class DirectorApplication extends SvelteApplication {
 	sidebarButton;
 

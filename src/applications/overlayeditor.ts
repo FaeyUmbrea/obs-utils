@@ -1,8 +1,10 @@
+import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
 import { SvelteApplication } from '#runtime/svelte/application';
 import { localize } from '#runtime/util/i18n';
 import OverlayEditorUI from '../svelte/OverlayEditorUI.svelte';
 import { getSetting, setSetting } from '../utils/settings.ts';
 
+// @ts-expect-error mixins dont work
 export default class OverlayEditor extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
@@ -142,12 +144,15 @@ function exportChatCommands() {
 		type: 'ObsUtilsOverlays',
 		version: 1,
 		overlays,
-		system: game.system?.id,
+		// @ts-expect-error mixins dont work
+		system: (game as ReadyGame).system?.id,
 	};
 
 	const filename = [
 		'obsu',
-		game.system?.id,
+		// @ts-expect-error mixins dont work
+		(game as ReadyGame).system?.id,
+		// @ts-expect-error mixins dont work
 		(game as ReadyGame | undefined)?.world?.name,
 		'overlays',
 		new Date().toString(),

@@ -21,6 +21,7 @@ export function SettingsShell(Application) {
 
 		async _updateObject() {}
 
+		// @ts-expect-error mixins dont work
 		render() {
 			this.close();
 		}

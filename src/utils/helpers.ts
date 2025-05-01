@@ -13,7 +13,7 @@ export function isOBS() {
 		(!!window.obsstudio
 			|| (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsMode')
 			|| (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsModeUser') === (game as ReadyGame | undefined)?.userId
-			|| ((game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'forceStreamPageOBSMode') && game.view === 'stream'))
+			|| ((game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'forceStreamPageOBSMode') && (game as ReadyGame).view === 'stream'))
 		&& !(game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsModeGlobalDisable')
 	);
 }
@@ -25,7 +25,7 @@ export function removeBG() {
 }
 
 function getFontAwesomeVersion() {
-	const version = Number.parseInt(game.version!.split('.')[1]!);
+	const version = Number.parseInt((game as ReadyGame).version!.split('.')[1]!);
 	if (version <= 290) {
 		return '6.1.0';
 	}

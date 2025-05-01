@@ -1,6 +1,7 @@
 import { SvelteApplication } from '#runtime/svelte/application';
 import OBSRemote from '../svelte/OBSRemote.svelte';
 
+// @ts-expect-error mixins dont work
 export default class OBSRemoteApplication extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {

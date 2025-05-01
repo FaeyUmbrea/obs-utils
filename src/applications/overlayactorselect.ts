@@ -2,6 +2,7 @@ import { SvelteApplication } from '#runtime/svelte/application';
 import OverlayActorSelectUi from '../svelte/OverlayActorSelectUI.svelte';
 import { settings } from '../utils/settings.ts';
 
+// @ts-expect-error mixins dont work
 export default class OverlayActorSelect extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {

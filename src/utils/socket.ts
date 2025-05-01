@@ -7,7 +7,7 @@ Hooks.once('init', () => {
 	(game as ReadyGame | undefined)?.socket?.on('module.obs-utils', handleEvent);
 });
 async function handleEvent({ eventType, targetUser, payload }) {
-	if (!!targetUser && game.userId !== targetUser) return;
+	if (!!targetUser && (game as ReadyGame).userId !== targetUser) return;
 
 	if (eventType === 'viewport') {
 		changeViewport(payload);

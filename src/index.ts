@@ -1,3 +1,4 @@
+import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
 import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 import { expandTokenHud, isGM } from './utils/canvas.ts';
 import { isOBS, removeBG } from './utils/helpers.js';
@@ -22,7 +23,7 @@ function start() {
 		registerKeybindings();
 
 		// Load UI Component only on /game
-		if (game.view === 'game') {
+		if ((game as ReadyGame).view === 'game') {
 			const ui = await import('./utils/ui.ts');
 			ui.registerUI();
 
@@ -47,12 +48,14 @@ function start() {
 		}
 
 		// Update obsModeUser choice list once usernames are available
-		game!.settings!.settings!.get('obs-utils.obsModeUser')!.choices
+		(game as ReadyGame)!.settings!.settings!.get('obs-utils.obsModeUser')!.choices
       = Object.fromEntries(
 				[['none', 'None']].concat(
 					(game as ReadyGame | undefined)?.users?.filter(
 						e =>
-							!(e as User).isGM || game.users.filter(user => (user as User).isGM).length > 1,
+						// @ts-expect-error mixins dont work
+							!(e as User).isGM || (game as ReadyGame).users.filter(user => (user as User).isGM).length > 1,
+						// @ts-expect-error mixins dont work
 					).map(e => [(e).id, (e as User).name]) ?? [[]],
 				),
 			);
@@ -71,7 +74,8 @@ function start() {
 start();
 
 function buildButtons(buttons) {
-	if (!game.user?.isGM) return;
+	// @ts-expect-error mixins dont work
+	if (!(game as ReadyGame).user?.isGM) return;
 	const buttonGroup = buttons.find(element => element.name === 'token');
 	const newButton = {
 		icon: 'fa-solid fa-signal-stream',

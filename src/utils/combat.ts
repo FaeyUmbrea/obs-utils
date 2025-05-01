@@ -9,5 +9,6 @@ export function handleCombat(runningCombat) {
 }
 
 export function getCurrentCombatants() {
-	return game.combat?.combatant?.players;
+	// @ts-expect-error mixins dont work
+	return (game as ReadyGame).combat?.combatant?.players;
 }

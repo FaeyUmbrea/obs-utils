@@ -156,12 +156,13 @@ async function registerOBSEvents() {
 }
 
 export function initOBS() {
-	if (game.view === 'stream') {
+	if ((game as ReadyGame).view === 'stream') {
 		Hooks.once('renderChatLog', () => renderOverlays());
 	}
-	if (game.view !== 'game') return;
+	if ((game as ReadyGame).view !== 'game') return;
 	Hooks.on('canvasReady', screenReload);
 	Hooks.on('canvasReady', async (canvas) => {
+		// @ts-expect-error mixins dont work
 		await handleOBSScene(canvas.scene!.name);
 	});
 
@@ -220,7 +221,8 @@ export function initOBS() {
 	});
 	Hooks.once('ready', async () => {
 		await handleOBS('onLoad');
-		if (game.combat?.isActive) {
+		// @ts-expect-error mixins dont work
+		if ((game as ReadyGame).combat?.isActive) {
 			await showTracker();
 		} else {
 			ui?.sidebar?.collapse();
