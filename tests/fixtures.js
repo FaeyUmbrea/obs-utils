@@ -1,6 +1,6 @@
 // fixtures.js for v8 coverage
-import { expect, test as testBase } from "@playwright/test";
-import { addCoverageReport } from "monocart-reporter";
+import { expect, test as testBase } from '@playwright/test';
+import { addCoverageReport } from 'monocart-reporter';
 
 async function setupGMPage(gmPage) {
 	await gmPage.goto('/join');
@@ -58,13 +58,7 @@ async function setupPlayerPage(playerPage) {
 		);
 	await playerPage.getByRole('button', { name: ' Join Game Session' }).click();
 	await expect(playerPage).toHaveURL('/game');
-  await playerPage.waitForFunction(() => window.(game
-  as;
-  ReadyGame | undefined;
-)?.
-  ready;
-)
-  ;
+	await playerPage.waitForFunction(() => window.game?.ready);
 	await playerPage.waitForFunction(() => window.game.ready);
 }
 
