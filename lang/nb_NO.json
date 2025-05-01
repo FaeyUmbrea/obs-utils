@@ -230,6 +230,10 @@
 			"forceStreamPageOBSMode": {
 				"Name": "Force OBS Mode on Stream Page",
 				"Hint": "Forces the /stream output to be in OBS mode at all times"
+			},
+			"allowWebsocketAPI": {
+				"Name": "Allow OBS Websocket API Access?",
+				"Hint": "If checked, other modules can access OBS Websocket directly"
 			}
 		},
 		"overlays": {
