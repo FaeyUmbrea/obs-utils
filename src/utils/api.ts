@@ -9,7 +9,8 @@ import ProgressBarComponent from '../svelte/streamoverlays/overlaycomponents/Pro
 import PlayerRollOverlay from '../svelte/streamoverlays/PlayerRollOverlay.svelte';
 import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte';
 import { MODULE_ID } from './const.ts';
-import { getApi, setActorValues } from './helpers.ts';
+import { getApi, isOBS, setActorValues } from './helpers.ts';
+import { getWebsocket } from './obs.ts';
 import { setSetting } from './settings.ts';
 
 export class ObsUtilsApi {
@@ -32,7 +33,7 @@ export class ObsUtilsApi {
 	}
 
 	getSelectedActors() {
-		return game?.settings?.get(MODULE_ID, 'overlayActors');
+		return (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'overlayActors');
 	}
 
 	async setSelectedActors(actorArray: string[]) {
@@ -41,6 +42,14 @@ export class ObsUtilsApi {
 
 	setAVData(actorValueArray) {
 		setActorValues(actorValueArray);
+	}
+
+	getOBSWebsocketClient() {
+		return getWebsocket();
+	}
+
+	isOBS() {
+		return isOBS();
 	}
 }
 

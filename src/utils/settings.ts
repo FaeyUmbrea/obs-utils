@@ -1,3 +1,4 @@
+import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
 import { TJSGameSettings } from '#runtime/svelte/store/fvtt/settings';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
@@ -15,7 +16,7 @@ const SETTINGS_VERSION = 2;
 
 function getGM(): User {
 	// @ts-expect-error Ah yes
-	return game?.users?.find((user: User) => user.isGM);
+	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM);
 }
 
 async function changeMode() {
@@ -24,6 +25,7 @@ async function changeMode() {
 	scaleToFit();
 	tokenMoved();
 	viewportChanged(getSetting('trackedUser'));
+	// @ts-expect-error ID missing on types
 	const firstGM = getGM()?.id;
 	if (firstGM) viewportChanged(firstGM);
 }
@@ -40,7 +42,6 @@ export function runMigrations() {
 				new OBSRemoteSettings(),
 				obssettings,
 			);
-			// @ts-expect-error This should not exist, which is why it's deleted here
 			delete obssettings.onCloseObs;
 			setSetting('obsRemote', obssettings);
 		}
@@ -59,12 +60,12 @@ export function runMigrations() {
 	}
 }
 
-export function getSetting<K extends ClientSettings.Key>(settingName: K): ClientSettings.SettingInitializedType<'obs-utils', K> | undefined {
-	return game?.settings?.get(MODULE_ID, settingName);
+export function getSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(settingName: K): ClientSettings.SettingInitializedType<'obs-utils', K> | undefined {
+	return (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, settingName);
 }
 
 export async function setSetting(settingName, value) {
-	await game?.settings?.set(MODULE_ID, settingName, value);
+	await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 }
 
 interface ButtonData {
@@ -95,8 +96,9 @@ export function generateDataBlockFromSetting() {
 			id: key,
 		});
 	}
-	buttonData.players = game.users?.filter(element => !(element as User).isGM) as User[];
-	buttonData.onlineUsers = game.users?.filter(element => (element as User).active) as User[];
+	// @ts-expect-error isGM missing on type
+	buttonData.players = (game as ReadyGame).users?.filter(element => !(element as User).isGM) as User[];
+	buttonData.onlineUsers = (game as ReadyGame).users?.filter(element => (element as User).active) as User[];
 	return buttonData;
 }
 
@@ -184,7 +186,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 		);
 		settings.push(
 			createSetting('trackedUser', {
-				default: game.userId ?? '',
+				default: (game as ReadyGame).userId ?? '',
 				type: String,
 				scope: 'world',
 				config: false,
@@ -266,10 +268,10 @@ class OBSUtilsSettings extends TJSGameSettings {
 		);
 		settings.push(
 			createSetting('diceSoNice', {
-				default: !!game?.modules?.get('dice-so-nice')?.active,
+				default: !!(game as ReadyGame | undefined)?.modules?.get('dice-so-nice')?.active,
 				type: Boolean,
 				scope: 'world',
-				config: !!game?.modules?.get('dice-so-nice')?.active,
+				config: !!(game as ReadyGame | undefined)?.modules?.get('dice-so-nice')?.active,
 				requiresReload: true,
 			}),
 		);
@@ -278,7 +280,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 				default: 500,
 				type: Number,
 				scope: 'world',
-				config: !!game?.modules?.get('dice-so-nice')?.active,
+				config: !!(game as ReadyGame | undefined)?.modules?.get('dice-so-nice')?.active,
 				requiresReload: true,
 			}),
 		);
@@ -287,7 +289,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 				default: 500,
 				type: Number,
 				scope: 'world',
-				config: !!game?.modules?.get('dice-so-nice')?.active,
+				config: !!(game as ReadyGame | undefined)?.modules?.get('dice-so-nice')?.active,
 				requiresReload: true,
 			}),
 		);

@@ -3,7 +3,7 @@ import { setupDiceSoNice } from './dice.ts';
 import '../less/overlayrenderer.styl';
 
 export function renderOverlays() {
-	if (game?.actors instanceof Actors) {
+	if ((game as ReadyGame | undefined)?.actors instanceof Actors) {
 		// eslint-disable-next-line no-new
 		new OverlayRenderer({
 			target: $('body').get(0)!,

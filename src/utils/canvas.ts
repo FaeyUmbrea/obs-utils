@@ -145,7 +145,7 @@ function calculateBoundsOfCoodinates(coordSet) {
 
 export function viewportChanged(userId) {
 	const user = game.users?.get(userId) as User | undefined;
-	if (user?.viewedScene !== game?.user?.viewedScene) {
+	if (user?.viewedScene !== (game as ReadyGame | undefined)?.user?.viewedScene) {
 		return;
 	}
 	if (game.combat?.started) {

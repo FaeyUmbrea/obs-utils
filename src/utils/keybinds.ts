@@ -26,7 +26,7 @@ export function registerKeybindings() {
 }
 
 function registerKeybinding(choice: string, name: string, hint: string, key: string, modifiers: string[], setting: string) {
-	game?.keybindings?.register(MODULE_ID, name, {
+	(game as ReadyGame | undefined)?.keybindings?.register(MODULE_ID, name, {
 		editable: [{ key, modifiers }],
 		restricted: true,
 		name,

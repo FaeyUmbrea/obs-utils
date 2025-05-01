@@ -27,7 +27,7 @@ export async function openDirector(button) {
 }
 
 export function registerUI() {
-	game?.settings?.registerMenu(moduleID, 'obsRemoteMenu', {
+	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'obsRemoteMenu', {
 		name: `${moduleID}.settings.obsRemoteMenu.Name`,
 		label: `${moduleID}.settings.obsRemoteMenu.Label`,
 		hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
@@ -35,7 +35,7 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	game?.settings?.registerMenu(moduleID, 'obsWebsocketMenu', {
+	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'obsWebsocketMenu', {
 		name: `${moduleID}.settings.obsWebsocketMenu.Name`,
 		label: `${moduleID}.settings.obsWebsocketMenu.Label`,
 		hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
@@ -43,7 +43,7 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	game?.settings?.registerMenu(moduleID, 'overlayActorSelect', {
+	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'overlayActorSelect', {
 		name: `${moduleID}.settings.overlayActorSelect.Name`,
 		label: `${moduleID}.settings.overlayActorSelect.Label`,
 		hint: `${moduleID}.settings.overlayActorSelect.Hint`,
@@ -51,7 +51,7 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	game?.settings?.registerMenu(moduleID, 'overlayEditor', {
+	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'overlayEditor', {
 		name: `${moduleID}.settings.overlayEditor.Name`,
 		label: `${moduleID}.settings.overlayEditor.Label`,
 		hint: `${moduleID}.settings.overlayEditor.Hint`,
@@ -59,7 +59,7 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	game?.settings?.registerMenu(moduleID, 'rollOverlayEditor', {
+	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'rollOverlayEditor', {
 		name: `${moduleID}.settings.rollOverlayEditor.Name`,
 		label: `${moduleID}.settings.rollOverlayEditor.Label`,
 		hint: `${moduleID}.settings.rollOverlayEditor.Hint`,

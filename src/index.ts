@@ -10,7 +10,7 @@ function start() {
 	removeBG();
 	Hooks.once('init', async () => {
 		// Register API
-		const moduleData = game?.modules?.get('obs-utils');
+		const moduleData = (game as ReadyGame | undefined)?.modules?.get('obs-utils');
 		if (moduleData) {
 			moduleData.api = new ObsUtilsApi();
 			registerDefaultTypes();
@@ -50,12 +50,10 @@ function start() {
 		game!.settings!.settings!.get('obs-utils.obsModeUser')!.choices
       = Object.fromEntries(
 				[['none', 'None']].concat(
-					game?.users
-						?.filter(
-							e =>
-								!(e as User).isGM || game.users.filter(user => (user as User).isGM).length > 1,
-						)
-						.map(e => [(e).id, (e as User).name]) ?? [[]],
+					(game as ReadyGame | undefined)?.users?.filter(
+						e =>
+							!(e as User).isGM || game.users.filter(user => (user as User).isGM).length > 1,
+					).map(e => [(e).id, (e as User).name]) ?? [[]],
 				),
 			);
 	});

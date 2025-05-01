@@ -4,7 +4,7 @@ import { isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';
 
 Hooks.once('init', () => {
-	game?.socket?.on('module.obs-utils', handleEvent);
+	(game as ReadyGame | undefined)?.socket?.on('module.obs-utils', handleEvent);
 });
 async function handleEvent({ eventType, targetUser, payload }) {
 	if (!!targetUser && game.userId !== targetUser) return;
@@ -19,7 +19,10 @@ async function handleEvent({ eventType, targetUser, payload }) {
 }
 
 export function sendOpenSettingsConfig() {
-	game?.socket?.emit('module.obs-utils', { eventType: 'openSettingsConfig', targetUser: undefined });
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'openSettingsConfig',
+		targetUser: undefined,
+	});
 }
 
 function openSettingsConfig() {
@@ -33,7 +36,7 @@ async function changeOBSSettings(settings) {
 }
 
 export function sendOBSSetting(user, settings) {
-	game?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
 		eventType: 'websocketSettings',
 		targetUser: user,
 		payload: settings,
@@ -62,7 +65,7 @@ function socketCanvasInternal(position) {
 	if (!viewportTrackingActive || getSetting('pauseCameraTracking')) {
 		return;
 	}
-	game?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
 		eventType: 'viewport',
 		targetUser: undefined,
 		payload: { viewport: position, userId: getCurrentUser() },

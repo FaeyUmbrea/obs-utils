@@ -96,8 +96,8 @@ function main(Dice3D) {
 
 	Dice3D.prototype._buildCanvas = function () {
 		this._buildCanvasOrig();
-		this.canvas.width(`${game?.settings?.get(ID, 'diceSoNiceOverlayWidth')}px`);
-		this.canvas.height(`${game?.settings?.get(ID, 'diceSoNiceOverlayHeight')}px`);
+		this.canvas.width(`${(game as ReadyGame | undefined)?.settings?.get(ID, 'diceSoNiceOverlayWidth')}px`);
+		this.canvas.height(`${(game as ReadyGame | undefined)?.settings?.get(ID, 'diceSoNiceOverlayHeight')}px`);
 		this.canvas.appendTo('.overlay-renderer');
 	};
 

@@ -148,7 +148,7 @@ function exportChatCommands() {
 	const filename = [
 		'obsu',
 		game.system?.id,
-		game?.world?.name,
+		(game as ReadyGame | undefined)?.world?.name,
 		'overlays',
 		new Date().toString(),
 	].filterJoin('-');

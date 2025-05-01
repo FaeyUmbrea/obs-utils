@@ -129,7 +129,7 @@ async function getSceneItemIdByName(scene, item) {
 	).sceneItemId;
 }
 
-async function getWebsocket() {
+export async function getWebsocket() {
 	if (obswebsocket) return obswebsocket;
 	const wsSettings = getWSSettings();
 	obswebsocket = new OBSWebSocket();

@@ -11,10 +11,10 @@ export function sleep(milliseconds) {
 export function isOBS() {
 	return (
 		(!!window.obsstudio
-			|| game?.settings?.get(MODULE_ID, 'obsMode')
-			|| game?.settings?.get(MODULE_ID, 'obsModeUser') === game?.userId
-			|| (game?.settings?.get(MODULE_ID, 'forceStreamPageOBSMode') && game.view === 'stream'))
-		&& !game?.settings?.get(MODULE_ID, 'obsModeGlobalDisable')
+			|| (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsMode')
+			|| (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsModeUser') === (game as ReadyGame | undefined)?.userId
+			|| ((game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'forceStreamPageOBSMode') && game.view === 'stream'))
+		&& !(game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsModeGlobalDisable')
 	);
 }
 
@@ -83,7 +83,7 @@ export function setActorValues(actorValueArray) {
 }
 
 export function getApi(): ObsUtilsApi {
-	const moduleData = game?.modules?.get('obs-utils');
+	const moduleData = (game as ReadyGame | undefined)?.modules?.get('obs-utils');
 	if (moduleData) return moduleData.api!;
 	else throw new Error('Something went very wrong!');
 }
