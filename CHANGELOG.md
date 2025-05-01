@@ -1,3 +1,10 @@
+## Version 3.6.2
+
+### Added
+
+- Added function "getOBSWebsocketClient" to API, this allows extension modules to use the Websocket Client instance.
+- Added function "isOBS" to API, this allows extension modules to determine if OBS Utils is running in OBS Mode
+
 ## Version 3.6.1
 
 ### Fixed

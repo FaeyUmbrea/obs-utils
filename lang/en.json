@@ -204,6 +204,10 @@
 				"Name": "Enable OBS Websocket?",
 				"Hint": "If checked, OBS Websocket will be used for Remoting"
 			},
+      "allowWebsocketAPI": {
+        "Name": "Allow OBS Websocket API Access",
+        "Hint": "If checked, other modules can access OBS Websocket directly"
+      },
 			"rollOverlayEditor": {
 				"Name": "Roll Overlay Editor",
 				"Hint": "Edit the Roll Overlay",

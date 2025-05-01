@@ -45,6 +45,7 @@ declare global {
 		'obs-utils.pauseCameraTracking': boolean;
 		'obs-utils.obsRemote': typeof OBSRemoteSettings;
 		'obs-utils.enableOBSWebsocket': boolean;
+		'obs-utils.allowWebsocketAPI': boolean;
 		'obs-utils.websocketSettings': typeof OBSWebsocketSettings;
 		'obs-utils.streamOverlays': typeof OverlayData[];
 		'obs-utils.overlayActors': string[];

@@ -11,7 +11,7 @@ import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte
 import { MODULE_ID } from './const.ts';
 import { getApi, isOBS, setActorValues } from './helpers.ts';
 import { getWebsocket } from './obs.ts';
-import { setSetting } from './settings.ts';
+import { getSetting, setSetting } from './settings.ts';
 
 export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
@@ -45,7 +45,11 @@ export class ObsUtilsApi {
 	}
 
 	getOBSWebsocketClient() {
-		return getWebsocket();
+		if (getSetting('allowWebsocketAPI')) {
+			return getWebsocket();
+		} else {
+			return undefined;
+		}
 	}
 
 	isOBS() {

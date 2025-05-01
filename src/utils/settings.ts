@@ -218,6 +218,14 @@ class OBSUtilsSettings extends TJSGameSettings {
 			}),
 		);
 		settings.push(
+			createSetting('allowWebsocketAPI', {
+				type: Boolean,
+				scope: 'world',
+				config: true,
+				default: false,
+			}),
+		);
+		settings.push(
 			createSetting('websocketSettings', {
 				type: Object,
 				scope: 'client',
