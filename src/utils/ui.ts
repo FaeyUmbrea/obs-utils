@@ -22,8 +22,13 @@ let d;
 
 export async function openDirector(button) {
 	if (!d) d = new DirectorApplication(button);
-	if (!d.rendered) d.render(true);
-	else d.close();
+	console.error(d.rendered);
+	if (!d.rendered) {
+		d.render(true);
+	} else {
+		d.close();
+		d = undefined;
+	}
 }
 
 export function registerUI() {

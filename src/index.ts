@@ -9,6 +9,10 @@ import { activateViewportTracking, deactivateViewportTracking, socketCanvas } fr
 
 function start() {
 	removeBG();
+	// @ts-expect-error hack until TJS updates
+	window.MIN_WINDOW_WIDTH = 200;
+	// @ts-expect-error hack until TJS updates
+	window.MIN_WINDOW_HEIGHT = 50;
 	Hooks.once('init', async () => {
 		// Register API
 		const moduleData = (game as ReadyGame | undefined)?.modules?.get('obs-utils');
@@ -76,7 +80,12 @@ start();
 function buildButtons(buttons) {
 	// @ts-expect-error mixins dont work
 	if (!(game as ReadyGame).user?.isGM) return;
-	const buttonGroup = buttons.find(element => element.name === 'token');
+	let buttonGroup;
+	if ((game as ReadyGame).version.startsWith('12.')) {
+		buttonGroup = buttons.find(element => element.name === 'token');
+	} else {
+		buttonGroup = buttons.tokens;
+	}
 	const newButton = {
 		icon: 'fa-solid fa-signal-stream',
 		name: 'openStreamDirector',
@@ -87,5 +96,9 @@ function buildButtons(buttons) {
 			await ui.openDirector(newButton);
 		},
 	};
-	buttonGroup?.tools.push(newButton);
+	if ((game as ReadyGame).version.startsWith('12.')) {
+		buttonGroup?.tools.push(newButton);
+	} else {
+		buttonGroup.tools.openStreamDirector = newButton;
+	}
 }
