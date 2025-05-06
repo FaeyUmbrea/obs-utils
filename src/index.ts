@@ -102,3 +102,5 @@ function buildButtons(buttons) {
 		buttonGroup.tools.openStreamDirector = newButton;
 	}
 }
+
+CONFIG.debug.hooks = true;
