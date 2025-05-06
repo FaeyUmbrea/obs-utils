@@ -4,6 +4,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 
 import { sveltePreprocess } from 'svelte-preprocess';
 import { defineConfig } from 'vite';
+import { configDefaults } from 'vitest/config';
 import moduleJSON from './module.json' with { type: 'json' };
 
 // ATTENTION!
@@ -42,6 +43,19 @@ export default defineConfig(({ mode }) => {
 
 		esbuild: {
 			target: ['es2022'],
+		},
+
+		test: {
+			globals: true,
+			environment: 'jsdom',
+			exclude: [...configDefaults.exclude, 'tests/**'],
+			coverage: {
+				enabled: true,
+				provider: 'istanbul',
+				reporter: ['json'],
+				exclude: ['node_modules/', 'tests/'],
+				reportsDirectory: '../test-results/coverage/vitest',
+			},
 		},
 
 		css: {

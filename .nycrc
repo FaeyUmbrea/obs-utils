@@ -4,6 +4,6 @@
   "extension": ["*.ts", "*.mjs", "*.svelte"],
   "include": ["src/**/*"],
   "exclude": ["obs-utils/node_modules/**/*"],
-  "reporter": ["json", "text", "lcov"],
+  "reporter": ["text", "html"],
   "exclude-after-remap": false
 }

@@ -23,7 +23,11 @@ const config = {
 					sourceFilter: sourcePath =>
 						sourcePath.search(/src\/.+/) !== -1
 						&& sourcePath.search('node_modules') === -1,
-					lcov: true,
+					outputDir: './test-results/coverage/playwright',
+					reports: [
+						['json'],
+						['html'],
+					],
 				},
 			},
 		],
@@ -45,7 +49,7 @@ const config = {
 	/* Retry on CI only */
 	retries: process.env.CI ? 2 : 0,
 	/* Opt out of parallel tests on CI. */
-	workers: process.env.CI ? 1 : undefined,
+	workers: 1,
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -106,7 +110,7 @@ const config = {
 	],
 
 	/* Folder for test artifacts such as screenshots, videos, traces, etc. */
-	// outputDir: 'test-results/',
+	outputDir: 'test-results/playwright/',
 
 	/* Run your local dev server before starting the tests */
 	// webServer: {

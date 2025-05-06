@@ -3,6 +3,10 @@ import type { ObsUtilsApi } from './utils/api';
 import type { OBSRemoteSettings, OBSWebsocketSettings } from './utils/types.ts';
 
 declare global {
+	interface Window {
+		obsstudio: any | undefined;
+	}
+
 	class obsUtilsModule extends Module {
 		api: ObsUtilsApi;
 	}
