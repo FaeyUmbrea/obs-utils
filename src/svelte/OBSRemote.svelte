@@ -45,7 +45,9 @@
 				items={entries}
 				searchable={false}
 				clearable={false}
-				containerStyles='background-color: white;'
+				--background='var(--sidebar-background)'
+				--list-background='var(--sidebar-background)'
+				--item-hover-bg='var(--sidebar-entry-hover-bg)'
 			>
 				<div slot='selection' let:selection>
 					<i
@@ -113,5 +115,9 @@
     bottom: 0;
     left: 0;
     padding: 10px;
+  }
+  button {
+      height: 40px;
+      width: 100%;
   }
 </style>

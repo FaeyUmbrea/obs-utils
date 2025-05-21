@@ -35,7 +35,7 @@
     float: left;
     max-height: 535px;
     height: 535px;
-    width: auto;
+    width: 100%;
     padding-left: 3px;
   }
 

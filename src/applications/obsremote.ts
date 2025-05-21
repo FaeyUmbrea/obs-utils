@@ -5,7 +5,7 @@ import OBSRemote from '../svelte/OBSRemote.svelte';
 export default class OBSRemoteApplication extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['obsremote'],
+			classes: ['obsremote', 'themed'],
 			id: 'obsremote-application',
 			title: 'obs-utils.applications.obsRemote.name',
 			height: 700,

@@ -15,7 +15,7 @@ export default class StyleEditor extends SvelteApplication<Options> {
 
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['styleeditor'],
+			classes: ['styleeditor', 'themed'],
 			id: 'styleeditor-application',
 			title: 'obs-utils.applications.styleEditor.name',
 			// tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],

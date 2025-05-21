@@ -85,6 +85,10 @@
     left: 5px;
     display: flex;
     padding: 0 5px 0 0;
+    button {
+      width 100%
+      height 35px
+    }
 
     .remove-tab {
       width: calc(100% - 35px);
@@ -94,7 +98,7 @@
   .scroll {
     overflow: scroll;
     float: left;
-    max-height: 100%;
+    max-height: calc(100% - 40px);
     width: 100%;
     padding-right: 10px;
     padding-left: 3px;

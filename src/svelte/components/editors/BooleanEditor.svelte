@@ -32,8 +32,9 @@
 {getSplit()}
 <div class='input'>
 	<Select
-		containerStyles='background-color: white;'
-		--height='30px'
+		--background='var(--sidebar-background)'
+		--list-background='var(--sidebar-background)'
+		--item-hover-bg='var(--sidebar-entry-hover-bg)' --height='30px'
 		bind:filterText={filterText}
 		bind:justValue={av1}
 		closeListOnChange='false'

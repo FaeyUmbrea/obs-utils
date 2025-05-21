@@ -5,7 +5,7 @@ import ObsWebsocket from '../svelte/OBSWebsocket.svelte';
 export default class OBSWebsocketApplication extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['obswebsocket'],
+			classes: ['obswebsocket', 'themed'],
 			id: 'obswebsocket-application',
 			title: 'obs-utils.applications.obsWebsocket.name',
 			tabs: [
@@ -19,6 +19,7 @@ export default class OBSWebsocketApplication extends SvelteApplication {
 				class: ObsWebsocket,
 				target: document.body,
 			},
+			width: 300,
 		});
 	}
 }

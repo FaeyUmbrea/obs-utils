@@ -41,8 +41,9 @@
 {getSplit()}
 <div class='input'>
 	<Select
-		containerStyles='background-color: white;'
-		--height='30px'
+		--background='var(--sidebar-background)'
+		--list-background='var(--sidebar-background)'
+		--item-hover-bg='var(--sidebar-entry-hover-bg)' --height='30px'
 		bind:filterText={filterText}
 		bind:justValue={av1}
 		closeListOnChange='false'
@@ -62,8 +63,9 @@
 		placeholder={localize('obs-utils.strings.iconPlaceholder')}
 	/>
 	<Select
-		containerStyles='background-color: white;'
-		--height='30px'
+		--background='var(--sidebar-background)'
+		--list-background='var(--sidebar-background)'
+		--item-hover-bg='var(--sidebar-entry-hover-bg)' --height='30px'
 		bind:filterText={filterText2}
 		bind:justValue={av2}
 		closeListOnChange='false'
@@ -99,6 +101,5 @@
     font-family: inherit;
     border: 1px solid #d8dbdf;
     border-radius: 6px;
-    background: white;
   }
 </style>

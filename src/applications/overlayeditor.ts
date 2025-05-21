@@ -8,7 +8,7 @@ import { getSetting, setSetting } from '../utils/settings.ts';
 export default class OverlayEditor extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['overlayeditor'],
+			classes: ['overlayeditor', 'themed'],
 			id: 'overlayeditor-application',
 			title: localize('obs-utils.applications.overlayEditor.name'),
 			// tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
@@ -39,7 +39,7 @@ export default class OverlayEditor extends SvelteApplication {
 							title: localize(
 								'obs-utils.applications.overlayEditor.importDialog.title',
 							),
-							content: await renderTemplate('templates/apps/import-data.html', {
+							content: await renderTemplate(`templates/apps/import-data.${(game as ReadyGame).version.startsWith('12.') ? 'html' : 'hbs'}`, {
 								hint1: localize(
 									'obs-utils.applications.overlayEditor.importDialog.hint1',
 								),

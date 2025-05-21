@@ -9,10 +9,6 @@ import { activateViewportTracking, deactivateViewportTracking, socketCanvas } fr
 
 function start() {
 	removeBG();
-	// @ts-expect-error hack until TJS updates
-	window.MIN_WINDOW_WIDTH = 200;
-	// @ts-expect-error hack until TJS updates
-	window.MIN_WINDOW_HEIGHT = 50;
 	Hooks.once('init', async () => {
 		// Register API
 		const moduleData = (game as ReadyGame | undefined)?.modules?.get('obs-utils');

@@ -122,6 +122,11 @@
       bottom: 0;
       left: 0;
       padding: 10px;
+
+      button {
+        width: 100%;
+        height: 35px;
+      }
     }
 
     .selectionCountWrapper {

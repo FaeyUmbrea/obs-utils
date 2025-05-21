@@ -6,7 +6,7 @@ import { settings } from '../utils/settings.ts';
 export default class OverlayActorSelect extends SvelteApplication {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['actorselect'],
+			classes: ['actorselect', 'themed'],
 			id: 'actorselect-application',
 			title: 'obs-utils.applications.actorSelect.name',
 			tabs: [

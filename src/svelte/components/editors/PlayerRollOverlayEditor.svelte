@@ -223,7 +223,8 @@
 <style lang='stylus'>
   .editor
     display grid
-    grid-template-rows 2fr 1fr
+    grid-template-rows auto auto
+    height 100%
 
     .preview
       grid-row-start 1

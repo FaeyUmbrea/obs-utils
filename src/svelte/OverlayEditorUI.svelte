@@ -107,10 +107,15 @@
         left: 10px;
         padding: 10px;
         display: flex;
+      button {
+        width 100%
+        height 35px
+      }
     }
 
     .add {
         width: 35px;
+        height 35px
         align-self: flex-end;
     }
 
@@ -135,9 +140,15 @@
         padding-left: 5px;
 
         .content {
-            height: calc(100% - 110px);
-            max-height: calc(100% - 110px);
+            height: calc(100% - 70px);
+            max-height: calc(100% - 70px);
             overflow: hidden;
+            position: relative;
+
+          .tab {
+            height 100%
+            max-height 100%
+          }
         }
 
         .nav-with-add-button {
@@ -147,12 +158,14 @@
             .tabs {
                 justify-content: left;
                 overflow-x: scroll;
+                height: 35px
+                gap: 0;
 
                 .item {
                     padding-inline: 10px;
                     align-self: center;
                     font-size: 20px;
-                    padding-top: 6px;
+                    padding-top: 9px;
                 }
             }
 
