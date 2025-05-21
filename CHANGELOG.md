@@ -1,3 +1,12 @@
+## Version 4.0.0
+
+### Added
+- Support for Foundry V13 was added
+
+### Removed
+- Support for Foundry V11 and V12 was removed as differences between V12 and V13 are too large to support older versions
+- Notification Center has been removed as it is planned to be replaced by a standalone module
+
 ## Version 3.6.2
 
 ### Added
