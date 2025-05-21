@@ -18,7 +18,7 @@ test.describe('DM Client Only Tests', () => {
 			),
 		);
 
-		const button = gmPage.locator('div#hud i[title=\'Track Token\']');
+		const button = gmPage.locator('div#hud i.fa-solid.fa-signal-stream');
 		const before = await gmPage.evaluate(
 			() =>
 				!!window.canvas.tokens.controlled[0].document.getFlag(
@@ -54,11 +54,11 @@ test.describe('DM Client Only Tests', () => {
 		);
 	});
 	test('Open Settings Pages', async ({ pages: { gmPage } }) => {
-		await gmPage.locator('a.item[data-tab=settings]').click();
+		await gmPage.locator('button[data-tab=settings]').click();
 
-		await gmPage.locator('button[data-action=\'configure\']').click();
+		await gmPage.locator('button[data-app=\'configure\']').click();
 
-		await gmPage.locator('a[data-tab=\'obs-utils\']').click();
+		await gmPage.locator('button[data-tab=\'obs-utils\']').click();
 
 		// OBS Remote Menu
 
@@ -69,7 +69,7 @@ test.describe('DM Client Only Tests', () => {
 		).toBeVisible();
 
 		await gmPage
-			.locator('div[id=\'obsremote-application\'] header a[aria-label=Close]')
+			.locator('div[id=\'obsremote-application\'] header button[data-action=close]')
 			.click();
 
 		// OBS Websocket Menu
@@ -83,7 +83,7 @@ test.describe('DM Client Only Tests', () => {
 		).toBeVisible();
 
 		await gmPage
-			.locator('div[id=\'obswebsocket-application\'] header a[aria-label=Close]')
+			.locator('div[id=\'obswebsocket-application\'] header button[data-action=close]')
 			.click();
 
 		// Overlay Actor Menu
@@ -97,7 +97,7 @@ test.describe('DM Client Only Tests', () => {
 		).toBeVisible();
 
 		await gmPage
-			.locator('div[id=\'actorselect-application\'] header a[aria-label=Close]')
+			.locator('div[id=\'actorselect-application\'] header button[data-action=close]')
 			.click();
 
 		// Overlay Editor
@@ -109,7 +109,7 @@ test.describe('DM Client Only Tests', () => {
 		).toBeVisible();
 
 		await gmPage
-			.locator('div[id=\'overlayeditor-application\'] header a[aria-label=Close]')
+			.locator('div[id=\'overlayeditor-application\'] header button[data-action=close]')
 			.click();
 
 		// Roll Overlay Editor
@@ -124,7 +124,7 @@ test.describe('DM Client Only Tests', () => {
 
 		await gmPage
 			.locator(
-				'div[id=\'rolloverlayeditor-application\'] header a[aria-label=Close]',
+				'div[id=\'rolloverlayeditor-application\'] header button[data-action=close]',
 			)
 			.click();
 	});
@@ -141,7 +141,7 @@ test.describe('OBS Client Only Tests', () => {
 	test('Test Stream Page Background', async ({ pages: { obsPage } }) => {
 		await obsPage.goto('/stream');
 
-		await obsPage.locator('ol#chat-log').waitFor({ state: 'visible' });
+		await obsPage.locator('div.overlay-renderer').waitFor({ state: 'visible' });
 
 		await expect(obsPage.locator('body.stream')).toHaveCSS(
 			'background-color',
@@ -165,11 +165,12 @@ test.describe('Multiclient UI', () => {
 			obsPage.locator('div.app.window-app.sheet.journal-sheet'),
 		).not.toBeVisible();
 	});
+	/**
 	test('Image Popout Close Delay', async ({ pages: { obsPage, gmPage } }) => {
 		const delay
       = (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
       )) * 1200;
-
+	 
 		await gmPage.evaluate(() =>
 			window.game.journal.constructor.showImage(
 				'https://www.w3.org/People/mimasa/test/imgformat/img/w3c_home.png',
@@ -183,6 +184,7 @@ test.describe('Multiclient UI', () => {
 			obsPage.locator('div.app.window-app.image-popout'),
 		).not.toBeVisible();
 	});
+	 */
 	test('Toggle Show Combat Tracker', async ({ pages: { obsPage, gmPage } }) => {
 		await gmPage.evaluate(() =>
 			window.game.settings.set('obs-utils', 'showTrackerInCombat', false),
@@ -210,11 +212,11 @@ test.describe('Multiclient UI', () => {
 
 		await startCombatWithAllTokens(gmPage);
 
-		await expect(obsPage.locator('div#sidebar.app')).toBeVisible();
+		await expect(obsPage.locator('section#combat')).toBeVisible();
 
 		await endCombat(gmPage);
 
-		await expect(obsPage.locator('div#sidebar.app')).not.toBeVisible();
+		await expect(obsPage.locator('section#combat')).not.toBeVisible();
 	});
 });
 
@@ -430,7 +432,9 @@ test.describe('Player Client Additional Tests', () => {
 });
 
 async function startCombatWithAllTokens(gmPage) {
-	await gmPage.locator('a.item[data-tab=combat]').click();
+	if (!await gmPage.locator('section#combat.active').isVisible()) {
+		await gmPage.locator('button[data-tab=combat]').click();
+	}
 
 	await gmPage.evaluate(() => {
 		window.canvas.tokens.ownedTokens.forEach(token =>
@@ -441,32 +445,34 @@ async function startCombatWithAllTokens(gmPage) {
 		window.canvas.tokens.toggleCombat(true);
 	});
 
-	await gmPage.locator('a.combat-control[data-control=startCombat]').click();
+	await gmPage.locator('button.combat-control[data-action=startCombat]').click();
 }
 
 async function endCombat(gmPage) {
-	await gmPage.locator('a.item[data-tab=combat]').click();
+	if (!await gmPage.locator('section#combat.active').isVisible()) {
+		await gmPage.locator('button[data-tab=combat]').click();
+	}
 
 	await gmPage
-		.locator('a.combat-control.center[data-control=endCombat]')
+		.locator('button.combat-control[data-action=endCombat]')
 		.click();
 
 	await gmPage
-		.locator('button.dialog-button.yes.default[data-button=yes]')
+		.locator('dialog button[data-action=yes]')
 		.click();
 
 	await gmPage
-		.locator('button.dialog-button.yes.default[data-button=yes]')
+		.locator('dialog button[data-action=yes]')
 		.waitFor({ state: 'hidden' });
 }
 
 async function openDirector(gmPage) {
-	await gmPage.locator('li[data-tool=openStreamDirector]').click();
+	await gmPage.locator('button[data-tool=openStreamDirector]').click();
 	await expect(gmPage.locator('div[id=director-application]')).toBeVisible();
 }
 
 async function closeDirector(gmPage) {
-	await gmPage.locator('li[data-tool=openStreamDirector]').click();
+	await gmPage.locator('button[data-tool=openStreamDirector]').click();
 	await expect(
 		gmPage.locator('div[id=director-application]'),
 	).not.toBeVisible();

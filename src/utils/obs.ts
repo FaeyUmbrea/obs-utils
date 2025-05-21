@@ -3,6 +3,7 @@ import {
 	applyPopupConstrains,
 	closePopupWithDelay,
 	hideApplication,
+	hideNotifications,
 	hideSidebar,
 	hideTokenBorder,
 	screenReload,
@@ -175,7 +176,8 @@ export function initOBS() {
 	if (!getSetting('showAV')) {
 		Hooks.on('renderCameraViews', hideApplication);
 	}
-	Hooks.on('renderPlayerList', hideApplication);
+	Hooks.on('renderPlayers', hideApplication);
+	Hooks.on('ready', hideNotifications);
 	Hooks.on('renderHotbar', hideApplication);
 	Hooks.on('renderUserConfig', (_, html: JQuery<HTMLElement>) => {
 		if (!getSetting('showUserConfig')) {

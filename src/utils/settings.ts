@@ -302,14 +302,6 @@ class OBSUtilsSettings extends TJSGameSettings {
 			}),
 		);
 		settings.push(
-			createSetting('lastReadNotification', {
-				type: String,
-				scope: 'client',
-				config: false,
-				default: '',
-			}),
-		);
-		settings.push(
 			createSetting('fixedPopups', {
 				type: Boolean,
 				scope: 'world',

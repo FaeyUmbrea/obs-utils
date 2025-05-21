@@ -972,13 +972,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@directus/sdk@npm:^19.1.0":
-  version: 19.1.0
-  resolution: "@directus/sdk@npm:19.1.0"
-  checksum: 10/86fb03bd889273e9751ede5b7bcbd97d71d7e36682b75a65760783216db723479e8ccafabd6e231e27eb059b154fbf04a4312a09e165d5828ad6b64ce1a46784
-  languageName: node
-  linkType: hard
-
 "@dprint/formatter@npm:^0.3.0":
   version: 0.3.0
   resolution: "@dprint/formatter@npm:0.3.0"
@@ -8442,7 +8435,6 @@ __metadata:
   resolution: "obs-utils@workspace:."
   dependencies:
     "@antfu/eslint-config": "npm:^4.13.1"
-    "@directus/sdk": "npm:^19.1.0"
     "@jhubbardsf/svelte-sortablejs": "npm:^1.1.0"
     "@league-of-foundry-developers/foundry-vtt-types": "npm:^13.340.1"
     "@playwright/test": "npm:^1.52.0"

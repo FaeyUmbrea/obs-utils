@@ -19,11 +19,6 @@ async function setupGMPage(gmPage) {
 	await gmPage.getByRole('button', { name: ' Join Game Session' }).click();
 	await expect(gmPage).toHaveURL('/game');
 	await gmPage.waitForFunction(() => window.game.ready);
-
-	const button = gmPage.locator('div#notification-application a.close');
-	await expect(button).toBeVisible();
-	await button.click();
-	await expect(button).not.toBeVisible();
 }
 
 async function setupOBSPage(obsPage) {

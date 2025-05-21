@@ -1,3 +1,5 @@
+import type { TokenDocument, TokenHUD } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
+
 import { getCurrentCombatants } from './combat.ts';
 import { sleep } from './helpers.js';
 import { getSetting } from './settings.ts';
@@ -9,6 +11,18 @@ export function hideApplication(_, html: JQuery<HTMLElement> | HTMLElement) {
 		(html as JQuery).hide();
 	} catch {
 		(html as HTMLElement).style.display = 'none';
+	}
+}
+
+export function hideNotifications() {
+	const panel = document.querySelector('div#chat-notifications');
+	if (panel) {
+		(panel as HTMLElement).style.display = 'none';
+	}
+
+	const buttons = document.querySelector('nav.tabs');
+	if (buttons) {
+		(buttons as HTMLElement).style.display = 'none';
 	}
 }
 
@@ -187,21 +201,23 @@ export function isGM() {
 	return (game as ReadyGame).user?.isGM;
 }
 
-export function expandTokenHud(_tokenHud, html, token) {
+export function expandTokenHud(_tokenHud: TokenHUD, html: HTMLFormElement, token: TokenDocument) {
 	// @ts-expect-error mixins dont work
 	if ((game as ReadyGame).user?.isGM) {
-		const rightSide = html.find('div.col.right');
+		const rightSide = html.querySelector('div.col.right');
+		if (!rightSide) return;
+		// @ts-expect-error mixins dont work
 		const isTracked = !!token.flags['obs-utils']?.tracked;
 		const element = $(
-			`<div class="control-icon ${
+			`<button type="button" class="control-icon ${
 				isTracked ? 'active' : ''
-			}"><i title="Track Token" class="fa-solid fa-signal-stream" /></div>`,
+			}"><i class="fa-solid fa-signal-stream" /></button>`,
 		);
 		element.on('click', function () {
 			toggleToken(_tokenHud.object.document);
 			$(this).toggleClass('active');
 		});
-		rightSide.append(element);
+		element.appendTo(rightSide);
 	}
 }
 
@@ -253,16 +269,13 @@ export async function applyPopupConstrains(popout: Application) {
 
 export async function showTracker() {
 	if (!getSetting('showTrackerInCombat')) return;
-	ui.sidebar?.element.show();
-	ui.sidebar?.tabs.combat?.element.show();
-	ui.sidebar?.activateTab('combat');
-	ui.sidebar?.element.removeClass('collapsed');
-	ui.sidebar?.element.removeAttr('style');
+	ui.sidebar.element.removeAttribute('style');
+	ui.sidebar.expand();
+	ui.sidebar.changeTab('combat', 'primary');
 }
 
 export async function hideSidebar() {
-	ui.sidebar?.element.hide();
-	ui?.sidebar?.collapse();
+	(ui.sidebar?.element as HTMLElement).style.display = 'none';
 }
 
 export async function screenReload() {

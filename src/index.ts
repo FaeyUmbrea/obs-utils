@@ -26,9 +26,6 @@ function start() {
 		if ((game as ReadyGame).view === 'game') {
 			const ui = await import('./utils/ui.ts');
 			ui.registerUI();
-
-			// Show notifications panel if UI is loaded
-			Hooks.once('ready', () => ui.showNotifications());
 		}
 
 		// Load OBS Stuff only in OBS
@@ -76,12 +73,7 @@ start();
 function buildButtons(buttons) {
 	// @ts-expect-error mixins dont work
 	if (!(game as ReadyGame).user?.isGM) return;
-	let buttonGroup;
-	if ((game as ReadyGame).version.startsWith('12.')) {
-		buttonGroup = buttons.find(element => element.name === 'token');
-	} else {
-		buttonGroup = buttons.tokens;
-	}
+	const	buttonGroup = buttons.tokens;
 	const newButton = {
 		icon: 'fa-solid fa-signal-stream',
 		name: 'openStreamDirector',
@@ -92,11 +84,7 @@ function buildButtons(buttons) {
 			await ui.openDirector(newButton);
 		},
 	};
-	if ((game as ReadyGame).version.startsWith('12.')) {
-		buttonGroup?.tools.push(newButton);
-	} else {
-		buttonGroup.tools.openStreamDirector = newButton;
-	}
+	buttonGroup.tools.openStreamDirector = newButton;
 }
 
 CONFIG.debug.hooks = true;
