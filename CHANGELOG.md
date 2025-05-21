@@ -1,3 +1,11 @@
+## Version 4.0.0
+
+### Added
+- Support for Foundry V13 was
+
+### Removed
+- Support for Foundry V11 and V12 was removed as differences between V12 and V13 are too large to support older versions.
+
 ## Version 3.6.2
 
 ### Added
