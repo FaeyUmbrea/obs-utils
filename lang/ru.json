@@ -4,44 +4,44 @@
 			"rollOverlayEditor": {
 				"name": "Roll Overlay Editor",
 				"preRollImage": "Pre Roll Image",
-				"backgroundImageUrl": "Background Image URL",
-				"imageUrl": "Image URL",
-				"foregroundImageUrl": "Foreground Image URL",
+				"backgroundImageUrl": "URL Заднего плана",
+				"imageUrl": "URL Изображения",
+				"foregroundImageUrl": "URL Переднего плана",
 				"rollImage": "Roll Image",
-				"test": "Test",
-				"fadeOut": "Fade Out (ms)",
+				"test": "Тест",
+				"fadeOut": "Затухание (мс)",
 				"postRollImage": "Post Roll Image",
-				"duration": "Duration (ms)",
-				"delay": "Delay (ms)",
-				"fadeIn": "Fade In (ms)"
+				"duration": "Длительность (мс)",
+				"delay": "Задержка (мс)",
+				"fadeIn": "Появление (мс)"
 			},
 			"overlayEditor": {
 				"exportDialog": {
 					"content": "Do you want to export your Overlay Settings?",
-					"noButton": "No",
-					"title": "Export your settings?",
-					"yesButton": "Yes"
+					"noButton": "Нет",
+					"title": "Экспортировать настройки?",
+					"yesButton": "Да"
 				},
 				"importDialog": {
-					"replaceButton": "Replace",
+					"replaceButton": "Заменить",
 					"hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
-					"cancelButton": "Cancel",
+					"cancelButton": "Отмена",
 					"formatError": "Imported file is not an OBS Utils Overlay Export",
 					"hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
-					"appendButton": "Append",
-					"title": "Import Data: Overlays",
+					"appendButton": "Добавить",
+					"title": "Импорт: Слои",
 					"fileError": "You did not upload a data file",
-					"versionError": "Version unsupported"
+					"versionError": "Неподдерживаемая версия"
 				},
-				"importButton": "Import",
-				"closeButton": "Close",
+				"importButton": "Импорт",
+				"closeButton": "Закрыть",
 				"name": "Overlay Editor",
 				"removeComponentButton": "Remove Component",
-				"removeButton": "Remove Overlay",
-				"addButton": "Add New Component",
-				"editStyleButton": "Edit Style",
-				"addOverlayButton": "Add New Overlay",
-				"exportButton": "Export"
+				"removeButton": "Удалить слой",
+				"addButton": "Добавить новый компонент",
+				"editStyleButton": "Изменить стиль",
+				"addOverlayButton": "Добавить новый слой",
+				"exportButton": "Экспорт"
 			},
 			"director": {
 				"oocTypeHeader": "Out of Combat Type",
@@ -53,17 +53,17 @@
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"actorSelect": {
-				"resetButton": "Reset",
-				"name": "Actor Selection",
-				"closeButton": "Close",
-				"searchPlaceholder": "Search"
+				"resetButton": "Сброс",
+				"name": "Выбор Актёра",
+				"closeButton": "Закрыть",
+				"searchPlaceholder": "Поиск"
 			},
 			"obsWebsocket": {
-				"portLabel": "Port",
-				"name": "OBS Websocket Settings",
-				"passwordLabel": "Password",
-				"syncButton": "Sync",
-				"saveButton": "Save",
+				"portLabel": "Порт",
+				"name": "Настройки OBS Websocket",
+				"passwordLabel": "Пароль",
+				"syncButton": "Синхронизировать",
+				"saveButton": "Сохранить",
 				"syncLabel": "Sync Target Client",
 				"urlLabel": "URL"
 			},
@@ -92,16 +92,16 @@
 		},
 		"settings": {
 			"obsModeUser": {
-				"Name": "OBS Mode User (Username)",
-				"Hint": "Sets this User to always be in OBS Mode, regardless of browser"
+				"Name": "Пользователь режима OBS (Участник)",
+				"Hint": "Навсегда устанавливает браузер этого Участника в режим OBS"
 			},
 			"obsMode": {
-				"Name": "OBS Mode",
-				"Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
+				"Name": "Режим OBS",
+				"Hint": "Устанавливает этот браузер в качестве браузера OBS. Включайте эту опцию только в том случае, если вы не можете использовать браузер-источник"
 			},
 			"obsWebsocketMenu": {
 				"Hint": "Configure OBS Websocket",
-				"Label": "Open Menu",
+				"Label": "Открыть меню",
 				"Name": "OBS Websocket Settings"
 			},
 			"popupCloseDelay": {
@@ -110,15 +110,15 @@
 			},
 			"enableOBSWebsocket": {
 				"Hint": "If checked, OBS Websocket will be used for Remoting",
-				"Name": "Enable OBS Websocket?"
+				"Name": "Включить OBS Websocket?"
 			},
 			"diceSoNiceOverlayWidth": {
 				"Hint": "Width of the element in pixels",
 				"Name": "Dice so Nice Overlay Width"
 			},
 			"minScale": {
-				"Name": "Minimum Scale",
-				"Hint": "The lowest that the screen can zoom to"
+				"Name": "Минимальный масштаб",
+				"Hint": "Наименьшее значение масштаба экрана"
 			},
 			"fixedPopupX": {
 				"Hint": "The distance to the left screen edge in pixels",
@@ -137,8 +137,8 @@
 				"Hint": "The distance to the top screen edge in pixels"
 			},
 			"showTrackerInCombat": {
-				"Name": "Show Combat Tracker in Combat?",
-				"Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
+				"Name": "Показать Боевой трекер в бою?",
+				"Hint": "Если отмечено, то Боевой трекер будет виден во время Боя."
 			},
 			"rollOverlayEditor": {
 				"Name": "Roll Overlay Editor",
@@ -148,16 +148,16 @@
 			"overlayEditor": {
 				"Name": "Overlay Editor",
 				"Hint": "Edit the Overlays",
-				"Label": "Open Editor"
+				"Label": "Открыть редактор"
 			},
 			"overlayActorSelect": {
-				"Label": "Open Menu",
+				"Label": "Открыть меню",
 				"Name": "Overlay Actors",
 				"Hint": "Select the Actors for the Overlay"
 			},
 			"maxScale": {
-				"Name": "Maximum Scale",
-				"Hint": "The highest that the screen can zoom to"
+				"Name": "Максимальный масштаб",
+				"Hint": "Наибольшее значение масштаба экрана"
 			},
 			"diceSoNice": {
 				"Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
@@ -176,21 +176,21 @@
 				"Name": "Use Fixed Pop-Ups"
 			},
 			"defaultInCombat": {
-				"Name": "In Combat Mode",
-				"Hint": "The in Combat Camera Mode"
+				"Name": "В режиме \"Боя\"",
+				"Hint": "Режим камеры в \"Бою\""
 			},
 			"obsRemoteMenu": {
-				"Name": "OBS Remote Settings",
-				"Hint": "Configure the OBS Remote",
-				"Label": "Open Menu"
+				"Name": "Настройки OBS Remote",
+				"Hint": "Настройка OBS Remote",
+				"Label": "Открыть меню"
 			},
 			"defaultOutOfCombat": {
-				"Hint": "The out of Combat Camera Mode",
-				"Name": "Out Of Combat Mode"
+				"Hint": "Режим камеры \"Вне боя\"",
+				"Name": "Режим \"Вне боя\""
 			},
 			"obsModeGlobalDisable": {
-				"Name": "OBS View Global Disable",
-				"Hint": "This will turn off the OBS features for all clients, regardless of method"
+				"Name": "Глобальное отключение вида OBS",
+				"Hint": "Это отключит функции OBS для всех клиентов, независимо от метода"
 			},
 			"smoothUserCamera": {
 				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate",
@@ -221,10 +221,10 @@
 				"name": "Font Awesome Icon"
 			},
 			"plainText": {
-				"name": "Plain Text"
+				"name": "Обычный текст"
 			},
 			"image": {
-				"name": "Image"
+				"name": "Изображение"
 			},
 			"multiImageAV": {
 				"name": "Multi Image AV"
@@ -233,7 +233,7 @@
 				"name": "Multi Icon AV"
 			},
 			"progressBar": {
-				"name": "Progress Bar"
+				"name": "Шкала прогресса"
 			},
 			"booleanAVIcon": {
 				"name": "Boolean AV Icon"
@@ -242,25 +242,25 @@
 		"strings": {
 			"false": "False",
 			"true": "True",
-			"trackOne": "Track the currently active Owned Token",
-			"cloneTurnPlayer": "Clone the Turn Player's Viewport",
-			"clonePlayer": "Clone the Selected Player's Viewport",
-			"cloneDM": "Clone the DM's Viewport",
-			"trackPlayerOwned": "Track Player-Owned Tokens",
+			"trackOne": "Следить за активными токенами с Владельцем",
+			"cloneTurnPlayer": "Клонировать экран Игрока на его ходу",
+			"clonePlayer": "Клонировать экран выбранного Игрока",
+			"cloneDM": "Клонировать экран Мастера",
+			"trackPlayerOwned": "Следить за токенами Игроков",
 			"missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
 			"keypressInfo2": "Mode to ",
 			"keypressInfo1": "Switched ",
-			"trackManual": "Track a manual List of Tokens",
-			"iconPlaceholder": "Icon",
-			"ic": "In Combat",
-			"done": "Done",
-			"limitCanvas": "Limit Canvas to Screen Edges",
+			"trackManual": "Следить за списком выбранных токенов",
+			"iconPlaceholder": "Иконка",
+			"ic": "В бою",
+			"done": "Выполнено",
+			"limitCanvas": "Ограничение холста краями экрана",
 			"avInputPlaceholder": "Enter text or search",
 			"module": "Утилиты OBS",
-			"birdseye": "Fit Map to Screen",
-			"trackAll": "Track all Owned Tokens",
-			"pauseCameraTracking": "Pause Camera Tracking",
-			"ooc": "Out of Combat"
+			"birdseye": "Подогнать карту к экрану",
+			"trackAll": "Следить за всеми токенами с Владельцем",
+			"pauseCameraTracking": "Приостановить слежение камеры",
+			"ooc": "Вне боя"
 		}
 	}
 }
