@@ -9,14 +9,13 @@
 
 	let rollValue;
 	const hook = Hooks.on('createChatMessage', (e) => {
-		const uid = e.user.id;
+		const uid = e.author.id;
 		if (uid === id && e.whisper.length === 0 && e.isRoll) {
 			rollValue = e.rolls.reduce(
 				(accumulator, currentValue) =>
 					accumulator + Number.parseInt(currentValue.total),
 				0,
 			);
-			rollShow = false;
 			rollShow = true;
 		}
 	});
@@ -27,9 +26,7 @@
 </script>
 
 <PlayerRollComponent
-	bind:postRollShow={rollShow}
-	bind:preRollShow={rollShow}
-	bind:rollShow={rollShow}
+	bind:rollRunning={rollShow}
 	bind:rollValue={rollValue}
 	id={id}
 />

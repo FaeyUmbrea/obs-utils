@@ -2,7 +2,7 @@ import { screenReload } from './canvas.ts';
 
 export function stopCombat() {
 	canvas?.tokens?.controlledObjects.forEach(token => token.release());
-	screenReload();
+	screenReload().then();
 }
 
 export function handleCombat(runningCombat: Combat) {

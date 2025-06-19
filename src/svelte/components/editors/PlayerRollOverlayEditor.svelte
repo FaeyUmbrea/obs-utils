@@ -121,9 +121,7 @@
 			<PlayerRollComponent
 				bind:rollValue={rollValue}
 				id='preview'
-				postRollShow={rollShow}
-				preRollShow={rollShow}
-				rollShow={rollShow}
+				rollRunning={rollShow}
 			/>
 			<button on:click={test}
 			>{localize('obs-utils.applications.rollOverlayEditor.test')}</button
