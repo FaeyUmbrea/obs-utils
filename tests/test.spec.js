@@ -170,7 +170,6 @@ test.describe('Multiclient UI', () => {
 		const delay
       = (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
       )) * 1200;
-	 
 		await gmPage.evaluate(() =>
 			window.game.journal.constructor.showImage(
 				'https://www.w3.org/People/mimasa/test/imgformat/img/w3c_home.png',

@@ -1,3 +1,10 @@
+## Version 4.0.1
+
+### Fixed
+
+- Fixed a rare bug that would cause the overlay editor to break if the system did not contain an Actor definition with the ID "character".
+  - Added a fallback using the default selection in actor creation
+
 ## Version 4.0.0
 
 ### Added
