@@ -61,6 +61,7 @@ let actorValues;
 
 export function getActorValues() {
 	if (!actorValues) {
+		const type = Object.keys(CONFIG.Actor.sheetClasses).includes('character') ? 'character' : CONFIG.Actor.documentClass.TYPES[1];
 		actorValues = Object.keys(
 			flatten(
 				JSON.parse(
@@ -68,7 +69,7 @@ export function getActorValues() {
 						// eslint-disable-next-line new-cap
 						new CONFIG.Actor.documentClass({
 							name: 'actor',
-							type: 'character',
+							type,
 						}),
 					),
 				),
