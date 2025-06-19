@@ -28,7 +28,7 @@
 	const context = getContext('#external');
 
 	async function submit() {
-		context.application.close();
+		await context.application.close();
 	}
 
 	let handleAdd;

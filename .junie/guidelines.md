@@ -100,7 +100,7 @@ This will execute the Playwright tests defined in the `tests` directory.
 
 Tests are organized in the `tests` directory:
 
-- `fixtures.js`: Contains test fixtures and setup code
+- `fixtures.ts`: Contains test fixtures and setup code
 - `*.spec.js`: Test files containing the actual test cases
 - `initScripts/`: Contains initialization scripts for the test environment
 
@@ -109,7 +109,7 @@ Tests are organized in the `tests` directory:
 1. Create a new test file in the `tests` directory with a `.spec.js` extension
 2. Import the test fixtures:
    ```javascript
-   import { expect, test } from './fixtures.js';
+   import { expect, test } from './fixtures.ts';
    ```
 3. Write your test using the provided fixtures:
    ```javascript
@@ -146,7 +146,7 @@ When writing tests for the project, follow these guidelines:
 Here's a simple example of a Playwright test that checks if the OBS Utils module is loaded:
 
 ```javascript
-import { expect, test } from './fixtures.js';
+import { expect, test } from './fixtures.ts';
 
 test('Check if OBS Utils module is loaded', async ({ pages: { gmPage } }) => {
 	// Wait for the game to be ready

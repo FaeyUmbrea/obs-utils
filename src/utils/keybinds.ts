@@ -25,7 +25,7 @@ export function registerKeybindings() {
 	});
 }
 
-function registerKeybinding(choice: string, name: string, hint: string, key: string, modifiers: string[], setting: string) {
+function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: string[], setting: K) {
 	(game as ReadyGame | undefined)?.keybindings?.register(MODULE_ID, name, {
 		editable: [{ key, modifiers }],
 		restricted: true,

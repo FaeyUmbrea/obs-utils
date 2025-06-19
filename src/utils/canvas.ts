@@ -1,12 +1,10 @@
-import type { TokenDocument, TokenHUD } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
-
 import { getCurrentCombatants } from './combat.ts';
 import { sleep } from './helpers.js';
 import { getSetting } from './settings.ts';
 
-export const VIEWPORT_DATA = new Map();
+export const VIEWPORT_DATA: Map<string, { x: number; y: number; scale: number }> = new Map();
 
-export function hideApplication(_, html: JQuery<HTMLElement> | HTMLElement) {
+export function hideApplication(_: unknown, html: JQuery<HTMLElement> | HTMLElement) {
 	try {
 		(html as JQuery).hide();
 	} catch {
@@ -26,8 +24,10 @@ export function hideNotifications() {
 	}
 }
 
-export function hideTokenBorder(token) {
+export function hideTokenBorder(token: Token | undefined) {
+	// @ts-expect-error alpha property not mapped
 	if (token?.border?.alpha) {
+		// @ts-expect-error alpha property not mapped
 		token.border.alpha = 0;
 	}
 }
@@ -37,18 +37,15 @@ function getAutoTokens() {
 }
 
 function getPlayerTokens() {
-	// @ts-expect-error mixins dont work
 	const playerCharacters = (game as ReadyGame).users?.players.filter(e => (e as User).character != null).map(player => (player as User).character!.id);
-	// @ts-expect-error mixins dont work
-	return (game as ReadyGame).canvas?.tokens?.children.flatMap(child => (child.children as Token[])).filter(token => playerCharacters?.includes(token?.actor?.id ?? null)).filter(token => token !== undefined);
+	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => playerCharacters?.includes(token?.actor?.id ?? null)).filter((token: Token) => token !== undefined);
 }
 
 function getManualToken() {
-	// @ts-expect-error mixins dont work
 	return (game as ReadyGame).canvas?.scene?.tokens?.filter(token => !!token.getFlag('obs-utils', 'tracked')).map(token => token.object as Token);
 }
 
-function toggleToken(tokenDocument) {
+function toggleToken(tokenDocument: TokenDocument) {
 	const value = !tokenDocument.getFlag('obs-utils', 'tracked');
 	tokenDocument.setFlag('obs-utils', 'tracked', value);
 }
@@ -91,7 +88,6 @@ function trackTokenList(tokens: Token[]) {
 }
 
 export function tokenMoved() {
-	// @ts-expect-error mixins dont work
 	if ((game as ReadyGame).combat?.started) {
 		switch (getSetting('defaultInCombat')) {
 			case 'trackall':
@@ -100,7 +96,6 @@ export function tokenMoved() {
 			case 'trackone':
 				trackTokenList([
 					getAutoTokens()!.find(
-						// @ts-expect-error mixins dont work
 						element => element.id === (game as ReadyGame).combat?.combatant?.tokenId,
 					)!,
 				]);
@@ -128,8 +123,8 @@ export function tokenMoved() {
 	}
 }
 
-function calculateBoundsOfCoodinates(coordSet) {
-	let minX, maxX, minY, maxY;
+function calculateBoundsOfCoodinates(coordSet: { x: number; y: number; width: number; height: number }[]) {
+	let minX: number, maxX: number, minY: number, maxY: number;
 	maxX = maxY = Number.MIN_VALUE;
 	minX = minY = Number.MAX_VALUE;
 
@@ -154,27 +149,33 @@ function calculateBoundsOfCoodinates(coordSet) {
 	};
 }
 
-export function viewportChanged(userId) {
+export function viewportChanged(userId: string) {
 	const user = (game as ReadyGame).users?.get(userId) as User | undefined;
-	// @ts-expect-error mixins dont work
 	if (user?.viewedScene !== (game as ReadyGame | undefined)?.user?.viewedScene) {
 		return;
 	}
-	// @ts-expect-error mixins dont work
 	if ((game as ReadyGame).combat?.started) {
 		switch (getSetting('defaultInCombat')) {
 			case 'cloneDM':
-				// @ts-expect-error mixins dont work
-				if (user?.isGM)
-					clampAndApply(VIEWPORT_DATA.get(userId));
+				if (user?.isGM) {
+					const viewportData = VIEWPORT_DATA.get(userId);
+					if (viewportData !== undefined)
+						clampAndApply(viewportData);
+				}
 				break;
 			case 'cloneTurnPlayer':
-				if (getCurrentCombatants()?.some(e => e.id === userId))
-					clampAndApply(VIEWPORT_DATA.get(userId));
+				if (getCurrentCombatants()?.some(e => e.id === userId)) {
+					const viewportData = VIEWPORT_DATA.get(userId);
+					if (viewportData !== undefined)
+						clampAndApply(viewportData);
+				}
 				break;
 			case 'clonePlayer':
-				if (userId === getSetting('trackedUser'))
-					clampAndApply(VIEWPORT_DATA.get(userId));
+				if (userId === getSetting('trackedUser')) {
+					const viewportData = VIEWPORT_DATA.get(userId);
+					if (viewportData !== undefined)
+						clampAndApply(viewportData);
+				}
 				break;
 			default:
 				break;
@@ -182,13 +183,19 @@ export function viewportChanged(userId) {
 	} else {
 		switch (getSetting('defaultOutOfCombat')) {
 			case 'cloneDM':
-				// @ts-expect-error mixins dont work
-				if (user?.isGM)
-					clampAndApply(VIEWPORT_DATA.get(userId));
+
+				if (user?.isGM) {
+					const viewportData = VIEWPORT_DATA.get(userId);
+					if (viewportData !== undefined)
+						clampAndApply(viewportData);
+				}
 				break;
 			case 'clonePlayer':
-				if (userId === getSetting('trackedUser'))
-					clampAndApply(VIEWPORT_DATA.get(userId));
+				if (userId === getSetting('trackedUser')) {
+					const viewportData = VIEWPORT_DATA.get(userId);
+					if (viewportData !== undefined)
+						clampAndApply(viewportData);
+				}
 				break;
 			default:
 				break;
@@ -197,16 +204,13 @@ export function viewportChanged(userId) {
 }
 
 export function isGM() {
-	// @ts-expect-error mixins dont work
 	return (game as ReadyGame).user?.isGM;
 }
 
 export function expandTokenHud(_tokenHud: TokenHUD, html: HTMLFormElement, token: TokenDocument) {
-	// @ts-expect-error mixins dont work
 	if ((game as ReadyGame).user?.isGM) {
 		const rightSide = html.querySelector('div.col.right');
 		if (!rightSide) return;
-		// @ts-expect-error mixins dont work
 		const isTracked = !!token.flags['obs-utils']?.tracked;
 		const element = $(
 			`<button type="button" class="control-icon ${
@@ -214,8 +218,10 @@ export function expandTokenHud(_tokenHud: TokenHUD, html: HTMLFormElement, token
 			}"><i class="fa-solid fa-signal-stream" /></button>`,
 		);
 		element.on('click', function () {
-			toggleToken(_tokenHud.object.document);
-			$(this).toggleClass('active');
+			if (_tokenHud.object !== undefined) {
+				toggleToken(_tokenHud.object.document);
+				$(this).toggleClass('active');
+			}
 		});
 		element.appendTo(rightSide);
 	}
@@ -224,9 +230,7 @@ export function expandTokenHud(_tokenHud: TokenHUD, html: HTMLFormElement, token
 export function scaleToFit() {
 	if (
 		!(
-		// @ts-expect-error mixins dont work
 			((game as ReadyGame).combat?.started && getSetting('defaultInCombat') === 'birdseye')
-			// @ts-expect-error mixins dont work
 			|| (!(game as ReadyGame).combat?.started && getSetting('defaultOutOfCombat') === 'birdseye')
 		)
 	) {
@@ -247,7 +251,7 @@ export function scaleToFit() {
 	clampAndApply({ ...center, scale });
 }
 
-export async function closePopupWithDelay(popout) {
+export async function closePopupWithDelay(popout: Application) {
 	const delay = getSetting('popupCloseDelay')!;
 	if (delay > 0) {
 		await sleep(delay * 1000);
@@ -269,21 +273,21 @@ export async function applyPopupConstrains(popout: Application) {
 
 export async function showTracker() {
 	if (!getSetting('showTrackerInCombat')) return;
-	ui.sidebar.element.removeAttribute('style');
-	ui.sidebar.expand();
-	ui.sidebar.changeTab('combat', 'primary');
+	ui.sidebar?.element.removeAttribute('style');
+	ui.sidebar?.expand();
+	ui.sidebar?.changeTab('combat', 'primary');
 }
 
 export async function hideSidebar() {
 	(ui.sidebar?.element as HTMLElement).style.display = 'none';
 }
 
-export async function screenReload() {
+export async function screenReload(_?: Canvas) {
 	scaleToFit();
 	tokenMoved();
 }
 
-function clamp(canvasPos: { x: any; y: any; scale: any }) {
+function clamp(canvasPos: { x: number; y: number; scale: number }) {
 	const screenDimensions = canvas!.screenDimensions;
 	const sceneDimensions = canvas!.scene!.dimensions!;
 	let { x, y, scale } = canvasPos;
@@ -307,7 +311,7 @@ function clamp(canvasPos: { x: any; y: any; scale: any }) {
 	return { x, y, scale };
 }
 
-function clampAndApply(canvasPos: { x: any; y: any; scale: any }) {
+function clampAndApply(canvasPos: { x: number; y: number; scale: number }) {
 	if (getSetting('clampCanvas')) {
 		canvasPos = clamp(canvasPos);
 	}

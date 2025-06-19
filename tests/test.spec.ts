@@ -1,4 +1,5 @@
-import { expect, test } from './fixtures.js';
+import type { Page } from '@playwright/test';
+import { expect, test } from './fixtures.ts';
 
 test.describe.configure({ mode: 'serial' });
 
@@ -13,7 +14,9 @@ test.describe('DM Client Only Tests', () => {
 	test('Toggle Tag Via HUD', async ({ pages: { gmPage } }) => {
 		await takeControlOfToken(gmPage);
 		await gmPage.evaluate(() =>
+		// @ts-expect-error run in plain js
 			window.game.canvas.hud.token.bind(
+				// @ts-expect-error run in plain js
 				window.game.canvas.tokens.controlled[0],
 			),
 		);
@@ -21,15 +24,17 @@ test.describe('DM Client Only Tests', () => {
 		const button = gmPage.locator('div#hud i.fa-solid.fa-signal-stream');
 		const before = await gmPage.evaluate(
 			() =>
+			// @ts-expect-error run in plain js
 				!!window.canvas.tokens.controlled[0].document.getFlag(
 					'obs-utils',
 					'tracked',
 				),
 		);
 		if (!before) {
-			button.click();
+			await button.click();
 			await gmPage.waitForFunction(
 				() => () =>
+				// @ts-expect-error run in plain js
 					!!window.canvas.tokens.controlled[0].document.getFlag(
 						'obs-utils',
 						'tracked',
@@ -39,6 +44,7 @@ test.describe('DM Client Only Tests', () => {
 		await button.click();
 		await gmPage.waitForFunction(
 			() => () =>
+			// @ts-expect-error run in plain js
 				!!window.canvas.tokens.controlled[0].document.getFlag(
 					'obs-utils',
 					'tracked',
@@ -47,6 +53,7 @@ test.describe('DM Client Only Tests', () => {
 		await button.click();
 		await gmPage.waitForFunction(
 			() => () =>
+			// @ts-expect-error run in plain js
 				!!window.canvas.tokens.controlled[0].document.getFlag(
 					'obs-utils',
 					'tracked',
@@ -153,9 +160,11 @@ test.describe('OBS Client Only Tests', () => {
 test.describe('Multiclient UI', () => {
 	test('Journal Popout Close Delay', async ({ pages: { obsPage, gmPage } }) => {
 		const delay
+      // @ts-expect-error run in plain js
       = (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
       )) * 1200;
 
+		// @ts-expect-error run in plain js
 		await gmPage.evaluate(() => [...window.game.journal][0].show());
 		await expect(
 			obsPage.locator('div.app.window-app.sheet.journal-sheet'),
@@ -186,10 +195,12 @@ test.describe('Multiclient UI', () => {
 	 */
 	test('Toggle Show Combat Tracker', async ({ pages: { obsPage, gmPage } }) => {
 		await gmPage.evaluate(() =>
+		// @ts-expect-error run in plain js
 			window.game.settings.set('obs-utils', 'showTrackerInCombat', false),
 		);
 		await gmPage.waitForFunction(
 			() =>
+			// @ts-expect-error run in plain js
 				window.game.settings.get('obs-utils', 'showTrackerInCombat')
 				=== false,
 		);
@@ -201,10 +212,12 @@ test.describe('Multiclient UI', () => {
 		await endCombat(gmPage);
 
 		await gmPage.evaluate(() =>
+		// @ts-expect-error run in plain js
 			window.game.settings.set('obs-utils', 'showTrackerInCombat', true),
 		);
 		await gmPage.waitForFunction(
 			() =>
+			// @ts-expect-error run in plain js
 				window.game.settings.get('obs-utils', 'showTrackerInCombat')
 				=== true,
 		);
@@ -401,6 +414,7 @@ test.describe('Player Client Additional Tests', () => {
 		await closeDirector(gmPage);
 
 		await playerPage.evaluate(() =>
+		// @ts-expect-error run in plain js
 			window.canvas.pan({ x: 100, y: 100, scale: 0.5 }),
 		);
 
@@ -411,6 +425,7 @@ test.describe('Player Client Additional Tests', () => {
 			.toEqual([100, 100, 0.5, 0.5]);
 
 		await playerPage.evaluate(() =>
+		// @ts-expect-error run in plain js
 			window.canvas.pan({ x: 200, y: 200, scale: 1 }),
 		);
 
@@ -430,24 +445,26 @@ test.describe('Player Client Additional Tests', () => {
 	});
 });
 
-async function startCombatWithAllTokens(gmPage) {
+async function startCombatWithAllTokens(gmPage: Page) {
 	if (!await gmPage.locator('section#combat.active').isVisible()) {
 		await gmPage.locator('button[data-tab=combat]').click();
 	}
 
 	await gmPage.evaluate(() => {
+		// @ts-expect-error run in plain js
 		window.canvas.tokens.ownedTokens.forEach(token =>
 			token.control({ releaseOthers: false }),
 		);
 	});
 	await gmPage.evaluate(() => {
+		// @ts-expect-error run in plain js
 		window.canvas.tokens.toggleCombat(true);
 	});
 
 	await gmPage.locator('button.combat-control[data-action=startCombat]').click();
 }
 
-async function endCombat(gmPage) {
+async function endCombat(gmPage: Page) {
 	if (!await gmPage.locator('section#combat.active').isVisible()) {
 		await gmPage.locator('button[data-tab=combat]').click();
 	}
@@ -465,35 +482,41 @@ async function endCombat(gmPage) {
 		.waitFor({ state: 'hidden' });
 }
 
-async function openDirector(gmPage) {
+async function openDirector(gmPage: Page) {
 	await gmPage.locator('button[data-tool=openStreamDirector]').click();
 	await expect(gmPage.locator('div[id=director-application]')).toBeVisible();
 }
 
-async function closeDirector(gmPage) {
+async function closeDirector(gmPage: Page) {
 	await gmPage.locator('button[data-tool=openStreamDirector]').click();
 	await expect(
 		gmPage.locator('div[id=director-application]'),
 	).not.toBeVisible();
 }
 
-async function takeControlOfToken(gmPage) {
+async function takeControlOfToken(gmPage: Page) {
 	await gmPage.evaluate(() =>
+	// @ts-expect-error run in plain js
 		window.game.canvas.tokens.ownedTokens[0].control(),
 	);
 }
 
-async function getOBSViewport(obsPage) {
+async function getOBSViewport(obsPage: Page) {
 	return await obsPage.evaluate(() => [
+		// @ts-expect-error run in plain js
 		window.canvas.stage.position.scope.pivot.x,
+		// @ts-expect-error run in plain js
 		window.canvas.stage.position.scope.pivot.y,
+		// @ts-expect-error run in plain js
 		window.canvas.stage.position.scope.scale.x,
+		// @ts-expect-error run in plain js
 		window.canvas.stage.position.scope.scale.y,
 	]);
 }
 
-async function panGMViewport(gmPage, x, y, scale) {
+async function panGMViewport(gmPage: Page, x: number, y: number, scale: number) {
 	await gmPage.evaluate(
+		// @ts-expect-error run in plain js
 		arg => window.canvas.pan({ x: arg.x, y: arg.y, scale: arg.scale }),
 		{ x, y, scale },
 	);

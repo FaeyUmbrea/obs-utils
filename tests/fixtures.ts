@@ -1,8 +1,9 @@
 // fixtures.js for v8 coverage
+import type { Page } from '@playwright/test';
 import { expect, test as testBase } from '@playwright/test';
 import { addCoverageReport } from 'monocart-reporter';
 
-async function setupGMPage(gmPage) {
+async function setupGMPage(gmPage: Page) {
 	await gmPage.goto('/join');
 
 	await gmPage
@@ -18,10 +19,11 @@ async function setupGMPage(gmPage) {
 
 	await gmPage.getByRole('button', { name: ' Join Game Session' }).click();
 	await expect(gmPage).toHaveURL('/game');
+	// @ts-expect-error run in plain js
 	await gmPage.waitForFunction(() => window.game.ready);
 }
 
-async function setupOBSPage(obsPage) {
+async function setupOBSPage(obsPage: Page) {
 	await obsPage.goto('/join');
 
 	await obsPage
@@ -36,11 +38,12 @@ async function setupOBSPage(obsPage) {
 		);
 	await obsPage.getByRole('button', { name: ' Join Game Session' }).click();
 	await expect(obsPage).toHaveURL('/game');
+	// @ts-expect-error run in plain js
 	await obsPage.waitForFunction(() => window.game.ready);
 }
 
-async function setupPlayerPage(playerPage) {
-	playerPage.goto('/join');
+async function setupPlayerPage(playerPage: Page) {
+	await playerPage.goto('/join');
 	await playerPage
 		.locator('select[name="userid"]')
 		.selectOption({ label: 'Player3' });
@@ -53,11 +56,13 @@ async function setupPlayerPage(playerPage) {
 		);
 	await playerPage.getByRole('button', { name: ' Join Game Session' }).click();
 	await expect(playerPage).toHaveURL('/game');
+	// @ts-expect-error run in plain js
 	await playerPage.waitForFunction(() => window.game?.ready);
+	// @ts-expect-error run in plain js
 	await playerPage.waitForFunction(() => window.game.ready);
 }
 
-async function startCoverage(page) {
+async function startCoverage(page: Page) {
 	await Promise.all([
 		page.coverage.startJSCoverage({
 			resetOnNavigation: false,
@@ -68,7 +73,7 @@ async function startCoverage(page) {
 	]);
 }
 
-const test = testBase.extend({
+const test = testBase.extend<{ pages: { gmPage: Page; obsPage: Page; playerPage: Page } }>({
 	pages: [
 		async ({ browser }, use) => {
 			const gmContext = await browser.newContext();
@@ -114,9 +119,9 @@ const test = testBase.extend({
 				]);
 			}
 
-			playerContext.close();
-			gmContext.close();
-			obsContext.close();
+			await playerContext.close();
+			await gmContext.close();
+			await obsContext.close();
 		},
 		{
 			scope: 'test',
@@ -126,7 +131,7 @@ const test = testBase.extend({
 });
 export { expect, test };
 
-async function stopCoverage(page) {
+async function stopCoverage(page: Page) {
 	const [jsCoverage, cssCoverage] = await Promise.all([
 		page.coverage.stopJSCoverage(),
 		page.coverage.stopCSSCoverage(),

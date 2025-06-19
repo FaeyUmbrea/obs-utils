@@ -1,4 +1,3 @@
-import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
 import { SvelteApplication } from '#runtime/svelte/application';
 import { localize } from '#runtime/util/i18n';
 import OverlayEditorUI from '../svelte/OverlayEditorUI.svelte';
@@ -144,15 +143,12 @@ function exportChatCommands() {
 		type: 'ObsUtilsOverlays',
 		version: 1,
 		overlays,
-		// @ts-expect-error mixins dont work
 		system: (game as ReadyGame).system?.id,
 	};
 
 	const filename = [
 		'obsu',
-		// @ts-expect-error mixins dont work
 		(game as ReadyGame).system?.id,
-		// @ts-expect-error mixins dont work
 		(game as ReadyGame | undefined)?.world?.name,
 		'overlays',
 		new Date().toString(),
@@ -164,15 +160,8 @@ function exportChatCommands() {
 	);
 }
 
-/**
- * @param {string} data
- * @param {boolean} join
- */
-async function importChatCommands(data, join) {
-	/**
-	 * @type {{version: number, type: string, system: string, overlays: []}}
-	 */
-	const imported = JSON.parse(data);
+async function importChatCommands(data: string, join: boolean) {
+	const imported: { version: number; type: string; system: string; overlays: [] } = JSON.parse(data);
 	if (imported.type !== 'ObsUtilsOverlays') {
 		throw new Error(
 			localize('obs-utils.applications.overlayEditor.importDialog.formatError'),
@@ -188,7 +177,7 @@ async function importChatCommands(data, join) {
 	if (join) {
 		const overlays = getSetting('streamOverlays');
 		overlays!.push(...imported.overlays);
-		await setSetting('streamOverlays', overlays);
+		await setSetting('streamOverlays', overlays ?? []);
 	} else {
 		await setSetting('streamOverlays', imported.overlays);
 	}

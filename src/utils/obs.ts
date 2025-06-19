@@ -1,3 +1,4 @@
+import type { OBSEvent } from './types.ts';
 import OBSWebSocket from 'obs-websocket-js';
 import {
 	applyPopupConstrains,
@@ -13,9 +14,10 @@ import {
 import { handleCombat, stopCombat } from './combat.ts';
 import { isOBS } from './helpers';
 import { getSetting, OBSAction } from './settings.ts';
+import { proxyNotification } from './socket.ts';
 import { renderOverlays } from './stream.ts';
 
-let obswebsocket;
+let obswebsocket: OBSWebSocket | undefined;
 
 function getWSSettings() {
 	const url = getComputedStyle(document.documentElement).getPropertyValue(
@@ -34,13 +36,13 @@ function getWSSettings() {
 	return setting;
 }
 
-export async function handleOBS(event) {
+export async function handleOBS(event: string) {
 	if (!isOBS()) return;
 	const obsEvents = getSetting('obsRemote')![event];
 	const useWS = getSetting('enableOBSWebsocket');
-	obsEvents.forEach(
-		async obsEvent => await triggerOBSAction(obsEvent, useWS),
-	);
+	await Promise.all(obsEvents.map(
+		async (obsEvent: any) => await triggerOBSAction(obsEvent, !!useWS),
+	));
 }
 
 export async function handleOBSScene(sceneName: string) {
@@ -50,15 +52,15 @@ export async function handleOBSScene(sceneName: string) {
 	obsEvents.forEach((event) => {
 		if (event.sceneName === sceneName) {
 			event.obsActions.forEach(
-				async obsAction => await triggerOBSAction(obsAction, useWS),
+				async obsAction => await triggerOBSAction(obsAction, !!useWS),
 			);
 		}
 	});
 }
 
-async function triggerOBSAction(obsevent, useWS) {
+async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
 	if (!useWS) {
-		window.obsstudio.getControlLevel(async (controlLevel) => {
+		window.obsstudio.getControlLevel(async (controlLevel: number) => {
 			switch (obsevent.targetAction) {
 				case OBSAction.SwitchScene:
 					if (!(controlLevel === 4)) {
@@ -122,7 +124,7 @@ async function triggerOBSAction(obsevent, useWS) {
 	}
 }
 
-async function getSceneItemIdByName(scene, item) {
+async function getSceneItemIdByName(scene: string, item: string) {
 	return (
 		await (
 			await getWebsocket()
@@ -163,7 +165,6 @@ export function initOBS() {
 	if ((game as ReadyGame).view !== 'game') return;
 	Hooks.on('canvasReady', screenReload);
 	Hooks.on('canvasReady', async (canvas) => {
-		// @ts-expect-error mixins dont work
 		await handleOBSScene(canvas.scene!.name);
 	});
 
@@ -223,12 +224,13 @@ export function initOBS() {
 	});
 	Hooks.once('ready', async () => {
 		await handleOBS('onLoad');
-		// @ts-expect-error mixins dont work
 		if ((game as ReadyGame).combat?.isActive) {
 			await showTracker();
 		} else {
 			ui?.sidebar?.collapse();
 		}
+		if (!game.modules.get('lib-wrapper')?.active && game.user.isGM)
+			ui.notifications.error('Module XYZ requires the \'libWrapper\' module. Please install and activate it.');
 	});
 
 	Hooks.on('updateSetting', async (setting) => {
@@ -239,4 +241,9 @@ export function initOBS() {
 
 	registerOBSEvents().then();
 	Hooks.call('obs-utils.streamModeInit');
+}
+
+async function registerLibWrapper() {
+	const libWrapper = game.modules.get('lib-wrapper');
+	libWrapper.register('obs-utils', 'Notification.notify', proxyNotification);
 }

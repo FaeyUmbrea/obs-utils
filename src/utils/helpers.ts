@@ -4,7 +4,7 @@ import type { ObsUtilsApi } from './api.ts';
 import { flatten } from 'flat';
 import { MODULE_ID } from './const.ts';
 
-export function sleep(milliseconds) {
+export function sleep(milliseconds: number | undefined) {
 	return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
@@ -47,8 +47,8 @@ export async function getFontawesomeVariables() {
 	const icons = json.data.release.icons;
 
 	return icons
-		.map((value) => {
-			return value.familyStylesByLicense.pro.map((family) => {
+		.map((value: { familyStylesByLicense: { pro: { family: string; style: string }[] }; id: string }) => {
+			return value.familyStylesByLicense.pro.map((family: { family: string; style: string }) => {
 				return (
 					`fa-${family.family} fa-${family.style} fa-${value.id}`
 				);
@@ -57,7 +57,9 @@ export async function getFontawesomeVariables() {
 		.flat();
 }
 
-let actorValues;
+export type ActorValues = string[] | { value: string; label: string }[] | undefined;
+
+let actorValues: ActorValues;
 
 export function getActorValues() {
 	if (!actorValues) {
@@ -79,7 +81,7 @@ export function getActorValues() {
 	return actorValues;
 }
 
-export function setActorValues(actorValueArray) {
+export function setActorValues(actorValueArray: ActorValues) {
 	actorValues = actorValueArray;
 }
 
@@ -89,7 +91,7 @@ export function getApi(): ObsUtilsApi {
 	else throw new Error('Something went very wrong!');
 }
 
-export function removeQuotes(s) {
+export function removeQuotes(s: string) {
 	const matched = s.match(
 		/^(["'«»‘’‚‛“”„‟‹›])(.*)(?<!\\)["'«»‘’‚‛“”„‟‹›]$/,
 	);

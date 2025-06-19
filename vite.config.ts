@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
 	// TRL components and makes it easier to review styles in the browser debugger.
 	const compilerOptions = mode === 'production'
 		? {
-				cssHash: ({ hash, css }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
+				cssHash: ({ hash, css }: { hash: (css: string) => string; css: string }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
 			}
 		: {};
 

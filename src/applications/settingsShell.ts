@@ -1,11 +1,11 @@
-export function SettingsShell(Application) {
+export function SettingsShell(WrappedApplication: new () => Application) {
 	return class Shell extends FormApplication {
-		static #mceSettingsApp;
+		static #mceSettingsApp: Application;
 
 		static showSettings() {
 			this.#mceSettingsApp = this.#mceSettingsApp
 				? this.#mceSettingsApp
-				: new Application();
+				: new WrappedApplication();
 			this.#mceSettingsApp.render(true, { focus: true });
 
 			return this.#mceSettingsApp;

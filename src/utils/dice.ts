@@ -5,7 +5,7 @@
  * Copyright (c) 2020 ardittristan
  */
 
-import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
+import type { ReadyGame } from 'fvtt-types/configuration';
 import { log } from './console.ts';
 import { MODULE_ID as ID } from './const.js';
 import { getSetting } from './settings.ts';
@@ -24,14 +24,13 @@ export async function setupDiceSoNice() {
 	if ((game as ReadyGame).modules?.get('dice-so-nice')?.active && getSetting('diceSoNice')) {
 		log('OBS Utils | Creating dice so nice overlay');
 
-		// @ts-expect-error mixins dont work
 		(game as ReadyGame).user.color = color;
 
+		// @ts-expect-error Modifying Internals, no types available
 		canvas?.tokens?.TokenRingConfig.initialize();
 
 		// @ts-expect-error Modifying Internals, no types available
 		(game as ReadyGame).user._origGetFlag = (game as ReadyGame).user.getFlag;
-		// @ts-expect-error mixins dont work
 		(game as ReadyGame).user.getFlag = function (scope, key) {
 			if (scope === 'dice-so-nice' && key === 'settings') {
 				return {
@@ -44,6 +43,7 @@ export async function setupDiceSoNice() {
 					},
 				};
 			}
+			// @ts-expect-error Modifying Internals, no types available
 			return this._origGetFlag(scope, key);
 		};
 
@@ -56,16 +56,22 @@ export async function setupDiceSoNice() {
 		boardContainer.appendChild(board);
 		document.body.appendChild(boardContainer);
 		// await canvas.initialize();
+		// @ts-expect-error Modifying Internals, no types available
+		// noinspection JSConstantReassignment
 		canvas.primary = canvas.environment = {
 			_backgroundColor: [0, 0, 0],
 			colors: {
+				// @ts-expect-error Modifying Internals, no types available
 				ambientDarkness: { applyRGB: () => {} },
+				// @ts-expect-error Modifying Internals, no types available
 				ambientDaylight: { applyRGB: () => {} },
 			},
 		};
+		// @ts-expect-error Modifying Internals, no types available
+		// noinspection JSConstantReassignment
 		canvas.app = new PIXI.Application({});
 
-		Hooks.once('diceSoNiceInit', (dice3d) => {
+		Hooks.once('diceSoNiceInit', (dice3d: any) => {
 			// @ts-expect-error Modifying Internals, no types available
 			(game as ReadyGame).ready = false;
 			main(dice3d.constructor);
@@ -77,23 +83,28 @@ export async function setupDiceSoNice() {
 		(game as ReadyGame).ready = true;
 		// @ts-expect-error Modifying Internals, no types available
 		Hooks.events.ready
-			.filter(hook => hook.fn.toString().includes('new Dice3D'))[0]
+			.filter((hook: { fn: { toString: () => string | string[] } }) => hook.fn.toString().includes('new Dice3D'))[0]
 			.fn
 			.call();
 
+		// @ts-expect-error Modifying Internals ignore typing
 		ui.sidebar = {};
+		// @ts-expect-error Modifying Internals, no types available
 		ui.sidebar.popouts = {};
 	}
 }
 
-function main(Dice3D) {
+function main(Dice3D: { prototype: { _buildCanvasOrig: any; _buildCanvas: () => void; showForRollOrig: any; showForRoll: (...args: any[]) => any; _welcomeMessage: () => void } }) {
 	Dice3D.prototype._buildCanvasOrig = Dice3D.prototype._buildCanvas;
 	Dice3D.prototype.showForRollOrig = Dice3D.prototype.showForRoll;
 
 	Dice3D.prototype._buildCanvas = function () {
 		this._buildCanvasOrig();
+		// @ts-expect-error Modifying Internals ignore typing
 		this.canvas.width(`${(game as ReadyGame | undefined)?.settings?.get(ID, 'diceSoNiceOverlayWidth')}px`);
+		// @ts-expect-error Modifying Internals ignore typing
 		this.canvas.height(`${(game as ReadyGame | undefined)?.settings?.get(ID, 'diceSoNiceOverlayHeight')}px`);
+		// @ts-expect-error Modifying Internals ignore typing
 		this.canvas.appendTo('.overlay-renderer');
 	};
 
@@ -104,7 +115,7 @@ function main(Dice3D) {
 			if (arg?.constructor?.name === 'User') {
 				const color = getRandomColor();
 				arg.color = arg.color || color;
-				arg.getFlag = (id, flag) => arg.flags?.[id]?.[flag] || null;
+				arg.getFlag = (id: string, flag: string) => arg.flags?.[id]?.[flag] || null;
 			} else if (arg?.constructor?.name === 'ChatSpeakerData') {
 				arg = null;
 			}

@@ -1,6 +1,10 @@
 export const MODULE_ID = 'obs-utils';
 
-export const ICCHOICES = {
+export interface StringMap {
+	[key: string]: string;
+}
+
+export const ICCHOICES: StringMap = {
 	trackall: 'obs-utils.strings.trackAll',
 	trackone: 'obs-utils.strings.trackOne',
 	trackPlayerOwned: 'obs-utils.strings.trackPlayerOwned',
@@ -9,7 +13,7 @@ export const ICCHOICES = {
 	birdseye: 'obs-utils.strings.birdseye',
 	cloneTurnPlayer: 'obs-utils.strings.cloneTurnPlayer',
 };
-export const OOCCHOICES = {
+export const OOCCHOICES: StringMap = {
 	trackall: 'obs-utils.strings.trackAll',
 	trackmanual: 'obs-utils.strings.trackManual',
 	trackPlayerOwned: 'obs-utils.strings.trackPlayerOwned',
@@ -17,7 +21,7 @@ export const OOCCHOICES = {
 	cloneDM: 'obs-utils.strings.cloneDM',
 	birdseye: 'obs-utils.strings.birdseye',
 };
-export const NAME_TO_ICON = {
+export const NAME_TO_ICON: StringMap = {
 	trackall: 'fa-solid fa-users',
 	trackone: 'fa-solid fa-user',
 	trackmanual: 'fa-regular fa-users',

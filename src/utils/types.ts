@@ -1,3 +1,4 @@
+import type { StringMap } from './const.ts';
 import { OBSAction } from './settings.ts';
 
 export class OBSEvent {
@@ -17,7 +18,8 @@ export class SceneLoadEvent {
 	obsActions = [];
 }
 
-export class OBSRemoteSettings {
+export class OBSRemoteSettings implements StringMap {
+	[key: string]: any;
 	onLoad: OBSEvent[] = [];
 	onCombatStart: OBSEvent[] = [];
 	onCombatEnd: OBSEvent[] = [];

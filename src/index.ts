@@ -1,4 +1,4 @@
-import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
+import type { ReadyGame } from 'fvtt-types/configuration';
 import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 import { expandTokenHud, isGM } from './utils/canvas.ts';
 import { isOBS, removeBG } from './utils/helpers.js';
@@ -49,11 +49,9 @@ function start() {
       = Object.fromEntries(
 				[['none', 'None']].concat(
 					(game as ReadyGame | undefined)?.users?.filter(
-						e =>
-						// @ts-expect-error mixins dont work
-							!(e as User).isGM || (game as ReadyGame).users.filter(user => (user as User).isGM).length > 1,
-						// @ts-expect-error mixins dont work
-					).map(e => [(e).id, (e as User).name]) ?? [[]],
+						(e: User) =>
+							!e.isGM || (game as ReadyGame).users.filter((user: User) => user.isGM).length > 1,
+					).map(e => [e.id, e.name]) ?? [[]],
 				),
 			);
 	});
@@ -70,8 +68,7 @@ function start() {
 }
 start();
 
-function buildButtons(buttons) {
-	// @ts-expect-error mixins dont work
+function buildButtons(buttons: any) {
 	if (!(game as ReadyGame).user?.isGM) return;
 	const	buttonGroup = buttons.tokens;
 	const newButton = {

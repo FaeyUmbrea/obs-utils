@@ -1,4 +1,4 @@
-import type { ReadyGame } from '@league-of-foundry-developers/foundry-vtt-types/configuration';
+import type { ReadyGame } from 'fvtt-types/configuration';
 import { TJSGameSettings } from '#runtime/svelte/store/fvtt/settings';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
@@ -24,8 +24,7 @@ async function changeMode() {
 	// Trigger modes after mode change, calling the methods avoids doing every conditional twice
 	scaleToFit();
 	tokenMoved();
-	viewportChanged(getSetting('trackedUser'));
-	// @ts-expect-error ID missing on types
+	viewportChanged(getSetting('trackedUser') ?? '');
 	const firstGM = getGM()?.id;
 	if (firstGM) viewportChanged(firstGM);
 }
@@ -39,11 +38,12 @@ export function runMigrations() {
 			let obssettings = getSetting('websocketSettings');
 			// Code for Migration Setting Models
 			obssettings = foundry.utils.mergeObject(
-				new OBSRemoteSettings(),
+				new OBSWebsocketSettings(),
 				obssettings,
 			);
+			// @ts-expect-error should not exist, which is why its deleted
 			delete obssettings.onCloseObs;
-			setSetting('obsRemote', obssettings);
+			setSetting('websocketSettings', obssettings).then();
 		}
 		if (version < 2) {
 			console.warn('Migrations for Data-Model Version 2');
@@ -53,10 +53,10 @@ export function runMigrations() {
 				new OBSRemoteSettings(),
 				obssettings,
 			);
-			setSetting('obsRemote', obssettings);
+			setSetting('obsRemote', obssettings).then();
 		}
 		console.warn('OBS Utils Migrations Finished');
-		setSetting('settingsVersion', SETTINGS_VERSION);
+		setSetting('settingsVersion', SETTINGS_VERSION).then();
 	}
 }
 
@@ -64,7 +64,7 @@ export function getSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(setting
 	return (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, settingName);
 }
 
-export async function setSetting(settingName, value) {
+export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(settingName: K, value: ClientSettings.SettingCreateData<'obs-utils', K>) {
 	await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 }
 
@@ -84,21 +84,20 @@ export function generateDataBlockFromSetting() {
 
 	for (const [key, value] of Object.entries(ICCHOICES)) {
 		buttonData.ic.push({
-			icon: NAME_TO_ICON[key],
+			icon: NAME_TO_ICON[key] ?? 'fas fa-question',
 			tooltip: value,
 			id: key,
 		});
 	}
 	for (const [key, value] of Object.entries(OOCCHOICES)) {
 		buttonData.ooc.push({
-			icon: NAME_TO_ICON[key],
+			icon: NAME_TO_ICON[key] ?? 'fas fa-question',
 			tooltip: value,
 			id: key,
 		});
 	}
-	// @ts-expect-error isGM missing on type
 	buttonData.players = (game as ReadyGame).users?.filter(element => !(element as User).isGM) as User[];
-	buttonData.onlineUsers = (game as ReadyGame).users?.filter(element => (element as User).active) as User[];
+	buttonData.onlineUsers = (game as ReadyGame).users?.filter((element: User) => element.active) as User[];
 	return buttonData;
 }
 

@@ -1,3 +1,4 @@
+import type { OBSWebsocketSettings } from './types.ts';
 import { debounce } from 'lodash-es';
 import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from './canvas';
 import { isOBS } from './helpers.ts';
@@ -6,7 +7,12 @@ import { getSetting, setSetting } from './settings.ts';
 Hooks.once('init', () => {
 	(game as ReadyGame | undefined)?.socket?.on('module.obs-utils', handleEvent);
 });
-async function handleEvent({ eventType, targetUser, payload }) {
+
+async function handleEvent({ eventType, targetUser, payload }: {
+	eventType: string;
+	targetUser: string | undefined;
+	payload: never;
+}) {
 	if (!!targetUser && (game as ReadyGame).userId !== targetUser) return;
 
 	if (eventType === 'viewport') {
@@ -15,7 +21,26 @@ async function handleEvent({ eventType, targetUser, payload }) {
 		await changeOBSSettings(payload);
 	} else if (eventType === 'openSettingsConfig') {
 		openSettingsConfig();
+	} else if (eventType === 'notification') {
+		showProxiedNotification(payload);
 	}
+}
+
+type NotificationType = 'info' | 'warning' | 'error' | 'success';
+
+function showProxiedNotification(payload: { message: string; type: NotificationType; options: NotificationOptions }) {
+	if (!(game as ReadyGame | undefined)?.user.isGM) {
+		return;
+	}
+	ui.notifications?.notify(`Ethereal Plane OBS Notification | ${payload.message}`, payload.type, payload.options);
+}
+
+export function proxyNotification(message: string, type: string = 'info', options: NotificationOptions = {}) {
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'notification',
+		targetUser: undefined,
+		payload: { message, type, options },
+	});
 }
 
 export function sendOpenSettingsConfig() {
@@ -30,12 +55,12 @@ function openSettingsConfig() {
 	(new SettingsConfig({})).render(true);
 }
 
-async function changeOBSSettings(settings) {
+async function changeOBSSettings(settings: OBSWebsocketSettings) {
 	await setSetting('websocketSettings', settings);
 	foundry.utils.debouncedReload();
 }
 
-export function sendOBSSetting(user, settings) {
+export function sendOBSSetting(user: string, settings: OBSWebsocketSettings | undefined) {
 	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
 		eventType: 'websocketSettings',
 		targetUser: user,
@@ -43,7 +68,7 @@ export function sendOBSSetting(user, settings) {
 	});
 }
 
-function changeViewport({ viewport, userId }) {
+function changeViewport({ viewport, userId }: { viewport: { x: number; y: number; scale: number }; userId: string }) {
 	if (!isOBS()) return;
 	// First update the collection of viewport data
 	VIEWPORT_DATA.set(userId, viewport);
@@ -61,7 +86,7 @@ export function deactivateViewportTracking() {
 	viewportTrackingActive = false;
 }
 
-function socketCanvasInternal(position) {
+function socketCanvasInternal(position: { x: number; y: number; scale: number }) {
 	if (!viewportTrackingActive || getSetting('pauseCameraTracking')) {
 		return;
 	}
@@ -76,7 +101,7 @@ const debouncedSocketCanvas = debounce(socketCanvasInternal, 100, {
 	maxWait: 500,
 });
 
-export function socketCanvas(_canvas: Canvas, position) {
+export function socketCanvas(_canvas: Canvas, position: { x: number; y: number; scale: number }) {
 	if (getSetting('smoothUserCamera')) {
 		debouncedSocketCanvas(position);
 	} else {

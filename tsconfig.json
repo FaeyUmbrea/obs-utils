@@ -5,10 +5,9 @@
 		"module": "ESNext",
 		"moduleResolution": "Bundler",
 
-		"types": ["@league-of-foundry-developers/foundry-vtt-types", "@types/obs-studio"],
+		"types": ["fvtt-types", "@types/obs-studio"],
 		"allowImportingTsExtensions": true,
-		"strict": false,
-		"strictNullChecks": true,
+		"strict": true,
 		"noEmit": true,
 		"sourceMap": true,
 		"forceConsistentCasingInFileNames": true,

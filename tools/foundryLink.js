@@ -83,4 +83,4 @@ async function foundryLink() {
 	console.log('All good! You seem to be set up correctly!');
 }
 
-foundryLink();
+foundryLink().then();

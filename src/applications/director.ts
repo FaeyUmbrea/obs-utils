@@ -5,7 +5,7 @@ import DirectorApp from '../svelte/DirectorApp.svelte';
 export default class DirectorApplication extends SvelteApplication {
 	sidebarButton;
 
-	constructor(sidebarButton) {
+	constructor(sidebarButton: any) {
 		super();
 		this.sidebarButton = sidebarButton;
 	}
@@ -28,7 +28,7 @@ export default class DirectorApplication extends SvelteApplication {
 		});
 	}
 
-	async close(options) {
+	async close(options?: Application.CloseOptions) {
 		await super.close(options);
 		$('[data-tool=openStreamDirector]').removeClass('active');
 		this.sidebarButton.active = false;

@@ -16,15 +16,15 @@ import SingleLineOverlayEditor from '../svelte/components/editors/SingleLineOver
 import { MODULE_ID as moduleID } from './const';
 import { getApi } from './helpers.js';
 
-let d;
+let d: DirectorApplication | undefined;
 
-export async function openDirector(button) {
+export async function openDirector(button: any) {
 	if (!d) d = new DirectorApplication(button);
 	console.error(d.rendered);
 	if (!d.rendered) {
 		d.render(true);
 	} else {
-		d.close();
+		await d.close();
 		d = undefined;
 	}
 }
@@ -79,10 +79,10 @@ export function registerUI() {
 	getApi()
 		.overlayTypes
 		.get('sl')
-		?.registerOverlayEditor(SingleLineOverlayEditor);
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('pt', AVEditor);
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('fai', AVEditor);
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('img', AVEditor);
+		?.registerOverlayEditor((SingleLineOverlayEditor as SvelteComponentConstructor));
+	getApi().overlayTypes.get('sl')?.registerComponentEditor('pt', (AVEditor as SvelteComponentConstructor));
+	getApi().overlayTypes.get('sl')?.registerComponentEditor('fai', (AVEditor as SvelteComponentConstructor));
+	getApi().overlayTypes.get('sl')?.registerComponentEditor('img', (AVEditor as SvelteComponentConstructor));
 	getApi()
 		.overlayTypes
 		.get('sl')

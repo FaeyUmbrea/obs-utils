@@ -1,3 +1,5 @@
+import type { ActorValues } from './helpers.ts';
+import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
 import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
 import AVBoolIconComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolIconComponent.svelte';
 import AVBoolImageComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolImageComponent.svelte';
@@ -17,6 +19,7 @@ export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
 	overlayTypeNames: Map<string, string>;
 	singleInstanceOverlays: Set<SvelteComponentConstructor>;
+
 	constructor() {
 		this.overlayTypes = new Map();
 		this.overlayTypeNames = new Map();
@@ -40,7 +43,7 @@ export class ObsUtilsApi {
 		await setSetting('overlayActors', actorArray);
 	}
 
-	setAVData(actorValueArray) {
+	setAVData(actorValueArray: ActorValues) {
 		setActorValues(actorValueArray);
 	}
 
@@ -71,6 +74,7 @@ export class OverlayType {
 		this.overlayComponentNames = new Map();
 		this.overlayComponentEditors = new Map();
 		this.compactEditorButtons = new Map();
+		this.overlayEditor = (FallbackEditor as SvelteComponentConstructor);
 	}
 
 	registerOverlayEditor(editor: SvelteComponentConstructor) {
@@ -89,60 +93,60 @@ export class OverlayType {
 }
 
 export function registerDefaultTypes() {
-	const singleLineOverlay = new OverlayType(SingleLineOverlay);
+	const singleLineOverlay = new OverlayType((SingleLineOverlay as SvelteComponentConstructor));
 	singleLineOverlay.registerComponent(
 		'pt',
 		'obs-utils.overlays.plainText.name',
-		ActorValComponent,
+		(ActorValComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'fai',
 		'obs-utils.overlays.fontAwesomeIcon.name',
-		FAIconComponent,
+		(FAIconComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'bav',
 		'obs-utils.overlays.booleanAVIcon.name',
-		AVBoolIconComponent,
+		(AVBoolIconComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'bavimg',
 		'obs-utils.overlays.booleanAVImage.name',
-		AVBoolImageComponent,
+		(AVBoolImageComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'img',
 		'obs-utils.overlays.image.name',
-		AVImageDisplayComponent,
+		(AVImageDisplayComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'micoav',
 		'obs-utils.overlays.multiIconAV.name',
-		AVMultiIconComponent,
+		(AVMultiIconComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'mimgav',
 		'obs-utils.overlays.multiImageAV.name',
-		AVMultiImageComponent,
+		(AVMultiImageComponent as SvelteComponentConstructor),
 	);
 	singleLineOverlay.registerComponent(
 		'pb',
 		'obs-utils.overlays.progressBar.name',
-		ProgressBarComponent,
+		(ProgressBarComponent as SvelteComponentConstructor),
 	);
 
 	// Register Legacy Names
-	singleLineOverlay.overlayComponents.set('Plain Text', ActorValComponent);
-	singleLineOverlay.overlayComponents.set('Font Awesome Icon', FAIconComponent);
-	singleLineOverlay.overlayComponents.set('Actor Value', ActorValComponent);
+	singleLineOverlay.overlayComponents.set('Plain Text', (ActorValComponent as SvelteComponentConstructor));
+	singleLineOverlay.overlayComponents.set('Font Awesome Icon', (FAIconComponent as SvelteComponentConstructor));
+	singleLineOverlay.overlayComponents.set('Actor Value', (ActorValComponent as SvelteComponentConstructor));
 	singleLineOverlay.overlayComponents.set(
 		'Boolean Actor Value',
-		AVBoolIconComponent,
+		(AVBoolIconComponent as SvelteComponentConstructor),
 	);
-	singleLineOverlay.overlayComponents.set('iav', AVImageDisplayComponent);
-	singleLineOverlay.overlayComponents.set('av', ActorValComponent);
+	singleLineOverlay.overlayComponents.set('iav', (AVImageDisplayComponent as SvelteComponentConstructor));
+	singleLineOverlay.overlayComponents.set('av', (ActorValComponent as SvelteComponentConstructor));
 
 	getApi().registerOverlayType('sl', 'Single Line', singleLineOverlay);
 	getApi().overlayTypes.set('Single Line', singleLineOverlay);
-	getApi().registerUniqueOverlay(PlayerRollOverlay);
+	getApi().registerUniqueOverlay((PlayerRollOverlay as SvelteComponentConstructor));
 }
