@@ -55,7 +55,9 @@
 		placeholder={localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<Select
-		containerStyles='background-color: white;'
+		--background='var(--sidebar-background)'
+		--list-background='var(--sidebar-background)'
+		--item-hover-bg='var(--sidebar-entry-hover-bg)'
 		--height='30px'
 		bind:filterText={filterText2}
 		bind:justValue={av2}

@@ -159,7 +159,7 @@
 			<div class='roll'>
 				<section class='header'>
 					<span
-					>{localize(
+					>&nbsp;{localize(
 						'obs-utils.applications.rollOverlayEditor.rollImage',
 					)}</span
 					>
@@ -266,7 +266,6 @@
           display flex
           height 30px
           align-items center
-          background lightgray
           border-bottom 1px solid gray
           border-top 2px solid gray
           border-top-left-radius 6px
