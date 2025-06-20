@@ -234,6 +234,10 @@
 			"allowWebsocketAPI": {
 				"Name": "Allow OBS Websocket API Access?",
 				"Hint": "If checked, other modules can access OBS Websocket directly"
+			},
+			"proxyOBSMessages": {
+				"Name": "Send OBS Mode Notifications to GM",
+				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
 			}
 		},
 		"overlays": {
