@@ -1,3 +1,4 @@
+import type { AllHooks } from 'fvtt-types/src/foundry/client/hooks';
 import type { ComponentConstructorOptions, SvelteComponent } from 'svelte';
 import type { ObsUtilsApi } from './utils/api';
 import type { OBSRemoteSettings, OBSWebsocketSettings } from './utils/types.ts';
@@ -89,5 +90,11 @@ declare global {
 		'obs-utils.forceStreamPageOBSMode': boolean;
 		'obs-utils.proxyOBSMessages': boolean;
 	}
-
+	namespace HookConfig {
+		interface HookConfig extends AllHooks {
+			'obs-utils.init': () => void;
+			'obs-utils.streamModeInit': () => void;
+			'obs-utils.refreshActor': (actor: Actor) => void;
+		}
+	}
 }

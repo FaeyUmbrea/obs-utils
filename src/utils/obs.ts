@@ -1,3 +1,4 @@
+import type { NotificationType } from './socket.ts';
 import type { OBSEvent } from './types.ts';
 import OBSWebSocket from 'obs-websocket-js';
 import {
@@ -12,6 +13,7 @@ import {
 	tokenMoved,
 } from './canvas.ts';
 import { handleCombat, stopCombat } from './combat.ts';
+import { proxyError, proxyLog, proxyWarn } from './console.ts';
 import { isOBS } from './helpers';
 import { getSetting, OBSAction } from './settings.ts';
 import { proxyNotification } from './socket.ts';
@@ -244,10 +246,22 @@ export function initOBS() {
 }
 
 function registerLibWrapper() {
-	libWrapper.register('obs-utils', 'foundry.applications.ui.Notifications.prototype.notify', (wrapped: any, message: string, type: string = 'info', options: NotificationOptions = {}) => {
+	libWrapper.register('obs-utils', 'foundry.applications.ui.Notifications.prototype.notify', (wrapped: any, message: string, type: NotificationType = 'info', options: NotificationOptions = {}) => {
 		if (options.progress) {
 			wrapped(message, type, options);
 			return;
+		}
+		if (options.console) {
+			switch (type) {
+				case 'warning':
+					proxyWarn(message);
+					break;
+				case 'error':
+					proxyError(message);
+					break;
+				default:
+					proxyLog(message);
+			}
 		}
 		proxyNotification(message, type, options);
 	}, 'MIXED');
