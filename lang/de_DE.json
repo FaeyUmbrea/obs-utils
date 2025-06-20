@@ -258,8 +258,12 @@
 				"Hint": "Wenn aktiv, wird die Aktualisierungsrate der manuellen Kamerasteuerung reduziert"
 			},
 			"forceStreamPageOBSMode": {
-				"Name": "Force OBS Mode on Stream Page",
-				"Hint": "Forces the /stream output to be in OBS mode at all times"
+				"Name": "Erzwinge OBS Modus auf Stream Ansicht",
+				"Hint": "Erzwingt die /stream Ansicht immer im OBS Modus zu laufen"
+			},
+			"proxyOBSMessages": {
+				"Name": "Sende OBS Modus Benachrichtigungen and Spielleiter",
+				"Hint": "Wenn aktiv, werden die im OBS Modus unterdrückten Benachrichtigungen auf allen Spielleiter Clients widergegeben"
 			}
 		}
 	}

@@ -260,6 +260,10 @@
 			"smoothUserCamera": {
 				"Name": "Smooth Camera Movement",
 				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate"
+			},
+			"proxyOBSMessages": {
+				"Name": "Send OBS Mode Notifications to GM",
+				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
 			}
 		}
 	}

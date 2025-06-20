@@ -396,6 +396,15 @@ class OBSUtilsSettings extends TJSGameSettings {
 			}),
 		);
 
+		settings.push(
+			createSetting('proxyOBSMessages', {
+				type: Boolean,
+				scope: 'world',
+				config: true,
+				default: true,
+			}),
+		);
+
 		this.registerAll(settings, true);
 	}
 }

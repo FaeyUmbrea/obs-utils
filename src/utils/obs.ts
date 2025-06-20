@@ -222,6 +222,8 @@ export function initOBS() {
 			await handleOBS('onUnpause');
 		}
 	});
+	registerLibWrapper();
+
 	Hooks.once('ready', async () => {
 		await handleOBS('onLoad');
 		if ((game as ReadyGame).combat?.isActive) {
@@ -229,8 +231,6 @@ export function initOBS() {
 		} else {
 			ui?.sidebar?.collapse();
 		}
-		if (!game.modules.get('lib-wrapper')?.active && game.user.isGM)
-			ui.notifications.error('Module XYZ requires the \'libWrapper\' module. Please install and activate it.');
 	});
 
 	Hooks.on('updateSetting', async (setting) => {
@@ -243,7 +243,12 @@ export function initOBS() {
 	Hooks.call('obs-utils.streamModeInit');
 }
 
-async function registerLibWrapper() {
-	const libWrapper = game.modules.get('lib-wrapper');
-	libWrapper.register('obs-utils', 'Notification.notify', proxyNotification);
+function registerLibWrapper() {
+	libWrapper.register('obs-utils', 'foundry.applications.ui.Notifications.prototype.notify', (wrapped: any, message: string, type: string = 'info', options: NotificationOptions = {}) => {
+		if (options.progress) {
+			wrapped(message, type, options);
+			return;
+		}
+		proxyNotification(message, type, options);
+	}, 'MIXED');
 }

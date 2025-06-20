@@ -29,7 +29,7 @@ async function handleEvent({ eventType, targetUser, payload }: {
 type NotificationType = 'info' | 'warning' | 'error' | 'success';
 
 function showProxiedNotification(payload: { message: string; type: NotificationType; options: NotificationOptions }) {
-	if (!(game as ReadyGame | undefined)?.user.isGM) {
+	if (!(game as ReadyGame | undefined)?.user.isGM || !getSetting('proxyOBSMessages')) {
 		return;
 	}
 	ui.notifications?.notify(`Ethereal Plane OBS Notification | ${payload.message}`, payload.type, payload.options);
