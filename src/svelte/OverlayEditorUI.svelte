@@ -131,6 +131,8 @@
     .preview {
         background-color: black;
         border-radius: 4px;
+        padding-right: 5px;
+        overflow: scroll
     }
 
     .editor {
