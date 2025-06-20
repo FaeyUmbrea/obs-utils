@@ -1,3 +1,22 @@
+## Version 4.1.0
+
+### Added
+
+- Notifications Toasts (like the Browser Compatibility warning) are now hidden in OBS
+  - "Progress Bar" type notifications are still show, such as the loading scene notification
+  - A new setting was introduced to allow the GM clients to recieve the hidden notifications for debugging purposes
+
+### Changed
+
+- The overlay editor now has scroll bars to make the preview easier to view if it gets absurdly large
+
+### Fixed
+
+- The viewport is now refreshed when exiting combat
+- CSS has been added to restore the V12 display of images, please check your overlays after updating
+- The roll overlay is now working properly again
+- The roll value is now displayed centered on the background image by default
+
 ## Version 4.0.1
 
 ### Fixed
@@ -20,6 +39,7 @@
 
 - Added function "getOBSWebsocketClient" to API, this allows extension modules to use the Websocket Client instance.
 - Added function "isOBS" to API, this allows extension modules to determine if OBS Utils is running in OBS Mode
+- Corrected some display issues due to new styling
 
 ## Version 3.6.1
 
