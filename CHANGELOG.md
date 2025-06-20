@@ -1,3 +1,9 @@
+## Version 4.1.1
+
+### Fixed
+
+- Fixed an issue causing progress bar notifications to remain open indefinitely
+
 ## Version 4.1.0
 
 ### Added
