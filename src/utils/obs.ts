@@ -248,8 +248,7 @@ export function initOBS() {
 function registerLibWrapper() {
 	libWrapper.register('obs-utils', 'foundry.applications.ui.Notifications.prototype.notify', (wrapped: any, message: string, type: NotificationType = 'info', options: NotificationOptions = {}) => {
 		if (options.progress) {
-			wrapped(message, type, options);
-			return;
+			return wrapped(message, type, options);
 		}
 		if (options.console) {
 			switch (type) {
