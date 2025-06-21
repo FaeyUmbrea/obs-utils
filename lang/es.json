@@ -1,0 +1,270 @@
+{
+	"obs-utils": {
+		"strings": {
+			"false": "Falso",
+			"true": "Verdadero",
+			"clonePlayer": "Clonar la Vista del Jugador Seleccionado",
+			"cloneTurnPlayer": "Clonar la Vista del Jugador en Turno",
+			"cloneDM": "Clonar la vista del MdJ",
+			"trackPlayerOwned": "Rastrear los Tokens Poseídos por los Jugadores",
+			"iconPlaceholder": "Icono",
+			"trackOne": "Rastrear el Token activo Poseído",
+			"missingTypeNotice": "Tipo Legado/Ausente. Por favor, selecciona un nuevo tipo en el menú desplegable.",
+			"keypressInfo2": "Modo para ",
+			"keypressInfo1": "Alternado ",
+			"trackManual": "Rastrear una Lista manual de Tokens",
+			"ic": "En Combate",
+			"done": "Terminado",
+			"limitCanvas": "Limitar el Lienzo a los Limites de la Pantalla",
+			"avInputPlaceholder": "Introduce texto o busca",
+			"module": "OBS Utils",
+			"birdseye": "Ajustar el Mapa en la Pantalla",
+			"trackAll": "Rastrear todos los Tokens Poseídos",
+			"pauseCameraTracking": "Pausar el Rastreo de la Cámara",
+			"ooc": "Fuera de Combate"
+		},
+		"applications": {
+			"rollOverlayEditor": {
+				"backgroundImageUrl": "URL de la Imagen de Fondo",
+				"imageUrl": "URL de la Imagen",
+				"name": "Editor de la Capa de Dados",
+				"preRollImage": "Imagen Pre Lanzamiento de dados",
+				"foregroundImageUrl": "URL de la Imagen en Primer Plano",
+				"rollImage": "Imagen de Lanzamiento de dados",
+				"test": "Prueba",
+				"fadeOut": "Fundido de Salida (ms)",
+				"postRollImage": "Imagen Post Lanzamiento de dados",
+				"duration": "Duración (ms)",
+				"delay": "Retraso (ms)",
+				"fadeIn": "Fundido de entrada (ms)"
+			},
+			"director": {
+				"oocTypeHeader": "Tipo Fuera del Combate",
+				"obsUserCommands": "Comandos de Usuario OBS",
+				"canvasOptionsHeader": "Opciones del Lienzo",
+				"trackedPlayerHeader": "Jugador Rastreado",
+				"name": "Director",
+				"icTypeHeader": "Tipo dentro del Combate",
+				"forceOpenSettingsForOBSUser": "Forzar la Apertura del Menú de Opciones para el Usuario OBS"
+			},
+			"obsRemote": {
+				"sourceName": "Nombre de la Fuente OBS",
+				"name": "Opciones Remotas de OBS",
+				"vttSceneLabel": "Nombre de la Escena VTT",
+				"disableSource": "Desactivar Fuente",
+				"onCombatEnd": "Fin del Combate",
+				"switchScene": "Cambiar Escena",
+				"enableSource": "Activar Fuente",
+				"onLoad": "Cargar",
+				"onCombatStart": "Inicio del Combate",
+				"sceneName": "Nombre de Escena",
+				"vttScenePlaceholder": "Introduce un nombre o suelta una escena aquí",
+				"onPause": "Pausar",
+				"onUnpause": "Quitar pausa",
+				"onStopStreaming": "Parar la Retransmisión",
+				"toggleSource": "Alternar Fuente",
+				"onSceneLoad": "Cargar Escena"
+			},
+			"actorSelect": {
+				"resetButton": "Reiniciar",
+				"name": "Selección de Actor",
+				"closeButton": "Cerrar",
+				"searchPlaceholder": "Buscar"
+			},
+			"obsWebsocket": {
+				"portLabel": "Puerto",
+				"name": "Opciones Websocket de OBS",
+				"passwordLabel": "Contraseña",
+				"syncButton": "Sincronizar",
+				"saveButton": "Guardar",
+				"syncLabel": "Sincronizar Cliente Objetivo",
+				"urlLabel": "URL"
+			},
+			"overlayEditor": {
+				"importButton": "Importar",
+				"closeButton": "Cerrar",
+				"exportDialog": {
+					"content": "¿Quieres exportar tus Ajustes de Capa?",
+					"noButton": "No",
+					"title": "¿Exportar tus ajustes?",
+					"yesButton": "Sí"
+				},
+				"importDialog": {
+					"cancelButton": "Cancelar",
+					"replaceButton": "Reemplazar",
+					"hint2": "Por favor, elige si quieres reemplazar tus capas existentes o agregar las de la lista importada.",
+					"formatError": "El archivo importado no es un archivo de Capa de OBS Utils Exportado",
+					"hint1": "Vas a importar una configuración exportada de Capa. Por favor, asegúrate de que fue exportada en el mismo sistema o las Capas de Audio/Video podrían no funcionar.",
+					"appendButton": "Adjuntar",
+					"title": "Importar Datos: Capas",
+					"fileError": "No has subido un archivo de datos",
+					"versionError": "Versión no soportada"
+				},
+				"name": "Editor de Capa",
+				"removeComponentButton": "Eliminar Componente",
+				"removeButton": "Eliminar Capa",
+				"addButton": "Agregar Componente Nuevo",
+				"editStyleButton": "Editar Estilo",
+				"addOverlayButton": "Agregar Nueva Capa",
+				"exportButton": "Exportar"
+			},
+			"styleEditor": {
+				"submitButton": "Enviar",
+				"name": "Editor de Estilos"
+			}
+		},
+		"overlays": {
+			"fontAwesomeIcon": {
+				"name": "Icono Font Awesome"
+			},
+			"booleanAVImage": {
+				"name": "Imagen Audio/Video Booleana"
+			},
+			"plainText": {
+				"name": "Texto Plano"
+			},
+			"image": {
+				"name": "Imagen"
+			},
+			"multiImageAV": {
+				"name": "Multi Imagen Audio/Video"
+			},
+			"multiIconAV": {
+				"name": "Multi icono Audio/Video"
+			},
+			"progressBar": {
+				"name": "Barra de Progreso"
+			},
+			"booleanAVIcon": {
+				"name": "Icono Audio/Video Booleano"
+			}
+		},
+		"settings": {
+			"popupCloseDelay": {
+				"Name": "Pop-Up Close Delay",
+				"Hint": "Seconds until pop-ups are automatically closed. 0 to disable"
+			},
+			"fixedPopupY": {
+				"Name": "Pop-Up Y",
+				"Hint": "The distance to the top screen edge in pixels"
+			},
+			"enableOBSWebsocket": {
+				"Hint": "If checked, OBS Websocket will be used for Remoting",
+				"Name": "Enable OBS Websocket?"
+			},
+			"diceSoNiceOverlayWidth": {
+				"Hint": "Width of the element in pixels",
+				"Name": "Dice so Nice Overlay Width"
+			},
+			"obsWebsocketMenu": {
+				"Hint": "Configure OBS Websocket",
+				"Label": "Open Menu",
+				"Name": "OBS Websocket Settings"
+			},
+			"forceStreamPageOBSMode": {
+				"Name": "Forzar Modo OBS en la Página de Stream",
+				"Hint": "Fuerza la salida a /stream a estar en Modo OBS siempre"
+			},
+			"minScale": {
+				"Name": "Escala Mínima",
+				"Hint": "Lo más bajo a lo que la pantalla hará zoom"
+			},
+			"obsModeUser": {
+				"Name": "Usuario Modo OBS (Username)",
+				"Hint": "Establece ese Usuario para que siempre está en Modo OBS, independientemente del navegador"
+			},
+			"proxyOBSMessages": {
+				"Name": "Send OBS Mode Notifications to GM",
+				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
+			},
+			"fixedPopupX": {
+				"Hint": "The distance to the left screen edge in pixels",
+				"Name": "Pop-Up X"
+			},
+			"obsMode": {
+				"Name": "Modo OBS",
+				"Hint": "Establecer este navegador como el navegador OBS. Activa esto solo si no puedes usar la fuente navegador en OBS."
+			},
+			"fixedPopupHeight": {
+				"Hint": "The height of the pop-up in pixels",
+				"Name": "Pop-Up Height"
+			},
+			"showKeybindingPopup": {
+				"Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected",
+				"Name": "Show Keybinding Notification"
+			},
+			"showTrackerInCombat": {
+				"Name": "Show Combat Tracker in Combat?",
+				"Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
+			},
+			"allowWebsocketAPI": {
+				"Name": "Allow OBS Websocket API Access?",
+				"Hint": "If checked, other modules can access OBS Websocket directly"
+			},
+			"rollOverlayEditor": {
+				"Name": "Roll Overlay Editor",
+				"Label": "Open Editor",
+				"Hint": "Edit the Roll Overlay"
+			},
+			"overlayEditor": {
+				"Name": "Overlay Editor",
+				"Hint": "Edit the Overlays",
+				"Label": "Open Editor"
+			},
+			"overlayActorSelect": {
+				"Label": "Open Menu",
+				"Name": "Overlay Actors",
+				"Hint": "Select the Actors for the Overlay"
+			},
+			"maxScale": {
+				"Name": "Escala Máxima",
+				"Hint": "El zoom máximo al que llegará la pantalla"
+			},
+			"diceSoNice": {
+				"Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
+				"Name": "Enable Dice so Nice overlay"
+			},
+			"diceSoNiceOverlayHeight": {
+				"Name": "Dice so Nice Overlay Height",
+				"Hint": "Height of the element in pixels"
+			},
+			"showAV": {
+				"Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
+				"Name": "Show Video Overlay?"
+			},
+			"fixedPopups": {
+				"Hint": "If enabled, all Popups are repositioned and resized to the configured values",
+				"Name": "Use Fixed Pop-Ups"
+			},
+			"defaultInCombat": {
+				"Name": "In Combat Mode",
+				"Hint": "The in Combat Camera Mode"
+			},
+			"obsRemoteMenu": {
+				"Name": "OBS Remote Settings",
+				"Hint": "Configure the OBS Remote",
+				"Label": "Open Menu"
+			},
+			"defaultOutOfCombat": {
+				"Hint": "El modo de la Camara Fuera de Combate",
+				"Name": "Modo Fuera De Combate"
+			},
+			"obsModeGlobalDisable": {
+				"Name": "Deshabilitar Globalmente la Vista de OBS",
+				"Hint": "Esto apagará las características de OBS para todos los clientes, independientemente del método"
+			},
+			"smoothUserCamera": {
+				"Hint": "If enabled, manual camera movement will be smoothed by reducing update rate",
+				"Name": "Smooth Camera Movement"
+			},
+			"fixedPopupWidth": {
+				"Hint": "The width of the pop-up in pixels",
+				"Name": "Pop-Up Width"
+			},
+			"showUserConfig": {
+				"Name": "Allow User-Config to Render?",
+				"Hint": "If enabled, the user config dialog will not be suppressed"
+			}
+		}
+	}
+}
