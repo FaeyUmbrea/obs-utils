@@ -153,54 +153,54 @@
 		"applications": {
 			"overlayEditor": {
 				"importDialog": {
-					"replaceButton": "Replace",
-					"hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
-					"cancelButton": "Cancel",
+					"replaceButton": "Korvaa",
+					"hint2": "Valitse jos tahdot korvata olemassa olevat [overlays] tai lisätä tuotujen listan.",
+					"cancelButton": "Peru",
 					"formatError": "Imported file is not an OBS Utils Overlay Export",
 					"hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
 					"appendButton": "Append",
 					"title": "Import Data: Overlays",
-					"fileError": "You did not upload a data file",
-					"versionError": "Version unsupported"
+					"fileError": "Et ladannut datatiedostoa",
+					"versionError": "Versio ei tuettu"
 				},
-				"importButton": "Import",
+				"importButton": "Tuo",
 				"exportDialog": {
-					"content": "Do you want to export your Overlay Settings?",
-					"noButton": "No",
-					"title": "Export your settings?",
-					"yesButton": "Yes"
+					"content": "Haluatko viedä [overlay] asetukset?",
+					"noButton": "Ei",
+					"title": "Vie asetukset?",
+					"yesButton": "Kyllä"
 				},
-				"closeButton": "Close",
+				"closeButton": "Sulje",
 				"name": "Overlay Editor",
-				"removeComponentButton": "Remove Component",
+				"removeComponentButton": "Poista komponentti",
 				"removeButton": "Remove Overlay",
-				"addButton": "Add New Component",
-				"editStyleButton": "Edit Style",
+				"addButton": "Lisää uusi komponentti",
+				"editStyleButton": "Muokkaa tyyliä",
 				"addOverlayButton": "Add New Overlay",
-				"exportButton": "Export"
+				"exportButton": "Vie"
 			},
 			"director": {
 				"oocTypeHeader": "Out of Combat Type",
 				"canvasOptionsHeader": "Canvas Options",
 				"obsUserCommands": "OBS User Commands",
 				"trackedPlayerHeader": "Tracked Player",
-				"name": "Director",
+				"name": "Ohjaaja",
 				"icTypeHeader": "In Combat Type",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"actorSelect": {
-				"resetButton": "Reset",
-				"name": "Actor Selection",
-				"closeButton": "Close",
-				"searchPlaceholder": "Search"
+				"resetButton": "Nollaa",
+				"name": "Näyttelijän valinta",
+				"closeButton": "Sulje",
+				"searchPlaceholder": "Hae"
 			},
 			"obsWebsocket": {
-				"portLabel": "Port",
-				"name": "OBS Websocket Settings",
-				"passwordLabel": "Password",
-				"syncButton": "Sync",
-				"saveButton": "Save",
-				"syncLabel": "Sync Target Client",
+				"portLabel": "Portti",
+				"name": "OBS Websocket asetukset",
+				"passwordLabel": "Salasana",
+				"syncButton": "Synkronoi",
+				"saveButton": "Tallenna",
+				"syncLabel": "Synkronoi kohdeasiakas",
 				"urlLabel": "URL"
 			},
 			"obsRemote": {
@@ -211,15 +211,15 @@
 				"onCombatEnd": "Combat End",
 				"switchScene": "Switch Scene",
 				"enableSource": "Enable Source",
-				"onLoad": "Load",
+				"onLoad": "Lataa",
 				"onCombatStart": "Combat Start",
 				"sceneName": "Scene Name",
 				"vttScenePlaceholder": "Input name or drop a scene here",
-				"onPause": "Pause",
-				"onUnpause": "Unpause",
-				"onStopStreaming": "Stop Streaming",
+				"onPause": "Pysäytä",
+				"onUnpause": "Jatka",
+				"onStopStreaming": "Lopeta suoratoisto",
 				"toggleSource": "Toggle Source",
-				"onSceneLoad": "Scene Load"
+				"onSceneLoad": "Lataa kohtaus"
 			},
 			"rollOverlayEditor": {
 				"backgroundImageUrl": "Background Image URL",
@@ -229,15 +229,15 @@
 				"foregroundImageUrl": "Foreground Image URL",
 				"rollImage": "Roll Image",
 				"test": "Test",
-				"fadeOut": "Fade Out (ms)",
+				"fadeOut": "Häivytä (ms)",
 				"postRollImage": "Post Roll Image",
-				"duration": "Duration (ms)",
+				"duration": "Kesto (ms)",
 				"delay": "Delay (ms)",
 				"fadeIn": "Fade In (ms)"
 			},
 			"styleEditor": {
-				"submitButton": "Submit",
-				"name": "Style Editor"
+				"submitButton": "Hyväksy",
+				"name": "Tyylieditori"
 			}
 		},
 		"overlays": {
@@ -251,7 +251,7 @@
 				"name": "Plain Text"
 			},
 			"image": {
-				"name": "Image"
+				"name": "Kuva"
 			},
 			"multiImageAV": {
 				"name": "Multi Image AV"
@@ -260,7 +260,7 @@
 				"name": "Multi Icon AV"
 			},
 			"progressBar": {
-				"name": "Progress Bar"
+				"name": "Edistymispalkki"
 			},
 			"booleanAVIcon": {
 				"name": "Boolean AV Icon"
