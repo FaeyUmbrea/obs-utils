@@ -67,16 +67,16 @@
 			"name": "Pусский",
 			"path": "lang/ru.json"
 		},
-    {
-      "lang": "es",
-      "name": "Español",
-      "path": "lang/es.json"
-    },
-    {
-      "lang": "fi",
-      "name": "Suomi",
-      "path": "lang/fi.json"
-    }
+		{
+			"lang": "es",
+			"name": "Español",
+			"path": "lang/es.json"
+		},
+		{
+			"lang": "fi",
+			"name": "Suomi",
+			"path": "lang/fi.json"
+		}
 	],
 	"url": "This is auto replaced",
 	"socket": true,
