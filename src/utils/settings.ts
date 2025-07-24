@@ -401,7 +401,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 				type: Boolean,
 				scope: 'world',
 				config: true,
-				default: true,
+				default: false,
 			}),
 		);
 

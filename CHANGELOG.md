@@ -1,3 +1,9 @@
+## Version 4.1.2
+
+### Updated
+
+- Translations have been updated with new data from Weblate
+
 ## Version 4.1.1
 
 ### Fixed
