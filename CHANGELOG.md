@@ -1,3 +1,9 @@
+## Version 4.1.3
+
+### Fix
+
+- removed errornous debug statement
+
 ## Version 4.1.2
 
 ### Updated
