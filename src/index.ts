@@ -83,5 +83,3 @@ function buildButtons(buttons: any) {
 	};
 	buttonGroup.tools.openStreamDirector = newButton;
 }
-
-CONFIG.debug.hooks = true;
