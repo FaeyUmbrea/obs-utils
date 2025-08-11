@@ -148,11 +148,4 @@
       font-size: 16px;
     }
   }
-
-  .list-wrapper {
-    top 0
-    left 0
-    height 100%
-    overflow-y: scroll;
-  }
 </style>
