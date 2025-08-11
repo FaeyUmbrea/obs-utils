@@ -16,9 +16,9 @@ export default class OverlayActorSelect extends SvelteApplication {
 					initial: 'onLoad',
 				},
 			],
-			height: 300,
-			width: 400,
-			resizable: true,
+			height: 500,
+			width: 800,
+			resizable: false,
 			svelte: {
 				class: OverlayActorSelectUi,
 				target: document.body,

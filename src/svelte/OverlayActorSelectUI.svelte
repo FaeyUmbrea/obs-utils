@@ -3,8 +3,8 @@
 <script>
 	import { ApplicationShell } from '#runtime/svelte/component/application';
 	import { localize } from '#runtime/util/i18n';
-	import VirtualList from '@sveltejs/svelte-virtual-list';
 	import { getContext } from 'svelte';
+	import VirtualList from 'svelte-tiny-virtual-list';
 	import { settings } from '../utils/settings.ts';
 
 	const selectedActors = settings.getStore('overlayActors');
@@ -48,30 +48,28 @@
 				'obs-utils.applications.actorSelect.searchPlaceholder',
 			)}
 		/>
-		<div class='list-wrapper'>
-			<VirtualList itemHeight={50} items={filteredActors} let:item>
-				<div>
-					<input
-						checked={item.id ? $selectedActors.includes(item.id) : false}
-						id={item.id}
-						name={item.id}
-						on:change={change(item.id)}
-						type='checkbox'
-						value={item.id}
-					/>
-					<label for={item.id}
-					><img alt={item.name} src={item.img} />
-						<span>{item.name}</span>
-						{#key $selectedActors}
-							{#if getIndex(item.id) > 0}
-								<div class='selectionCountWrapper'>
-									<span class='selectionCount'>{getIndex(item.id)}</span></div>
-							{/if}
-						{/key}
-					</label>
-				</div>
-			</VirtualList>
-		</div>
+		<VirtualList itemCount={filteredActors.length} itemSize={50} height={350}>
+			<div slot='item' let:index let:style {style}>
+				<input
+					checked={filteredActors[index].id ? $selectedActors.includes(filteredActors[index].id) : false}
+					id={filteredActors[index].id}
+					name={filteredActors[index].id}
+					on:change={() => change(filteredActors[index].id)}
+					type='checkbox'
+					value={filteredActors[index].id}
+				/>
+				<label for={filteredActors[index].id}
+				><img alt={filteredActors[index].name} src={filteredActors[index].img} />
+					<span>{filteredActors[index].name}</span>
+					{#key $selectedActors}
+						{#if getIndex(filteredActors[index].id) > 0}
+							<div class='selectionCountWrapper'>
+								<span class='selectionCount'>{getIndex(filteredActors[index].id)}</span></div>
+						{/if}
+					{/key}
+				</label>
+			</div>
+		</VirtualList>
 		<footer>
 			<button on:click={submit}
 			>{localize('obs-utils.applications.actorSelect.closeButton')}</button
@@ -152,6 +150,8 @@
   }
 
   .list-wrapper {
+    top 0
+    left 0
     height 100%
     overflow-y: scroll;
   }
