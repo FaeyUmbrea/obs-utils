@@ -34,7 +34,6 @@
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^5.2.1",
-		"@sveltejs/svelte-virtual-list": "^3.0.1",
 		"@types/lodash-es": "^4.17.12",
 		"@typhonjs-fvtt/runtime": "^0.3.0-next.2",
 		"@typhonjs-fvtt/standard": "^0.3.0-next.2",

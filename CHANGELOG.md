@@ -2,7 +2,12 @@
 
 ### Fix
 
-- removed errornous debug statement
+- removed debug statement
+- fixed odd scrolling issue in actor selection
+
+### Changed
+
+- as a side effect of the above fix, the actor selection window now can no longer be resized
 
 ## Version 4.1.2
 

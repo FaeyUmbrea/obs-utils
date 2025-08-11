@@ -2400,13 +2400,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sveltejs/svelte-virtual-list@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "@sveltejs/svelte-virtual-list@npm:3.0.1"
-  checksum: 10/213e2b4f408ab7fe847dc2982adabad309eb5d32129756fc6fee9e2b5aaa7b3f79d6efbe0d5036f30d8d834f6b6b945036dd1a99a0b4d18c4ff7504816beb050
-  languageName: node
-  linkType: hard
-
 "@sveltejs/vite-plugin-svelte-inspector@npm:^2.1.0":
   version: 2.1.0
   resolution: "@sveltejs/vite-plugin-svelte-inspector@npm:2.1.0"
@@ -7565,7 +7558,6 @@ __metadata:
     "@antfu/eslint-config": "npm:^5.2.1"
     "@jhubbardsf/svelte-sortablejs": "npm:^1.1.0"
     "@playwright/test": "npm:^1.54.2"
-    "@sveltejs/svelte-virtual-list": "npm:^3.0.1"
     "@sveltejs/vite-plugin-svelte": "npm:^3.1.2"
     "@types/lodash-es": "npm:^4.17.12"
     "@types/obs-studio": "npm:^2.17.2"
