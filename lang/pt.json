@@ -1,56 +1,56 @@
 {
 	"obs-utils": {
 		"strings": {
-			"false": "False",
-			"true": "True",
-			"clonePlayer": "Clone the Selected Player's Viewport",
-			"trackOne": "Track the currently active Owned Token",
+			"false": "Falso",
+			"true": "Verdadeiro",
+			"clonePlayer": "Clonar a Visão do Jogador Selecionado",
+			"trackOne": "Rastear o Token Controlado atualmente ativo",
 			"cloneTurnPlayer": "Clone the Turn Player's Viewport",
-			"cloneDM": "Clone the DM's Viewport",
+			"cloneDM": "Clonar a Visão do MJ",
 			"trackPlayerOwned": "Track Player-Owned Tokens",
-			"missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
-			"keypressInfo2": "Mode to ",
-			"keypressInfo1": "Switched ",
-			"trackManual": "Track a manual List of Tokens",
-			"iconPlaceholder": "Icon",
-			"ic": "In Combat",
-			"done": "Done",
-			"limitCanvas": "Limit Canvas to Screen Edges",
-			"avInputPlaceholder": "Enter text or search",
+			"missingTypeNotice": "Tipo Legado/Ausente. Selecione um novo tipo no menu suspenso para editar.",
+			"keypressInfo2": "para ",
+			"keypressInfo1": "Trocado Modo ",
+			"trackManual": "Rastrear uma Lista manual de Tokens",
+			"iconPlaceholder": "Ícone",
+			"ic": "Em Combate",
+			"done": "Feito",
+			"limitCanvas": "Limitar Ecrã às Bordas do Ecrã",
+			"avInputPlaceholder": "Digite o texto ou pesquise",
 			"module": "OBS Utils",
-			"birdseye": "Fit Map to Screen",
-			"trackAll": "Track all Owned Tokens",
+			"birdseye": "Ajustar Mapa ao Ecrã",
+			"trackAll": "Rastear Todos Tokens Controlados",
 			"pauseCameraTracking": "Pause Camera Tracking",
-			"ooc": "Out of Combat"
+			"ooc": "Fora de Combate"
 		},
 		"settings": {
 			"popupCloseDelay": {
-				"Name": "Pop-Up Close Delay",
+				"Name": "Atraso Fechamento de Pop-Up",
 				"Hint": "Seconds until pop-ups are automatically closed. 0 to disable"
 			},
 			"enableOBSWebsocket": {
 				"Hint": "If checked, OBS Websocket will be used for Remoting",
-				"Name": "Enable OBS Websocket?"
+				"Name": "Ativar OBS Websocket?"
 			},
 			"diceSoNiceOverlayWidth": {
 				"Hint": "Width of the element in pixels",
-				"Name": "Dice so Nice Overlay Width"
+				"Name": "Largura Sobreposição Dice so Nice"
 			},
 			"obsWebsocketMenu": {
 				"Hint": "Configure OBS Websocket",
-				"Label": "Open Menu",
-				"Name": "OBS Websocket Settings"
+				"Label": "Abrir Menu",
+				"Name": "Configurações OBS Websocket"
 			},
 			"forceStreamPageOBSMode": {
 				"Name": "Force OBS Mode on Stream Page",
 				"Hint": "Forces the /stream output to be in OBS mode at all times"
 			},
 			"minScale": {
-				"Name": "Minimum Scale",
+				"Name": "Escala Mínima",
 				"Hint": "The lowest that the screen can zoom to"
 			},
 			"obsModeUser": {
-				"Name": "OBS Mode User (Username)",
+				"Name": "Utilizador Modo OBS (Nome de Utilizador)",
 				"Hint": "Sets this User to always be in OBS Mode, regardless of browser"
 			},
 			"proxyOBSMessages": {
@@ -62,23 +62,23 @@
 				"Name": "Pop-Up X"
 			},
 			"obsMode": {
-				"Name": "OBS Mode",
+				"Name": "Modo OBS",
 				"Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
 			},
 			"fixedPopupHeight": {
 				"Hint": "The height of the pop-up in pixels",
-				"Name": "Pop-Up Height"
+				"Name": "Pop-Up Altura"
 			},
 			"showKeybindingPopup": {
 				"Hint": "If checked, using a keyboard shortcut will show a notification what mode was selected",
-				"Name": "Show Keybinding Notification"
+				"Name": "Mostrar Notificação de Atalho"
 			},
 			"fixedPopupY": {
 				"Name": "Pop-Up Y",
 				"Hint": "The distance to the top screen edge in pixels"
 			},
 			"showTrackerInCombat": {
-				"Name": "Show Combat Tracker in Combat?",
+				"Name": "Mostrar Rastreador de Combate em Combate?",
 				"Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
 			},
 			"allowWebsocketAPI": {
@@ -86,55 +86,55 @@
 				"Hint": "If checked, other modules can access OBS Websocket directly"
 			},
 			"rollOverlayEditor": {
-				"Name": "Roll Overlay Editor",
-				"Label": "Open Editor",
+				"Name": "Editor Sobreposição de Rolagem",
+				"Label": "Abrir Editor",
 				"Hint": "Edit the Roll Overlay"
 			},
 			"overlayEditor": {
-				"Name": "Overlay Editor",
+				"Name": "Editor de Sobreposição",
 				"Hint": "Edit the Overlays",
-				"Label": "Open Editor"
+				"Label": "Abrir Editor"
 			},
 			"overlayActorSelect": {
-				"Label": "Open Menu",
-				"Name": "Overlay Actors",
+				"Label": "Abrir Menu",
+				"Name": "Atores de Sobreposição",
 				"Hint": "Select the Actors for the Overlay"
 			},
 			"maxScale": {
-				"Name": "Maximum Scale",
+				"Name": "Escala Máxima",
 				"Hint": "The highest that the screen can zoom to"
 			},
 			"diceSoNice": {
 				"Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
-				"Name": "Enable Dice so Nice overlay"
+				"Name": "Sobreposição Dice so Nice"
 			},
 			"diceSoNiceOverlayHeight": {
-				"Name": "Dice so Nice Overlay Height",
-				"Hint": "Height of the element in pixels"
+				"Name": "Altura Sobreposição Dice so Nice",
+				"Hint": "Altura do elemento, em pixels"
 			},
 			"showAV": {
 				"Hint": "If enabled, the Audio/Video Chat UI will be visible on OBS (might require reload in OBS)",
-				"Name": "Show Video Overlay?"
+				"Name": "Mostrar Sobreposição de Vídeo?"
 			},
 			"fixedPopups": {
 				"Hint": "If enabled, all Popups are repositioned and resized to the configured values",
-				"Name": "Use Fixed Pop-Ups"
+				"Name": "Use Pop-Ups Fixos"
 			},
 			"defaultInCombat": {
-				"Name": "In Combat Mode",
+				"Name": "Modo Em Combate",
 				"Hint": "The in Combat Camera Mode"
 			},
 			"obsRemoteMenu": {
-				"Name": "OBS Remote Settings",
+				"Name": "Configurações OBS Remoto",
 				"Hint": "Configure the OBS Remote",
-				"Label": "Open Menu"
+				"Label": "Abrir Menu"
 			},
 			"defaultOutOfCombat": {
 				"Hint": "The out of Combat Camera Mode",
-				"Name": "Out Of Combat Mode"
+				"Name": "Modo Fora de Combate"
 			},
 			"obsModeGlobalDisable": {
-				"Name": "OBS View Global Disable",
+				"Name": "Desativar Visualização do OBS",
 				"Hint": "This will turn off the OBS features for all clients, regardless of method"
 			},
 			"smoothUserCamera": {
@@ -143,127 +143,127 @@
 			},
 			"fixedPopupWidth": {
 				"Hint": "The width of the pop-up in pixels",
-				"Name": "Pop-Up Width"
+				"Name": "Pop-Up Largura"
 			},
 			"showUserConfig": {
-				"Name": "Allow User-Config to Render?",
+				"Name": "Permitir Renderização de Configuração de Utilizador?",
 				"Hint": "If enabled, the user config dialog will not be suppressed"
 			}
 		},
 		"applications": {
 			"overlayEditor": {
 				"importDialog": {
-					"replaceButton": "Replace",
-					"hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
-					"cancelButton": "Cancel",
-					"formatError": "Imported file is not an OBS Utils Overlay Export",
-					"hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
-					"appendButton": "Append",
-					"title": "Import Data: Overlays",
-					"fileError": "You did not upload a data file",
-					"versionError": "Version unsupported"
+					"replaceButton": "Substituir",
+					"hint2": "Escolha se deseja substituir as suas sobreposições existentes ou adicionar a lista importada.",
+					"cancelButton": "Cancelar",
+					"formatError": "O ficheiro importado não é um OBS Utils Overlay Export",
+					"hint1": "Está prestes a importar uma configuração de Sobreposição exportada. Certifique-se de que foi exportado no mesmo sistema ou as Sobreposições Áudio/Vídeo podem não funcionar.",
+					"appendButton": "Acrescentar",
+					"title": "Importar Dados: Sobreposições",
+					"fileError": "Não carregou um ficheiro de dados",
+					"versionError": "Versão não-suportada"
 				},
-				"importButton": "Import",
+				"importButton": "Importar",
 				"exportDialog": {
-					"content": "Do you want to export your Overlay Settings?",
-					"noButton": "No",
-					"title": "Export your settings?",
-					"yesButton": "Yes"
+					"content": "Deseja exportar as suas Configurações de Sobreposição?",
+					"noButton": "Não",
+					"title": "Exportar as suas configurações?",
+					"yesButton": "Sim"
 				},
-				"closeButton": "Close",
-				"name": "Overlay Editor",
-				"removeComponentButton": "Remove Component",
-				"removeButton": "Remove Overlay",
-				"addButton": "Add New Component",
-				"editStyleButton": "Edit Style",
-				"addOverlayButton": "Add New Overlay",
-				"exportButton": "Export"
+				"closeButton": "Fechar",
+				"name": "Editor de Sobreposição",
+				"removeComponentButton": "Remover Componente",
+				"removeButton": "Remover Sobreposição",
+				"addButton": "Adicionar Novo Componente",
+				"editStyleButton": "Estilar Estilo",
+				"addOverlayButton": "Adicionar Nova Sobreposição",
+				"exportButton": "Exportar"
 			},
 			"director": {
-				"oocTypeHeader": "Out of Combat Type",
-				"canvasOptionsHeader": "Canvas Options",
+				"oocTypeHeader": "Tipo Fora de Combate",
+				"canvasOptionsHeader": "Opções de Tela",
 				"obsUserCommands": "OBS User Commands",
-				"trackedPlayerHeader": "Tracked Player",
-				"name": "Director",
-				"icTypeHeader": "In Combat Type",
+				"trackedPlayerHeader": "Jogador Rastreado",
+				"name": "Diretor",
+				"icTypeHeader": "Tipo Em Combate",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
 			},
 			"actorSelect": {
-				"resetButton": "Reset",
-				"name": "Actor Selection",
-				"closeButton": "Close",
-				"searchPlaceholder": "Search"
+				"resetButton": "Reiniciar",
+				"name": "Seleção de Atores",
+				"closeButton": "Fechar",
+				"searchPlaceholder": "Procurar"
 			},
 			"obsWebsocket": {
-				"portLabel": "Port",
-				"name": "OBS Websocket Settings",
-				"passwordLabel": "Password",
-				"syncButton": "Sync",
-				"saveButton": "Save",
-				"syncLabel": "Sync Target Client",
+				"portLabel": "Porta",
+				"name": "Configurações OBS Websocket",
+				"passwordLabel": "Palavra-passe",
+				"syncButton": "Sincronizar",
+				"saveButton": "Gravar",
+				"syncLabel": "Sincronizar Cliente Alvo",
 				"urlLabel": "URL"
 			},
 			"obsRemote": {
-				"vttSceneLabel": "VTT Scene Name",
-				"sourceName": "OBS Source Name",
-				"name": "OBS Remote Settings",
-				"disableSource": "Disable Source",
-				"onCombatEnd": "Combat End",
-				"switchScene": "Switch Scene",
-				"enableSource": "Enable Source",
-				"onLoad": "Load",
-				"onCombatStart": "Combat Start",
-				"sceneName": "Scene Name",
-				"vttScenePlaceholder": "Input name or drop a scene here",
-				"onPause": "Pause",
-				"onUnpause": "Unpause",
-				"onStopStreaming": "Stop Streaming",
-				"toggleSource": "Toggle Source",
-				"onSceneLoad": "Scene Load"
+				"vttSceneLabel": "Nome da Cena no VTT",
+				"sourceName": "Nome da Fonte no OBS",
+				"name": "Configurações Remotas do OBS",
+				"disableSource": "Desativar Fonte",
+				"onCombatEnd": "Fim do Combate",
+				"switchScene": "Trocar Cena",
+				"enableSource": "Ativar Fonte",
+				"onLoad": "Carregar",
+				"onCombatStart": "Início do Combate",
+				"sceneName": "Nome da Cena",
+				"vttScenePlaceholder": "Insira o nome ou solte uma cena aqui",
+				"onPause": "Pausar",
+				"onUnpause": "Retomar",
+				"onStopStreaming": "Parar Streaming",
+				"toggleSource": "Alternar Fonte",
+				"onSceneLoad": "Carregar Cena"
 			},
 			"rollOverlayEditor": {
-				"backgroundImageUrl": "Background Image URL",
-				"name": "Roll Overlay Editor",
-				"preRollImage": "Pre Roll Image",
-				"imageUrl": "Image URL",
-				"foregroundImageUrl": "Foreground Image URL",
-				"rollImage": "Roll Image",
-				"test": "Test",
+				"backgroundImageUrl": "URL Imagem de Fundo",
+				"name": "Editor Sobreposição de Rolagem",
+				"preRollImage": "Imagem Pré-Rolagem",
+				"imageUrl": "URL da Imagem",
+				"foregroundImageUrl": "URL Imagem de Primeiro Plano",
+				"rollImage": "Imagem Rolagem",
+				"test": "Teste",
 				"fadeOut": "Fade Out (ms)",
-				"postRollImage": "Post Roll Image",
-				"duration": "Duration (ms)",
-				"delay": "Delay (ms)",
+				"postRollImage": "Imagem Pós-Rolagem",
+				"duration": "Duração (ms)",
+				"delay": "Atraso (ms)",
 				"fadeIn": "Fade In (ms)"
 			},
 			"styleEditor": {
-				"submitButton": "Submit",
-				"name": "Style Editor"
+				"submitButton": "Enviar",
+				"name": "Editor de Estilo"
 			}
 		},
 		"overlays": {
 			"fontAwesomeIcon": {
-				"name": "Font Awesome Icon"
+				"name": "Ícone Font Awesome"
 			},
 			"booleanAVImage": {
-				"name": "Boolean AV Image"
+				"name": "Imagem Booleana Áudio/Vídeo"
 			},
 			"plainText": {
-				"name": "Plain Text"
+				"name": "Texto Simples"
 			},
 			"image": {
-				"name": "Image"
+				"name": "Imagem"
 			},
 			"multiImageAV": {
-				"name": "Multi Image AV"
+				"name": "Multiimagem Áudio/Vídeo"
 			},
 			"multiIconAV": {
-				"name": "Multi Icon AV"
+				"name": "Multiícone Áudio/Vídeo"
 			},
 			"progressBar": {
-				"name": "Progress Bar"
+				"name": "Barra de Progresso"
 			},
 			"booleanAVIcon": {
-				"name": "Boolean AV Icon"
+				"name": "Ícone Booleano Áudio/Vídeo"
 			}
 		}
 	}
