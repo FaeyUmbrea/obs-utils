@@ -264,6 +264,14 @@
 			"proxyOBSMessages": {
 				"Name": "Sende OBS Modus Benachrichtigungen and Spielleiter",
 				"Hint": "Wenn aktiv, werden die im OBS Modus unterdrückten Benachrichtigungen auf allen Spielleiter Clients widergegeben"
+			},
+			"streamChatPopupStyle": {
+				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
+				"Name": "Notification-Style Chat Overlay"
+			},
+			"showChatNotificationsOnCanvas": {
+				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
+				"Name": "Display Chat Notifications in Game"
 			}
 		}
 	}
