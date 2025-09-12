@@ -1,3 +1,10 @@
+## Version 4.1.4
+
+### Added
+
+- Added a new setting to allow the chat notification popups introduced in V13 to show up on stream on top of the game canvas
+  - The text input will still be hidden, so the notifications will appear to pop up a bit higher than expected
+
 ## Version 4.1.3
 
 ### Fix
