@@ -405,6 +405,15 @@ class OBSUtilsSettings extends TJSGameSettings {
 			}),
 		);
 
+		settings.push(
+			createSetting('showChatNotificationsOnCanvas', {
+				type: Boolean,
+				scope: 'world',
+				config: true,
+				default: false,
+			}),
+		);
+
 		this.registerAll(settings, true);
 	}
 }

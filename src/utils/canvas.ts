@@ -4,7 +4,7 @@ import { getSetting } from './settings.ts';
 
 export const VIEWPORT_DATA: Map<string, { x: number; y: number; scale: number }> = new Map();
 
-export function hideApplication(_: unknown, html: JQuery<HTMLElement> | HTMLElement) {
+export function hideApplication(_: unknown, html: JQuery | HTMLElement) {
 	try {
 		(html as JQuery).hide();
 	} catch {
@@ -13,9 +13,16 @@ export function hideApplication(_: unknown, html: JQuery<HTMLElement> | HTMLElem
 }
 
 export function hideNotifications() {
-	const panel = document.querySelector('div#chat-notifications');
-	if (panel) {
-		(panel as HTMLElement).style.display = 'none';
+	if (!getSetting('showChatNotificationsOnCanvas')) {
+		const panel = document.querySelector('div#chat-notifications');
+		if (panel) {
+			(panel as HTMLElement).style.display = 'none';
+		}
+	} else {
+		const textArea = document.querySelector('textarea#chat-message');
+		if (textArea) {
+			(textArea as HTMLElement).style.display = 'none';
+		}
 	}
 
 	const buttons = document.querySelector('nav.tabs');
@@ -25,9 +32,7 @@ export function hideNotifications() {
 }
 
 export function hideTokenBorder(token: Token | undefined) {
-	// @ts-expect-error alpha property not mapped
 	if (token?.border?.alpha) {
-		// @ts-expect-error alpha property not mapped
 		token.border.alpha = 0;
 	}
 }
@@ -36,8 +41,9 @@ function getAutoTokens() {
 	return (game as ReadyGame).canvas?.tokens?.ownedTokens;
 }
 
-function getPlayerTokens() {
+function getPlayerTokens(): Token[] | undefined {
 	const playerCharacters = (game as ReadyGame).users?.players.filter(e => (e as User).character != null).map(player => (player as User).character!.id);
+	// @ts-expect-error Modifying Internals, no types available
 	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => playerCharacters?.includes(token?.actor?.id ?? null)).filter((token: Token) => token !== undefined);
 }
 
@@ -299,9 +305,9 @@ function clamp(canvasPos: { x: number; y: number; scale: number }) {
 	scale = Math.max(minScale, scale);
 
 	const offsetX
-    = (sceneDimensions.width * scale - screenDimensions[0]) / scale / 2;
+		= (sceneDimensions.width * scale - screenDimensions[0]) / scale / 2;
 	const offsetY
-    = (sceneDimensions.height * scale - screenDimensions[1]) / scale / 2;
+		= (sceneDimensions.height * scale - screenDimensions[1]) / scale / 2;
 	const centerX = sceneDimensions.width / 2;
 	const centerY = sceneDimensions.height / 2;
 

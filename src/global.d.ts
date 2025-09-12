@@ -1,9 +1,10 @@
-import type { AllHooks } from 'fvtt-types/src/foundry/client/hooks';
 import type { ComponentConstructorOptions, SvelteComponent } from 'svelte';
 import type { ObsUtilsApi } from './utils/api';
 import type { OBSRemoteSettings, OBSWebsocketSettings } from './utils/types.ts';
 
 declare global {
+	let libWrapper: any | undefined;
+
 	interface Window {
 		obsstudio: any | undefined;
 	}
@@ -89,9 +90,12 @@ declare global {
 		'obs-utils.rollOverlayPreRollEnabled': boolean;
 		'obs-utils.forceStreamPageOBSMode': boolean;
 		'obs-utils.proxyOBSMessages': boolean;
+		'obs-utils.showChatNotificationsOnCanvas': boolean;
+		'obs-utils.streamChatPopupStyle': boolean;
 	}
-	namespace HookConfig {
-		interface HookConfig extends AllHooks {
+
+	declare module 'fvtt-types/configuration' {
+		interface HookConfig {
 			'obs-utils.init': () => void;
 			'obs-utils.streamModeInit': () => void;
 			'obs-utils.refreshActor': (actor: Actor) => void;

@@ -45,15 +45,14 @@ function start() {
 		}
 
 		// Update obsModeUser choice list once usernames are available
-		(game as ReadyGame)!.settings!.settings!.get('obs-utils.obsModeUser')!.choices
-      = Object.fromEntries(
-				[['none', 'None']].concat(
-					(game as ReadyGame | undefined)?.users?.filter(
-						(e: User) =>
-							!e.isGM || (game as ReadyGame).users.filter((user: User) => user.isGM).length > 1,
-					).map(e => [e.id, e.name]) ?? [[]],
-				),
-			);
+		(game as ReadyGame)!.settings!.settings!.get('obs-utils.obsModeUser')!.choices = Object.fromEntries(
+			[['none', 'None']].concat(
+				(game as ReadyGame | undefined)?.users?.filter(
+					(e: User) =>
+						!e.isGM || (game as ReadyGame).users.filter((user: User) => user.isGM).length > 1,
+				).map(e => [e.id, e.name]) ?? [[]],
+			),
+		);
 	});
 
 	Hooks.on('canvasTearDown', deactivateViewportTracking);

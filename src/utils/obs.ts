@@ -162,7 +162,7 @@ async function registerOBSEvents() {
 
 export function initOBS() {
 	if ((game as ReadyGame).view === 'stream') {
-		Hooks.once('renderChatLog', () => renderOverlays());
+		Hooks.once('streamReady', () => renderOverlays());
 	}
 	if ((game as ReadyGame).view !== 'game') return;
 	Hooks.on('canvasReady', screenReload);
