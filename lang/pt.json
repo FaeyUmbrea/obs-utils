@@ -148,6 +148,14 @@
 			"showUserConfig": {
 				"Name": "Permitir Renderização de Configuração de Utilizador?",
 				"Hint": "If enabled, the user config dialog will not be suppressed"
+			},
+			"streamChatPopupStyle": {
+				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
+				"Name": "Notification-Style Chat Overlay"
+			},
+			"showChatNotificationsOnCanvas": {
+				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
+				"Name": "Display Chat Notifications in Game"
 			}
 		},
 		"applications": {
