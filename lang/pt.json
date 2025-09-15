@@ -5,7 +5,7 @@
 			"true": "Verdadeiro",
 			"clonePlayer": "Clonar a Visão do Jogador Selecionado",
 			"trackOne": "Rastear o Token Controlado atualmente ativo",
-			"cloneTurnPlayer": "Clone the Turn Player's Viewport",
+			"cloneTurnPlayer": "Clonar Janela de Visualização do Jogador do Turno",
 			"cloneDM": "Clonar a Visão do MJ",
 			"trackPlayerOwned": "Track Player-Owned Tokens",
 			"missingTypeNotice": "Tipo Legado/Ausente. Selecione um novo tipo no menu suspenso para editar.",
