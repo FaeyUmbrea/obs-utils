@@ -382,7 +382,7 @@ class OBSUtilsSettings extends TJSGameSettings {
 			createSetting('showKeybindingPopup', {
 				default: true,
 				type: Boolean,
-				scope: 'client',
+				scope: 'user',
 				config: true,
 			}),
 		);

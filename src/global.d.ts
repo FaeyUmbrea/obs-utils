@@ -93,8 +93,10 @@ declare global {
 		'obs-utils.showChatNotificationsOnCanvas': boolean;
 		'obs-utils.streamChatPopupStyle': boolean;
 	}
+}
 
-	declare module 'fvtt-types/configuration' {
+declare module 'fvtt-types/configuration' {
+	namespace Hooks {
 		interface HookConfig {
 			'obs-utils.init': () => void;
 			'obs-utils.streamModeInit': () => void;
