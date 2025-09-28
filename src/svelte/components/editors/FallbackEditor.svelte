@@ -1,7 +1,7 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
+
 </script>
 
 <span>
-	{localize('obs-utils.strings.missingTypeNotice')}
+	{game.i18n.localize('obs-utils.strings.missingTypeNotice')}
 </span>;

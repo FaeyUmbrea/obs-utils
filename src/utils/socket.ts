@@ -4,6 +4,8 @@ import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from './canvas';
 import { isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';
 
+type NotifyOptions = foundry.applications.ui.Notifications.NotifyOptions;
+
 Hooks.once('init', () => {
 	(game as ReadyGame | undefined)?.socket?.on('module.obs-utils', handleEvent);
 });
@@ -28,7 +30,7 @@ async function handleEvent({ eventType, targetUser, payload }: {
 
 export type NotificationType = 'info' | 'warning' | 'error' | 'success';
 
-function showProxiedNotification(payload: { message: string; type: NotificationType; options: NotificationOptions }) {
+function showProxiedNotification(payload: { message: string; type: NotificationType; options: NotifyOptions }) {
 	if (!(game as ReadyGame | undefined)?.user.isGM || !getSetting('proxyOBSMessages')) {
 		return;
 	}
@@ -86,7 +88,7 @@ export function deactivateViewportTracking() {
 	viewportTrackingActive = false;
 }
 
-function socketCanvasInternal(position: { x: number; y: number; scale: number }) {
+function socketCanvasInternal(position: Canvas.ViewPosition) {
 	if (!viewportTrackingActive || getSetting('pauseCameraTracking')) {
 		return;
 	}
@@ -101,7 +103,7 @@ const debouncedSocketCanvas = debounce(socketCanvasInternal, 100, {
 	maxWait: 500,
 });
 
-export function socketCanvas(_canvas: Canvas, position: { x: number; y: number; scale: number }) {
+export function socketCanvas(_canvas: Canvas, position: Canvas.ViewPosition) {
 	if (getSetting('smoothUserCamera')) {
 		debouncedSocketCanvas(position);
 	} else {

@@ -213,7 +213,7 @@ export function isGM() {
 	return (game as ReadyGame).user?.isGM;
 }
 
-export function expandTokenHud(_tokenHud: TokenHUD, html: HTMLFormElement, token: TokenDocument) {
+export function expandTokenHud(_tokenHud: TokenHUD, html: HTMLElement, token: TokenDocument) {
 	if ((game as ReadyGame).user?.isGM) {
 		const rightSide = html.querySelector('div.col.right');
 		if (!rightSide) return;
@@ -257,7 +257,7 @@ export function scaleToFit() {
 	clampAndApply({ ...center, scale });
 }
 
-export async function closePopupWithDelay(popout: Application) {
+export async function closePopupWithDelay(popout: { close: () => void }) {
 	const delay = getSetting('popupCloseDelay')!;
 	if (delay > 0) {
 		await sleep(delay * 1000);
@@ -265,7 +265,7 @@ export async function closePopupWithDelay(popout: Application) {
 	}
 }
 
-export async function applyPopupConstrains(popout: Application) {
+export async function applyPopupConstrains(popout: { setPosition: (position: { left: number; top: number; width: number; height: number }) => void }) {
 	if (getSetting('fixedPopups')) {
 		const position = {
 			left: getSetting('fixedPopupX')!,
@@ -288,7 +288,7 @@ export async function hideSidebar() {
 	(ui.sidebar?.element as HTMLElement).style.display = 'none';
 }
 
-export async function screenReload(_?: Canvas) {
+export async function screenReload() {
 	scaleToFit();
 	tokenMoved();
 }

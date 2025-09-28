@@ -4,7 +4,7 @@ import { expandTokenHud, isGM } from './utils/canvas.ts';
 import { isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
-import { rollOverlaySettings, runMigrations, settings } from './utils/settings.ts';
+import { initRollOverlaySettings, initSettings, runMigrations } from './utils/settings.ts';
 import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
 
 function start() {
@@ -18,8 +18,8 @@ function start() {
 			Hooks.call('obs-utils.init');
 		}
 
-		settings.init();
-		rollOverlaySettings.init();
+		initSettings();
+		initRollOverlaySettings();
 		registerKeybindings();
 
 		// Load UI Component only on /game
@@ -36,7 +36,9 @@ function start() {
 
 	Hooks.once('ready', async () => {
 		if (isGM()) {
+			// @ts-expect-error Typed incorrectly
 			Hooks.on('renderTokenHUD', expandTokenHud);
+			Hooks.on('renderTokenHUD', (...args) => console.error(args));
 			runMigrations();
 		}
 		if (isOBS()) {
@@ -63,6 +65,7 @@ function start() {
 	Hooks.on('updateActor', actor =>
 		Hooks.call('obs-utils.refreshActor', actor));
 
+	// @ts-expect-error Bluh
 	Hooks.on('getSceneControlButtons', buildButtons);
 }
 start();

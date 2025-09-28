@@ -1,7 +1,5 @@
 import { svelte } from '@sveltejs/vite-plugin-svelte';
-import { postcssConfig, terserConfig } from '@typhonjs-fvtt/runtime/rollup';
 import { visualizer } from 'rollup-plugin-visualizer';
-
 import { sveltePreprocess } from 'svelte-preprocess';
 import { defineConfig } from 'vite';
 import { configDefaults } from 'vitest/config';
@@ -58,11 +56,6 @@ export default defineConfig(({ mode }) => {
 			},
 		},
 
-		css: {
-			// Creates a standard configuration for PostCSS with autoprefixer & postcss-preset-env.
-			postcss: postcssConfig({ compress: s_COMPRESS, sourceMap: s_SOURCEMAPS }),
-		},
-
 		// About server options:
 		// - Set to `open` to boolean `false` to not open a browser window automatically. This is useful if you set up a
 		// debugger instance in your IDE and launch it with the URL: 'http://localhost:30001/game'.
@@ -99,7 +92,7 @@ export default defineConfig(({ mode }) => {
 			brotliSize: true,
 			minify: s_COMPRESS ? 'terser' : false,
 			target: ['esnext', 'chrome127'],
-			terserOptions: s_COMPRESS ? { ...terserConfig(), ecma: 2022 } : void 0,
+			terserOptions: s_COMPRESS ? { ecma: 2022 } : void 0,
 			lib: {
 				entry: './index.ts',
 				formats: ['es'],

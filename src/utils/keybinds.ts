@@ -1,4 +1,3 @@
-import { localize } from '#runtime/util/i18n';
 import { ICCHOICES, MODULE_ID, OOCCHOICES } from './const.js';
 import { getSetting, setSetting } from './settings.ts';
 
@@ -9,7 +8,7 @@ export function registerKeybindings() {
 			name,
 			'obs-utils.strings.ic',
 			`Digit${index + 1}`,
-			['Shift', 'Control'],
+			[KeyboardManager.MODIFIER_KEYS.SHIFT, KeyboardManager.MODIFIER_KEYS.CONTROL],
 			'defaultInCombat',
 		);
 	});
@@ -19,13 +18,13 @@ export function registerKeybindings() {
 			name,
 			'obs-utils.strings.ooc',
 			`Digit${index + 1}`,
-			['Shift'],
+			[KeyboardManager.MODIFIER_KEYS.SHIFT],
 			'defaultOutOfCombat',
 		);
 	});
 }
 
-function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: string[], setting: K) {
+function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: (KeyboardManager.MODIFIER_KEYS | keyof KeyboardManager.ModifierKeys)[], setting: K) {
 	(game as ReadyGame | undefined)?.keybindings?.register(MODULE_ID, name, {
 		editable: [{ key, modifiers }],
 		restricted: true,
@@ -35,13 +34,13 @@ function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice
 			setSetting(setting, choice).then();
 			if (getSetting('showKeybindingPopup')) {
 				ui?.notifications?.info(
-					`${localize('obs-utils.strings.module')
+					`${(game as ReadyGame).i18n.localize('obs-utils.strings.module')
 					} | ${
-						localize('obs-utils.strings.keypressInfo1')
-					}${localize(hint)
+						(game as ReadyGame).i18n.localize('obs-utils.strings.keypressInfo1')
+					}${(game as ReadyGame).i18n.localize(hint)
 					} ${
-						localize('obs-utils.strings.keypressInfo2')
-					}${localize(name)}`,
+						(game as ReadyGame).i18n.localize('obs-utils.strings.keypressInfo2')
+					}${(game as ReadyGame).i18n.localize(name)}`,
 				);
 			}
 		},

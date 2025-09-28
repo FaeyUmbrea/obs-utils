@@ -1,5 +1,4 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
 
 	import Select from 'svelte-select';
 	import { getActorValues } from '../../../utils/helpers';
@@ -31,5 +30,5 @@
 	items={items}
 	on:filter={handleFilter}
 	value={data}
-	placeholder={localize('obs-utils.strings.avInputPlaceholder')}
+	placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 />

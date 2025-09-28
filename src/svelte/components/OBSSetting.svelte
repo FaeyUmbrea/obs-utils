@@ -1,5 +1,5 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
+
 	import { fade } from 'svelte/transition';
 	import { OBSAction } from '../../utils/settings.ts';
 
@@ -31,20 +31,20 @@
 			on:change={changeEvent}
 		>
 			{#each actionTypes as action}
-				<option value={action}>{localize(action)}</option>
+				<option value={action}>{game.i18n.localize(action)}</option>
 			{/each}
 		</select>
 		<input
 			bind:value={event.sceneName}
 			disabled={sceneDisabled}
 			name='sceneNames'
-			placeholder={localize('obs-utils.applications.obsRemote.sceneName')}
+			placeholder={game.i18n.localize('obs-utils.applications.obsRemote.sceneName')}
 		/>
 		<input
 			bind:value={event.targetName}
 			disabled={idDisabled}
 			name='itemIDs'
-			placeholder={localize('obs-utils.applications.obsRemote.sourceName')}
+			placeholder={game.i18n.localize('obs-utils.applications.obsRemote.sourceName')}
 		/>
 		<button on:click={removeFn} type='button'>
 			<i class='fas fa-trash'></i>

@@ -1,5 +1,5 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
+
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import StyleEditor from '../../applications/styleditor.ts';
 	import { OverlayComponentData } from '../../utils/types.ts';
@@ -60,19 +60,19 @@
 	<button
 		class='add'
 		on:click={() => handleAdd()}
-		title={localize('obs-utils.applications.overlayEditor.addButton')}
+		title={game.i18n.localize('obs-utils.applications.overlayEditor.addButton')}
 		type='button'><i class='fas fa-plus'></i></button
 	>
 	<button
 		class='add'
 		on:click={() => openStyleEditor()}
-		title={localize('obs-utils.applications.overlayEditor.editStyleButton')}
+		title={game.i18n.localize('obs-utils.applications.overlayEditor.editStyleButton')}
 		type='button'><i class='fas fa-pencil'></i></button
 	>
 	<button
 		class='remove-tab'
 		on:click={() => removeFn(componentindex)}
-		title={localize('obs-utils.applications.overlayEditor.removeButton')}
+		title={game.i18n.localize('obs-utils.applications.overlayEditor.removeButton')}
 		type='button'><i class='fas fa-trash'></i></button
 	>
 </footer>

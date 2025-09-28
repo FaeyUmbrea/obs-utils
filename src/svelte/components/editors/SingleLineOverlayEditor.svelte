@@ -1,5 +1,5 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
+
 	import StyleEditor from '../../../applications/styleditor.ts';
 	import { getApi } from '../../../utils/helpers';
 	import FallbackEditor from './FallbackEditor.svelte';
@@ -42,7 +42,7 @@
 		<i class='fa-light fa-bars grab'></i>
 		<select bind:value={component.type} name='types'>
 			{#each [...componentNames] as [component, name]}
-				<option value={component}>{localize(name)}</option>
+				<option value={component}>{game.i18n.localize(name)}</option>
 			{/each}
 		</select>
 		<svelte:component
@@ -52,7 +52,7 @@
 		<div class={getCompactButtons(component.type) ? '' : 'buttons'}>
 			<button
 				on:click={() => removeFn(index)}
-				title={localize(
+				title={game.i18n.localize(
 					'obs-utils.applications.overlayEditor.removeComponentButton',
 				)}
 				type='button'
@@ -62,7 +62,7 @@
 			<button
 				class='add'
 				on:click={() => openStyleEditor()}
-				title={localize(
+				title={game.i18n.localize(
 					'obs-utils.applications.overlayEditor.editStyleButton',
 				)}
 				type='button'

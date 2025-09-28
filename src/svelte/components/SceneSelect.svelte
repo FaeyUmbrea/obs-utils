@@ -1,6 +1,4 @@
-<script>
-	import { TJSDocument } from '#runtime/svelte/store/fvtt/document';
-	import { localize } from '#runtime/util/i18n';
+<script lang='ts'>
 	import { OBSEvent, SceneLoadEvent } from '../../utils/types.ts';
 	import ObsSetting from './OBSSetting.svelte';
 
@@ -59,11 +57,11 @@
 			<li>
 				<div class='setting'>
 					<span
-					>{localize('obs-utils.applications.obsRemote.vttSceneLabel')}</span
+					>{game.i18n.localize('obs-utils.applications.obsRemote.vttSceneLabel')}</span
 					><input
 						name='input-{index}'
 						bind:value={event.sceneName}
-						placeholder={localize(
+						placeholder={game.i18n.localize(
 							'obs-utils.applications.obsRemote.vttScenePlaceholder',
 						)}
 						on:drop|preventDefault|stopPropagation={event =>

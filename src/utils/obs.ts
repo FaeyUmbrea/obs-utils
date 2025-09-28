@@ -165,9 +165,11 @@ export function initOBS() {
 		Hooks.once('streamReady', () => renderOverlays());
 	}
 	if ((game as ReadyGame).view !== 'game') return;
-	Hooks.on('canvasReady', screenReload);
-	Hooks.on('canvasReady', async (canvas) => {
-		await handleOBSScene(canvas.scene!.name);
+	Hooks.on('canvasReady', () => {
+		screenReload().then();
+	});
+	Hooks.on('canvasReady', (canvas) => {
+		handleOBSScene(canvas.scene!.name).then();
 	});
 
 	Hooks.on('renderSidebar', hideApplication);
@@ -182,7 +184,7 @@ export function initOBS() {
 	Hooks.on('renderPlayers', hideApplication);
 	Hooks.on('ready', hideNotifications);
 	Hooks.on('renderHotbar', hideApplication);
-	Hooks.on('renderUserConfig', (_, html: JQuery<HTMLElement>) => {
+	Hooks.on('renderUserConfig', (_, html: HTMLElement) => {
 		if (!getSetting('showUserConfig')) {
 			hideApplication(_, html);
 		}
@@ -203,11 +205,15 @@ export function initOBS() {
 
 	// Close Popups after configurable Time
 	Hooks.on('renderJournalSheet', closePopupWithDelay);
-	Hooks.on('renderImagePopout', closePopupWithDelay);
+	Hooks.on('renderImagePopout', (popout: foundry.applications.apps.ImagePopout) => {
+		closePopupWithDelay(popout).then();
+	});
 
 	// Resize and Reposition Popups if enabled
 	Hooks.on('renderJournalSheet', applyPopupConstrains);
-	Hooks.on('renderImagePopout', applyPopupConstrains);
+	Hooks.on('renderImagePopout', (popout: foundry.applications.apps.ImagePopout) => {
+		applyPopupConstrains(popout).then();
+	});
 
 	// Adding OBS Remote hooks;
 	Hooks.on('updateCombat', async (_combat, change) => {
@@ -247,9 +253,11 @@ export function initOBS() {
 
 function registerLibWrapper() {
 	libWrapper.register('obs-utils', 'foundry.applications.ui.Notifications.prototype.notify', (wrapped: any, message: string, type: NotificationType = 'info', options: NotificationOptions = {}) => {
+		// @ts-expect-error funky shit
 		if (options.progress) {
 			return wrapped(message, type, options);
 		}
+		// @ts-expect-error funky shit
 		if (options.console) {
 			switch (type) {
 				case 'warning':

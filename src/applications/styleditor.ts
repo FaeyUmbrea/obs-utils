@@ -1,41 +1,33 @@
-import type { SvelteApp } from '#runtime/svelte/application';
-import { SvelteApplication } from '#runtime/svelte/application';
+import type { DeepPartial } from 'fvtt-types/utils';
 import StyleEditorUi from '../svelte/StyleEditorUi.svelte';
+import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
-// @ts-expect-error mixins dont work
-export default class StyleEditor extends SvelteApplication<Options> {
+export default class StyleEditor extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
 	style: string;
 	callback: (style: string) => void | Promise<void>;
 
-	constructor(style: string, callback: (style: string) => void | Promise<void>) {
-		super();
+	constructor(options: DeepPartial<foundry.applications.api.ApplicationV2.Configuration>, style: string, callback: (style: string) => void | Promise<void>) {
+		super(options);
 		this.style = style;
 		this.callback = callback;
 	}
 
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['styleeditor', 'themed'],
-			id: 'styleeditor-application',
-			title: 'obs-utils.applications.styleEditor.name',
-			// tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
+	static override DEFAULT_OPTIONS = {
+		classes: ['styleeditor', 'themed'],
+		id: 'styleeditor-application',
+		title: 'obs-utils.applications.styleEditor.name',
+		// tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
+		position: {
 			height: 125,
 			width: 400,
-			// resizable: true,
-			svelte: {
-				class: StyleEditorUi,
-				target: document.body,
-			},
-		});
-	}
+		},
+		// resizable: true,
+	};
+
+	protected override root = StyleEditorUi;
 
 	async close(options = {}) {
 		this.callback(this.style);
 		return super.close(options);
 	}
-}
-
-export type External = SvelteApp.Context.External<StyleEditor>;
-export interface Options extends SvelteApp.Options {
-	style: string;
 }

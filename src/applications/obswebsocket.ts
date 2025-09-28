@@ -1,25 +1,22 @@
-import { SvelteApplication } from '#runtime/svelte/application';
 import ObsWebsocket from '../svelte/OBSWebsocket.svelte';
+import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
-// @ts-expect-error mixins dont work
-export default class OBSWebsocketApplication extends SvelteApplication {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['obswebsocket', 'themed'],
-			id: 'obswebsocket-application',
-			title: 'obs-utils.applications.obsWebsocket.name',
-			tabs: [
-				{
-					navSelector: '.tabs',
-					contentSelector: '.content',
-					initial: 'onLoad',
-				},
-			],
-			svelte: {
-				class: ObsWebsocket,
-				target: document.body,
+export default class OBSWebsocketApplication extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
+	static override DEFAULT_OPTIONS = {
+		classes: ['obswebsocket', 'themed'],
+		id: 'obswebsocket-application',
+		title: 'obs-utils.applications.obsWebsocket.name',
+		tabs: [
+			{
+				navSelector: '.tabs',
+				contentSelector: '.content',
+				initial: 'onLoad',
 			},
+		],
+		position: {
 			width: 300,
-		});
-	}
+		},
+	};
+
+	protected override root = ObsWebsocket;
 }

@@ -1,6 +1,6 @@
-<script>
+<script lang='ts'>
 	import { fade } from 'svelte/transition';
-	import { rollOverlaySettings } from '../../../utils/settings.ts';
+	import { settings as rollOverlaySettings } from '../../../utils/settings.ts';
 
 	export let id;
 

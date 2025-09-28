@@ -265,14 +265,14 @@
 				"Name": "Send OBS Mode Notifications to GM",
 				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
 			},
-      "showChatNotificationsOnCanvas": {
-        "Name": "Display Chat Notifications in Game",
-        "Hint": "If enabled, chat message popups will be not be hidden from the in-game UI"
-      },
-      "streamChatPopupStyle": {
-        "Name": "Notification-Style Chat Overlay",
-        "Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View"
-      }
+			"showChatNotificationsOnCanvas": {
+				"Name": "Display Chat Notifications in Game",
+				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI"
+			},
+			"streamChatPopupStyle": {
+				"Name": "Notification-Style Chat Overlay",
+				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View"
+			}
 		}
 	}
 }

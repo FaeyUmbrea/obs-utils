@@ -1,82 +1,75 @@
-<svelte:options accessors={true} />
-
-<script>
-	import { ApplicationShell } from '#runtime/svelte/component/application';
-	import { localize } from '#runtime/util/i18n';
-	import { getContext } from 'svelte';
+<script lang='ts'>
+	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import VirtualList from 'svelte-tiny-virtual-list';
 	import { settings } from '../utils/settings.ts';
 
+	// props via rune
+	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
+
+	// runes
 	const selectedActors = settings.getStore('overlayActors');
-
-	const actors = game.actors;
-	export let elementRoot = void 0;
-
-	let searchTerm = '';
-
-	$: filteredActors = actors.filter(
-		item => item.name?.indexOf(searchTerm) !== -1,
+	let searchTerm = $state('');
+	const actors = $derived((game as ReadyGame).actors);
+	const filteredActors = $derived(
+		actors.filter((item: any) => item.name?.indexOf(searchTerm) !== -1),
 	);
-	const context = getContext('#external');
 
 	async function submit() {
-		await context.application.close();
+		await foundryApp.close();
 	}
 
-	function change(id) {
-		let actors = $selectedActors;
-		if (actors.includes(id)) {
-			actors = actors.filter(e => e !== id);
+	function change(id: string) {
+		let list = $state.snapshot($selectedActors);
+		if (list.includes(id)) {
+			list = list.filter((e: string) => e !== id);
 		} else {
-			actors.push(id);
+			list = [...list, id];
 		}
-		$selectedActors = actors;
+		selectedActors.set(list);
 	}
 
-	function getIndex(id) {
-		return $selectedActors.indexOf(id) + 1;
+	function getIndex(id: string) {
+		return $state.snapshot($selectedActors).indexOf(id) + 1;
 	}
 </script>
 
-<ApplicationShell bind:elementRoot={elementRoot}>
-	<main>
-		<input
-			bind:value={searchTerm}
-			name='search'
-			type='text'
-			placeholder={localize(
-				'obs-utils.applications.actorSelect.searchPlaceholder',
-			)}
-		/>
-		<VirtualList itemCount={filteredActors.length} itemSize={50} height={350}>
-			<div slot='item' let:index let:style {style}>
-				<input
-					checked={filteredActors[index].id ? $selectedActors.includes(filteredActors[index].id) : false}
-					id={filteredActors[index].id}
-					name={filteredActors[index].id}
-					on:change={() => change(filteredActors[index].id)}
-					type='checkbox'
-					value={filteredActors[index].id}
-				/>
-				<label for={filteredActors[index].id}
-				><img alt={filteredActors[index].name} src={filteredActors[index].img} />
-					<span>{filteredActors[index].name}</span>
-					{#key $selectedActors}
-						{#if getIndex(filteredActors[index].id) > 0}
-							<div class='selectionCountWrapper'>
-								<span class='selectionCount'>{getIndex(filteredActors[index].id)}</span></div>
-						{/if}
-					{/key}
-				</label>
-			</div>
-		</VirtualList>
-		<footer>
-			<button on:click={submit}
-			>{localize('obs-utils.applications.actorSelect.closeButton')}</button
-			>
-		</footer>
-	</main>
-</ApplicationShell>
+<main>
+	<input
+		bind:value={searchTerm}
+		name='search'
+		type='text'
+		placeholder={game.i18n?.localize(
+			'obs-utils.applications.actorSelect.searchPlaceholder',
+		)}
+	/>
+	<VirtualList itemCount={filteredActors.length} itemSize={50} height={350}>
+		<div slot='item' let:index let:style {style}>
+			<input
+				checked={filteredActors[index].id ? $selectedActors.includes(filteredActors[index].id) : false}
+				id={filteredActors[index].id}
+				name={filteredActors[index].id}
+				onchange={() => change(filteredActors[index].id)}
+				type='checkbox'
+				value={filteredActors[index].id}
+			/>
+			<label for={filteredActors[index].id}
+			><img alt={filteredActors[index].name} src={filteredActors[index].img} />
+				<span>{filteredActors[index].name}</span>
+				{#key $selectedActors}
+					{#if getIndex(filteredActors[index].id) > 0}
+						<div class='selectionCountWrapper'>
+							<span class='selectionCount'>{getIndex(filteredActors[index].id)}</span></div>
+					{/if}
+				{/key}
+			</label>
+		</div>
+	</VirtualList>
+	<footer>
+		<button onclick={submit}
+		>{game.i18n?.localize('obs-utils.applications.actorSelect.closeButton')}</button
+		>
+	</footer>
+</main>
 
 <style lang='stylus'>
   main {

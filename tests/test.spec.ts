@@ -160,9 +160,9 @@ test.describe('OBS Client Only Tests', () => {
 test.describe('Multiclient UI', () => {
 	test('Journal Popout Close Delay', async ({ pages: { obsPage, gmPage } }) => {
 		const delay
-      // @ts-expect-error run in plain js
-      = (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
-      )) * 1200;
+		// @ts-expect-error run in plain js
+			= (await gmPage.evaluate(() => window.game.settings.get('obs-utils', 'popupCloseDelay'),
+			)) * 1200;
 
 		// @ts-expect-error run in plain js
 		await gmPage.evaluate(() => [...window.game.journal][0].show());

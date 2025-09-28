@@ -1,20 +1,21 @@
-import { SvelteApplication } from '#runtime/svelte/application';
 import OBSRemote from '../svelte/OBSRemote.svelte';
+import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
-// @ts-expect-error mixins dont work
-export default class OBSRemoteApplication extends SvelteApplication {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['obsremote', 'themed'],
-			id: 'obsremote-application',
-			title: 'obs-utils.applications.obsRemote.name',
+export default class OBSRemoteApplication extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
+	static override DEFAULT_OPTIONS = {
+		classes: ['obsremote', 'themed'],
+		id: 'obsremote-application',
+		title: 'obs-utils.applications.obsRemote.name',
+		position: {
 			height: 700,
 			width: 520,
-			focusAuto: false,
-			svelte: {
-				class: OBSRemote,
-				target: document.body,
-			},
-		});
-	}
+		},
+		focusAuto: false,
+		svelte: {
+			class: OBSRemote,
+			target: document.body,
+		},
+	};
+
+	protected override root = OBSRemote;
 }

@@ -1,8 +1,4 @@
-<svelte:options accessors={true} />
-
-<script>
-	import { ApplicationShell } from '#runtime/svelte/component/application';
-	import { localize } from '#runtime/util/i18n';
+<script lang='ts'>
 	import { getContext } from 'svelte';
 	import Select from 'svelte-select';
 	import { log } from '../utils/console.ts';
@@ -22,7 +18,7 @@
 	}
 
 	function formatKey(key) {
-		return localize(`obs-utils.applications.obsRemote.${key}`);
+		return game.i18n.localize(`obs-utils.applications.obsRemote.${key}`);
 	}
 
 	const context = getContext('#external');
@@ -36,73 +32,71 @@
 	let selection = '';
 </script>
 
-<ApplicationShell bind:elementRoot={elementRoot}>
-	<main>
-		<div class='header'>
-			<Select
-				bind:justValue={selection}
-				value={entries[0]}
-				items={entries}
-				searchable={false}
-				clearable={false}
-				--background='var(--sidebar-background)'
-				--list-background='var(--sidebar-background)'
-				--item-hover-bg='var(--sidebar-entry-hover-bg)'
-			>
-				<div slot='selection' let:selection>
-					<i
-						class="fas {selection.value === 'onStopStreaming'
-							? 'fa-signal-stream'
-							: 'fa-dice-d20'}"
-					></i>
-					{formatKey(selection.value)}
-				</div>
-				<div slot='item' let:item>
-					<i
-						class="fas {item.value === 'onStopStreaming'
-							? 'fa-signal-stream'
-							: 'fa-dice-d20'}"
-					></i>
-					{formatKey(item.value)}
-				</div>
-			</Select>
-			<button
-				class='add'
-				on:click={() => {
-					log(handleAdd);
-					if (handleAdd !== undefined) handleAdd();
-				}}
-				type='button'><i class='fas fa-plus'></i></button
-			>
-		</div>
-		<hr />
-		<div>
-			<section class='content'>
-				{#if selection === 'onSceneLoad'}
-					<SceneSelect
+<main>
+	<div class='header'>
+		<Select
+			bind:justValue={selection}
+			value={entries[0]}
+			items={entries}
+			searchable={false}
+			clearable={false}
+			--background='var(--sidebar-background)'
+			--list-background='var(--sidebar-background)'
+			--item-hover-bg='var(--sidebar-entry-hover-bg)'
+		>
+			<div slot='selection' let:selection>
+				<i
+					class="fas {selection.value === 'onStopStreaming'
+						? 'fa-signal-stream'
+						: 'fa-dice-d20'}"
+				></i>
+				{formatKey(selection.value)}
+			</div>
+			<div slot='item' let:item>
+				<i
+					class="fas {item.value === 'onStopStreaming'
+						? 'fa-signal-stream'
+						: 'fa-dice-d20'}"
+				></i>
+				{formatKey(item.value)}
+			</div>
+		</Select>
+		<button
+			class='add'
+			on:click={() => {
+				log(handleAdd);
+				if (handleAdd !== undefined) handleAdd();
+			}}
+			type='button'><i class='fas fa-plus'></i></button
+		>
+	</div>
+	<hr />
+	<div>
+		<section class='content'>
+			{#if selection === 'onSceneLoad'}
+				<SceneSelect
+					bind:handleAdd={handleAdd}
+					bind:eventArray={$obsSettings[selection]}
+					useWebSocket={$useWebSocket}
+				/>
+			{:else if selection !== ''}
+				{#key selection}
+					<ObsTab
 						bind:handleAdd={handleAdd}
 						bind:eventArray={$obsSettings[selection]}
 						useWebSocket={$useWebSocket}
 					/>
-				{:else if selection !== ''}
-					{#key selection}
-						<ObsTab
-							bind:handleAdd={handleAdd}
-							bind:eventArray={$obsSettings[selection]}
-							useWebSocket={$useWebSocket}
-						/>
-					{/key}
-				{/if}
-			</section>
-			<footer>
-				<hr />
-				<button class='submit' on:click={submit}
-				>{localize('obs-utils.strings.done')}</button
-				>
-			</footer>
-		</div>
-	</main>
-</ApplicationShell>
+				{/key}
+			{/if}
+		</section>
+		<footer>
+			<hr />
+			<button class='submit' on:click={submit}
+			>{game.i18n.localize('obs-utils.strings.done')}</button
+			>
+		</footer>
+	</div>
+</main>
 
 <style>
   .header {

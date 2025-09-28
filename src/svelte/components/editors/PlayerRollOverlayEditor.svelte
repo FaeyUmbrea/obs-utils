@@ -1,9 +1,5 @@
-<svelte:options accessors={true} />
-
-<script>
-	import { ApplicationShell } from '#runtime/svelte/component/application';
-	import { localize } from '#runtime/util/i18n';
-	import { rollOverlaySettings } from '../../../utils/settings.ts';
+<script lang='ts'>
+	import { settings as rollOverlaySettings } from '../../../utils/settings.ts';
 	import PlayerRollComponent from '../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte';
 
 	const preRollDelay = rollOverlaySettings.getStore('rollOverlayPreRollDelay');
@@ -115,108 +111,106 @@
 	}
 </script>
 
-<ApplicationShell bind:elementRoot={elementRoot}>
-	<div class='editor'>
-		<section class='preview obs-utils roll-overlay'>
-			<PlayerRollComponent
-				bind:rollValue={rollValue}
-				id='preview'
-				rollRunning={rollShow}
-			/>
-			<button on:click={test}
-			>{localize('obs-utils.applications.rollOverlayEditor.test')}</button
-			>
-		</section>
-		<section class='menu'>
-			<div class='pre'>
-				<section class='header'>
-					<input bind:checked={$pre} type='checkbox' />
+<div class='editor'>
+	<section class='preview obs-utils roll-overlay'>
+		<PlayerRollComponent
+			bind:rollValue={rollValue}
+			id='preview'
+			rollRunning={rollShow}
+		/>
+		<button on:click={test}
+		>{game.i18n.localize('obs-utils.applications.rollOverlayEditor.test')}</button
+		>
+	</section>
+	<section class='menu'>
+		<div class='pre'>
+			<section class='header'>
+				<input bind:checked={$pre} type='checkbox' />
 
-					<span
-					>{localize(
-						'obs-utils.applications.rollOverlayEditor.preRollImage',
-					)}</span
+				<span
+				>{game.i18n.localize(
+					'obs-utils.applications.rollOverlayEditor.preRollImage',
+				)}</span
+				>
+			</section>
+			<section class='content'>
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
+				<section class='filepicker'>
+					<input bind:value={$preRollImage} type='text' />
+					<button on:click={openFilePickerPreRoll}
+					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
-				<section class='content'>
-					{localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
-					<section class='filepicker'>
-						<input bind:value={$preRollImage} type='text' />
-						<button on:click={openFilePickerPreRoll}
-						><i class='fa-solid fa-file'></i></button
-						>
-					</section>
-					{localize('obs-utils.applications.rollOverlayEditor.delay')}
-					<input bind:value={$preRollDelay} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
-					<input bind:value={$preRollFadeIn} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.duration')}
-					<input bind:value={$preRollStay} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
-					<input bind:value={$preRollFadeOut} min='0' type='number' />
-				</section>
-			</div>
-			<div class='roll'>
-				<section class='header'>
-					<span
-					>&nbsp;{localize(
-						'obs-utils.applications.rollOverlayEditor.rollImage',
-					)}</span
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.delay')}
+				<input bind:value={$preRollDelay} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+				<input bind:value={$preRollFadeIn} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.duration')}
+				<input bind:value={$preRollStay} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+				<input bind:value={$preRollFadeOut} min='0' type='number' />
+			</section>
+		</div>
+		<div class='roll'>
+			<section class='header'>
+				<span
+				>&nbsp;{game.i18n.localize(
+					'obs-utils.applications.rollOverlayEditor.rollImage',
+				)}</span
+				>
+			</section>
+			<section class='content'>
+				{game.i18n.localize(
+					'obs-utils.applications.rollOverlayEditor.foregroundImageUrl',
+				)}
+				<section class='filepicker'>
+					<input bind:value={$rollForegroundImage} type='text' />
+					<button on:click={openFilePickerForeground}
+					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
-				<section class='content'>
-					{localize(
-						'obs-utils.applications.rollOverlayEditor.foregroundImageUrl',
-					)}
-					<section class='filepicker'>
-						<input bind:value={$rollForegroundImage} type='text' />
-						<button on:click={openFilePickerForeground}
-						><i class='fa-solid fa-file'></i></button
-						>
-					</section>
-					{localize(
-						'obs-utils.applications.rollOverlayEditor.backgroundImageUrl',
-					)}
-					<section class='filepicker'>
-						<input bind:value={$rollBackgroundImage} type='text' />
-						<button on:click={openFilePickerBackground}
-						><i class='fa-solid fa-file'></i></button
-						>
-					</section>
-					{localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
-					<input bind:value={$rollFadeIn} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.duration')}
-					<input bind:value={$rollStay} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
-					<input bind:value={$rollFadeOut} min='0' type='number' />
+				{game.i18n.localize(
+					'obs-utils.applications.rollOverlayEditor.backgroundImageUrl',
+				)}
+				<section class='filepicker'>
+					<input bind:value={$rollBackgroundImage} type='text' />
+					<button on:click={openFilePickerBackground}
+					><i class='fa-solid fa-file'></i></button
+					>
 				</section>
-			</div>
-			<div class='post'>
-				<section class='header'>
-					<input bind:checked={$post} type='checkbox' />
-					<span>
-						{localize('obs-utils.applications.rollOverlayEditor.postRollImage')}
-					</span>
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+				<input bind:value={$rollFadeIn} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.duration')}
+				<input bind:value={$rollStay} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+				<input bind:value={$rollFadeOut} min='0' type='number' />
+			</section>
+		</div>
+		<div class='post'>
+			<section class='header'>
+				<input bind:checked={$post} type='checkbox' />
+				<span>
+					{game.i18n.localize('obs-utils.applications.rollOverlayEditor.postRollImage')}
+				</span>
+			</section>
+			<section class='content'>
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
+				<section class='filepicker'>
+					<input bind:value={$postRollImage} type='text' />
+					<button on:click={openFilePickerPostRoll}
+					><i class='fa-solid fa-file'></i></button
+					>
 				</section>
-				<section class='content'>
-					{localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
-					<section class='filepicker'>
-						<input bind:value={$postRollImage} type='text' />
-						<button on:click={openFilePickerPostRoll}
-						><i class='fa-solid fa-file'></i></button
-						>
-					</section>
-					{localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
-					<input bind:value={$postRollFadeIn} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.duration')}
-					<input bind:value={$postRollStay} min='0' type='number' />
-					{localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
-					<input bind:value={$postRollFadeOut} min='0' type='number' />
-				</section>
-			</div>
-		</section>
-	</div>
-</ApplicationShell>
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+				<input bind:value={$postRollFadeIn} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.duration')}
+				<input bind:value={$postRollStay} min='0' type='number' />
+				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+				<input bind:value={$postRollFadeOut} min='0' type='number' />
+			</section>
+		</div>
+	</section>
+</div>
 
 <style lang='stylus'>
   .editor

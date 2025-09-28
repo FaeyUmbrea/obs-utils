@@ -1,5 +1,4 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
 
 	import Select from 'svelte-select';
 	import { getActorValues } from '../../../utils/helpers';
@@ -45,10 +44,10 @@
 		on:filter={handleFilter}
 		value={av1}
 		on:change={onChange}
-		placeholder={localize('obs-utils.strings.avInputPlaceholder')}
+		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<div class='labeled'>
-		<label for='bool-icon1'>{localize('obs-utils.strings.true')}</label>
+		<label for='bool-icon1'>{game.i18n.localize('obs-utils.strings.true')}</label>
 		<input
 			id='bool-icon1'
 			type='text'
@@ -57,7 +56,7 @@
 		/>
 	</div>
 	<div class='labeled'>
-		<label for='bool-icon2'>{localize('obs-utils.strings.false')}</label>
+		<label for='bool-icon2'>{game.i18n.localize('obs-utils.strings.false')}</label>
 		<input
 			id='bool-icon2'
 			type='text'

@@ -1,43 +1,41 @@
-import { SvelteApplication } from '#runtime/svelte/application';
 import OverlayActorSelectUi from '../svelte/OverlayActorSelectUI.svelte';
 import { settings } from '../utils/settings.ts';
+import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
-// @ts-expect-error mixins dont work
-export default class OverlayActorSelect extends SvelteApplication {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['actorselect', 'themed'],
-			id: 'actorselect-application',
-			title: 'obs-utils.applications.actorSelect.name',
-			tabs: [
-				{
-					navSelector: '.tabs',
-					contentSelector: '.content',
-					initial: 'onLoad',
-				},
-			],
+export default class OverlayActorSelect extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
+	static override DEFAULT_OPTIONS = {
+		classes: ['actorselect', 'themed'],
+		id: 'actorselect-application',
+		title: 'obs-utils.applications.actorSelect.name',
+		tabs: [
+			{
+				navSelector: '.tabs',
+				contentSelector: '.content',
+				initial: 'onLoad',
+			},
+		],
+		position: {
 			height: 500,
 			width: 800,
-			resizable: false,
-			svelte: {
-				class: OverlayActorSelectUi,
-				target: document.body,
-			},
-		});
-	}
+		},
+		resizable: false,
+		actions: {
+			reset: OverlayActorSelect.reset,
+		},
+		window: {
+			controls: [
+				{
+					icon: 'fas fa-rotate',
+					label: 'obs-utils.applications.actorSelect.resetButton',
+					action: 'reset',
+				},
+			],
+		},
+	};
 
-	_getHeaderButtons() {
-		const buttons = super._getHeaderButtons();
+	protected override root = OverlayActorSelectUi;
 
-		buttons.unshift({
-			icon: 'fas fa-rotate',
-			label: 'obs-utils.applications.actorSelect.resetButton',
-			class: 'obs-header',
-
-			onclick() {
-				settings.getStore('overlayActors')?.set([]);
-			},
-		});
-		return buttons;
+	public static reset() {
+		settings.getStore('overlayActors')?.set([]);
 	}
 }

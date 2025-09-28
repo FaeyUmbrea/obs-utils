@@ -1,5 +1,4 @@
 <script>
-	import { localize } from '#runtime/util/i18n';
 
 	import Select from 'svelte-select';
 	import { getActorValues } from '../../../utils/helpers';
@@ -52,7 +51,7 @@
 		on:filter={handleFilter}
 		value={av1}
 		on:change={onChange}
-		placeholder={localize('obs-utils.strings.avInputPlaceholder')}
+		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<Select
 		--background='var(--sidebar-background)'
@@ -69,7 +68,7 @@
 		on:filter={handleFilter2}
 		value={av2}
 		on:change={onChange}
-		placeholder={localize('obs-utils.strings.avInputPlaceholder')}
+		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 </div>
 

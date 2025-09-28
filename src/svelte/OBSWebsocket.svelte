@@ -1,8 +1,5 @@
-<svelte:options accessors={true} />
+<script lang='ts'>
 
-<script>
-	import { ApplicationShell } from '#runtime/svelte/component/application';
-	import { localize } from '#runtime/util/i18n';
 	import { getContext, onDestroy } from 'svelte';
 	import { generateDataBlockFromSetting, getSetting, setSetting } from '../utils/settings.ts';
 	import { sendOBSSetting } from '../utils/socket.ts';
@@ -39,46 +36,44 @@
 	}
 </script>
 
-<ApplicationShell bind:elementRoot={elementRoot}>
-	<main>
+<main>
+	<hr />
+	<div class='flexcol'>
+		{game.i18n.localize('obs-utils.applications.obsWebsocket.urlLabel')}<input
+			bind:value={websocketSettings.url}
+			name='url'
+			type='text'
+		/>
+		<br />
+		{game.i18n.localize('obs-utils.applications.obsWebsocket.portLabel')}
+		<input bind:value={websocketSettings.port} name='port' type='number' />
+		<br />
+		{game.i18n.localize('obs-utils.applications.obsWebsocket.passwordLabel')}
+		<input
+			bind:value={websocketSettings.password}
+			name='password'
+			type='password'
+		/>
 		<hr />
-		<div class='flexcol'>
-			{localize('obs-utils.applications.obsWebsocket.urlLabel')}<input
-				bind:value={websocketSettings.url}
-				name='url'
-				type='text'
-			/>
-			<br />
-			{localize('obs-utils.applications.obsWebsocket.portLabel')}
-			<input bind:value={websocketSettings.port} name='port' type='number' />
-			<br />
-			{localize('obs-utils.applications.obsWebsocket.passwordLabel')}
-			<input
-				bind:value={websocketSettings.password}
-				name='password'
-				type='password'
-			/>
-			<hr />
-			<button on:click={submit} type='submit'
-			>{localize('obs-utils.applications.obsWebsocket.saveButton')}</button
+		<button on:click={submit} type='submit'
+		>{game.i18n.localize('obs-utils.applications.obsWebsocket.saveButton')}</button
+		>
+		<hr />
+		{game.i18n.localize('obs-utils.applications.obsWebsocket.syncLabel')}
+		<div>
+			<select
+				bind:value={currentTrackedPlayer}
+				name='trackedPlayer'
+				id='trackedPlayer'
 			>
-			<hr />
-			{localize('obs-utils.applications.obsWebsocket.syncLabel')}
-			<div>
-				<select
-					bind:value={currentTrackedPlayer}
-					name='trackedPlayer'
-					id='trackedPlayer'
-				>
-					{#each onlineUsers as { id, name }}
-						<option value={id}>{name}</option>
-					{/each}
-				</select>
-				<br />
-				<button on:click={sync} type='submit'
-				>{localize('obs-utils.applications.obsWebsocket.syncButton')}</button
-				>
-			</div>
+				{#each onlineUsers as { id, name }}
+					<option value={id}>{name}</option>
+				{/each}
+			</select>
+			<br />
+			<button on:click={sync} type='submit'
+			>{game.i18n.localize('obs-utils.applications.obsWebsocket.syncButton')}</button
+			>
 		</div>
-	</main>
-</ApplicationShell>
+	</div>
+</main>

@@ -1,22 +1,18 @@
-<svelte:options accessors={true} />
-
 <script lang='ts'>
-	import type { SvelteApp } from '#runtime/svelte/application';
-	import type { MinimalWritable } from '@typhonjs-fvtt/runtime/svelte/store/util';
-	import { ApplicationShell } from '#runtime/svelte/component/application';
-	import { localize } from '#runtime/util/i18n';
-	import { getContext } from 'svelte';
+	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import { settings } from '../utils/settings.ts';
 	import { OverlayData } from '../utils/types.ts';
 	import OverlayEditorTab from './components/OverlayEditorTab.svelte';
 	import InformationOverlay from './streamoverlays/PerActorOverlay.svelte';
 
-	const overlays = settings.getStore('streamOverlays') as MinimalWritable<OverlayData[]>;
+	const overlays = settings.getStore('streamOverlays');
 	const actorIDs = settings.getReadableStore('overlayActors');
+
+	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
 
 	let activeIndex = 0;
 
-	function handleRemove(index) {
+	function handleRemove(index: number) {
 		$overlays.splice(index, 1);
 		$overlays = $overlays;
 		if (activeIndex === index) {
@@ -29,74 +25,68 @@
 		$overlays = $overlays;
 	}
 
-	function changeTab(tab) {
+	function changeTab(tab: number) {
 		activeIndex = tab;
 	}
 
-	export let elementRoot = void 0;
-
-	const context = getContext<SvelteApp.Context.External>('#external');
-
 	async function close() {
-		await context.application.close();
+		await foundryApp.close();
 	}
 </script>
 
-<ApplicationShell bind:elementRoot={elementRoot}>
-	<div class='grid'>
-		<div class='preview'>
-			<InformationOverlay actorIDs={$actorIDs} overlays={$overlays} />
-		</div>
-
-		<div class='editor'>
-			<div class='nav-with-add-button'>
-				<button
-					class='add'
-					on:click={() => handleAdd()}
-					title={localize(
-						'obs-utils.applications.overlayEditor.addOverlayButton',
-					)}
-					type='button'><i class='fas fa-plus'></i></button
-				>
-				<nav class='tabs' data-group='primary-tabs'>
-					{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
-						<!-- svelte-ignore a11y-missing-attribute -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<a
-							role='tab'
-							tabindex={index}
-							class="item {index === activeIndex ? 'active' : ''}"
-							data-tab={index}
-							on:click={() => changeTab(index)}>{index}</a
-						>
-					{/each}
-				</nav>
-			</div>
-			<hr />
-			<section class='content'>
-				{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
-					<div
-						class="tab {index === activeIndex ? 'active' : ''}"
-						data-tab={index}
-						data-group='primary-tabs'
-					>
-						<OverlayEditorTab
-							bind:overlay={overlay}
-							removeFn={handleRemove}
-							componentindex={index}
-						/>
-					</div>
-				{/each}
-			</section>
-		</div>
+<div class='grid'>
+	<div class='preview'>
+		<InformationOverlay actorIDs={$actorIDs} overlays={$overlays} />
 	</div>
-	<hr />
-	<footer>
-		<button on:click={close}
-		>{localize('obs-utils.applications.overlayEditor.closeButton')}</button
-		>
-	</footer>
-</ApplicationShell>
+
+	<div class='editor'>
+		<div class='nav-with-add-button'>
+			<button
+				class='add'
+				on:click={() => handleAdd()}
+				title={game.i18n.localize(
+					'obs-utils.applications.overlayEditor.addOverlayButton',
+				)}
+				type='button'><i class='fas fa-plus'></i></button
+			>
+			<nav class='tabs' data-group='primary-tabs'>
+				{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
+					<!-- svelte-ignore a11y-missing-attribute -->
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<a
+						role='tab'
+						tabindex={index}
+						class="item {index === activeIndex ? 'active' : ''}"
+						data-tab={index}
+						on:click={() => changeTab(index)}>{index}</a
+					>
+				{/each}
+			</nav>
+		</div>
+		<hr />
+		<section class='content'>
+			{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
+				<div
+					class="tab {index === activeIndex ? 'active' : ''}"
+					data-tab={index}
+					data-group='primary-tabs'
+				>
+					<OverlayEditorTab
+						bind:overlay={$overlays[index]}
+						removeFn={handleRemove}
+						componentindex={index}
+					/>
+				</div>
+			{/each}
+		</section>
+	</div>
+</div>
+<hr />
+<footer>
+	<button on:click={close}
+	>{game.i18n?.localize('obs-utils.applications.overlayEditor.closeButton')}</button
+	>
+</footer>
 
 <style lang='stylus'>
 
