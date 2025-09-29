@@ -46,7 +46,7 @@
 			--sv-bg='var(--sidebar-background)'
 			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
 		>
-			{#snippet option(opt, inputValue)}
+			{#snippet option(opt)}
 				<div>
 					<i
 						class="fas {opt.text === 'onStopStreaming'
@@ -56,7 +56,7 @@
 					{formatKey(opt.text)}
 				</div>
 			{/snippet}
-			{#snippet selection(selectedOptions, bindItemAction)}
+			{#snippet selection(selectedOptions)}
 				<div>
 					<i
 						class="fas {selectedOptions[0].text === 'onStopStreaming'

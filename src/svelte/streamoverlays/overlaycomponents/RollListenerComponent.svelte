@@ -7,8 +7,6 @@
 
 	let { id = $bindable() } = $props();
 
-	let rollShow = $state(false);
-
 	let rollValue = $state('');
 	const hook = Hooks.on('createChatMessage', (e) => {
 		const uid = e.author.id;
