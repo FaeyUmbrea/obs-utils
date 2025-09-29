@@ -16,12 +16,13 @@ export default class StyleEditor extends SvelteApplicationMixin(foundry.applicat
 		classes: ['styleeditor', 'themed'],
 		id: 'styleeditor-application',
 		title: 'obs-utils.applications.styleEditor.name',
-		// tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
 		position: {
-			height: 125,
-			width: 400,
+			height: 600,
+			width: 600,
 		},
-		// resizable: true,
+		window: {
+			resizable: true,
+		},
 	};
 
 	protected override root = StyleEditorUi;

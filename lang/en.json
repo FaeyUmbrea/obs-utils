@@ -110,7 +110,27 @@
 			},
 			"styleEditor": {
 				"name": "Style Editor",
-				"submitButton": "Submit"
+				"mode": {
+					"simple": "Simple",
+					"advanced": "Advanced"
+				},
+				"fontFamily": "Font family",
+				"fontSize": "Font size",
+				"fontWeight": "Font weight",
+				"color": "Text color",
+				"backgroundColor": "Background color",
+				"width": "Width",
+				"height": "Height",
+				"padding": "Padding",
+				"margin": "Margin",
+				"textAlign": "Text align",
+				"lineHeight": "Line height",
+				"letterSpacing": "Letter spacing",
+				"border": "Border",
+				"borderRadius": "Border radius",
+				"preservedExtras": "Additional preserved rules",
+				"clear": "Clear",
+				"submitButton": "Apply & Close"
 			}
 		},
 		"overlays": {
