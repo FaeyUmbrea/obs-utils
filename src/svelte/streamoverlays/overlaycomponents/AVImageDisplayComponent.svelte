@@ -25,14 +25,13 @@
 		return '';
 	}
 
+	$effect(() => getValue());
+
 	onDestroy(() => {
 		Hooks.off('obs-utils.refreshActor', hook);
 	});
 </script>
 
-{#key data}
-	{getValue()}
-{/key}
 <div
 	class='component actor-val-component image-component'
 	id={`component${componentIndex.toString()}`}

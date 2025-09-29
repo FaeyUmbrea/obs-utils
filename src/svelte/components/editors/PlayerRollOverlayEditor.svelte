@@ -32,80 +32,89 @@
 	const pre = rollOverlaySettings.getStore('rollOverlayPostRollEnabled');
 	const post = rollOverlaySettings.getStore('rollOverlayPreRollEnabled');
 
-	let rollValue = $state('20');
-	let rollShow = $state(false);
+	let rollValue = $state('');
 
 	function test() {
-		rollValue = Math.round(Math.random() * 20);
-		rollShow = false;
-		rollShow = true;
+		rollValue = Math.round(Math.random() * 20).toString();
 	}
 
-	let filePickerAppPreRoll;
+	let filePickerAppPreRoll: foundry.applications.apps.FilePicker | undefined;
 
-	function openFilePickerPreRoll() {
-		if (filePickerAppPreRoll) {
-			filePickerAppPreRoll.bringToTop();
+	async function openFilePickerPreRoll() {
+		if (filePickerAppPreRoll && filePickerAppPreRoll.state !== foundry.applications.api.ApplicationV2.RENDER_STATES.CLOSED) {
+			filePickerAppPreRoll.bringToFront();
 		} else {
-			filePickerAppPreRoll = new FilePicker({
+			filePickerAppPreRoll = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
 					$preRollImage = path;
-					filePickerAppPreRoll = null;
+					filePickerAppPreRoll = undefined;
 				},
-				title: 'Select an Image',
-			}).render(true);
+				window: {
+					title: 'Select an Image',
+				},
+			});
+			await filePickerAppPreRoll.render();
 		}
 	}
 
-	let filePickerAppForeground;
+	let filePickerAppForeground: foundry.applications.apps.FilePicker | undefined;
 
-	function openFilePickerForeground() {
-		if (filePickerAppForeground) {
-			filePickerAppForeground.bringToTop();
+	async function openFilePickerForeground() {
+		if (filePickerAppForeground && filePickerAppForeground.state !== foundry.applications.api.ApplicationV2.RENDER_STATES.CLOSED) {
+			filePickerAppForeground.bringToFront();
 		} else {
-			filePickerAppForeground = new FilePicker({
+			filePickerAppForeground = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
 					$rollForegroundImage = path;
-					filePickerAppForeground = null;
+					filePickerAppForeground = undefined;
 				},
-				title: 'Select an Image',
-			}).render(true);
+				window: {
+					title: 'Select an Image',
+				},
+			});
+			await filePickerAppForeground.render();
 		}
 	}
 
-	let filePickerAppBackground;
+	let filePickerAppBackground: foundry.applications.apps.FilePicker | undefined;
 
-	function openFilePickerBackground() {
-		if (filePickerAppBackground) {
-			filePickerAppBackground.bringToTop();
-			filePickerAppBackground = null;
+	async function openFilePickerBackground() {
+		if (filePickerAppBackground && filePickerAppBackground.state !== foundry.applications.api.ApplicationV2.RENDER_STATES.CLOSED) {
+			filePickerAppBackground.bringToFront();
 		} else {
-			filePickerAppBackground = new FilePicker({
+			filePickerAppBackground = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
 					$rollBackgroundImage = path;
+					filePickerAppBackground = undefined;
 				},
-				title: 'Select an Image',
-			}).render(true);
+				window: {
+					title: 'Select an Image',
+				},
+			});
+			await filePickerAppBackground.render();
 		}
 	}
 
-	let filePickerAppPostRoll;
+	let filePickerAppPostRoll: foundry.applications.apps.FilePicker | undefined;
 
-	function openFilePickerPostRoll() {
-		if (filePickerAppPostRoll) {
-			filePickerAppPostRoll.bringToTop();
-			filePickerAppPostRoll = null;
+	async function openFilePickerPostRoll() {
+		if (filePickerAppPostRoll && filePickerAppPostRoll.state !== foundry.applications.api.ApplicationV2.RENDER_STATES.CLOSED) {
+			filePickerAppPostRoll.bringToFront();
 		} else {
-			filePickerAppPostRoll = new FilePicker({
+			filePickerAppPostRoll = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
 					$postRollImage = path;
+					filePickerAppPostRoll = undefined;
 				},
-				title: 'Select an Image',
-			}).render(true);
+				window: {
+					title: 'Select an Image',
+				},
+			});
+			await filePickerAppPostRoll.render();
 		}
 	}
 </script>
@@ -115,10 +124,9 @@
 		<PlayerRollComponent
 			bind:rollValue={rollValue}
 			id='preview'
-			rollRunning={rollShow}
 		/>
 		<button onclick={test}
-		>{game.i18n.localize('obs-utils.applications.rollOverlayEditor.test')}</button
+		>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.test')}</button
 		>
 	</section>
 	<section class='menu'>
@@ -127,39 +135,39 @@
 				<input bind:checked={$pre} type='checkbox' />
 
 				<span
-				>{game.i18n.localize(
+				>{game.i18n?.localize(
 					'obs-utils.applications.rollOverlayEditor.preRollImage',
 				)}</span
 				>
 			</section>
 			<section class='content'>
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
 				<section class='filepicker'>
 					<input bind:value={$preRollImage} type='text' />
 					<button aria-label='Open Filepicker' onclick={openFilePickerPreRoll}
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.delay')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.delay')}
 				<input bind:value={$preRollDelay} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
 				<input bind:value={$preRollFadeIn} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.duration')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}
 				<input bind:value={$preRollStay} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
 				<input bind:value={$preRollFadeOut} min='0' type='number' />
 			</section>
 		</div>
 		<div class='roll'>
 			<section class='header'>
 				<span
-				>&nbsp;{game.i18n.localize(
+				>&nbsp;{game.i18n?.localize(
 					'obs-utils.applications.rollOverlayEditor.rollImage',
 				)}</span
 				>
 			</section>
 			<section class='content'>
-				{game.i18n.localize(
+				{game.i18n?.localize(
 					'obs-utils.applications.rollOverlayEditor.foregroundImageUrl',
 				)}
 				<section class='filepicker'>
@@ -168,7 +176,7 @@
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
-				{game.i18n.localize(
+				{game.i18n?.localize(
 					'obs-utils.applications.rollOverlayEditor.backgroundImageUrl',
 				)}
 				<section class='filepicker'>
@@ -177,11 +185,11 @@
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
 				<input bind:value={$rollFadeIn} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.duration')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}
 				<input bind:value={$rollStay} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
 				<input bind:value={$rollFadeOut} min='0' type='number' />
 			</section>
 		</div>
@@ -189,22 +197,22 @@
 			<section class='header'>
 				<input bind:checked={$post} type='checkbox' />
 				<span>
-					{game.i18n.localize('obs-utils.applications.rollOverlayEditor.postRollImage')}
+					{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.postRollImage')}
 				</span>
 			</section>
 			<section class='content'>
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
 				<section class='filepicker'>
 					<input bind:value={$postRollImage} type='text' />
 					<button aria-label='Open Filepicker' onclick={openFilePickerPostRoll}
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
 				<input bind:value={$postRollFadeIn} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.duration')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}
 				<input bind:value={$postRollStay} min='0' type='number' />
-				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
+				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
 				<input bind:value={$postRollFadeOut} min='0' type='number' />
 			</section>
 		</div>

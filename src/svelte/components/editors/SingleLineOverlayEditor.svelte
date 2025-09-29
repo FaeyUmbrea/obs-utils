@@ -7,10 +7,10 @@
 
 	let { component = $bindable(), removeFn = $bindable(), index = $bindable(), refreshFn = $bindable() } = $props<{ component: SingleLineOverlayComponent; removeFn: (index: number) => void; index: number; refreshFn: () => void }>();
 
-	const componentNames = getApi().overlayTypes.get('sl').overlayComponentNames;
+	const componentNames = getApi().overlayTypes.get('sl')?.overlayComponentNames;
 
 	function openStyleEditor() {
-		const editor = new StyleEditor(component.style, (styleNew) => {
+		const editor = new StyleEditor({}, component.style, (styleNew: string) => {
 			component.style = styleNew;
 			refreshFn?.();
 		});
@@ -30,7 +30,7 @@
 		const editor = getApi()
 			.overlayTypes
 			.get('sl')
-			.overlayComponentEditors
+			?.overlayComponentEditors
 			.get(type as any);
 		if (editor !== undefined) {
 			return editor;
@@ -40,7 +40,7 @@
 	}
 
 	function getCompactButtons(type: string) {
-		return !!getApi().overlayTypes.get('sl').compactEditorButtons.get(type as any);
+		return !!getApi().overlayTypes.get('sl')?.compactEditorButtons.get(type as any);
 	}
 
 	const Component = $derived(getEditor(component.type));
@@ -50,7 +50,7 @@
 		component = component;
 	}
 
-	function setData(data) {
+	function setData(data: OverlayData) {
 		component.data = data;
 		component = component;
 	}
@@ -61,7 +61,7 @@
 		<i class='fa-light fa-bars grab'></i>
 		<select bind:value={() => component.type, v => setType(v)} name='types' onchange={() => refreshFn?.()}>
 			{#each [...componentNames] as [component, name]}
-				<option value={component}>{game.i18n.localize(name)}</option>
+				<option value={component}>{game.i18n?.localize(name)}</option>
 			{/each}
 		</select>
 		<Component bind:data={() => component.data, v => setData(v)} />
@@ -69,7 +69,7 @@
 			<button
 				aria-label='Remove'
 				onclick={() => removeFn(index)}
-				title={game.i18n.localize(
+				title={game.i18n?.localize(
 					'obs-utils.applications.overlayEditor.removeComponentButton',
 				)}
 				type='button'
@@ -80,7 +80,7 @@
 				aria-label='Edit Style'
 				class='add'
 				onclick={() => openStyleEditor()}
-				title={game.i18n.localize(
+				title={game.i18n?.localize(
 					'obs-utils.applications.overlayEditor.editStyleButton',
 				)}
 				type='button'

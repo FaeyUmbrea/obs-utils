@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 
-<script>
+<script lang='ts'>
 	import { OBSEvent } from '../../utils/types.ts';
 	import ObsSetting from './OBSSetting.svelte';
 

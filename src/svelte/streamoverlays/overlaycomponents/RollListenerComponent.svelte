@@ -9,7 +9,7 @@
 
 	let rollShow = $state(false);
 
-	let rollValue = $state();
+	let rollValue = $state('');
 	const hook = Hooks.on('createChatMessage', (e) => {
 		const uid = e.author.id;
 		if (uid === id && e.whisper.length === 0 && e.isRoll) {
@@ -28,7 +28,6 @@
 </script>
 
 <PlayerRollComponent
-	bind:rollRunning={rollShow}
 	bind:rollValue={rollValue}
 	id={id}
 />

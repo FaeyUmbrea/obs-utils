@@ -1,5 +1,5 @@
 <svelte:options runes={true} />
-<script>
+<script lang='ts'>
 	import { getApi } from '../../utils/helpers.ts';
 
 	let { overlays = $bindable(), actorIDs = $bindable() } = $props();

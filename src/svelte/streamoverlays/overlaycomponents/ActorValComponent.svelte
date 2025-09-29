@@ -1,10 +1,10 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-  import { get, has } from "lodash-es";
-  import { onDestroy } from "svelte";
-  import { removeQuotes } from "../../../utils/helpers.ts";
+	import { get, has } from 'lodash-es';
+	import { onDestroy } from 'svelte';
+	import { removeQuotes } from '../../../utils/helpers.ts';
 
-  const { data, actorID, style, componentIndex } = $props();
+	const { data, actorID, style, componentIndex } = $props();
 
 	let actor = game.actors?.get(actorID);
 
@@ -25,6 +25,8 @@
 		}
 		return '';
 	}
+
+	$effect(() => getValue());
 
 	onDestroy(() => {
 		Hooks.off('obs-utils.refreshActor', hook);

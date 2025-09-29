@@ -36,14 +36,14 @@
 	}
 
 	function openStyleEditor() {
-		const editor = new StyleEditor(overlay.style, (styleNew) => {
+		const editor = new StyleEditor({}, overlay.style, (styleNew: string) => {
 			overlay.style = styleNew;
 			refreshFn?.();
 		});
 		editor.render(true);
 	}
 
-	function setComponentData(index, value) {
+	function setComponentData(index: number, value: OverlayComponentData) {
 		overlay.components[index] = value;
 		overlay = overlay;
 	}
@@ -51,7 +51,7 @@
 
 <div class='scroll'>
 	<ul>
-		<SortableList animation={150} handle='.grab' onEnd={handleReorder}>
+		<SortableList class='sortable' animation={150} handle='.grab' onEnd={handleReorder}>
 			{#key rerender}
 				{#each overlay.components as component, index (overlay.components.indexOf(component))}
 					<SingleLineOverlayEditor
@@ -70,21 +70,21 @@
 		class='add'
 		aria-label='Add a new overlay'
 		onclick={() => handleAdd()}
-		title={game.i18n.localize('obs-utils.applications.overlayEditor.addButton')}
+		title={game.i18n?.localize('obs-utils.applications.overlayEditor.addButton')}
 		type='button'><i class='fas fa-plus'></i></button
 	>
 	<button
 		class='add'
 		aria-label='Edit style'
 		onclick={() => openStyleEditor()}
-		title={game.i18n.localize('obs-utils.applications.overlayEditor.editStyleButton')}
+		title={game.i18n?.localize('obs-utils.applications.overlayEditor.editStyleButton')}
 		type='button'><i class='fas fa-pencil'></i></button
 	>
 	<button
 		class='remove-tab'
 		aria-label='Remove overlay'
 		onclick={() => removeFn(componentindex)}
-		title={game.i18n.localize('obs-utils.applications.overlayEditor.removeButton')}
+		title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
 		type='button'><i class='fas fa-trash'></i></button
 	>
 </footer>

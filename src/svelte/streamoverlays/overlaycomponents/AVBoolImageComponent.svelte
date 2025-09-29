@@ -22,6 +22,8 @@
 		return '';
 	}
 
+	$effect(() => getValue());
+
 	onDestroy(() => {
 		Hooks.off('obs-utils.refreshActor', hook);
 	});

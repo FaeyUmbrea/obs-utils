@@ -2,90 +2,73 @@
 
 <script lang='ts'>
 
-	import Select from 'svelte-select';
+	import Svelecte from 'svelecte';
+
 	import { getActorValues } from '../../../utils/helpers';
 
-	let { data } = $props<{ data: string }>();
-	let av1 = $state();
-	let av2 = $state();
-	let icon1 = $state();
-	let icon2 = $state();
+	let { data = $bindable() } = $props<{ data: string }>();
+	let av1 = $state(data.split(';')[0] ?? null);
+	let av2 = $state(data.split(';')[2] ?? null);
+	let icon1 = $state(data.split(';')[1] ?? null);
+	let icon2 = $state(data.split(';')[3] ?? null);
 	const values = getActorValues();
-	let items = $state([...values]);
-	let items2 = $state([...values]);
-
-	let filterText = $state('');
-	let filterText2 = $state('');
+	// eslint-disable-next-line svelte/valid-compile
+	if (av1 !== null && !values.find(v => v.value === av1)) {
+		// eslint-disable-next-line svelte/valid-compile
+		values.push({ value: av1, label: av1 });
+	}
+	// eslint-disable-next-line svelte/valid-compile
+	if (av2 !== null && !values.find(v => v.value === av2)) {
+		// eslint-disable-next-line svelte/valid-compile
+		values.push({ value: av2, label: av2 });
+	}
 
 	function onChange() {
 		data = `${av1};${icon1};${av2};${icon2}`;
 	}
 
-	function handleFilter(e) {
-		if (e.detail.length === 0 && filterText.length > 0) {
-			items = [...values, filterText];
-		}
-	}
-
-	function handleFilter2(e) {
-		if (e.detail.length === 0 && filterText2.length > 0) {
-			items2 = [...values, filterText2];
-		}
-	}
-
-	function getSplit() {
-		av1 = data.split(';')[0];
-		icon1 = data.split(';')[1];
-		av2 = data.split(';')[2];
-		icon2 = data.split(';')[3];
-		return '';
-	}
 </script>
 
 <div class='input'>
-	<Select
-		--background='var(--sidebar-background)'
-		--list-background='var(--sidebar-background)'
-		--item-hover-bg='var(--sidebar-entry-hover-bg)' --height='30px'
-		bind:filterText={filterText}
-		bind:justValue={av1}
-		closeListOnChange='false'
+	<Svelecte
+		--sv-bg='var(--sidebar-background)'
+		--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
+		--sv-min-height='35px'
 		floatingConfig={{
 			strategy: 'fixed',
 		}}
-		items={items}
-		onfilter={handleFilter}
-		value={av1}
-		onchange={onChange}
-		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
+		creatable={true}
+		creatablePrefix=""
+		options={values}
+		bind:value={av1}
+		onChange={onChange}
+		placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<input
 		type='text'
 		onchange={onChange}
 		bind:value={icon1}
-		placeholder={game.i18n.localize('obs-utils.strings.iconPlaceholder')}
+		placeholder={game.i18n?.localize('obs-utils.strings.iconPlaceholder')}
 	/>
-	<Select
-		--background='var(--sidebar-background)'
-		--list-background='var(--sidebar-background)'
-		--item-hover-bg='var(--sidebar-entry-hover-bg)' --height='30px'
-		bind:filterText={filterText2}
-		bind:justValue={av2}
-		closeListOnChange='false'
+	<Svelecte
+		--sv-bg='var(--sidebar-background)'
+		--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
+		--sv-min-height='35px'
 		floatingConfig={{
 			strategy: 'fixed',
 		}}
-		items={items2}
-		onfilter={handleFilter2}
-		value={av2}
-		onchange={onChange}
-		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
+		creatable={true}
+		creatablePrefix=""
+		options={values}
+		bind:value={av2}
+		onChange={onChange}
+		placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<input
 		type='text'
 		onchange={onChange}
 		bind:value={icon2}
-		placeholder={game.i18n.localize('obs-utils.strings.iconPlaceholder')}
+		placeholder={game.i18n?.localize('obs-utils.strings.iconPlaceholder')}
 	/>
 </div>
 

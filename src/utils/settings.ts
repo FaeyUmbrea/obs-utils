@@ -578,3 +578,45 @@ export const settings = {
 	getStore,
 	getReadableStore,
 };
+
+export function getPlayerRollStores() {
+	const pre = settings.getStore('rollOverlayPostRollEnabled');
+	const post = settings.getStore('rollOverlayPreRollEnabled');
+
+	const preRollDelay = settings.getStore('rollOverlayPreRollDelay');
+	const preRollStay = settings.getStore('rollOverlayPreRollStay');
+	const preRollFadeIn = settings.getStore('rollOverlayPreRollFadeIn');
+	const preRollFadeOut = settings.getStore('rollOverlayPreRollFadeOut');
+
+	const rollStay = settings.getStore('rollOverlayRollStay');
+	const rollFadeIn = settings.getStore('rollOverlayRollFadeIn');
+	const rollFadeOut = settings.getStore('rollOverlayRollFadeOut');
+
+	const postRollStay = settings.getStore('rollOverlayPostRollStay');
+	const postRollFadeIn = settings.getStore('rollOverlayPostRollFadeIn');
+	const postRollFadeOut = settings.getStore('rollOverlayPostRollFadeOut');
+
+	const preRollImage = settings.getStore('rollOverlayPreRollImage');
+	const rollBackgroundImage = settings.getStore('rollOverlayRollBackground');
+	const rollForegroundImage = settings.getStore('rollOverlayRollForeground');
+	const postRollImage = settings.getStore('rollOverlayPostRollImage');
+
+	return {
+		pre,
+		post,
+		preRollDelay,
+		preRollStay,
+		preRollFadeIn,
+		preRollFadeOut,
+		rollStay,
+		rollFadeIn,
+		rollFadeOut,
+		postRollStay,
+		postRollFadeIn,
+		postRollFadeOut,
+		preRollImage,
+		rollBackgroundImage,
+		rollForegroundImage,
+		postRollImage,
+	};
+}

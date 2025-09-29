@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from 'svelte-select';
+	import Select from 'svelecte';
 	import { settings } from '../utils/settings.ts';
 	import ObsTab from './components/OBSTab.svelte';
 	import SceneSelect from './components/SceneSelect.svelte';
@@ -12,8 +12,8 @@
 		? Object.getOwnPropertyNames($obsSettings)
 		: Object.getOwnPropertyNames($obsSettings).filter(entry => entry !== 'onStopStreaming');
 
-	function formatKey(key) {
-		return game.i18n.localize(`obs-utils.applications.obsRemote.${key}`);
+	function formatKey(key: string) {
+		return game.i18n?.localize(`obs-utils.applications.obsRemote.${key}`);
 	}
 
 	const { foundryApp } = $props();
@@ -22,17 +22,16 @@
 		await foundryApp.close();
 	}
 
-	let handleAdd = $state();
+	let handleAdd = $state<() => void | Promise<void> | undefined>(undefined);
 
-	let selection = $state('');
+	let selected = $state(entries[0]);
 
 	function getTabData() {
-		return $obsSettings[selection];
+		return $obsSettings[selected];
 	}
 
-	function setTabData(value) {
-		console.error(value);
-		$obsSettings[selection] = value;
+	function setTabData(value: any) {
+		$obsSettings[selected] = value;
 	}
 
 </script>
@@ -40,37 +39,40 @@
 <main>
 	<div class='header'>
 		<Select
-			bind:justValue={selection}
-			value={entries[0]}
-			items={entries}
+			bind:value={selected}
+			options={entries}
 			searchable={false}
 			clearable={false}
-			--background='var(--sidebar-background)'
-			--list-background='var(--sidebar-background)'
-			--item-hover-bg='var(--sidebar-entry-hover-bg)'
+			--sv-bg='var(--sidebar-background)'
+			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
 		>
-			<div slot='selection' let:selection>
-				<i
-					class="fas {selection.value === 'onStopStreaming'
-						? 'fa-signal-stream'
-						: 'fa-dice-d20'}"
-				></i>
-				{formatKey(selection.value)}
-			</div>
-			<div slot='item' let:item>
-				<i
-					class="fas {item.value === 'onStopStreaming'
-						? 'fa-signal-stream'
-						: 'fa-dice-d20'}"
-				></i>
-				{formatKey(item.value)}
-			</div>
+			{#snippet option(opt, inputValue)}
+				<div>
+					<i
+						class="fas {opt.text === 'onStopStreaming'
+							? 'fa-signal-stream'
+							: 'fa-dice-d20'}"
+					></i>
+					{formatKey(opt.text)}
+				</div>
+			{/snippet}
+			{#snippet selection(selectedOptions, bindItemAction)}
+				<div>
+					<i
+						class="fas {selectedOptions[0].text === 'onStopStreaming'
+							? 'fa-signal-stream'
+							: 'fa-dice-d20'}"
+					></i>
+					{formatKey(selectedOptions[0].text)}
+				</div>
+			{/snippet}
+
 		</Select>
 		<button
 			aria-label='add'
 			class='add'
 			onclick={() => {
-				if (handleAdd !== undefined) handleAdd();
+				if (handleAdd !== undefined && handleAdd !== null) handleAdd();
 			}}
 			type='button'><i class='fas fa-plus'></i></button
 		>
@@ -78,17 +80,17 @@
 	<hr />
 	<div>
 		<section class='content'>
-			{#if selection === 'onSceneLoad'}
+			{#if selected === 'onSceneLoad'}
 				<SceneSelect
 					bind:handleAdd={handleAdd}
 					bind:eventArray={() => getTabData(), v => setTabData(v)}
 					useWebSocket={$useWebSocket}
 				/>
-			{:else if selection !== ''}
-				{#key selection}
+			{:else if selected !== ''}
+				{#key selected}
 					<ObsTab
 						bind:handleAdd={handleAdd}
-						bind:eventArray={() => getTabData(selection), v => setTabData(v)}
+						bind:eventArray={() => getTabData(), v => setTabData(v)}
 						useWebSocket={$useWebSocket}
 					/>
 				{/key}

@@ -9,27 +9,31 @@
 
 	let value1 = $state('');
 	let value2 = $state('');
-	let image1 = $state('');
-	let image2 = $state('');
+	const image1 = $state(data.split(';')[1] ?? '');
+	const image2 = $state(data.split(';')[3] ?? '');
 	const hook = Hooks.on('obs-utils.refreshActor', (actor) => {
 		if (actor.id !== actorID) return;
 		getValue();
 	});
 
 	function getValue() {
-		value1 = get(actor, data.split(';')[0], '');
-		value2 = get(actor, data.split(';')[2], '') - value1;
-		if (Number.isNaN(value2) || value2 < 0) {
-			value2 = 0;
+		const val1 = get(actor, data.split(';')[0], '');
+		if (Number.isNaN(val1) || val1 < 0) {
+			value1 = 0;
+		} else {
+			value1 = val1;
 		}
-		return '';
+		const val2 = get(actor, data.split(';')[2], '') - val1;
+		if (Number.isNaN(val2) || val2 < 0) {
+			value2 = 0;
+		} else {
+			value2 = val2;
+		}
 	}
 
-	function getSplit() {
-		image1 = data.split(';')[1];
-		image2 = data.split(';')[3];
-		return '';
-	}
+	$effect(() => {
+		getValue();
+	});
 
 	onDestroy(() => {
 		Hooks.off('obs-utils.refreshActor', hook);

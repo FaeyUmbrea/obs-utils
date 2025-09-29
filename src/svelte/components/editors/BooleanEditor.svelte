@@ -1,53 +1,39 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from 'svelte-select';
+	import Svelecte from 'svelecte';
 	import { getActorValues } from '../../../utils/helpers';
 
-	let { data } = $props<{ data: string }>();
+	let { data = $bindable() } = $props<{ data: string }>();
 
-	let av1 = $state<string | undefined>();
-	let icon1 = $state<string | undefined>();
-	let icon2 = $state<string | undefined>();
+	let av1 = $state(data.split(';')[0] ?? null);
+	let icon1 = $state(data.split(';')[1] ?? null);
+	let icon2 = $state(data.split(';')[2] ?? null);
 	const values = getActorValues();
-	let items = $state<string[]>([...values]);
-
-	let filterText = $state('');
+	// eslint-disable-next-line svelte/valid-compile
+	if (av1 !== null && !values.find(v => v.value === av1)) {
+		// eslint-disable-next-line svelte/valid-compile
+		values.push({ value: av1, label: av1 });
+	}
 
 	function onChange() {
 		data = `${av1 ?? ''};${icon1 ?? ''};${icon2 ?? ''}`;
 	}
-
-	function handleFilter(e: CustomEvent<{ length: number }>) {
-		if ((e as any).detail?.length === 0 && filterText.length > 0) {
-			items = [...values, filterText];
-		}
-	}
-
-	function getSplit() {
-		av1 = data.split(';')[0];
-		icon1 = data.split(';')[1];
-		icon2 = data.split(';')[2];
-		return '';
-	}
 </script>
 
-{getSplit()}
 <div class='input'>
-	<Select
-		--background='var(--sidebar-background)'
-		--list-background='var(--sidebar-background)'
-		--item-hover-bg='var(--sidebar-entry-hover-bg)' --height='30px'
-		bind:filterText={filterText}
-		bind:justValue={av1}
-		closeListOnChange='false'
+	<Svelecte
+		--sv-bg='var(--sidebar-background)'
+		--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
+		--sv-min-height='35px'
 		floatingConfig={{
 			strategy: 'fixed',
 		}}
-		items={items}
-		onfilter={handleFilter}
-		value={av1}
-		onchange={onChange}
-		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
+		creatable={true}
+		creatablePrefix=""
+		options={values}
+		bind:value={av1}
+		onChange={onChange}
+		placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<div class='labeled'>
 		<label for='bool-icon1'>{game.i18n.localize('obs-utils.strings.true')}</label>

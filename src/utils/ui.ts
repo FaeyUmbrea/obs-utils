@@ -7,7 +7,6 @@ import OBSWebsocketApplication from '../applications/obswebsocket.ts';
 import OverlayActorSelect from '../applications/overlayactorselect.ts';
 import OverlayEditor from '../applications/overlayeditor.ts';
 import RollOverlay from '../applications/rolloverlay.ts';
-import { SettingsShell } from '../applications/settingsShell.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
 import MultiAVEditor from '../svelte/components/editors/MultiAVEditor.svelte';
@@ -33,8 +32,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.obsRemoteMenu.Name`,
 		label: `${moduleID}.settings.obsRemoteMenu.Label`,
 		hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
-		// @ts-expect-error mixins dont work
-		type: SettingsShell(OBSRemoteApplication),
+		type: OBSRemoteApplication,
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
@@ -42,8 +40,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.obsWebsocketMenu.Name`,
 		label: `${moduleID}.settings.obsWebsocketMenu.Label`,
 		hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
-		// @ts-expect-error mixins dont work
-		type: SettingsShell(OBSWebsocketApplication),
+		type: OBSWebsocketApplication,
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
@@ -51,8 +48,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.overlayActorSelect.Name`,
 		label: `${moduleID}.settings.overlayActorSelect.Label`,
 		hint: `${moduleID}.settings.overlayActorSelect.Hint`,
-		// @ts-expect-error mixins dont work
-		type: SettingsShell(OverlayActorSelect),
+		type: OverlayActorSelect,
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
@@ -60,8 +56,7 @@ export function registerUI() {
 		name: `${moduleID}.settings.overlayEditor.Name`,
 		label: `${moduleID}.settings.overlayEditor.Label`,
 		hint: `${moduleID}.settings.overlayEditor.Hint`,
-		// @ts-expect-error mixins dont work
-		type: SettingsShell(OverlayEditor),
+		type: OverlayEditor,
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
@@ -70,8 +65,7 @@ export function registerUI() {
 		label: `${moduleID}.settings.rollOverlayEditor.Label`,
 		hint: `${moduleID}.settings.rollOverlayEditor.Hint`,
 		icon: 'fas fa-bars',
-		// @ts-expect-error mixins dont work
-		type: SettingsShell(RollOverlay),
+		type: RollOverlay,
 		restricted: true,
 	});
 
