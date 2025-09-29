@@ -1,30 +1,37 @@
-<script>
-
+<svelte:options runes={true} />
+<script lang='ts'>
+	import type { SingleLineOverlayComponent } from '../../../utils/types.ts';
 	import StyleEditor from '../../../applications/styleditor.ts';
-	import { getApi } from '../../../utils/helpers';
+	import { getApi } from '../../../utils/helpers.ts';
 	import FallbackEditor from './FallbackEditor.svelte';
 
-	export let component;
-	export let removeFn;
-	export let index;
+	let { component = $bindable(), removeFn = $bindable(), index = $bindable(), refreshFn = $bindable() } = $props<{ component: SingleLineOverlayComponent; removeFn: (index: number) => void; index: number; refreshFn: () => void }>();
 
 	const componentNames = getApi().overlayTypes.get('sl').overlayComponentNames;
-
-	// const componentEditors =  getApi().overlayTypes.get("sl").overlayComponentEditors;
 
 	function openStyleEditor() {
 		const editor = new StyleEditor(component.style, (styleNew) => {
 			component.style = styleNew;
+			refreshFn?.();
 		});
 		editor.render(true);
 	}
 
-	function getEditor(type) {
+	let prevData = $state(component.data);
+	$effect(() => {
+		// detect component.data deep reference change
+		if (prevData !== component.data) {
+			prevData = component.data;
+			refreshFn?.();
+		}
+	});
+
+	function getEditor(type: string) {
 		const editor = getApi()
 			.overlayTypes
 			.get('sl')
 			.overlayComponentEditors
-			.get(type);
+			.get(type as any);
 		if (editor !== undefined) {
 			return editor;
 		} else {
@@ -32,26 +39,36 @@
 		}
 	}
 
-	function getCompactButtons(type) {
-		return !!getApi().overlayTypes.get('sl').compactEditorButtons.get(type);
+	function getCompactButtons(type: string) {
+		return !!getApi().overlayTypes.get('sl').compactEditorButtons.get(type as any);
+	}
+
+	const Component = $derived(getEditor(component.type));
+
+	function setType(type: string) {
+		component.type = type;
+		component = component;
+	}
+
+	function setData(data) {
+		component.data = data;
+		component = component;
 	}
 </script>
 
 <li data-list-key={index}>
 	<div class='component handle'>
 		<i class='fa-light fa-bars grab'></i>
-		<select bind:value={component.type} name='types'>
+		<select bind:value={() => component.type, v => setType(v)} name='types' onchange={() => refreshFn?.()}>
 			{#each [...componentNames] as [component, name]}
 				<option value={component}>{game.i18n.localize(name)}</option>
 			{/each}
 		</select>
-		<svelte:component
-			this={getEditor(component.type)}
-			bind:data={component.data}
-		/>
+		<Component bind:data={() => component.data, v => setData(v)} />
 		<div class={getCompactButtons(component.type) ? '' : 'buttons'}>
 			<button
-				on:click={() => removeFn(index)}
+				aria-label='Remove'
+				onclick={() => removeFn(index)}
 				title={game.i18n.localize(
 					'obs-utils.applications.overlayEditor.removeComponentButton',
 				)}
@@ -60,8 +77,9 @@
 				<i class='fas fa-trash'></i>
 			</button>
 			<button
+				aria-label='Edit Style'
 				class='add'
-				on:click={() => openStyleEditor()}
+				onclick={() => openStyleEditor()}
 				title={game.i18n.localize(
 					'obs-utils.applications.overlayEditor.editStyleButton',
 				)}

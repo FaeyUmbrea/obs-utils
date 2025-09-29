@@ -19,8 +19,7 @@ import { getApi } from './helpers.js';
 let d: DirectorApplication | undefined;
 
 export async function openDirector(button: any) {
-	if (!d) d = new DirectorApplication(button);
-	console.error(d.rendered);
+	if (!d) d = new DirectorApplication({}, button);
 	if (!d.rendered) {
 		d.render(true);
 	} else {
@@ -79,10 +78,10 @@ export function registerUI() {
 	getApi()
 		.overlayTypes
 		.get('sl')
-		?.registerOverlayEditor((SingleLineOverlayEditor as SvelteComponentConstructor));
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('pt', (AVEditor as SvelteComponentConstructor));
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('fai', (AVEditor as SvelteComponentConstructor));
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('img', (AVEditor as SvelteComponentConstructor));
+		?.registerOverlayEditor(SingleLineOverlayEditor);
+	getApi().overlayTypes.get('sl')?.registerComponentEditor('pt', AVEditor);
+	getApi().overlayTypes.get('sl')?.registerComponentEditor('fai', AVEditor);
+	getApi().overlayTypes.get('sl')?.registerComponentEditor('img', AVEditor);
 	getApi()
 		.overlayTypes
 		.get('sl')

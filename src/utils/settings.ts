@@ -539,7 +539,7 @@ function ensureStore<T = any>(key: ClientSettings.KeyFor<'obs-utils'>): Writable
 			first = false;
 			return;
 		}
-		if (!gate) {
+		if (!gate && game.ready) {
 			gate = true;
 			await (game as ReadyGame).settings.set(MODULE_ID, key, value as any);
 			gate = false;

@@ -1,23 +1,20 @@
+<svelte:options runes={true} />
+
 <script lang='ts'>
-	import type { External } from '../applications/styleditor.ts';
 
-	import { getContext } from 'svelte';
+	const { foundryApp } = $props();
 
-	export let elementRoot = void 0;
-
-	const application = getContext<External>('#external').application;
-
-	let style = application.style;
+	let style = $state(foundryApp.style);
 
 	function close() {
-		application.style = style;
-		application.close();
+		foundryApp.style = style;
+		foundryApp.close();
 	}
 </script>
 
 <input bind:value={style} name='style' type='text' />
 <footer>
-	<button on:click={close}
+	<button onclick={close}
 	>{game.i18n.localize('obs-utils.applications.styleEditor.submitButton')}</button
 	>
 </footer>

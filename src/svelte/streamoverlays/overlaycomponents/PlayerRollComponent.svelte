@@ -1,8 +1,9 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import { fade } from 'svelte/transition';
 	import { settings as rollOverlaySettings } from '../../../utils/settings.ts';
 
-	export let id;
+	let { id = $bindable(), rollValue = $bindable('0'), rollRunning = $bindable(false) } = $props();
 
 	const pre = rollOverlaySettings.getStore('rollOverlayPostRollEnabled');
 	const post = rollOverlaySettings.getStore('rollOverlayPreRollEnabled');
@@ -13,13 +14,13 @@
 	const preRollFadeOut = rollOverlaySettings.getStore(
 		'rollOverlayPreRollFadeOut',
 	);
-	$:rollDelay = $pre
+	const rollDelay = $derived($pre
 		? $preRollDelay + $preRollFadeIn + $preRollStay + $preRollFadeOut
-		: 0;
+		: 0);
 	const rollStay = rollOverlaySettings.getStore('rollOverlayRollStay');
 	const rollFadeIn = rollOverlaySettings.getStore('rollOverlayRollFadeIn');
 	const rollFadeOut = rollOverlaySettings.getStore('rollOverlayRollFadeOut');
-	$: postRollDelay = rollDelay + $rollFadeIn + $rollStay + $rollFadeOut;
+	const postRollDelay = $derived(rollDelay + $rollFadeIn + $rollStay + $rollFadeOut);
 	const postRollStay = rollOverlaySettings.getStore('rollOverlayPostRollStay');
 	const postRollFadeIn = rollOverlaySettings.getStore(
 		'rollOverlayPostRollFadeIn',
@@ -37,16 +38,16 @@
 	);
 	const postRollImage = rollOverlaySettings.getStore('rollOverlayPostRollImage');
 
-	export let rollValue = '0';
-	export let rollRunning = false;
-	let rollShow = false;
-	let preRollShow = false;
-	let postRollShow = false;
-	$: if (rollRunning) {
-		rollShow = true;
-		preRollShow = $pre;
-		postRollShow = $post;
-	}
+	let rollShow = $state(false);
+	let preRollShow = $state(false);
+	let postRollShow = $state(false);
+	$effect(() => {
+		if (rollRunning) {
+			rollShow = true;
+			preRollShow = $pre;
+			postRollShow = $post;
+		}
+	});
 </script>
 
 <div class='display-area' id={id}>
@@ -55,7 +56,7 @@
 		<div class='before layer'
 			in:fade={{ delay: $preRollDelay, duration: $preRollFadeIn }}
 			out:fade={{ delay: $preRollStay, duration: $preRollFadeOut }}
-			on:introend={() => (preRollShow = false)}>
+			onintroend={() => (preRollShow = false)}>
 			<img
 				src={$preRollImage}
 				alt='pre roll'
@@ -66,7 +67,7 @@
 		<div class='roll layer'
 			in:fade={{ delay: rollDelay, duration: $rollFadeIn }}
 			out:fade={{ delay: $rollStay, duration: $rollFadeOut }}
-			on:introend={() => {
+			onintroend={() => {
 				rollShow = false;
 				if (!$post) rollRunning = false;
 			}}>
@@ -91,7 +92,7 @@
 		<div class='after layer'
 			in:fade={{ delay: postRollDelay, duration: $postRollFadeIn }}
 			out:fade={{ delay: $postRollStay, duration: $postRollFadeOut }}
-			on:introend={() => {
+			onintroend={() => {
 				postRollShow = false;
 				rollRunning = false;
 			}}>

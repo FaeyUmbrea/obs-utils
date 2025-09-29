@@ -3,11 +3,11 @@ import DirectorApp from '../svelte/DirectorApp.svelte';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 export default class DirectorApplication extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
-	sidebarButton;
+	sidebarButton: SceneControls.Tool;
 
 	protected override root = DirectorApp;
 
-	constructor(options: DeepPartial<foundry.applications.api.ApplicationV2.Configuration>, sidebarButton: any) {
+	constructor(options: DeepPartial<foundry.applications.api.ApplicationV2.Configuration>, sidebarButton: SceneControls.Tool) {
 		super(options);
 		this.sidebarButton = sidebarButton;
 	}
@@ -26,9 +26,9 @@ export default class DirectorApplication extends SvelteApplicationMixin(foundry.
 	};
 
 	override async close(options?: DeepPartial<foundry.applications.api.ApplicationV2.ClosingOptions>) {
-		await super.close(options);
-		$('[data-tool=openStreamDirector]').removeClass('active');
+		const close = super.close(options);
 		this.sidebarButton.active = false;
-		return this;
+		ui.controls?.render();
+		return await close;
 	}
 }

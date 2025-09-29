@@ -1,3 +1,4 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import { getApi } from '../utils/helpers';
 	import { settings } from '../utils/settings.ts';

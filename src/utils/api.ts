@@ -1,3 +1,4 @@
+import type { Component } from 'svelte';
 import type { ActorValues } from './helpers.ts';
 import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
 import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
@@ -18,7 +19,7 @@ import { getSetting, setSetting } from './settings.ts';
 export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
 	overlayTypeNames: Map<string, string>;
-	singleInstanceOverlays: Set<SvelteComponentConstructor>;
+	singleInstanceOverlays: Set<Component>;
 
 	constructor() {
 		this.overlayTypes = new Map();
@@ -31,7 +32,7 @@ export class ObsUtilsApi {
 		this.overlayTypeNames.set(key, readableName);
 	}
 
-	registerUniqueOverlay(overlay: SvelteComponentConstructor) {
+	registerUniqueOverlay(overlay: Component) {
 		this.singleInstanceOverlays.add(overlay);
 	}
 
@@ -61,92 +62,92 @@ export class ObsUtilsApi {
 }
 
 export class OverlayType {
-	overlayEditor: SvelteComponentConstructor;
-	overlayComponents: Map<string, SvelteComponentConstructor>;
-	overlayClass: SvelteComponentConstructor;
+	overlayEditor: Component;
+	overlayComponents: Map<string, Component<any, any, any>>;
+	overlayClass: Component;
 	overlayComponentNames: Map<string, string>;
-	overlayComponentEditors: Map<string, SvelteComponentConstructor>;
+	overlayComponentEditors: Map<string, Component<any, any, any>>;
 	compactEditorButtons: Map<string, boolean>;
 
-	constructor(overlayClass: SvelteComponentConstructor) {
+	constructor(overlayClass: Component<any, any, any>) {
 		this.overlayComponents = new Map();
 		this.overlayClass = overlayClass;
 		this.overlayComponentNames = new Map();
 		this.overlayComponentEditors = new Map();
 		this.compactEditorButtons = new Map();
-		this.overlayEditor = (FallbackEditor as SvelteComponentConstructor);
+		this.overlayEditor = FallbackEditor;
 	}
 
-	registerOverlayEditor(editor: SvelteComponentConstructor) {
+	registerOverlayEditor(editor: Component<any, any, any>) {
 		this.overlayEditor = editor;
 	}
 
-	registerComponent(key: string, readableName: string, type: SvelteComponentConstructor) {
+	registerComponent(key: string, readableName: string, type: Component<any, any, any>) {
 		this.overlayComponents.set(key, type);
 		this.overlayComponentNames.set(key, readableName);
 	}
 
-	registerComponentEditor(key: string, editor: SvelteComponentConstructor, compactButtons: boolean = false) {
+	registerComponentEditor(key: string, editor: Component<any, any, any>, compactButtons: boolean = false) {
 		this.overlayComponentEditors.set(key, editor);
 		this.compactEditorButtons.set(key, compactButtons);
 	}
 }
 
 export function registerDefaultTypes() {
-	const singleLineOverlay = new OverlayType((SingleLineOverlay as SvelteComponentConstructor));
+	const singleLineOverlay = new OverlayType(SingleLineOverlay);
 	singleLineOverlay.registerComponent(
 		'pt',
 		'obs-utils.overlays.plainText.name',
-		(ActorValComponent as SvelteComponentConstructor),
+		ActorValComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'fai',
 		'obs-utils.overlays.fontAwesomeIcon.name',
-		(FAIconComponent as SvelteComponentConstructor),
+		FAIconComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'bav',
 		'obs-utils.overlays.booleanAVIcon.name',
-		(AVBoolIconComponent as SvelteComponentConstructor),
+		AVBoolIconComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'bavimg',
 		'obs-utils.overlays.booleanAVImage.name',
-		(AVBoolImageComponent as SvelteComponentConstructor),
+		AVBoolImageComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'img',
 		'obs-utils.overlays.image.name',
-		(AVImageDisplayComponent as SvelteComponentConstructor),
+		AVImageDisplayComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'micoav',
 		'obs-utils.overlays.multiIconAV.name',
-		(AVMultiIconComponent as SvelteComponentConstructor),
+		AVMultiIconComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'mimgav',
 		'obs-utils.overlays.multiImageAV.name',
-		(AVMultiImageComponent as SvelteComponentConstructor),
+		AVMultiImageComponent,
 	);
 	singleLineOverlay.registerComponent(
 		'pb',
 		'obs-utils.overlays.progressBar.name',
-		(ProgressBarComponent as SvelteComponentConstructor),
+		ProgressBarComponent,
 	);
 
 	// Register Legacy Names
-	singleLineOverlay.overlayComponents.set('Plain Text', (ActorValComponent as SvelteComponentConstructor));
-	singleLineOverlay.overlayComponents.set('Font Awesome Icon', (FAIconComponent as SvelteComponentConstructor));
-	singleLineOverlay.overlayComponents.set('Actor Value', (ActorValComponent as SvelteComponentConstructor));
+	singleLineOverlay.overlayComponents.set('Plain Text', ActorValComponent);
+	singleLineOverlay.overlayComponents.set('Font Awesome Icon', FAIconComponent);
+	singleLineOverlay.overlayComponents.set('Actor Value', ActorValComponent);
 	singleLineOverlay.overlayComponents.set(
 		'Boolean Actor Value',
-		(AVBoolIconComponent as SvelteComponentConstructor),
+		AVBoolIconComponent,
 	);
-	singleLineOverlay.overlayComponents.set('iav', (AVImageDisplayComponent as SvelteComponentConstructor));
-	singleLineOverlay.overlayComponents.set('av', (ActorValComponent as SvelteComponentConstructor));
+	singleLineOverlay.overlayComponents.set('iav', AVImageDisplayComponent);
+	singleLineOverlay.overlayComponents.set('av', ActorValComponent);
 
 	getApi().registerOverlayType('sl', 'Single Line', singleLineOverlay);
 	getApi().overlayTypes.set('Single Line', singleLineOverlay);
-	getApi().registerUniqueOverlay((PlayerRollOverlay as SvelteComponentConstructor));
+	getApi().registerUniqueOverlay(PlayerRollOverlay);
 }

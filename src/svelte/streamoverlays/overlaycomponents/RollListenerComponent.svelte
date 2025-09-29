@@ -1,13 +1,15 @@
+<svelte:options runes={true} />
 <script>
 	// This is to decouple the roll listener from the actual component
 
 	import { onDestroy } from 'svelte';
 	import PlayerRollComponent from './PlayerRollComponent.svelte';
 
-	export let id;
-	let rollShow = false;
+	let { id = $bindable() } = $props();
 
-	let rollValue;
+	let rollShow = $state(false);
+
+	let rollValue = $state();
 	const hook = Hooks.on('createChatMessage', (e) => {
 		const uid = e.author.id;
 		if (uid === id && e.whisper.length === 0 && e.isRoll) {

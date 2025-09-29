@@ -1,3 +1,4 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import { generateDataBlockFromSetting, settings } from '../utils/settings.ts';
 	import { sendOpenSettingsConfig } from '../utils/socket.ts';

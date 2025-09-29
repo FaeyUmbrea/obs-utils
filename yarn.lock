@@ -6030,9 +6030,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fvtt-types@npm:13.346.0-beta.20250812191140":
-  version: 13.346.0-beta.20250812191140
-  resolution: "fvtt-types@npm:13.346.0-beta.20250812191140"
+"fvtt-types@npm:13.346.0-beta.20250926173413":
+  version: 13.346.0-beta.20250926173413
+  resolution: "fvtt-types@npm:13.346.0-beta.20250926173413"
   dependencies:
     "@codemirror/lang-html": "npm:^6.4.9"
     "@codemirror/lang-javascript": "npm:^6.2.3"
@@ -6081,7 +6081,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10/ca515296c68c8fdd588b023aa9954e8c12b60c9558fd925124f348e0266a6a6c544e0304ba1da564d592851f2569c5b33cd5ea6c289766b19a0efdda34fd71e1
+  checksum: 10/e7ecd178615f424b185a90dc38b98d7fef938267a0979bf795217cb48a6fb3eebcd6e3771052e9f136c4a179c33a81bb7b9a2c6921f8fa7f65b3d794d0adf565
   languageName: node
   linkType: hard
 
@@ -8255,7 +8255,7 @@ __metadata:
     eslint-plugin-format: "npm:^1.0.2"
     eslint-plugin-svelte: "npm:^3.12.4"
     flat: "npm:^6.0.1"
-    fvtt-types: "npm:13.346.0-beta.20250812191140"
+    fvtt-types: "npm:13.346.0-beta.20250926173413"
     globals: "npm:^16.4.0"
     istanbul-lib-coverage: "npm:^3.2.2"
     jsdom: "npm:^27.0.0"
@@ -8269,6 +8269,7 @@ __metadata:
     rollup-plugin-visualizer: "npm:^6.0.3"
     sass: "npm:^1.93.2"
     stylus: "npm:^0.64.0"
+    svelecte: "npm:^5.3.0"
     svelte: "npm:^5.39.6"
     svelte-preprocess: "npm:^6.0.3"
     svelte-select: "npm:^5.8.3"
@@ -10678,6 +10679,15 @@ __metadata:
   dependencies:
     has-flag: "npm:^4.0.0"
   checksum: 10/c8bb7afd564e3b26b50ca6ee47572c217526a1389fe018d00345856d4a9b08ffbd61fadaf283a87368d94c3dcdb8f5ffe2650a5a65863e21ad2730ca0f05210a
+  languageName: node
+  linkType: hard
+
+"svelecte@npm:^5.3.0":
+  version: 5.3.0
+  resolution: "svelecte@npm:5.3.0"
+  peerDependencies:
+    svelte: ^5.2.7
+  checksum: 10/56b2d2bd5555bcc011382f51a306cfca7fe2aa69cb98d01a1938c55ed4e43394c419a1f5b0a292b2f12dada12b99c546ffc1686faf2d139bc98e832ae155e066
   languageName: node
   linkType: hard
 

@@ -1,7 +1,6 @@
+<svelte:options runes={true} />
 <script lang='ts'>
-	import { getContext } from 'svelte';
 	import Select from 'svelte-select';
-	import { log } from '../utils/console.ts';
 	import { settings } from '../utils/settings.ts';
 	import ObsTab from './components/OBSTab.svelte';
 	import SceneSelect from './components/SceneSelect.svelte';
@@ -9,27 +8,33 @@
 	const useWebSocket = settings.getReadableStore('enableOBSWebsocket');
 	const obsSettings = settings.getStore('obsRemote');
 
-	export let elementRoot = void 0;
-
-	let entries = Object.getOwnPropertyNames($obsSettings);
-
-	if (!$useWebSocket) {
-		entries = entries.filter(entry => entry !== 'onStopStreaming');
-	}
+	const entries = useWebSocket
+		? Object.getOwnPropertyNames($obsSettings)
+		: Object.getOwnPropertyNames($obsSettings).filter(entry => entry !== 'onStopStreaming');
 
 	function formatKey(key) {
 		return game.i18n.localize(`obs-utils.applications.obsRemote.${key}`);
 	}
 
-	const context = getContext('#external');
+	const { foundryApp } = $props();
 
 	async function submit() {
-		await context.application.close();
+		await foundryApp.close();
 	}
 
-	let handleAdd;
+	let handleAdd = $state();
 
-	let selection = '';
+	let selection = $state('');
+
+	function getTabData() {
+		return $obsSettings[selection];
+	}
+
+	function setTabData(value) {
+		console.error(value);
+		$obsSettings[selection] = value;
+	}
+
 </script>
 
 <main>
@@ -62,9 +67,9 @@
 			</div>
 		</Select>
 		<button
+			aria-label='add'
 			class='add'
-			on:click={() => {
-				log(handleAdd);
+			onclick={() => {
 				if (handleAdd !== undefined) handleAdd();
 			}}
 			type='button'><i class='fas fa-plus'></i></button
@@ -76,14 +81,14 @@
 			{#if selection === 'onSceneLoad'}
 				<SceneSelect
 					bind:handleAdd={handleAdd}
-					bind:eventArray={$obsSettings[selection]}
+					bind:eventArray={() => getTabData(), v => setTabData(v)}
 					useWebSocket={$useWebSocket}
 				/>
 			{:else if selection !== ''}
 				{#key selection}
 					<ObsTab
 						bind:handleAdd={handleAdd}
-						bind:eventArray={$obsSettings[selection]}
+						bind:eventArray={() => getTabData(selection), v => setTabData(v)}
 						useWebSocket={$useWebSocket}
 					/>
 				{/key}
@@ -91,8 +96,8 @@
 		</section>
 		<footer>
 			<hr />
-			<button class='submit' on:click={submit}
-			>{game.i18n.localize('obs-utils.strings.done')}</button
+			<button class='submit' onclick={submit}
+			>{game.i18n?.localize('obs-utils.strings.done')}</button
 			>
 		</footer>
 	</div>

@@ -1,7 +1,6 @@
+<svelte:options runes={true} />
 <script>
-	export let data;
-	export let style;
-	export let componentIndex;
+	let { data = $bindable(''), style = $bindable(), componentIndex = $bindable() } = $props();
 </script>
 
 <div

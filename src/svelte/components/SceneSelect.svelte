@@ -1,12 +1,9 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import { OBSEvent, SceneLoadEvent } from '../../utils/types.ts';
 	import ObsSetting from './OBSSetting.svelte';
 
-	/**
-	 * @type {Array<SceneLoadEvent>}
-	 */
-	export let eventArray;
-	export let useWebSocket;
+	let { eventArray = $bindable(), useWebSocket = $bindable(), handleAdd = $bindable() } = $props();
 
 	function handleRemove(index) {
 		eventArray = [
@@ -15,9 +12,9 @@
 		];
 	}
 
-	export function handleAdd() {
+	handleAdd = () => {
 		eventArray = eventArray.concat(new SceneLoadEvent());
-	}
+	};
 
 	function handleChildAdd(index) {
 		eventArray[index].obsActions.push(new OBSEvent());
@@ -35,19 +32,30 @@
 		];
 	}
 
-	const doc = new TJSDocument();
 	async function dropScene(index, event) {
 		try {
-			await doc.setFromDataTransfer(
-				JSON.parse(event.dataTransfer.getData('text/plain')),
-			);
-			const scene = doc.get();
-			if (scene.documentName.includes('Scene')) {
-				eventArray[index].sceneName = scene.name;
+			const data = JSON.parse(event.dataTransfer.getData('text/plain'));
+			if (Object.keys(data).includes('type') && Object.keys(data).includes('uuid')) {
+				if (data.type === 'Scene') {
+					const scene = (game as ReadyGame).scenes.get(data.uuid.split('.')[1]);
+					if (scene.documentName.includes('Scene')) {
+						eventArray[index].sceneName = scene.name;
+					}
+				}
 			}
 		} catch (err) {
 			console.error(err);
 		}
+	}
+
+	function setSceneName(index, value) {
+		eventArray[index].sceneName = value;
+		eventArray = eventArray;
+	}
+
+	function setEventData(index, aindex, value) {
+		eventArray[index].obsActions[aindex] = value;
+		eventArray = eventArray;
 	}
 </script>
 
@@ -57,27 +65,28 @@
 			<li>
 				<div class='setting'>
 					<span
-					>{game.i18n.localize('obs-utils.applications.obsRemote.vttSceneLabel')}</span
+					>{game.i18n?.localize('obs-utils.applications.obsRemote.vttSceneLabel')}</span
 					><input
 						name='input-{index}'
-						bind:value={event.sceneName}
+						bind:value={() => eventArray[index].sceneName, v => setSceneName(index, v)}
 						placeholder={game.i18n.localize(
 							'obs-utils.applications.obsRemote.vttScenePlaceholder',
 						)}
-						on:drop|preventDefault|stopPropagation={event =>
+						ondrop={event =>
 							dropScene(index, event)}
 					/>
-					<button on:click={() => handleRemove(index)} type='button'>
+					<button aria-label='delete' onclick={() => handleRemove(index)} type='button'>
 						<i class='fas fa-trash'></i>
 					</button>
-					<button on:click={() => handleChildAdd(index)} type='button'>
+					<button aria-label='add' onclick={() => handleChildAdd(index)} type='button'>
 						<i class='fas fa-plus'></i>
 					</button>
 				</div>
 				<ul>
 					{#each event.obsActions as action, aindex (event.obsActions.indexOf(action))}
 						<ObsSetting
-							event={action}
+							bind:event={() => eventArray[index].obsActions[aindex], v => setEventData(index, aindex, v)}
+							isScene={true}
 							removeFn={() => handleChildRemove(index, aindex)}
 							useWebSocket={useWebSocket}
 						/>

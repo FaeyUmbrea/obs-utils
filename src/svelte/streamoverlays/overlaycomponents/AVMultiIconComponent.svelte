@@ -1,18 +1,16 @@
+<svelte:options runes={true} />
 <script>
 	import { get } from 'lodash-es';
 	import { onDestroy } from 'svelte';
 
-	export let data = '';
-	export let actorID;
-	export let style;
-	export let componentIndex;
+	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
 
 	const actor = game.actors?.get(actorID);
 
-	let value1 = '';
-	let value2 = '';
-	let icon1 = '';
-	let icon2 = '';
+	let value1 = $state('');
+	let value2 = $state('');
+	let icon1 = $state('');
+	let icon2 = $state('');
 	const hook = Hooks.on('obs-utils.refreshActor', (actor) => {
 		if (actor.id !== actorID) return;
 		getValue();
@@ -38,10 +36,6 @@
 	});
 </script>
 
-{#key data}
-	{getValue()}
-	{getSplit()}
-{/key}
 <div
 	class='component actor-val-component multi-icon-component'
 	id={`component${componentIndex.toString()}`}

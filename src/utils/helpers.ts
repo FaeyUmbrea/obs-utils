@@ -76,7 +76,7 @@ export function getActorValues() {
 					),
 				),
 			),
-		);
+		).map((v) => { return { value: v, label: v }; });
 	}
 	return actorValues;
 }

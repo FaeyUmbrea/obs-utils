@@ -1,3 +1,4 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import VirtualList from 'svelte-tiny-virtual-list';

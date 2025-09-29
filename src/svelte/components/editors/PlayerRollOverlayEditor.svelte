@@ -1,3 +1,4 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import { settings as rollOverlaySettings } from '../../../utils/settings.ts';
 	import PlayerRollComponent from '../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte';
@@ -31,10 +32,8 @@
 	const pre = rollOverlaySettings.getStore('rollOverlayPostRollEnabled');
 	const post = rollOverlaySettings.getStore('rollOverlayPreRollEnabled');
 
-	let rollValue = '20';
-	let rollShow = false;
-
-	export let elementRoot = void 0;
+	let rollValue = $state('20');
+	let rollShow = $state(false);
 
 	function test() {
 		rollValue = Math.round(Math.random() * 20);
@@ -118,7 +117,7 @@
 			id='preview'
 			rollRunning={rollShow}
 		/>
-		<button on:click={test}
+		<button onclick={test}
 		>{game.i18n.localize('obs-utils.applications.rollOverlayEditor.test')}</button
 		>
 	</section>
@@ -137,7 +136,7 @@
 				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
 				<section class='filepicker'>
 					<input bind:value={$preRollImage} type='text' />
-					<button on:click={openFilePickerPreRoll}
+					<button aria-label='Open Filepicker' onclick={openFilePickerPreRoll}
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
@@ -165,7 +164,7 @@
 				)}
 				<section class='filepicker'>
 					<input bind:value={$rollForegroundImage} type='text' />
-					<button on:click={openFilePickerForeground}
+					<button aria-label='Open Filepicker' onclick={openFilePickerForeground}
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
@@ -174,7 +173,7 @@
 				)}
 				<section class='filepicker'>
 					<input bind:value={$rollBackgroundImage} type='text' />
-					<button on:click={openFilePickerBackground}
+					<button aria-label='Open Filepicker' onclick={openFilePickerBackground}
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>
@@ -197,7 +196,7 @@
 				{game.i18n.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
 				<section class='filepicker'>
 					<input bind:value={$postRollImage} type='text' />
-					<button on:click={openFilePickerPostRoll}
+					<button aria-label='Open Filepicker' onclick={openFilePickerPostRoll}
 					><i class='fa-solid fa-file'></i></button
 					>
 				</section>

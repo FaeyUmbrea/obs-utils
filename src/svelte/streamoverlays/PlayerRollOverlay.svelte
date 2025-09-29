@@ -1,3 +1,4 @@
+<svelte:options runes={true} />
 <script>
 	import RollListenerComponent from './overlaycomponents/RollListenerComponent.svelte';
 

@@ -1,3 +1,4 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import { settings } from '../utils/settings.ts';
@@ -10,7 +11,11 @@
 
 	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
 
-	let activeIndex = 0;
+	let activeIndex = $state(0);
+
+	function refresh() {
+		$overlays = $overlays;
+	}
 
 	function handleRemove(index: number) {
 		$overlays.splice(index, 1);
@@ -32,6 +37,11 @@
 	async function close() {
 		await foundryApp.close();
 	}
+
+	async function setOverlayData(index, value) {
+		$overlays[index] = value;
+	}
+
 </script>
 
 <div class='grid'>
@@ -43,7 +53,8 @@
 		<div class='nav-with-add-button'>
 			<button
 				class='add'
-				on:click={() => handleAdd()}
+				aria-label='add'
+				onclick={() => handleAdd()}
 				title={game.i18n.localize(
 					'obs-utils.applications.overlayEditor.addOverlayButton',
 				)}
@@ -58,7 +69,7 @@
 						tabindex={index}
 						class="item {index === activeIndex ? 'active' : ''}"
 						data-tab={index}
-						on:click={() => changeTab(index)}>{index}</a
+						onclick={() => changeTab(index)}>{index}</a
 					>
 				{/each}
 			</nav>
@@ -72,9 +83,10 @@
 					data-group='primary-tabs'
 				>
 					<OverlayEditorTab
-						bind:overlay={$overlays[index]}
+						bind:overlay={() => $overlays[index], v => setOverlayData(index, v)}
 						removeFn={handleRemove}
 						componentindex={index}
+						refreshFn={refresh}
 					/>
 				</div>
 			{/each}
@@ -83,7 +95,7 @@
 </div>
 <hr />
 <footer>
-	<button on:click={close}
+	<button onclick={close}
 	>{game.i18n?.localize('obs-utils.applications.overlayEditor.closeButton')}</button
 	>
 </footer>

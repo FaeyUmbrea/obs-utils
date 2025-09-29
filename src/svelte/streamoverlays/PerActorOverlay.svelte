@@ -1,8 +1,8 @@
+<svelte:options runes={true} />
 <script>
 	import { getApi } from '../../utils/helpers.ts';
 
-	export let overlays;
-	export let actorIDs;
+	let { overlays = $bindable(), actorIDs = $bindable() } = $props();
 
 	function getOverlayType(type) {
 		return getApi().overlayTypes.get(type).overlayClass;
@@ -13,8 +13,8 @@
 	{#each actorIDs as actorID}
 		<div class='actor' id={`actor${actorID}`}>
 			{#each overlays as overlay, index (overlays.indexOf(overlay))}
-				<svelte:component
-					this={getOverlayType(overlay.type)}
+				{@const Component = getOverlayType(overlay.type)}
+				<Component
 					overlayData={overlay}
 					actorID={actorID}
 					overlayIndex={index}

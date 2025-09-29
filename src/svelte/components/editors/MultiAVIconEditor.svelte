@@ -1,16 +1,21 @@
-<script>
+<svelte:options runes={true} />
+
+<script lang='ts'>
 
 	import Select from 'svelte-select';
 	import { getActorValues } from '../../../utils/helpers';
 
-	export let data = '';
-	let av1, av2, icon1, icon2;
+	let { data } = $props<{ data: string }>();
+	let av1 = $state();
+	let av2 = $state();
+	let icon1 = $state();
+	let icon2 = $state();
 	const values = getActorValues();
-	let items = [...values];
-	let items2 = [...values];
+	let items = $state([...values]);
+	let items2 = $state([...values]);
 
-	let filterText = '';
-	let filterText2 = '';
+	let filterText = $state('');
+	let filterText2 = $state('');
 
 	function onChange() {
 		data = `${av1};${icon1};${av2};${icon2}`;
@@ -37,7 +42,6 @@
 	}
 </script>
 
-{getSplit()}
 <div class='input'>
 	<Select
 		--background='var(--sidebar-background)'
@@ -50,14 +54,14 @@
 			strategy: 'fixed',
 		}}
 		items={items}
-		on:filter={handleFilter}
+		onfilter={handleFilter}
 		value={av1}
-		on:change={onChange}
+		onchange={onChange}
 		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<input
 		type='text'
-		on:change={onChange}
+		onchange={onChange}
 		bind:value={icon1}
 		placeholder={game.i18n.localize('obs-utils.strings.iconPlaceholder')}
 	/>
@@ -72,14 +76,14 @@
 			strategy: 'fixed',
 		}}
 		items={items2}
-		on:filter={handleFilter2}
+		onfilter={handleFilter2}
 		value={av2}
-		on:change={onChange}
+		onchange={onChange}
 		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<input
 		type='text'
-		on:change={onChange}
+		onchange={onChange}
 		bind:value={icon2}
 		placeholder={game.i18n.localize('obs-utils.strings.iconPlaceholder')}
 	/>

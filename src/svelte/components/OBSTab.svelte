@@ -1,9 +1,10 @@
+<svelte:options runes={true} />
+
 <script>
 	import { OBSEvent } from '../../utils/types.ts';
 	import ObsSetting from './OBSSetting.svelte';
 
-	export let eventArray;
-	export let useWebSocket;
+	let { eventArray = $bindable(), useWebSocket = $bindable(), handleAdd = $bindable() } = $props();
 
 	function handleRemove(index) {
 		eventArray = [
@@ -12,16 +13,27 @@
 		];
 	}
 
-	export function handleAdd() {
+	handleAdd = () => {
 		eventArray = eventArray.concat(new OBSEvent());
+	};
+
+	function getEvent(index) {
+		return eventArray[index];
 	}
+
+	function setEvent(index, value) {
+		eventArray[index] = value;
+		eventArray = eventArray;
+	}
+
 </script>
 
 <div class='scroll'>
 	<ul>
 		{#each eventArray as event, index (eventArray.indexOf(event))}
 			<ObsSetting
-				event={event}
+				bind:event={() => getEvent(index),
+				v => setEvent(index, v)}
 				removeFn={() => handleRemove(index)}
 				useWebSocket={useWebSocket}
 			/>

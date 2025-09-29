@@ -11,10 +11,6 @@ export default class OBSRemoteApplication extends SvelteApplicationMixin(foundry
 			width: 520,
 		},
 		focusAuto: false,
-		svelte: {
-			class: OBSRemote,
-			target: document.body,
-		},
 	};
 
 	protected override root = OBSRemote;

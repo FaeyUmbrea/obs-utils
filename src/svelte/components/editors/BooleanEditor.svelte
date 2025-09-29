@@ -1,21 +1,24 @@
-<script>
-
+<svelte:options runes={true} />
+<script lang='ts'>
 	import Select from 'svelte-select';
 	import { getActorValues } from '../../../utils/helpers';
 
-	export let data = '';
-	let av1, icon1, icon2;
-	const values = getActorValues();
-	let items = [...values];
+	let { data } = $props<{ data: string }>();
 
-	let filterText = '';
+	let av1 = $state<string | undefined>();
+	let icon1 = $state<string | undefined>();
+	let icon2 = $state<string | undefined>();
+	const values = getActorValues();
+	let items = $state<string[]>([...values]);
+
+	let filterText = $state('');
 
 	function onChange() {
-		data = `${av1};${icon1};${icon2}`;
+		data = `${av1 ?? ''};${icon1 ?? ''};${icon2 ?? ''}`;
 	}
 
-	function handleFilter(e) {
-		if (e.detail.length === 0 && filterText.length > 0) {
+	function handleFilter(e: CustomEvent<{ length: number }>) {
+		if ((e as any).detail?.length === 0 && filterText.length > 0) {
 			items = [...values, filterText];
 		}
 	}
@@ -41,9 +44,9 @@
 			strategy: 'fixed',
 		}}
 		items={items}
-		on:filter={handleFilter}
+		onfilter={handleFilter}
 		value={av1}
-		on:change={onChange}
+		onchange={onChange}
 		placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 	/>
 	<div class='labeled'>
@@ -51,7 +54,7 @@
 		<input
 			id='bool-icon1'
 			type='text'
-			on:change={onChange}
+			onchange={onChange}
 			bind:value={icon1}
 		/>
 	</div>
@@ -60,7 +63,7 @@
 		<input
 			id='bool-icon2'
 			type='text'
-			on:change={onChange}
+			onchange={onChange}
 			bind:value={icon2}
 		/>
 	</div>

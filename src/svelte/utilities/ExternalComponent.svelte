@@ -1,13 +1,16 @@
+<svelte:options runes={true} />
 <script>
 	import { onMount } from 'svelte';
 
 	let div;
-	export let ExternalClass;
+
+	const { ExternalClass, ...rest } = $props();
+
 	onMount(() => {
 		// eslint-disable-next-line no-new
 		new ExternalClass({
 			target: div,
-			props: $$props,
+			props: rest,
 		});
 	});
 </script>

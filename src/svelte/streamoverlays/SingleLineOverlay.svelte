@@ -1,10 +1,9 @@
+<svelte:options runes={true} />
 <script>
 	import { getApi } from '../../utils/helpers';
 	import EmptyComponent from './overlaycomponents/EmptyComponent.svelte';
 
-	export let overlayData;
-	export let actorID;
-	export let overlayIndex;
+	let { overlayData = $bindable(), actorID = $bindable(), overlayIndex = $bindable() } = $props();
 
 	const overlayTypes = getApi().overlayTypes.get('sl').overlayComponents;
 
@@ -24,8 +23,8 @@
 	style={overlayData.style}
 >
 	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
-		<svelte:component
-			this={getComponentType(component.type.toString())}
+		{@const Component = getComponentType(component.type.toString())}
+		<Component
 			data={component.data}
 			componentIndex={index}
 			actorID={actorID}

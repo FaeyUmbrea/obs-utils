@@ -1,18 +1,25 @@
-<script>
-
+<svelte:options runes={true} />
+<script lang='ts'>
 	import Select from 'svelte-select';
 	import { getActorValues } from '../../../utils/helpers';
 
-	export let data;
+	let { data } = $props<{ data: string }>();
 	const values = getActorValues();
-	let items = [...values];
+	let items = $state<string[]>([...values]);
 
-	let filterText = '';
+	let filterText = $state('');
 
-	function handleFilter(e) {
-		if (e.detail.length === 0 && filterText.length > 0) {
-			items = [...values, filterText];
+	function handleFilter(e: CustomEvent<{ length: number }>) {
+		if ((e as any).detail?.length === 0 && filterText.length > 0) {
+			items = [...values, { value: filterText, label: filterText, created: true }];
 		}
+	}
+
+	function handleChange(e) {
+		items = items.map((i) => {
+			delete i.created;
+			return i;
+		});
 	}
 </script>
 
@@ -27,8 +34,9 @@
 	floatingConfig={{
 		strategy: 'fixed',
 	}}
-	items={items}
+	bind:items={items}
 	on:filter={handleFilter}
+	on:change={handleChange}
 	value={data}
 	placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 />

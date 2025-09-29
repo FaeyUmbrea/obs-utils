@@ -1,17 +1,15 @@
+<svelte:options runes={true} />
 <script>
 	import { get, has } from 'lodash-es';
 	import { onDestroy } from 'svelte';
 	import { removeQuotes } from '../../../utils/helpers.ts';
 
-	export let data = '';
-	export let actorID;
-	export let style;
-	export let componentIndex;
+	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
 
 	let actor = game.actors?.get(actorID);
 
-	let value1 = '';
-	let value2 = '';
+	let value1 = $state('');
+	let value2 = $state('');
 	const hook = Hooks.on('obs-utils.refreshActor', (changedactor) => {
 		if (changedactor.id !== actorID) return;
 		actor = changedactor;
@@ -41,9 +39,6 @@
 	});
 </script>
 
-{#key data}
-	{getValue()}
-{/key}
 <div
 	class='component actor-val-component progress-bar-component'
 	id={`component${componentIndex.toString()}`}

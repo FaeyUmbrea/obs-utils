@@ -1,16 +1,14 @@
-<script>
-	import { get, has } from 'lodash-es';
-	import { onDestroy } from 'svelte';
-	import { removeQuotes } from '../../../utils/helpers.ts';
+<svelte:options runes={true} />
+<script lang='ts'>
+  import { get, has } from "lodash-es";
+  import { onDestroy } from "svelte";
+  import { removeQuotes } from "../../../utils/helpers.ts";
 
-	export let data;
-	export let actorID;
-	export let style;
-	export let componentIndex;
+  const { data, actorID, style, componentIndex } = $props();
 
 	let actor = game.actors?.get(actorID);
 
-	let value = '';
+	let value = $state('');
 
 	const hook = Hooks.on('obs-utils.refreshActor', (changedactor) => {
 		if (changedactor.id !== actorID) return;
@@ -33,9 +31,6 @@
 	});
 </script>
 
-{#key data}
-	{getValue()}
-{/key}
 <div
 	class='component actor-val-component'
 	id={`component${componentIndex.toString()}`}

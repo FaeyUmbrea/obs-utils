@@ -8,7 +8,7 @@ export function registerKeybindings() {
 			name,
 			'obs-utils.strings.ic',
 			`Digit${index + 1}`,
-			[KeyboardManager.MODIFIER_KEYS.SHIFT, KeyboardManager.MODIFIER_KEYS.CONTROL],
+			[foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT, foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.CONTROL],
 			'defaultInCombat',
 		);
 	});
@@ -18,13 +18,13 @@ export function registerKeybindings() {
 			name,
 			'obs-utils.strings.ooc',
 			`Digit${index + 1}`,
-			[KeyboardManager.MODIFIER_KEYS.SHIFT],
+			[foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT],
 			'defaultOutOfCombat',
 		);
 	});
 }
 
-function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: (KeyboardManager.MODIFIER_KEYS | keyof KeyboardManager.ModifierKeys)[], setting: K) {
+function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: (foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS | keyof foundry.helpers.interaction.KeyboardManager.ModifierKeys)[], setting: K) {
 	(game as ReadyGame | undefined)?.keybindings?.register(MODULE_ID, name, {
 		editable: [{ key, modifiers }],
 		restricted: true,

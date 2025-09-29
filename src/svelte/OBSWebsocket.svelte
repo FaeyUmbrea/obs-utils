@@ -1,21 +1,20 @@
+<svelte:options runes={true} />
 <script lang='ts'>
 
-	import { getContext, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { generateDataBlockFromSetting, getSetting, setSetting } from '../utils/settings.ts';
 	import { sendOBSSetting } from '../utils/socket.ts';
 
 	const websocketSettings = getSetting('websocketSettings');
-	export let elementRoot = void 0;
-
-	const context = getContext('#external');
+	const { foundryApp } = $props();
 
 	async function submit() {
 		await setSetting('websocketSettings', websocketSettings);
-		await context.application.close();
+		await foundryApp.close();
 	}
 
-	let { onlineUsers } = generateDataBlockFromSetting();
-	let currentTrackedPlayer = game?.user.id;
+	let onlineUsers = $state(generateDataBlockFromSetting().onlineUsers);
+	let currentTrackedPlayer = $state(game?.user.id);
 
 	const hook = Hooks.on('userConnected', () => {
 		onlineUsers = generateDataBlockFromSetting().onlineUsers;
@@ -55,7 +54,7 @@
 			type='password'
 		/>
 		<hr />
-		<button on:click={submit} type='submit'
+		<button onclick={submit} type='submit'
 		>{game.i18n.localize('obs-utils.applications.obsWebsocket.saveButton')}</button
 		>
 		<hr />
@@ -71,7 +70,7 @@
 				{/each}
 			</select>
 			<br />
-			<button on:click={sync} type='submit'
+			<button onclick={sync} type='submit'
 			>{game.i18n.localize('obs-utils.applications.obsWebsocket.syncButton')}</button
 			>
 		</div>
