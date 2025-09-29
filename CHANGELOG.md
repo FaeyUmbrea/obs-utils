@@ -1,3 +1,18 @@
+## Version 4.2.0
+
+### Added
+
+- A completely new style editor has been added to the overlay editor. It is still in beta, but it should be much easier to use.
+
+### Changed
+
+- The entire module has been updated to use ApplicationV2 in preparation for Foundry V14
+- The way that actor values are resolved now also supports getting actor values that are inside arrays, maps and even objects by their index
+  - Arrays can be accessed using the index notation as expected like `items[0]`
+  - Maps can also be accessed using the dot notation for the key name `dataMap.entry`
+  - Maps can also be accessed using an index, the keys will be sorted alphabetically `dataMap[0]`
+  - Object can now also be accessed using an index, the keys will be sorted alphabetically `dataObject[0]`
+
 ## Version 4.1.4
 
 ### Added

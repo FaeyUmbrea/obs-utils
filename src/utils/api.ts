@@ -20,11 +20,13 @@ export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
 	overlayTypeNames: Map<string, string>;
 	singleInstanceOverlays: Set<Component>;
+	singleInstanceOverlaysSvelte5: Set<Component>;
 
 	constructor() {
 		this.overlayTypes = new Map();
 		this.overlayTypeNames = new Map();
 		this.singleInstanceOverlays = new Set();
+		this.singleInstanceOverlaysSvelte5 = new Set();
 	}
 
 	registerOverlayType(key: string, readableName: string, type: OverlayType) {
@@ -32,8 +34,14 @@ export class ObsUtilsApi {
 		this.overlayTypeNames.set(key, readableName);
 	}
 
+	// Legacy external component workflow (pre-Svelte 5)
 	registerUniqueOverlay(overlay: Component) {
 		this.singleInstanceOverlays.add(overlay);
+	}
+
+	// New Svelte 5 external component workflow
+	registerUniqueOverlaySvelte5(overlay: Component) {
+		this.singleInstanceOverlaysSvelte5.add(overlay);
 	}
 
 	getSelectedActors() {
@@ -149,5 +157,5 @@ export function registerDefaultTypes() {
 
 	getApi().registerOverlayType('sl', 'Single Line', singleLineOverlay);
 	getApi().overlayTypes.set('Single Line', singleLineOverlay);
-	getApi().registerUniqueOverlay(PlayerRollOverlay);
+	getApi().registerUniqueOverlaySvelte5(PlayerRollOverlay);
 }
