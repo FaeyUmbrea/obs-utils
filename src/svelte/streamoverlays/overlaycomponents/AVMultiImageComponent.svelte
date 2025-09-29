@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script>
-	import { get } from 'lodash-es';
 	import { onDestroy } from 'svelte';
+	import { getByDataPath } from '../../../utils/helpers.ts';
 
 	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
 
@@ -17,13 +17,15 @@
 	});
 
 	function getValue() {
-		const val1 = get(actor, data.split(';')[0], '');
+		const raw1 = getByDataPath(actor, data.split(';')[0]);
+		const val1 = Number(raw1);
 		if (Number.isNaN(val1) || val1 < 0) {
 			value1 = 0;
 		} else {
 			value1 = val1;
 		}
-		const val2 = get(actor, data.split(';')[2], '') - val1;
+		const raw2 = getByDataPath(actor, data.split(';')[2]);
+		const val2 = Number(raw2) - value1;
 		if (Number.isNaN(val2) || val2 < 0) {
 			value2 = 0;
 		} else {

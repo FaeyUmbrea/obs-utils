@@ -1,8 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { get, has } from 'lodash-es';
 	import { onDestroy } from 'svelte';
-	import { removeQuotes } from '../../../utils/helpers.ts';
+	import { getByDataPath, removeQuotes } from '../../../utils/helpers.ts';
 
 	const { data, actorID, style, componentIndex } = $props();
 
@@ -17,11 +16,11 @@
 	});
 
 	function getValue() {
-		const hasValue = has(actor, data);
-		if (hasValue) {
-			value = get(actor, data, '');
-		} else {
+		const resolved = getByDataPath(actor, data);
+		if (resolved === '') {
 			value = data !== undefined && data !== null ? removeQuotes(data) : '';
+		} else {
+			value = resolved as any;
 		}
 		return '';
 	}

@@ -1,8 +1,7 @@
 <svelte:options runes={true} />
 <script>
-	import { get, has } from 'lodash-es';
 	import { onDestroy } from 'svelte';
-	import { removeQuotes } from '../../../utils/helpers.ts';
+	import { getByDataPath, removeQuotes } from '../../../utils/helpers.ts';
 
 	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
 
@@ -18,18 +17,18 @@
 
 	function getValue() {
 		const path1 = data.split(';')[0];
-		const hasValue1 = has(actor, path1);
-		if (hasValue1) {
-			value1 = get(actor, path1, '');
-		} else {
+		const r1 = getByDataPath(actor, path1);
+		if (r1 === '') {
 			value1 = path1 !== undefined && path1 !== null ? removeQuotes(path1) : '';
+		} else {
+			value1 = r1;
 		}
 		const path2 = data.split(';')[1];
-		const hasValue2 = has(actor, path2);
-		if (hasValue2) {
-			value2 = get(actor, path2, '');
-		} else {
+		const r2 = getByDataPath(actor, path2);
+		if (r2 === '') {
 			value2 = path2 !== undefined && path2 !== null ? removeQuotes(path2) : '';
+		} else {
+			value2 = r2;
 		}
 		return '';
 	}

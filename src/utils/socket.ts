@@ -1,5 +1,5 @@
 import type { OBSWebsocketSettings } from './types.ts';
-import { debounce } from 'lodash-es';
+import { debounce } from './helpers.ts';
 import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from './canvas';
 import { isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';

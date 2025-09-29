@@ -1,8 +1,8 @@
 <svelte:options runes={true} />
 
 <script>
-	import { get } from 'lodash-es';
 	import { onDestroy } from 'svelte';
+	import { getByDataPath } from '../../../utils/helpers.ts';
 
 	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
 
@@ -17,7 +17,7 @@
 	});
 
 	function getValue() {
-		value = get(actor, data.split(';')[0], '');
+		value = getByDataPath(actor, data.split(';')[0]);
 		icon1 = data.split(';')[1] ?? 'fa-solid fa-check';
 		icon2 = data.split(';')[2] ?? 'fa-solid fa-x';
 		return '';
