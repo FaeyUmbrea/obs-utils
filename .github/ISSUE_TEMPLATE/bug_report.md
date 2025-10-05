@@ -7,6 +7,9 @@ assignees: ''
 
 ---
 
+PLEASE MAKE SURE THE ISSUE ONLY OCCURS IF OBS UTILS IS ENABLED
+THE CHAT LOG IS NOT PART OF THE MODULE AND SHOULD BE ENTIRELY UNMODIFIED
+
 **Describe the bug**
 A clear and concise description of what the bug is.
 
