@@ -1,3 +1,12 @@
+## Version 4.2.1
+
+### Added
+
+- Added a keybind to help people break out of OBS Mode if they accidentally trapped themselves in it
+  - CTRL + SHIFT + ALT + O by default
+  - Requires manually refreshing the page after
+  - Also added a notification popup in manual OBS Mode to inform people of it
+
 ## Version 4.2.0
 
 ### Added
