@@ -21,7 +21,10 @@
 			"missingTypeNotice": "Veralteter/Entfernter Overlay-Typ. Bitte wähle einen neuen aus der Liste um zu bearbeiten.",
 			"done": "Fertig",
 			"trackPlayerOwned": "Verfolge alle Spieler-Tokens",
-			"pauseCameraTracking": "Kamera-Verfolgung pausieren"
+			"pauseCameraTracking": "Kamera-Verfolgung pausieren",
+			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
+			"disableOBSMode": "Disable OBS Mode",
+			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
 			"rollOverlayEditor": {

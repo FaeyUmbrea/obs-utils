@@ -21,7 +21,10 @@
 			"missingTypeNotice": "Legacy/Missing Type. Please select a new type in the dropdown to edit.",
 			"done": "Done",
 			"trackPlayerOwned": "Track Player-Owned tokens",
-			"pauseCameraTracking": "Pause Camera Tracking"
+			"pauseCameraTracking": "Pause Camera Tracking",
+			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
+			"disableOBSMode": "Disable OBS Mode",
+			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
 			"rollOverlayEditor": {
