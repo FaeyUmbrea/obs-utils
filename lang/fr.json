@@ -21,7 +21,10 @@
 			"missingTypeNotice": "Type ancien/manquant. Veuillez sélectionner un nouveau type dans le menu déroulant pour modifier.",
 			"done": "Terminé",
 			"trackPlayerOwned": "Suivre les jetons possédés par les joueurs",
-			"pauseCameraTracking": "Mettre en pause le suivi de la caméra"
+			"pauseCameraTracking": "Mettre en pause le suivi de la caméra",
+			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
+			"disableOBSMode": "Disable OBS Mode",
+			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
 			"rollOverlayEditor": {
