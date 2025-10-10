@@ -22,6 +22,14 @@ export function registerKeybindings() {
 			'defaultOutOfCombat',
 		);
 	});
+	(game as ReadyGame).keybindings.register(MODULE_ID, 'disableOBSMode', {
+		editable: [{ key: 'KeyO', modifiers: [foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.ALT, foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT, foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.CONTROL] }],
+		name: 'obs-utils.strings.disableOBSMode',
+		hint: 'obs-utils.strings.disableOBSModeHint',
+		onDown: () => {
+			setSetting('obsMode', false).then();
+		},
+	});
 }
 
 function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: (foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS | keyof foundry.helpers.interaction.KeyboardManager.ModifierKeys)[], setting: K) {

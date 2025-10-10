@@ -1,7 +1,7 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 import { expandTokenHud, isGM } from './utils/canvas.ts';
-import { isOBS, removeBG } from './utils/helpers.js';
+import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
 import { initRollOverlaySettings, initSettings, runMigrations } from './utils/settings.ts';
@@ -44,6 +44,10 @@ function start() {
 		if (isOBS()) {
 			// Simulate a user interaction to start video playback
 			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));
+			if (isManualOBS()) {
+				// @ts-expect-error doing some funky stuff here
+				ui?.notifications?.warn((game as ReadyGame).i18n.localize('obs-utils.strings.manualOBSWarning'), { obsLocal: true });
+			}
 		}
 
 		// Update obsModeUser choice list once usernames are available

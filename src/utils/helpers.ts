@@ -18,6 +18,10 @@ export function isOBS() {
 	);
 }
 
+export function isManualOBS() {
+	return (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'obsMode');
+}
+
 export function removeBG() {
 	if (!!window.obsstudio && document.querySelector('body.stream') != null) {
 		document.querySelector('body.stream')?.classList.add('transparent-bg');

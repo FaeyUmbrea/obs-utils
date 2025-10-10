@@ -253,6 +253,10 @@ export function initOBS() {
 
 function registerLibWrapper() {
 	libWrapper.register('obs-utils', 'foundry.applications.ui.Notifications.prototype.notify', (wrapped: any, message: string, type: NotificationType = 'info', options: NotificationOptions = {}) => {
+		// @ts-expect-error funky stuff
+		if (options.obsLocal) {
+			return wrapped(message, type, options);
+		}
 		// @ts-expect-error funky shit
 		if (options.progress) {
 			return wrapped(message, type, options);
