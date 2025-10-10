@@ -292,7 +292,10 @@
 			"birdseye": "Подогнать карту к экрану",
 			"trackAll": "Следить за всеми токенами с Владельцем",
 			"pauseCameraTracking": "Приостановить слежение камеры",
-			"ooc": "Вне боя"
+			"ooc": "Вне боя",
+			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
+			"disableOBSMode": "Disable OBS Mode",
+			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		}
 	}
 }
