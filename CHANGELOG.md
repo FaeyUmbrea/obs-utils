@@ -1,3 +1,10 @@
+## Version 4.2.2
+
+### Fixed
+
+- Progress bar components only updated their initial value of 0.5 when the actor was updated
+- Added a fallback value for all editors in case the data somehow becomes invalid
+
 ## Version 4.2.1
 
 ### Added
