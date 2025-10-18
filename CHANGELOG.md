@@ -1,3 +1,9 @@
+## Version 4.2.2.1
+
+### Hotfix
+
+- The previous fix didn't quite catch all fallback cases
+
 ## Version 4.2.2
 
 ### Fixed
