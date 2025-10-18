@@ -5,9 +5,9 @@
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
-	let av1 = $state(data.split(';')[0] ?? '');
-	let icon1 = $state(data.split(';')[1] ?? '');
-	let icon2 = $state(data.split(';')[2] ?? '');
+	let av1 = $state(data?.split(';')[0] ?? '');
+	let icon1 = $state(data?.split(';')[1] ?? '');
+	let icon2 = $state(data?.split(';')[2] ?? '');
 	const values = getActorValues();
 	// eslint-disable-next-line svelte/valid-compile
 	if (av1 !== null && !values.find(v => v.value === av1)) {

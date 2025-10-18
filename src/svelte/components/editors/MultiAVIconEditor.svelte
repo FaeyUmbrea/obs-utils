@@ -7,10 +7,10 @@
 	import { getActorValues } from '../../../utils/helpers';
 
 	let { data = $bindable(';;;') } = $props<{ data: string }>();
-	let av1 = $state(data.split(';')[0] ?? null);
-	let av2 = $state(data.split(';')[2] ?? null);
-	let icon1 = $state(data.split(';')[1] ?? null);
-	let icon2 = $state(data.split(';')[3] ?? null);
+	let av1 = $state(data?.split(';')[0] ?? null);
+	let av2 = $state(data?.split(';')[2] ?? null);
+	let icon1 = $state(data?.split(';')[1] ?? null);
+	let icon2 = $state(data?.split(';')[3] ?? null);
 	const values = getActorValues();
 	// eslint-disable-next-line svelte/valid-compile
 	if (av1 !== null && !values.find(v => v.value === av1)) {
