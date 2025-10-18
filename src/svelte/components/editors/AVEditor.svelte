@@ -3,7 +3,7 @@
 	import Svelecte from 'svelecte';
 	import { getActorValues } from '../../../utils/helpers';
 
-	let { data = $bindable() } = $props<{ data: string }>();
+	let { data = $bindable('') } = $props<{ data: string }>();
 	const values = getActorValues();
 	if (data !== null && !values.find(v => v.value === data)) {
 		values.push({ value: data, label: data, $created: true });

@@ -5,7 +5,7 @@
 	import Svelecte from 'svelecte';
 	import { getActorValues } from '../../../utils/helpers';
 
-	let { data = $bindable() } = $props<{ data: string }>();
+	let { data = $bindable(';') } = $props<{ data: string }>();
 	let av1 = $state(data.split(';')[0] ?? null);
 	let av2 = $state(data.split(';')[1] ?? null);
 	const values = getActorValues();

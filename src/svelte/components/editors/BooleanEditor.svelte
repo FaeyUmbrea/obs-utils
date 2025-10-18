@@ -3,11 +3,11 @@
 	import Svelecte from 'svelecte';
 	import { getActorValues } from '../../../utils/helpers';
 
-	let { data = $bindable() } = $props<{ data: string }>();
+	let { data = $bindable(';;') } = $props<{ data: string }>();
 
-	let av1 = $state(data.split(';')[0] ?? null);
-	let icon1 = $state(data.split(';')[1] ?? null);
-	let icon2 = $state(data.split(';')[2] ?? null);
+	let av1 = $state(data.split(';')[0] ?? '');
+	let icon1 = $state(data.split(';')[1] ?? '');
+	let icon2 = $state(data.split(';')[2] ?? '');
 	const values = getActorValues();
 	// eslint-disable-next-line svelte/valid-compile
 	if (av1 !== null && !values.find(v => v.value === av1)) {
