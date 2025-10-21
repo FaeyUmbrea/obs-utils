@@ -172,7 +172,7 @@ export function initOBS() {
 		handleOBSScene(canvas.scene!.name).then();
 	});
 
-	Hooks.on('renderSidebar', hideApplication);
+	Hooks.on('renderSidebar', hideSidebar);
 	Hooks.on('renderSceneNavigation', hideApplication);
 	Hooks.on('renderMainMenu', hideApplication);
 	Hooks.on('renderSceneControls', hideApplication);

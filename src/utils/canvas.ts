@@ -23,11 +23,10 @@ export function hideNotifications() {
 		if (textArea) {
 			(textArea as HTMLElement).style.display = 'none';
 		}
-	}
-
-	const buttons = document.querySelector('nav.tabs');
-	if (buttons) {
-		(buttons as HTMLElement).style.display = 'none';
+		const rollPrivacy = document.querySelector('div#roll-privacy');
+		if (rollPrivacy) {
+			(rollPrivacy as HTMLElement).style.display = 'none';
+		}
 	}
 }
 
@@ -279,13 +278,16 @@ export async function applyPopupConstrains(popout: { setPosition: (position: { l
 
 export async function showTracker() {
 	if (!getSetting('showTrackerInCombat')) return;
-	ui.sidebar?.element.removeAttribute('style');
-	ui.sidebar?.expand();
 	ui.sidebar?.changeTab('combat', 'primary');
+	ui.sidebar?.expand();
+	document.querySelector('div#sidebar-content')?.removeAttribute('style');
 }
 
 export async function hideSidebar() {
-	(ui.sidebar?.element as HTMLElement).style.display = 'none';
+	ui.sidebar?.element?.childNodes.forEach((node) => {
+		(node as HTMLElement).style.display = 'none';
+	});
+	ui.sidebar?.collapse();
 }
 
 export async function screenReload() {
