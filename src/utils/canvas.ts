@@ -27,6 +27,15 @@ export function hideNotifications() {
 		if (rollPrivacy) {
 			(rollPrivacy as HTMLElement).style.display = 'none';
 		}
+		if (getSetting('leftAlignChatNotifications')) {
+			const panel = document.querySelector('div#chat-notifications');
+			if (panel) {
+				const leftColumn = document.querySelector('#ui-left-column-1');
+				if (leftColumn) {
+					leftColumn.appendChild(panel);
+				}
+			}
+		}
 	}
 }
 

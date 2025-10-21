@@ -365,6 +365,13 @@ export function	initSettings() {
 		config: true,
 		default: false,
 	});
+
+	createSetting('leftAlignChatNotifications', {
+		type: Boolean,
+		scope: 'world',
+		config: true,
+		default: false,
+	});
 }
 
 export function	initRollOverlaySettings() {

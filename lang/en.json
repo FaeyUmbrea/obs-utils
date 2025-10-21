@@ -292,6 +292,10 @@
 				"Name": "Display Chat Notifications in Game",
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI"
 			},
+			"leftAlignChatNotifications": {
+				"Name": "Left Align Chat Notifications",
+				"Hint": "If enabled, chat message popups will be aligned to the left side of the screen"
+			},
 			"streamChatPopupStyle": {
 				"Name": "Notification-Style Chat Overlay",
 				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View"

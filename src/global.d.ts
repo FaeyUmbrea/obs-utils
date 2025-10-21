@@ -91,6 +91,7 @@ declare global {
 		'obs-utils.forceStreamPageOBSMode': boolean;
 		'obs-utils.proxyOBSMessages': boolean;
 		'obs-utils.showChatNotificationsOnCanvas': boolean;
+		'obs-utils.leftAlignChatNotifications': boolean;
 		'obs-utils.streamChatPopupStyle': boolean;
 	}
 }

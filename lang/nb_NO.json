@@ -266,6 +266,10 @@
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
 				"Name": "Display Chat Notifications in Game"
+			},
+			"leftAlignChatNotifications": {
+				"Name": "Left Align Chat Notifications",
+				"Hint": "If enabled, chat message popups will be aligned to the left side of the screen"
 			}
 		},
 		"overlays": {
