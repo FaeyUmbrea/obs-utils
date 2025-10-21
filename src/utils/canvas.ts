@@ -27,6 +27,12 @@ export function hideNotifications() {
 		if (rollPrivacy) {
 			(rollPrivacy as HTMLElement).style.display = 'none';
 		}
+		if ((game as ReadyGame).modules?.get('dice-calculator')?.active) {
+			const diceTray = document.querySelector('section.dice-tray');
+			if (diceTray) {
+				(diceTray as HTMLElement).style.display = 'none';
+			}
+		}
 		if (getSetting('leftAlignChatNotifications')) {
 			const panel = document.querySelector('div#chat-notifications');
 			if (panel) {
