@@ -26,6 +26,12 @@
 </script>
 
 <main>
+	{#if isDisabled}
+		<div class='warning'>
+			<i class='fas fa-exclamation-triangle'></i>
+			<span>{game.i18n?.localize('obs-utils.applications.director.noGMWarning')}</span>
+		</div>
+	{/if}
 	<section>
 		<b>{game.i18n?.localize('obs-utils.applications.director.icTypeHeader')}</b>
 		<div>
@@ -136,6 +142,22 @@
       display grid
       grid-template-columns 60% 40%
       grid-gap 10px
+
+  .warning
+    grid-column 1 / -1
+    background-color #ffeb3b
+    color #333
+    padding 10px
+    border-radius 4px
+    border 2px solid #ffc107
+    display flex
+    align-items center
+    gap 10px
+    font-weight bold
+
+  .warning i
+    font-size 20px
+    color #ff9800
 
   input
     opacity 0
