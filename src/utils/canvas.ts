@@ -78,8 +78,9 @@ export function hideTokenBorder(token: Token | undefined) {
 }
 
 function getAutoTokens(): Token[] | undefined {
+	const trackObserverTokens = getSetting('trackObserverTokens') === true;
 	// @ts-expect-error Modifying Internals, no types available
-	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => token.observer === true || token.isOwner === true);
+	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => (trackObserverTokens && token.observer === true) || token.isOwner === true);
 }
 
 function getPlayerTokens(): Token[] | undefined {

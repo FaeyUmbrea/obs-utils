@@ -401,6 +401,7 @@ export function	initSettings() {
 		scope: 'world',
 		config: true,
 		default: false,
+		requiresReload: true,
 	});
 
 	createSetting('leftAlignChatNotifications', {
@@ -409,6 +410,14 @@ export function	initSettings() {
 		config: true,
 		default: false,
 		requiresReload: true,
+	});
+
+	createSetting('trackObserverTokens', {
+		type: Boolean,
+		scope: 'world',
+		config: true,
+		default: false,
+		onChange: changeMode,
 	});
 
 	createSetting('showDirectorInOBSMode', {
