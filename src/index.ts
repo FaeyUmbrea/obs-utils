@@ -4,7 +4,7 @@ import { expandTokenHud, isGM } from './utils/canvas.ts';
 import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
-import { initRollOverlaySettings, initSettings, runMigrations } from './utils/settings.ts';
+import { getSetting, initRollOverlaySettings, initSettings, runMigrations } from './utils/settings.ts';
 import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
 
 function start() {
@@ -75,8 +75,8 @@ function start() {
 start();
 
 function buildButtons(buttons: any) {
-	if (!(game as ReadyGame).user?.isGM) return;
-	const	buttonGroup = buttons.tokens;
+	if (!(game as ReadyGame).user?.isGM && (getSetting('showDirectorInOBSMode') && !isOBS())) return;
+	const buttonGroup = buttons.tokens;
 	const newButton = {
 		icon: 'fa-solid fa-signal-stream',
 		name: 'openStreamDirector',

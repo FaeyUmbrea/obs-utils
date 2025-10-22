@@ -3,7 +3,7 @@ import type { Readable, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
-import { isOBS } from './helpers';
+import { getGM, isOBS } from './helpers';
 import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
 
 export const OBSAction = {
@@ -15,10 +15,13 @@ export const OBSAction = {
 
 const SETTINGS_VERSION = 2;
 
-function getGM(): User {
-	// @ts-expect-error Ah yes
-	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM);
-}
+const OBS_MODIFIABLE_SETTINGS = [
+	'defaultOutOfCombat',
+	'defaultInCombat',
+	'clampCanvas',
+	'pauseCameraTracking',
+	'trackedUser',
+] as const;
 
 async function changeMode() {
 	if (!isOBS()) return;
@@ -66,8 +69,42 @@ export function getSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(setting
 }
 
 export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(settingName: K, value: ClientSettings.SettingCreateData<'obs-utils', K>) {
+	if (OBS_MODIFIABLE_SETTINGS.includes(settingName as any) && isOBS() && getSetting('showDirectorInOBSMode') === true) {
+		if (getGM()?.active !== true) {
+			console.warn('No active GM to process setting change.');
+			return;
+		}
+		game.socket?.emit(`module.${MODULE_ID}`, {
+			action: 'setPlayerModifiableSetting',
+			settingName,
+			value,
+			userId: game.user?.id,
+		});
+		return;
+	}
 	await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 }
+
+function setupOBSModifiableSettingsSocket() {
+	game = game as ReadyGame;
+	game?.socket?.on(`module.${MODULE_ID}`, async (data: any) => {
+	// Only GMs should process these requests
+		if (!game.user?.isGM) return;
+		if (data.action !== 'setPlayerModifiableSetting') {
+			return;
+		}
+		const { settingName, value, userId } = data;
+		if (!(OBS_MODIFIABLE_SETTINGS.includes(settingName as any))) {
+			console.warn(`Player ${userId} attempted to change non-modifiable setting: ${settingName}`);
+			return;
+		}
+		await setSetting(settingName, value);
+	});
+}
+
+Hooks.once('ready', () => {
+	setupOBSModifiableSettingsSocket();
+});
 
 interface ButtonData {
 	icon: string;
@@ -371,6 +408,15 @@ export function	initSettings() {
 		scope: 'world',
 		config: true,
 		default: false,
+		requiresReload: true,
+	});
+
+	createSetting('showDirectorInOBSMode', {
+		type: Boolean,
+		scope: 'world',
+		config: true,
+		default: false,
+		requiresReload: true,
 	});
 }
 
@@ -548,7 +594,8 @@ function ensureStore<T = any>(key: ClientSettings.KeyFor<'obs-utils'>): Writable
 		}
 		if (!gate && game.ready) {
 			gate = true;
-			await (game as ReadyGame).settings.set(MODULE_ID, key, value as any);
+			// await (game as ReadyGame).settings.set(MODULE_ID, key, value as any);
+			await setSetting(key, value as any);
 			gate = false;
 		}
 	});

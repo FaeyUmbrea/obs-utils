@@ -93,6 +93,7 @@ declare global {
 		'obs-utils.showChatNotificationsOnCanvas': boolean;
 		'obs-utils.leftAlignChatNotifications': boolean;
 		'obs-utils.streamChatPopupStyle': boolean;
+		'obs-utils.showDirectorInOBSMode': boolean;
 	}
 }
 

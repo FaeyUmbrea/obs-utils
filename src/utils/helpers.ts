@@ -8,6 +8,10 @@ export function sleep(milliseconds: number | undefined) {
 	return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
+export function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
+	arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+}
+
 export function isOBS() {
 	return (
 		(!!window.obsstudio
@@ -26,6 +30,11 @@ export function removeBG() {
 	if (!!window.obsstudio && document.querySelector('body.stream') != null) {
 		document.querySelector('body.stream')?.classList.add('transparent-bg');
 	}
+}
+
+export function getGM(): User {
+	// @ts-expect-error Ah yes
+	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM);
 }
 
 function getFontAwesomeVersion() {

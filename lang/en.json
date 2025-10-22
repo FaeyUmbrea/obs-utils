@@ -299,6 +299,10 @@
 			"streamChatPopupStyle": {
 				"Name": "Notification-Style Chat Overlay",
 				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View"
+			},
+			"showDirectorInOBSMode": {
+				"Name": "Show Director Controls in OBS Mode",
+				"Hint": "If disabled, the Director controls will be hidden when in OBS Mode"
 			}
 		}
 	}
