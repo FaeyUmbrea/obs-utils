@@ -51,8 +51,9 @@ export function hideTokenBorder(token: Token | undefined) {
 	}
 }
 
-function getAutoTokens() {
-	return (game as ReadyGame).canvas?.tokens?.ownedTokens;
+function getAutoTokens(): Token[] | undefined {
+	// @ts-expect-error Modifying Internals, no types available
+	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => token.observer === true || token.isOwner === true);
 }
 
 function getPlayerTokens(): Token[] | undefined {
