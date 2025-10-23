@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { getGM, isOBS } from '../utils/helpers.ts';
+	import { getGM } from '../utils/helpers.ts';
 	import { generateDataBlockFromSetting, settings } from '../utils/settings.ts';
 	import { sendOpenSettingsConfig } from '../utils/socket.ts';
 

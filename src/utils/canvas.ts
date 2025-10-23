@@ -327,14 +327,13 @@ export async function showTracker() {
 }
 
 export async function hideSidebar() {
-export async function hideSidebar() {
-  const container = ui.sidebar?.element as HTMLElement | undefined;
-  if (container) {
-    Array.from(container.children).forEach((el) => {
-      (el as HTMLElement).style.display = 'none';
-    });
-  }
-  ui.sidebar?.collapse();
+	const container = ui.sidebar?.element as HTMLElement | undefined;
+	if (container) {
+		Array.from(container.children).forEach((el) => {
+			(el as HTMLElement).style.display = 'none';
+		});
+	}
+	ui.sidebar?.collapse();
 }
 
 export async function screenReload() {
