@@ -1,0 +1,3 @@
+path_filters:
+  - "!lang/**"        # Exclude the whole lang directory
+  - "lang/en.json"    # Include the specific English file
