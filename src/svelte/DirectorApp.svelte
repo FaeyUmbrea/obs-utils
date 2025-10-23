@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { getGM } from '../utils/helpers.ts';
+	import { getGM, isOBS } from '../utils/helpers.ts';
 	import { generateDataBlockFromSetting, settings } from '../utils/settings.ts';
 	import { sendOpenSettingsConfig } from '../utils/socket.ts';
 
@@ -10,7 +10,7 @@
 	const currentTrackedPlayer = settings.getStore('trackedUser');
 	const clampCanvas = settings.getStore('clampCanvas');
 	const pauseCameraTracking = settings.getStore('pauseCameraTracking');
-	const isDisabled = $state(getGM()?.active !== true);
+	const isDisabled = getGM()?.active !== true;
 
 	async function onChangeIC(event: Event) {
 		$currentIC = event.target.value;
