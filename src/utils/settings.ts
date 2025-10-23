@@ -69,9 +69,15 @@ export function getSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(setting
 }
 
 export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(settingName: K, value: ClientSettings.SettingCreateData<'obs-utils', K>) {
+	if ((game as ReadyGame).user?.isGM) {
+		await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
+		return;
+	}
 	if (OBS_MODIFIABLE_SETTINGS.includes(settingName as any) && isOBS() && getSetting('showDirectorInOBSMode') === true) {
-		if (getGM()?.active !== true) {
+		const hasActiveGM = !!(game as ReadyGame).users?.some((u: User) => u.isGM && u.active);
+		if (!hasActiveGM) {
 			console.warn('No active GM to process setting change.');
+			ensureStore(settingName).set(getSetting(settingName) as any);
 			return;
 		}
 		game.socket?.emit(`module.${MODULE_ID}`, {
@@ -80,9 +86,7 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 			value,
 			userId: game.user?.id,
 		});
-		return;
 	}
-	await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 }
 
 function setupOBSModifiableSettingsSocket() {
