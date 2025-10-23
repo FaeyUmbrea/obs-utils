@@ -32,7 +32,7 @@ export function removeBG() {
 	}
 }
 
-export function getGM(): User {
+export function getGM(): User | undefined {
 	// @ts-expect-error Ah yes
 	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM);
 }
