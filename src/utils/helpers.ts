@@ -8,7 +8,8 @@ export function sleep(milliseconds: number | undefined) {
 	return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-export function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
+export function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
+	if (fromIndex === toIndex) return;
 	if (fromIndex < 0 || fromIndex >= arr.length || toIndex < 0 || toIndex >= arr.length) {
 		throw new Error(`Invalid indices: fromIndex=${fromIndex}, toIndex=${toIndex}, array length=${arr.length}`);
 	}

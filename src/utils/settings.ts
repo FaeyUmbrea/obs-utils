@@ -15,13 +15,13 @@ export const OBSAction = {
 
 const SETTINGS_VERSION = 2;
 
-const OBS_MODIFIABLE_SETTINGS = [
+const OBS_MODIFIABLE_SETTINGS = new Set<ClientSettings.KeyFor<'obs-utils'>>([
 	'defaultOutOfCombat',
 	'defaultInCombat',
 	'clampCanvas',
 	'pauseCameraTracking',
 	'trackedUser',
-] as const;
+]);
 
 async function changeMode() {
 	if (!isOBS()) return;
@@ -73,11 +73,11 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 		await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 		return;
 	}
-	if (OBS_MODIFIABLE_SETTINGS.includes(settingName as any) && isOBS() && getSetting('showDirectorInOBSMode') === true) {
+	if (OBS_MODIFIABLE_SETTINGS.has(settingName) && isOBS() && getSetting('showDirectorInOBSMode') === true) {
 		const hasActiveGM = !!(game as ReadyGame).users?.some((u: User) => u.isGM && u.active);
 		if (!hasActiveGM) {
 			console.warn('No active GM to process setting change.');
-			ensureStore(settingName).set(getSetting(settingName) as any);
+			ensureStore(settingName).set(getSetting(settingName));
 			return;
 		}
 		game.socket?.emit(`module.${MODULE_ID}`, {
@@ -97,7 +97,7 @@ function setupOBSModifiableSettingsSocket() {
 			return;
 		}
 		const { settingName, value, userId } = data;
-		if (!(OBS_MODIFIABLE_SETTINGS.includes(settingName as any))) {
+		if (!(OBS_MODIFIABLE_SETTINGS.has(settingName))) {
 			console.warn(`Player ${userId} attempted to change non-modifiable setting: ${settingName}`);
 			return;
 		}
@@ -610,7 +610,6 @@ function ensureStore<T = any>(key: ClientSettings.KeyFor<'obs-utils'>): Writable
 		}
 		if (!gate && game.ready) {
 			gate = true;
-			// await (game as ReadyGame).settings.set(MODULE_ID, key, value as any);
 			await setSetting(key, value as any);
 			gate = false;
 		}

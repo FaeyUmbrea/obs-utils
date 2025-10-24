@@ -63,9 +63,7 @@ export function hideNotifications() {
 			const panel = document.querySelector('div#chat-notifications');
 			if (panel) {
 				const leftColumn = document.querySelector('#ui-left-column-1');
-				if (leftColumn) {
-					leftColumn.appendChild(panel);
-				}
+				if (leftColumn && panel.parentElement !== leftColumn) leftColumn.appendChild(panel);
 			}
 		}
 	}
