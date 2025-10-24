@@ -90,16 +90,19 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 }
 
 function setupOBSModifiableSettingsSocket() {
-	game = game as ReadyGame;
-	game?.socket?.on(`module.${MODULE_ID}`, async (data: any) => {
+	(game as ReadyGame)?.socket?.on(`module.${MODULE_ID}`, async (data: any) => {
 	// Only GMs should process these requests
-		if (!game.user?.isGM) return;
+		if (!(game as ReadyGame).user?.isGM) return;
 		if (data.action !== 'setPlayerModifiableSetting') {
 			return;
 		}
 		const { settingName, value, userId } = data;
 		if (!(OBS_MODIFIABLE_SETTINGS.includes(settingName as any))) {
 			console.warn(`Player ${userId} attempted to change non-modifiable setting: ${settingName}`);
+			return;
+		}
+		const primaryGM = (game as ReadyGame).users?.find((u: User) => u.isGM && u.active) ?? (game as ReadyGame).users?.find((u: User) => u.isGM);
+		if (primaryGM && (game as ReadyGame).user?.id !== primaryGM.id) {
 			return;
 		}
 		await setSetting(settingName, value);

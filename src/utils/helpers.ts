@@ -9,6 +9,9 @@ export function sleep(milliseconds: number | undefined) {
 }
 
 export function arrayMove(arr: Array<any>, fromIndex: number, toIndex: number) {
+	if (fromIndex < 0 || fromIndex >= arr.length || toIndex < 0 || toIndex >= arr.length) {
+		throw new Error(`Invalid indices: fromIndex=${fromIndex}, toIndex=${toIndex}, array length=${arr.length}`);
+	}
 	arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
 }
 
