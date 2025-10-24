@@ -1,5 +1,5 @@
 import { getCurrentCombatants } from './combat.ts';
-import { arrayMove, isOBS, sleep } from './helpers.js';
+import { isOBS, sleep } from './helpers.js';
 import { getSetting } from './settings.ts';
 
 export const VIEWPORT_DATA: Map<string, { x: number; y: number; scale: number }> = new Map();
@@ -16,24 +16,24 @@ export function hideSceneControls(_: unknown, html: JQuery | HTMLElement) {
 	if (!isOBS() || !getSetting('showDirectorInOBSMode')) {
 		return hideApplication(_, html);
 	}
-	const sceneControlsLayersItems = Array.from(((html as HTMLElement).querySelector('menu#scene-controls-layers')!.children));
-	// const sceneControlsTools = (html as HTMLElement).querySelector('menu#scene-controls-tools');
-	sceneControlsLayersItems.forEach((item) => {
-		const button = item.children[0] as HTMLElement;
+	const root = html as HTMLElement;
+	const layersMenu = root.querySelector('menu#scene-controls-layers');
+	if (!layersMenu) return hideApplication(_, html);
+	Array.from(layersMenu.children).forEach((item) => {
+		const button = item.children[0] as HTMLElement | undefined;
+		if (!button) return;
 		if (button.ariaLabel === 'Token Controls') {
 			button.click();
 		} else {
 			button.style.display = 'none';
 		}
 	});
-	const sceneControlsToolsItems = Array.from(((html as HTMLElement).querySelector('menu#scene-controls-tools')!.children));
-	const streamDirectorListItem = sceneControlsToolsItems.find(item => item.children[0].ariaLabel === 'Open Stream Director');
-	const streamDirectorIndex = sceneControlsToolsItems.indexOf(streamDirectorListItem!);
-	if (streamDirectorIndex > 0) {
-		arrayMove(sceneControlsToolsItems, streamDirectorIndex, 0);
-	}
-	sceneControlsToolsItems.forEach((item) => {
-		if (item.children[0].ariaLabel === 'Open Stream Director') return;
+	const toolsMenu = root.querySelector('menu#scene-controls-tools');
+	if (!toolsMenu) return hideApplication(_, html);
+	const streamDirectorItem = Array.from(toolsMenu.children).find(item => (item.children[0] as HTMLElement | undefined)?.ariaLabel === 'Open Stream Director') as HTMLElement | undefined;
+	if (streamDirectorItem) toolsMenu.insertBefore(streamDirectorItem, toolsMenu.firstElementChild);
+	Array.from(toolsMenu.children).forEach((item) => {
+		if ((item.children[0] as HTMLElement | undefined)?.ariaLabel !== 'Open Stream Director') return;
 		(item as HTMLElement).style.display = 'none';
 	});
 }
