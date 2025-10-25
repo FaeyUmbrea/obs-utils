@@ -1,5 +1,5 @@
 import { getCurrentCombatants } from './combat.ts';
-import { isOBS, sleep } from './helpers.js';
+import { isOBS, sleep } from './helpers.ts';
 import { getSetting } from './settings.ts';
 
 export const VIEWPORT_DATA: Map<string, { x: number; y: number; scale: number }> = new Map();
@@ -33,7 +33,7 @@ export function hideSceneControls(_: unknown, html: JQuery | HTMLElement) {
 	const streamDirectorItem = Array.from(toolsMenu.children).find(item => (item.children[0] as HTMLElement | undefined)?.ariaLabel === 'Open Stream Director') as HTMLElement | undefined;
 	if (streamDirectorItem) toolsMenu.insertBefore(streamDirectorItem, toolsMenu.firstElementChild);
 	Array.from(toolsMenu.children).forEach((item) => {
-		if ((item.children[0] as HTMLElement | undefined)?.ariaLabel !== 'Open Stream Director') return;
+		if ((item.children[0] as HTMLElement | undefined)?.ariaLabel === 'Open Stream Director') return;
 		(item as HTMLElement).style.display = 'none';
 	});
 }
@@ -77,8 +77,18 @@ export function hideTokenBorder(token: Token | undefined) {
 
 function getAutoTokens(): Token[] | undefined {
 	const trackObserverTokens = getSetting('trackObserverTokens') === true;
+	const user = (game as ReadyGame).user as User | undefined;
 	// @ts-expect-error Modifying Internals, no types available
-	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => (trackObserverTokens && token.observer === true) || token.isOwner === true);
+	return (game as ReadyGame).canvas?.tokens?.objects?.children.filter((token: Token) => {
+		if (!token) return false;
+		if (token.isOwner) return true;
+		if (!trackObserverTokens || !user) return false;
+		try {
+			return token.document.testUserPermission(user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OBSERVER);
+		} catch {
+			return false;
+		}
+	});
 }
 
 function getPlayerTokens(): Token[] | undefined {
@@ -139,13 +149,11 @@ export function tokenMoved() {
 			case 'trackall':
 				trackAll();
 				break;
-			case 'trackone':
-				trackTokenList([
-					getAutoTokens()!.find(
-						element => element.id === (game as ReadyGame).combat?.combatant?.tokenId,
-					)!,
-				]);
+			case 'trackone': {
+				const target = getAutoTokens()?.find(t => t.id === (game as ReadyGame).combat?.combatant?.tokenId);
+				if (target) trackTokenList([target]);
 				break;
+			}
 			case 'trackPlayerOwned':
 				trackTokenList(getPlayerTokens() ?? []);
 				break;
