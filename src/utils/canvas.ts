@@ -22,7 +22,7 @@ export function hideSceneControls(_: unknown, html: JQuery | HTMLElement) {
 	Array.from(layersMenu.children).forEach((item) => {
 		const button = item.children[0] as HTMLElement | undefined;
 		if (!button) return;
-		if (button.ariaLabel === 'Token Controls') {
+		if (button.dataset.action === 'control' && button.dataset.control === 'tokens') {
 			button.click();
 		} else {
 			button.style.display = 'none';
@@ -30,10 +30,10 @@ export function hideSceneControls(_: unknown, html: JQuery | HTMLElement) {
 	});
 	const toolsMenu = root.querySelector('menu#scene-controls-tools');
 	if (!toolsMenu) return hideApplication(_, html);
-	const streamDirectorItem = Array.from(toolsMenu.children).find(item => (item.children[0] as HTMLElement | undefined)?.ariaLabel === 'Open Stream Director') as HTMLElement | undefined;
+	const streamDirectorItem = Array.from(toolsMenu.children).find(item => (item.children[0] as HTMLElement | undefined)?.dataset.tool === 'openStreamDirector') as HTMLElement | undefined;
 	if (streamDirectorItem) toolsMenu.insertBefore(streamDirectorItem, toolsMenu.firstElementChild);
 	Array.from(toolsMenu.children).forEach((item) => {
-		if ((item.children[0] as HTMLElement | undefined)?.ariaLabel === 'Open Stream Director') return;
+		if ((item.children[0] as HTMLElement | undefined)?.dataset.tool === 'openStreamDirector') return;
 		(item as HTMLElement).style.display = 'none';
 	});
 }
