@@ -73,11 +73,15 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 		await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 		return;
 	}
+	const currentValue = getSetting(settingName);
+	if (currentValue === value) {
+		ensureStore(settingName).set(currentValue);
+		return;
+	}
 	if (OBS_MODIFIABLE_SETTINGS.has(settingName) && isOBS() && getSetting('showDirectorInOBSMode') === true) {
 		const hasActiveGM = !!(game as ReadyGame).users?.some((u: User) => u.isGM && u.active);
 		if (!hasActiveGM) {
 			console.warn('No active GM to process setting change.');
-			const currentValue = getSetting(settingName);
 			if (currentValue !== undefined) {
 				ensureStore(settingName).set(getSetting(settingName));
 			}
@@ -93,6 +97,7 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 	}
 	const settingScope = (game as ReadyGame).settings.settings.get(`${MODULE_ID}.${settingName}`)?.scope;
 	if (settingScope === 'world') {
+		ensureStore(settingName).set(currentValue);
 		return;
 	}
 	await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
