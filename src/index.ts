@@ -74,8 +74,20 @@ function start() {
 }
 start();
 
+function isDirectorUser() {
+	if ((game as ReadyGame).user?.isGM) {
+		return true;
+	}
+	if (getSetting('showDirectorInOBSMode') && isOBS()) {
+		return true;
+	}
+	return false;
+}
+
 function buildButtons(buttons: any) {
-	if (!(game as ReadyGame).user?.isGM && (getSetting('showDirectorInOBSMode') && !isOBS())) return;
+	if (!isDirectorUser()) {
+		return;
+	}
 	const buttonGroup = buttons.tokens;
 	const newButton = {
 		icon: 'fa-solid fa-signal-stream',

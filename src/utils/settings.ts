@@ -89,7 +89,13 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 			value,
 			userId: game.user?.id,
 		});
+		return;
 	}
+	const settingScope = (game as ReadyGame).settings.settings.get(`${MODULE_ID}.${settingName}`)?.scope;
+	if (settingScope === 'world') {
+		return;
+	}
+	await (game as ReadyGame | undefined)?.settings?.set(MODULE_ID, settingName, value);
 }
 
 function setupOBSModifiableSettingsSocket() {
