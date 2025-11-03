@@ -21,7 +21,10 @@
 			"birdseye": "Ajustar Mapa ao Ecrã",
 			"trackAll": "Rastear Todos Tokens Controlados",
 			"pauseCameraTracking": "Pause Camera Tracking",
-			"ooc": "Fora de Combate"
+			"ooc": "Fora de Combate",
+			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
+			"disableOBSMode": "Disable OBS Mode",
+			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"settings": {
 			"popupCloseDelay": {
