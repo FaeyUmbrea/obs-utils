@@ -1,3 +1,9 @@
+## Version 4.2.3.1
+
+### Fixes
+
+- Fixes another place where corrupted overlay data can cause issues
+
 ## Version 4.2.3
 
 ### Fixes
