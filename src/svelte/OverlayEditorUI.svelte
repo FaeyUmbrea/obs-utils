@@ -38,7 +38,7 @@
 		await foundryApp.close();
 	}
 
-	async function setOverlayData(index, value) {
+	async function setOverlayData(index: number, value: OverlayData) {
 		$overlays[index] = value;
 	}
 
@@ -55,15 +55,15 @@
 				class='add'
 				aria-label='add'
 				onclick={() => handleAdd()}
-				title={game.i18n.localize(
+				title={game.i18n?.localize(
 					'obs-utils.applications.overlayEditor.addOverlayButton',
 				)}
 				type='button'><i class='fas fa-plus'></i></button
 			>
 			<nav class='tabs' data-group='primary-tabs'>
 				{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
-					<!-- svelte-ignore a11y-missing-attribute -->
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y_missing_attribute -->
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<a
 						role='tab'
 						tabindex={index}

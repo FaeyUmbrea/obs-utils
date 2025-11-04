@@ -1,6 +1,6 @@
 import type { ComponentConstructorOptions, SvelteComponent } from 'svelte';
 import type { ObsUtilsApi } from './utils/api';
-import type { OBSRemoteSettings, OBSWebsocketSettings } from './utils/types.ts';
+import type { type OBSRemoteSettings, type OBSWebsocketSettings, OverlayData } from './utils/types.ts';
 
 declare global {
 	let libWrapper: any | undefined;
@@ -53,7 +53,7 @@ declare global {
 		'obs-utils.enableOBSWebsocket': boolean;
 		'obs-utils.allowWebsocketAPI': boolean;
 		'obs-utils.websocketSettings': typeof OBSWebsocketSettings;
-		'obs-utils.streamOverlays': typeof OverlayData[];
+		'obs-utils.streamOverlays': OverlayData[];
 		'obs-utils.overlayActors': string[];
 		'obs-utils.settingsVersion': number;
 		'obs-utils.showAV': boolean;
