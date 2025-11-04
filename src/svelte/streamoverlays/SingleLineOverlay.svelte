@@ -27,12 +27,14 @@
 	style={overlayData.style}
 >
 	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
-		{@const Component = getComponentType(component.type)}
-		<Component
-			data={component.data}
-			componentIndex={index}
-			actorID={actorID}
-			style={component.style}
-		/>
+		{#if component !== null && component !== undefined}
+			{@const Component = getComponentType(component.type)}
+			<Component
+				data={component.data}
+				componentIndex={index}
+				actorID={actorID}
+				style={component.style}
+			/>
+		{/if}
 	{/each}
 </div>
