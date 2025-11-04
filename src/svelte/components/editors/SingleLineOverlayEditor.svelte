@@ -1,13 +1,13 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { SingleLineOverlayComponent } from '../../../utils/types.ts';
+	import type { OverlayComponentData } from '../../../utils/types.ts';
 	import StyleEditor from '../../../applications/styleditor.ts';
 	import { getApi } from '../../../utils/helpers.ts';
 	import FallbackEditor from './FallbackEditor.svelte';
 
-	let { component = $bindable(), removeFn = $bindable(), index = $bindable(), refreshFn = $bindable() } = $props<{ component: SingleLineOverlayComponent; removeFn: (index: number) => void; index: number; refreshFn: () => void }>();
+	let { component = $bindable(), removeFn = $bindable(), index = $bindable(), refreshFn = $bindable() } = $props<{ component: OverlayComponentData; removeFn: (index: number) => void; index: number; refreshFn: () => void }>();
 
-	const componentNames = getApi().overlayTypes.get('sl')?.overlayComponentNames;
+	const componentNames = getApi().overlayTypes.get('sl')?.overlayComponentNames!;
 
 	function openStyleEditor() {
 		const editor = new StyleEditor({}, component.style, (styleNew: string) => {
@@ -46,11 +46,12 @@
 	const Component = $derived(getEditor(component.type));
 
 	function setType(type: string) {
+		if (!type) return;
 		component.type = type;
 		component = component;
 	}
 
-	function setData(data: OverlayData) {
+	function setData(data: string) {
 		component.data = data;
 		component = component;
 	}

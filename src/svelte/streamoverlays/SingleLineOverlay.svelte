@@ -8,6 +8,10 @@
 	const overlayTypes = getApi().overlayTypes.get('sl').overlayComponents;
 
 	function getComponentType(type) {
+		if (!type) {
+			console.warn('Your overlay could not be rendered.');
+			return;
+		}
 		const resolvedType = overlayTypes.get(type);
 		if (resolvedType !== undefined) {
 			return resolvedType;
@@ -23,7 +27,7 @@
 	style={overlayData.style}
 >
 	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
-		{@const Component = getComponentType(component.type.toString())}
+		{@const Component = getComponentType(component.type)}
 		<Component
 			data={component.data}
 			componentIndex={index}

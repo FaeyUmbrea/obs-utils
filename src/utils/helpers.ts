@@ -61,12 +61,12 @@ export async function getFontawesomeVariables() {
 		.flat();
 }
 
-export type ActorValues = string[] | { value: string; label: string }[] | undefined;
+export type ActorValues = { value: string; label: string }[];
 
-let actorValues: ActorValues;
+let actorValues: ActorValues = [];
 
 export function getActorValues() {
-	if (!actorValues) {
+	if (actorValues.length === 0) {
 		const type = Object.keys(CONFIG.Actor.sheetClasses).includes('character') ? 'character' : CONFIG.Actor.documentClass.TYPES[1];
 		actorValues = Object.keys(
 			flatten(
