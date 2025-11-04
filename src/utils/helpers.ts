@@ -202,3 +202,7 @@ export function debounce<F extends (...args: any[]) => void>(fn: F, wait = 0, op
 
 	return debounced as F;
 }
+
+export function preventUndefinedNullInArray(array: any | null | undefined[]): any[] {
+	return array.filter((v: any | null | undefined) => v !== undefined && v !== null);
+}

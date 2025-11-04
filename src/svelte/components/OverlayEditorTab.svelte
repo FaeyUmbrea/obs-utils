@@ -3,6 +3,7 @@
 	import type { OverlayData } from '../../utils/types.ts';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import StyleEditor from '../../applications/styleditor.ts';
+	import { preventUndefinedNullInArray } from '../../utils/helpers.ts';
 	import { OverlayComponentData } from '../../utils/types.ts';
 	import SingleLineOverlayEditor from './editors/SingleLineOverlayEditor.svelte';
 
@@ -13,11 +14,13 @@
 			...overlay.components.slice(0, index),
 			...overlay.components.slice(index + 1, overlay.components.length),
 		];
+		overlay.components = preventUndefinedNullInArray(overlay.components);
 		refreshFn?.();
 	}
 
 	function handleAdd() {
 		overlay.components = overlay.components.concat(new OverlayComponentData());
+		overlay.components = preventUndefinedNullInArray(overlay.components);
 		refreshFn?.();
 	}
 
@@ -31,6 +34,7 @@
 			overlay.components[e.newDraggableIndex],
 			overlay.components[e.oldDraggableIndex],
 		];
+		overlay.components = preventUndefinedNullInArray(overlay.components);
 		rerender++;
 		refreshFn?.();
 	}
@@ -44,6 +48,9 @@
 	}
 
 	function setComponentData(index: number, value: OverlayComponentData) {
+		if (index === null || index === undefined || value === null || value === undefined) {
+			return;
+		}
 		overlay.components[index] = value;
 		overlay = overlay;
 	}

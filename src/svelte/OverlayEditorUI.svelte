@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
+	import { preventUndefinedNullInArray } from '../utils/helpers.ts';
 	import { settings } from '../utils/settings.ts';
 	import { OverlayData } from '../utils/types.ts';
 	import OverlayEditorTab from './components/OverlayEditorTab.svelte';
@@ -19,7 +20,7 @@
 
 	function handleRemove(index: number) {
 		$overlays.splice(index, 1);
-		$overlays = $overlays;
+		$overlays = preventUndefinedNullInArray($overlays);
 		if (activeIndex === index) {
 			activeIndex = Math.max(0, index - 1);
 		}
@@ -27,7 +28,7 @@
 
 	function handleAdd() {
 		$overlays.push(new OverlayData());
-		$overlays = $overlays;
+		$overlays = preventUndefinedNullInArray($overlays);
 	}
 
 	function changeTab(tab: number) {
@@ -39,6 +40,9 @@
 	}
 
 	async function setOverlayData(index: number, value: OverlayData) {
+		if (index === null || index === undefined || value === null || value === undefined) {
+			return;
+		}
 		$overlays[index] = value;
 	}
 
