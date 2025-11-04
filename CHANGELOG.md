@@ -1,3 +1,9 @@
+## Version 4.2.3
+
+### Fixes
+
+- Added some checks to repair certain types of overlay data corruption. 
+
 ## Version 4.2.2.1
 
 ### Hotfix
