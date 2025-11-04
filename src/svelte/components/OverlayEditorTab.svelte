@@ -61,12 +61,14 @@
 		<SortableList class='sortable' animation={150} handle='.grab' onEnd={handleReorder}>
 			{#key rerender}
 				{#each overlay.components as component, index (overlay.components.indexOf(component))}
-					<SingleLineOverlayEditor
-						bind:component={() => overlay.components[index], v => setComponentData(index, v)}
-						removeFn={handleRemove}
-						index={index}
-						refreshFn={refreshFn}
-					/>
+					{#if component !== null && component !== undefined}
+						<SingleLineOverlayEditor
+							bind:component={() => overlay.components[index], v => setComponentData(index, v)}
+							removeFn={handleRemove}
+							index={index}
+							refreshFn={refreshFn}
+						/>
+					{/if}
 				{/each}
 			{/key}
 		</SortableList>

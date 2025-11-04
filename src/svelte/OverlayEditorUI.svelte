@@ -81,18 +81,20 @@
 		<hr />
 		<section class='content'>
 			{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
-				<div
-					class="tab {index === activeIndex ? 'active' : ''}"
-					data-tab={index}
-					data-group='primary-tabs'
-				>
-					<OverlayEditorTab
-						bind:overlay={() => $overlays[index], v => setOverlayData(index, v)}
-						removeFn={handleRemove}
-						componentindex={index}
-						refreshFn={refresh}
-					/>
-				</div>
+				{#if overlay !== null && overlay !== undefined}
+					<div
+						class="tab {index === activeIndex ? 'active' : ''}"
+						data-tab={index}
+						data-group='primary-tabs'
+					>
+						<OverlayEditorTab
+							bind:overlay={() => $overlays[index], v => setOverlayData(index, v)}
+							removeFn={handleRemove}
+							componentindex={index}
+							refreshFn={refresh}
+						/>
+					</div>
+				{/if}
 			{/each}
 		</section>
 	</div>
