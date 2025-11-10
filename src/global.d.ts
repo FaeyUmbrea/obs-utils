@@ -101,6 +101,7 @@ declare module 'fvtt-types/configuration' {
 			'obs-utils.init': () => void;
 			'obs-utils.streamModeInit': () => void;
 			'obs-utils.refreshActor': (actor: Actor) => void;
+			'diceSoNiceInit': (dice3d: any) => void;
 		}
 	}
 }

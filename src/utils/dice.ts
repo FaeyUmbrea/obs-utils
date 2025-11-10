@@ -32,6 +32,7 @@ export async function setupDiceSoNice() {
 		// @ts-expect-error Modifying Internals, no types available
 		(game as ReadyGame).user._origGetFlag = (game as ReadyGame).user.getFlag;
 		(game as ReadyGame).user.getFlag = function (scope, key) {
+			// @ts-expect-error wha
 			if (scope === 'dice-so-nice' && key === 'settings') {
 				return {
 					rollingArea: {
@@ -72,19 +73,17 @@ export async function setupDiceSoNice() {
 		canvas.app = new PIXI.Application({});
 
 		Hooks.once('diceSoNiceInit', (dice3d: any) => {
-			// @ts-expect-error Modifying Internals, no types available
-			(game as ReadyGame).ready = false;
 			main(dice3d.constructor);
 			log('OBS Utils | Dice so Nice overlay initialized');
 		});
 
 		// Temporary workaround for odd dsn settings migration code
 		// @ts-expect-error Modifying Internals, no types available
-		(game as ReadyGame).ready = true;
-		// @ts-expect-error Modifying Internals, no types available
+		ui.sidebar = { rendered: true };
 		Hooks.events.ready
-			.filter((hook: { fn: { toString: () => string | string[] } }) => hook.fn.toString().includes('new Dice3D'))[0]
+			.filter((hook: { fn: { toString: () => string } }) => hook.fn.toString().toLowerCase().includes('setupdicesonice'))[0]
 			.fn
+		// @ts-expect-error Called fn takes no args
 			.call();
 
 		// @ts-expect-error Modifying Internals ignore typing
