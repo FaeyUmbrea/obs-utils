@@ -1,3 +1,9 @@
+## Version 4.2.4
+
+### Fixed
+
+- Fixed Dice so Nice integration
+
 ## Version 4.2.3.1
 
 ### Fixes

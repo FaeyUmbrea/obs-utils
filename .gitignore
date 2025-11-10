@@ -137,3 +137,15 @@ coverage/*
 
 .vite-cache/
 vite.config.js.timestamp-*
+
+# JetBrains / IntelliJ IDEA - ignore user-specific files and local workspace
+.idea/
+.idea/**/workspace.xml
+.idea/**/usage.statistics.xml
+.idea/**/tasks.xml
+.idea/**/shelf
+.idea/**/libraries
+.idea/**/runConfigurations
+*.iml
+*.iws
+
