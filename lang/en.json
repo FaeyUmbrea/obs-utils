@@ -48,7 +48,8 @@
 				"canvasOptionsHeader": "Canvas Options",
 				"trackedPlayerHeader": "Tracked Player",
 				"obsUserCommands": "OBS User Commands",
-				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"obsRemote": {
 				"name": "OBS Remote Settings",
@@ -292,9 +293,21 @@
 				"Name": "Display Chat Notifications in Game",
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI"
 			},
+			"leftAlignChatNotifications": {
+				"Name": "Left Align Chat Notifications",
+				"Hint": "If enabled, chat message popups will be aligned to the left side of the screen"
+			},
 			"streamChatPopupStyle": {
 				"Name": "Notification-Style Chat Overlay",
 				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View"
+			},
+			"trackObserverTokens": {
+				"Name": "Track Observer Tokens",
+				"Hint": "If enabled, the Director will track tokens that the user has observer permission for, not just owned tokens"
+			},
+			"showDirectorInOBSMode": {
+				"Name": "Show Director Controls in OBS Mode",
+				"Hint": "If disabled, the Director controls will be hidden when in OBS Mode"
 			}
 		}
 	}
