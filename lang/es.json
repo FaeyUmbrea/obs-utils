@@ -48,7 +48,8 @@
 				"trackedPlayerHeader": "Jugador Rastreado",
 				"name": "Director",
 				"icTypeHeader": "Tipo dentro del Combate",
-				"forceOpenSettingsForOBSUser": "Forzar la Apertura del Menú de Opciones para el Usuario OBS"
+				"forceOpenSettingsForOBSUser": "Forzar la Apertura del Menú de Opciones para el Usuario OBS",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"obsRemote": {
 				"sourceName": "Nombre de la Fuente OBS",
