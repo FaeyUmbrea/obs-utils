@@ -6,6 +6,7 @@ import {
 	closePopupWithDelay,
 	hideApplication,
 	hideNotifications,
+	hideSceneControls,
 	hideSidebar,
 	hideTokenBorder,
 	screenReload,
@@ -172,10 +173,10 @@ export function initOBS() {
 		handleOBSScene(canvas.scene!.name).then();
 	});
 
-	Hooks.on('renderSidebar', hideApplication);
+	Hooks.on('renderSidebar', hideSidebar);
 	Hooks.on('renderSceneNavigation', hideApplication);
 	Hooks.on('renderMainMenu', hideApplication);
-	Hooks.on('renderSceneControls', hideApplication);
+	Hooks.on('renderSceneControls', hideSceneControls);
 	Hooks.on('renderTokenHUD', hideApplication);
 	Hooks.on('renderUserConfig', hideApplication);
 	if (!getSetting('showAV')) {

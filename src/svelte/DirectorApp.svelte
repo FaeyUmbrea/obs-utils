@@ -1,5 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
+	import { getGM } from '../utils/helpers.ts';
 	import { generateDataBlockFromSetting, settings } from '../utils/settings.ts';
 	import { sendOpenSettingsConfig } from '../utils/socket.ts';
 
@@ -9,6 +10,7 @@
 	const currentTrackedPlayer = settings.getStore('trackedUser');
 	const clampCanvas = settings.getStore('clampCanvas');
 	const pauseCameraTracking = settings.getStore('pauseCameraTracking');
+	const isDisabled = getGM()?.active !== true;
 
 	async function onChangeIC(event: Event) {
 		$currentIC = event.target.value;
@@ -24,6 +26,12 @@
 </script>
 
 <main>
+	{#if isDisabled}
+		<div class='warning'>
+			<i class='fas fa-exclamation-triangle'></i>
+			<span>{game.i18n?.localize('obs-utils.applications.director.noGMWarning')}</span>
+		</div>
+	{/if}
 	<section>
 		<b>{game.i18n?.localize('obs-utils.applications.director.icTypeHeader')}</b>
 		<div>
@@ -35,8 +43,9 @@
 					name='currentIC'
 					value={id}
 					onchange={onChangeIC}
+					disabled={isDisabled}
 				/>
-				<label class='button' for='radioic{id}' title={game.i18n?.localize(tooltip)}
+				<label class='button' class:disabled={isDisabled} for='radioic{id}' title={game.i18n?.localize(tooltip)}
 				><i class={icon}></i></label
 				>
 			{/each}
@@ -52,8 +61,9 @@
 					name='currentOOC'
 					value={id}
 					onchange={onChangeOOC}
+					disabled={isDisabled}
 				/>
-				<label class='button' for='radioooc{id}' title={game.i18n?.localize(tooltip)}
+				<label class='button' class:disabled={isDisabled} for='radioooc{id}' title={game.i18n?.localize(tooltip)}
 				><i class={icon}></i></label
 				>
 			{/each}
@@ -67,9 +77,11 @@
 				id='limitCanvas'
 				type='checkbox'
 				bind:checked={$clampCanvas}
+				disabled={isDisabled}
 			/>
 			<label
 				class='button'
+				class:disabled={isDisabled}
 				title={game.i18n?.localize('obs-utils.strings.limitCanvas')}
 				for='limitCanvas'><i class='fas fa-arrows-maximize'></i></label
 			>
@@ -78,9 +90,11 @@
 				id='pauseCameraTracking'
 				type='checkbox'
 				bind:checked={$pauseCameraTracking}
+				disabled={isDisabled}
 			/>
 			<label
 				class='button'
+				class:disabled={isDisabled}
 				title={game.i18n?.localize('obs-utils.strings.pauseCameraTracking')}
 				for='pauseCameraTracking'><i class='fas fa-pause'></i></label
 			>
@@ -95,6 +109,7 @@
 				name='trackedPlayer'
 				id='trackedPlayer'
 				onchange={onChangePlayer}
+				disabled={isDisabled}
 			>
 				{#each players as { id, name }}
 					<option value={id}>{name}</option>
@@ -110,9 +125,11 @@
 				id='forceOpenSettingsForOBSUser'
 				type='button'
 				onclick={() => sendOpenSettingsConfig()}
+				disabled={isDisabled}
 			/>
 			<label
 				class='button'
+				class:disabled={isDisabled}
 				title={game.i18n?.localize('obs-utils.applications.director.forceOpenSettingsForOBSUser')}
 				for='forceOpenSettingsForOBSUser'><i class='fas fa-cog'></i></label
 			>
@@ -125,6 +142,22 @@
       display grid
       grid-template-columns 60% 40%
       grid-gap 10px
+
+  .warning
+    grid-column 1 / -1
+    background-color #ffeb3b
+    color #333
+    padding 10px
+    border-radius 4px
+    border 2px solid #ffc107
+    display flex
+    align-items center
+    gap 10px
+    font-weight bold
+
+  .warning i
+    font-size 20px
+    color #ff9800
 
   input
     opacity 0
@@ -151,5 +184,13 @@
 
   input:checked + label
     border-color #4c4
+
+  label.button.disabled
+    opacity 0.5
+    cursor not-allowed
+    pointer-events none
+
+  label.button.disabled:hover
+    background-color transparent
 
 </style>
