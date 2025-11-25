@@ -33,6 +33,7 @@
 <div
 	class='component actor-val-component bool-component bool-{(!!value).toString()} fa-icon-component'
 	id={`component${componentIndex.toString()}`}
+	data-value={(!!value).toString()}
 	style={style}
 >
 	{#if !!value === true}

@@ -43,6 +43,8 @@
 <div
 	class='component actor-val-component progress-bar-component'
 	id={`component${componentIndex.toString()}`}
+	data-value='${value1}'
+	data-max='${value2}'
 	style={style}
 >
 	<progress

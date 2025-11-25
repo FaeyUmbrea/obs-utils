@@ -8,14 +8,6 @@ export function sleep(milliseconds: number | undefined) {
 	return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-export function arrayMove<T>(arr: T[], fromIndex: number, toIndex: number) {
-	if (fromIndex === toIndex) return;
-	if (fromIndex < 0 || fromIndex >= arr.length || toIndex < 0 || toIndex >= arr.length) {
-		throw new Error(`Invalid indices: fromIndex=${fromIndex}, toIndex=${toIndex}, array length=${arr.length}`);
-	}
-	arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
-}
-
 export function isOBS() {
 	return (
 		(!!window.obsstudio
@@ -38,39 +30,6 @@ export function removeBG() {
 
 export function getGM(): User | undefined {
 	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM);
-}
-
-function getFontAwesomeVersion() {
-	const version = Number.parseInt((game as ReadyGame).version!.split('.')[1]!);
-	if (version <= 290) {
-		return '6.1.0';
-	}
-	return '6.2.0';
-}
-
-export async function getFontawesomeVariables() {
-	const response = await fetch('https://api.fontawesome.com', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json',
-		},
-		mode: 'cors',
-		body: `query {release(version:"${getFontAwesomeVersion()}") {icons {id familyStylesByLicense{pro{family style}}}}}`,
-	});
-
-	const json = await response.json();
-	const icons = json.data.release.icons;
-
-	return icons
-		.map((value: { familyStylesByLicense: { pro: { family: string; style: string }[] }; id: string }) => {
-			return value.familyStylesByLicense.pro.map((family: { family: string; style: string }) => {
-				return (
-					`fa-${family.family} fa-${family.style} fa-${value.id}`
-				);
-			});
-		})
-		.flat();
 }
 
 export type ActorValues = { value: string; label: string }[];

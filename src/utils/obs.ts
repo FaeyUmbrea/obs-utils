@@ -139,6 +139,8 @@ export async function getWebsocket() {
 	if (obswebsocket) return obswebsocket;
 	const wsSettings = getWSSettings();
 	obswebsocket = new OBSWebSocket();
+
+	// Connecting to OBS Websocket without TLS - OBS Websocket does not have TLS support natively
 	await obswebsocket.connect(
 		`ws://${wsSettings.url}:${wsSettings.port}`,
 		wsSettings.password,

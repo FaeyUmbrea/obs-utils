@@ -81,10 +81,6 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 	if (OBS_MODIFIABLE_SETTINGS.has(settingName) && isOBS() && getSetting('showDirectorInOBSMode') === true) {
 		const hasActiveGM = !!(game as ReadyGame).users?.some((u: User) => u.isGM && u.active);
 		if (!hasActiveGM) {
-			console.warn('No active GM to process setting change.');
-			if (currentValue !== undefined) {
-				ensureStore(settingName).set(getSetting(settingName));
-			}
 			return;
 		}
 		game.socket?.emit(`module.${MODULE_ID}`, {

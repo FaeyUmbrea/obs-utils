@@ -35,6 +35,7 @@
 <div
 	class='component actor-val-component'
 	id={`component${componentIndex.toString()}`}
+	data-value='${value}'
 	style={style}
 >
 	{value}

@@ -35,6 +35,7 @@
 	class='component actor-val-component image-component'
 	id={`component${componentIndex.toString()}`}
 	style={style}
+	data-value={value}
 >
 	<img alt='actor value img renderer' src={value} />
 </div>

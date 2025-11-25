@@ -149,3 +149,4 @@ vite.config.js.timestamp-*
 *.iml
 *.iws
 
+reviews/

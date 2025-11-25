@@ -6,6 +6,7 @@
 <div
 	class='component fa-icon-component'
 	id={`component${componentIndex.toString()}`}
+	data-value='${data}'
 	style={style}
 >
 	<i class={data}></i>

@@ -32,6 +32,7 @@
 <div
 	class='component actor-val-component bool-component bool-{(!!value).toString()} image-component'
 	id={`component${componentIndex.toString()}`}
+	data-value='${value}'
 	style={style}
 >
 	{#if !!value && image1 !== ''}

@@ -45,6 +45,8 @@
 <div
 	class='component actor-val-component multi-image-component'
 	id={`component${componentIndex.toString()}`}
+	data-value1='${value1}'
+	data-value2='${value2}'
 	style={style}
 >
 	{#each Array.from({ length: value1 }, (_, i) => i + 1) as i}
