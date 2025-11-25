@@ -1,3 +1,19 @@
+## Version 4.3.0
+
+### Added 
+
+- V13 popup Chat notifications can now be alinged on the left of the screen. Thank you @mkeefeus (#195)
+- Owned token mode can now optionally track tokens with observer permission instead of only owned tokens. Thank you @mkeefeus (#195)
+- Director controls can now be shown in OBS Mode (requires logged in GM to change settings). Thank you @mkeefeus (#195)
+  - A warning will be shown in the Director when no DM is logged in
+  
+### Changed
+
+- All overlays now have data attributes for easy, value based css selection.
+  - data-value for single value components
+  - data-value1 and data-value2 for multi value components
+  - data-value and data-max for progress bar components
+
 ## Version 4.2.4
 
 ### Fixed
