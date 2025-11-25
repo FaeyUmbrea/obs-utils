@@ -48,7 +48,8 @@
 				"canvasOptionsHeader": "Opções de Tela",
 				"trackedPlayerHeader": "Jogador Rastreado",
 				"obsUserCommands": "OBS User Commands",
-				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"obsRemote": {
 				"name": "Configurações Remotas do OBS",
