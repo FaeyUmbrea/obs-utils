@@ -50,7 +50,8 @@
 				"name": "Director",
 				"icTypeHeader": "In Combat Type",
 				"obsUserCommands": "OBS User Commands",
-				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"actorSelect": {
 				"resetButton": "Сброс",
