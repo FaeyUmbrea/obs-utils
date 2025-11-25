@@ -48,7 +48,8 @@
 				"canvasOptionsHeader": "Bildflächen Einstellungen",
 				"trackedPlayerHeader": "Verfolgter Spieler",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
-				"obsUserCommands": "OBS User Commands"
+				"obsUserCommands": "OBS User Commands",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"obsRemote": {
 				"name": "OBS Fernbedienungseinstellungen",
