@@ -19,10 +19,10 @@
 			"false": "Falso",
 			"missingTypeNotice": "Tipo Legado/Ausente. Selecione um novo tipo no menu suspenso para editar.",
 			"done": "Feito",
-			"cloneTurnPlayer": "Clone the Turn Player's Viewport",
+			"cloneTurnPlayer": "Fechar a janela de observação selecionado",
 			"trackPlayerOwned": "Track Player-Owned Tokens",
-			"pauseCameraTracking": "Pause Camera Tracking",
-			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
+			"pauseCameraTracking": "Pausar o monitoramento da câmera",
+			"manualOBSWarning": "Você está no OBS Mode, se você quer voltar ao normal pressione SHIFT + ALT + CONTROL + O (padrão) ou seu atalho personalizado. E depois atualize a página.",
 			"disableOBSMode": "Disable OBS Mode",
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
