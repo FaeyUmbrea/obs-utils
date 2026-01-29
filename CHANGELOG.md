@@ -1,3 +1,9 @@
+## Version 4.3.1
+
+### Fixed
+
+- Fixed issues with detection if there is more than one user with GAMEMASTER or ASSISTANT permissions
+
 ## Version 4.3.0
 
 ### Added 
