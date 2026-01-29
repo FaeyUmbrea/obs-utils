@@ -29,7 +29,7 @@ export function removeBG() {
 }
 
 export function getGM(): User | undefined {
-	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM);
+	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM && user.active);
 }
 
 export type ActorValues = { value: string; label: string }[];
