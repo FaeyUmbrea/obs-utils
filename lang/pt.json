@@ -209,7 +209,8 @@
 				"trackedPlayerHeader": "Jogador Rastreado",
 				"name": "Diretor",
 				"icTypeHeader": "Tipo Em Combate",
-				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"actorSelect": {
 				"resetButton": "Reiniciar",
