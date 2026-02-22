@@ -22,8 +22,8 @@
 			"done": "Fertig",
 			"trackPlayerOwned": "Verfolge alle Spieler-Tokens",
 			"pauseCameraTracking": "Kamera-Verfolgung pausieren",
-			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
-			"disableOBSMode": "Disable OBS Mode",
+			"manualOBSWarning": "Du bist im OBS Modus. Falls du den normalen Modus nutzen möchtest, drücke SHIFT + ALT + STRG + O (Standart) oder deinen eigenen Hotkey. Lade die Seite dann neu.",
+			"disableOBSMode": "OBS Modus deaktivieren",
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
@@ -48,7 +48,7 @@
 				"canvasOptionsHeader": "Bildflächen Einstellungen",
 				"trackedPlayerHeader": "Verfolgter Spieler",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
-				"obsUserCommands": "OBS User Commands",
+				"obsUserCommands": "OBS Nutzer Befehle",
 				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"obsRemote": {
@@ -114,27 +114,27 @@
 			},
 			"styleEditor": {
 				"name": "Style Editor",
-				"submitButton": "Absenden",
-				"height": "Height",
-				"padding": "Padding",
-				"lineHeight": "Line height",
+				"submitButton": "Bewerben & Schließen",
+				"height": "Höhe",
+				"padding": "Abstand",
+				"lineHeight": "Linien Höhe",
 				"preservedExtras": "Additional preserved rules",
-				"backgroundColor": "Background color",
+				"backgroundColor": "Hintergrund Farbe",
 				"mode": {
-					"advanced": "Advanced",
-					"simple": "Simple"
+					"advanced": "Fortgeschritten",
+					"simple": "Einfach"
 				},
-				"clear": "Clear",
-				"textAlign": "Text align",
+				"clear": "Leeren",
+				"textAlign": "Textausrichtung",
 				"borderRadius": "Border radius",
-				"width": "Width",
-				"fontFamily": "Font family",
+				"width": "Breite",
+				"fontFamily": "Schriftart",
 				"letterSpacing": "Letter spacing",
 				"fontWeight": "Font weight",
-				"color": "Text color",
-				"fontSize": "Font size",
-				"border": "Border",
-				"margin": "Margin"
+				"color": "Textfarbe",
+				"fontSize": "Schriftgröße",
+				"border": "Grenze",
+				"margin": "Abstand"
 			}
 		},
 		"overlays": {
