@@ -38,7 +38,6 @@ function start() {
 		if (isGM()) {
 			// @ts-expect-error Typed incorrectly
 			Hooks.on('renderTokenHUD', expandTokenHud);
-			Hooks.on('renderTokenHUD', (...args) => console.error(args));
 			runMigrations();
 		}
 		if (isOBS()) {
