@@ -25,8 +25,8 @@ export default defineConfig(({ mode }) => {
 	// TRL components and makes it easier to review styles in the browser debugger.
 	const compilerOptions = mode === 'production'
 		? {
-				cssHash: ({ hash, css }: { hash: (css: string) => string; css: string }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
-			}
+			cssHash: ({ hash, css }: { hash: (css: string) => string; css: string }) => `svelte-${s_SVELTE_HASH_ID}-${hash(css)}`,
+		}
 		: {};
 
 	return {
@@ -102,7 +102,7 @@ export default defineConfig(({ mode }) => {
 				output: {
 					// Rewrite the default style.css to a more recognizable file name.
 					assetFileNames: assetInfo =>
-						assetInfo.name === 'style.css' ? `${moduleJSON.id}.css` : assetInfo.name as string,
+						assetInfo.name === 'style.css' ? `${moduleJSON.id}.css` : (assetInfo.name ?? assetInfo.originalFileNames?.[0] ?? 'assets/[name][extname]'),
 				},
 			},
 		},
