@@ -19,8 +19,7 @@
 	const hook = Hooks.on('userConnected', () => {
 		onlineUsers = generateDataBlockFromSetting().onlineUsers;
 		if (
-			onlineUsers.find(element => element.id === currentTrackedPlayer)
-			=== undefined
+			!onlineUsers.some(element => element.id === currentTrackedPlayer)
 		) {
 			currentTrackedPlayer = game?.user.id;
 		}

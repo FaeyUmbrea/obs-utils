@@ -17,8 +17,10 @@ async function setupGMPage(gmPage: Page) {
 				: '',
 		);
 
-	await gmPage.getByRole('button', { name: ' Join Game Session' }).click();
+	await gmPage.getByRole('button', { name: 'Join Game Session' }).click();
 	await expect(gmPage).toHaveURL('/game');
+	// @ts-expect-error run in plain js
+	await gmPage.waitForFunction(() => window.game?.ready);
 	// @ts-expect-error run in plain js
 	await gmPage.waitForFunction(() => window.game.ready);
 }
@@ -36,8 +38,10 @@ async function setupOBSPage(obsPage: Page) {
 				? process.env.TEST_INSTALL_PASSWORD
 				: '',
 		);
-	await obsPage.getByRole('button', { name: ' Join Game Session' }).click();
+	await obsPage.getByRole('button', { name: 'Join Game Session' }).click();
 	await expect(obsPage).toHaveURL('/game');
+	// @ts-expect-error run in plain js
+	await obsPage.waitForFunction(() => window.game?.ready);
 	// @ts-expect-error run in plain js
 	await obsPage.waitForFunction(() => window.game.ready);
 }
@@ -54,7 +58,7 @@ async function setupPlayerPage(playerPage: Page) {
 				? process.env.TEST_INSTALL_PASSWORD
 				: '',
 		);
-	await playerPage.getByRole('button', { name: ' Join Game Session' }).click();
+	await playerPage.getByRole('button', { name: 'Join Game Session' }).click();
 	await expect(playerPage).toHaveURL('/game');
 	// @ts-expect-error run in plain js
 	await playerPage.waitForFunction(() => window.game?.ready);

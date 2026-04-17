@@ -13,12 +13,12 @@
 	let icon2 = $state(data?.split(';')[3] ?? null);
 	const values = getActorValues();
 	// eslint-disable-next-line svelte/valid-compile
-	if (av1 !== null && !values.find(v => v.value === av1)) {
+	if (av1 !== null && !values.some(v => v.value === av1)) {
 		// eslint-disable-next-line svelte/valid-compile
 		values.push({ value: av1, label: av1 });
 	}
 	// eslint-disable-next-line svelte/valid-compile
-	if (av2 !== null && !values.find(v => v.value === av2)) {
+	if (av2 !== null && !values.some(v => v.value === av2)) {
 		// eslint-disable-next-line svelte/valid-compile
 		values.push({ value: av2, label: av2 });
 	}

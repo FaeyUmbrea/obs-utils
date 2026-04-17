@@ -7,8 +7,8 @@
 	"manifestPlusVersion": "1.2.0",
 	"compatibility": {
 		"minimum": 13.344,
-		"verified": 13,
-		"maximum": 13
+		"verified": 14,
+		"maximum": 14
 	},
 	"authors": [
 		{
@@ -25,12 +25,8 @@
 			}
 		]
 	},
-	"esmodules": [
-		"dist/obs-utils.js"
-	],
-	"styles": [
-		"dist/obs-utils.css"
-	],
+	"esmodules": ["dist/obs-utils.js"],
+	"styles": ["dist/obs-utils.css"],
 	"languages": [
 		{
 			"lang": "en",

@@ -5,7 +5,7 @@
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 	const values = getActorValues();
-	if (data !== null && !values.find(v => v.value === data)) {
+	if (data !== null && !values.some(v => v.value === data)) {
 		values.push({ value: data, label: data, $created: true });
 	}
 </script>
