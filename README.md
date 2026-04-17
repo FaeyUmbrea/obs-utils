@@ -36,17 +36,13 @@ Check the [Wiki](https://docs.void.monster)!
 - Make /stream Background Transparent
 - /stream Information Overlays
 
-- Levels Support (in Combat)
+- Foundry Core Multilevel Support (Out of combat token visibility and floor tracking might be limited)
 
 - OBS Remote Controls via Websocket or Browser Source
 
 ## Requirements
 
 - libWrapper
-
-### Optional Modules
-
-- theripper93's Levels [GitHub](https://github.com/theripper93/Levels)
 
 # Contributing
 

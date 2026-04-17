@@ -1,3 +1,11 @@
+## Version 4.4.0
+
+### New
+
+- Initial support release for Foundry Version 14.
+- Deprecating Levels support in favor of core multilevel features.
+  - Still works the best in combat. 
+
 ## Version 4.3.2 
 
 ### Changed
