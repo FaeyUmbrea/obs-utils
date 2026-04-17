@@ -1,3 +1,9 @@
+## Version 4.3.2 
+
+### Changed
+
+- Translation Update
+
 ## Version 4.3.1
 
 ### Fixed

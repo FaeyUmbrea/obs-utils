@@ -48,7 +48,8 @@
 				"canvasOptionsHeader": "Options de la Carte",
 				"trackedPlayerHeader": "Joueur Suivi",
 				"obsUserCommands": "OBS User Commands",
-				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User"
+				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
 			"obsRemote": {
 				"name": "Paramètres OBS Remote",
