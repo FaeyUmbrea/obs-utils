@@ -102,7 +102,7 @@ export default defineConfig(({ mode }) => {
 				output: {
 					// Rewrite the default style.css to a more recognizable file name.
 					assetFileNames: assetInfo =>
-						assetInfo.name === 'style.css' ? `${moduleJSON.id}.css` : assetInfo.name as string,
+						assetInfo.name === 'style.css' ? `${moduleJSON.id}.css` : (assetInfo.name ?? assetInfo.originalFileNames?.[0] ?? 'assets/[name][extname]'),
 				},
 			},
 		},
