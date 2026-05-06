@@ -7,7 +7,22 @@ import { initOBS } from './utils/obs.ts';
 import { getSetting, initRollOverlaySettings, initSettings, runMigrations } from './utils/settings.ts';
 import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
 
-function start() {
+// Conditionally load the polyfill module only when the host browser is missing
+// one or more of the features it polyfills (e.g., Chromium 127 in OBS, where
+// Foundry V14 was only verified against Chromium 146). The polyfill file is
+// emitted as its own chunk and is not fetched on a fully-featured browser.
+async function loadPolyfillsIfNeeded() {
+	if (
+		typeof (RegExp as any).escape !== 'function'
+		|| typeof (Error as any).isError !== 'function'
+		|| typeof (Intl as any).DurationFormat !== 'function'
+	) {
+		await import('./utils/polyfill.ts');
+	}
+}
+
+async function start() {
+	await loadPolyfillsIfNeeded();
 	removeBG();
 	Hooks.once('init', async () => {
 		// Register API

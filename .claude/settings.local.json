@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn tsc *)",
+      "Bash(yarn lint *)"
+    ]
+  }
+}
