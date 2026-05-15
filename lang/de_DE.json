@@ -82,10 +82,17 @@
 				"name": "Charakterauswahl",
 				"searchPlaceholder": "Suche",
 				"closeButton": "Schließen",
-				"resetButton": "Zurücksetzen"
+				"resetButton": "Zurücksetzen",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"overlayEditor": {
 				"name": "Overlay Editor",
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"addButton": "Neue Komponente hinzufügen",
 				"editStyleButton": "Style Bearbeiten",
 				"removeButton": "Overlay Entfernen",
@@ -93,6 +100,7 @@
 				"importButton": "Import",
 				"exportButton": "Export",
 				"addOverlayButton": "Neues Overlay hinzufügen",
+				"componentType": "Component type",
 				"closeButton": "Schließen",
 				"importDialog": {
 					"title": "Import: Overlays",
@@ -161,6 +169,15 @@
 			},
 			"progressBar": {
 				"name": "Fortschrittsleiste"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"settings": {
@@ -227,11 +244,6 @@
 			"allowWebsocketAPI": {
 				"Name": "Erlaube OBS Websocket API Zugriff?",
 				"Hint": "Falls gewählt, können andere Module direkt auf OBS Websocket zugreifen"
-			},
-			"rollOverlayEditor": {
-				"Name": "Würfel Overlay Editor",
-				"Hint": "Bearbeitet das Würfel Overlay",
-				"Label": "Editor Öffnen"
 			},
 			"showAV": {
 				"Name": "Video Overlay Anzeigen?",

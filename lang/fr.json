@@ -82,10 +82,17 @@
 				"name": "Sélection d'Acteur",
 				"searchPlaceholder": "Rechercher",
 				"closeButton": "Fermer",
-				"resetButton": "Réinitialiser"
+				"resetButton": "Réinitialiser",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"overlayEditor": {
 				"name": "Éditeur de Superposition",
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"addButton": "Ajouter un Nouveau Composant",
 				"editStyleButton": "Modifier le Style",
 				"removeButton": "Supprimer la Superposition",
@@ -93,6 +100,7 @@
 				"importButton": "Importer",
 				"exportButton": "Exporter",
 				"addOverlayButton": "Ajouter une Nouvelle Superposition",
+				"componentType": "Component type",
 				"closeButton": "Fermer",
 				"importDialog": {
 					"title": "Importer des Données : Superpositions",
@@ -161,6 +169,15 @@
 			},
 			"progressBar": {
 				"name": "Barre de Progression"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"settings": {
@@ -223,11 +240,6 @@
 			"enableOBSWebsocket": {
 				"Name": "Activer OBS Websocket ?",
 				"Hint": "Si activé, OBS Websocket sera utilisé pour le contrôle à distance"
-			},
-			"rollOverlayEditor": {
-				"Name": "Éditeur de Superposition de Jet",
-				"Hint": "Modifier la superposition de jet",
-				"Label": "Ouvrir l'Éditeur"
 			},
 			"showAV": {
 				"Name": "Afficher la Superposition Vidéo ?",

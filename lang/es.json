@@ -73,7 +73,12 @@
 				"resetButton": "Reiniciar",
 				"name": "Selección de Actor",
 				"closeButton": "Cerrar",
-				"searchPlaceholder": "Buscar"
+				"searchPlaceholder": "Buscar",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"obsWebsocket": {
 				"portLabel": "Puerto",
@@ -85,6 +90,8 @@
 				"urlLabel": "URL"
 			},
 			"overlayEditor": {
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"importButton": "Importar",
 				"closeButton": "Cerrar",
 				"exportDialog": {
@@ -110,6 +117,7 @@
 				"addButton": "Agregar Componente Nuevo",
 				"editStyleButton": "Editar Estilo",
 				"addOverlayButton": "Agregar Nueva Capa",
+				"componentType": "Component type",
 				"exportButton": "Exportar"
 			},
 			"styleEditor": {
@@ -161,6 +169,15 @@
 			},
 			"booleanAVIcon": {
 				"name": "Icono Audio/Video Booleano"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"settings": {
@@ -224,11 +241,6 @@
 			"allowWebsocketAPI": {
 				"Name": "Allow OBS Websocket API Access?",
 				"Hint": "If checked, other modules can access OBS Websocket directly"
-			},
-			"rollOverlayEditor": {
-				"Name": "Roll Overlay Editor",
-				"Label": "Open Editor",
-				"Hint": "Edit the Roll Overlay"
 			},
 			"overlayEditor": {
 				"Name": "Overlay Editor",

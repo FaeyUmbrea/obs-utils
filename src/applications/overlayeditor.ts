@@ -1,5 +1,6 @@
-import OverlayEditorUI from '../svelte/OverlayEditorUI.svelte';
+import Composer from '../svelte/composer/Composer.svelte';
 import { getSetting, setSetting } from '../utils/settings.ts';
+import GlobalCSSEditor from './globalcsseditor.ts';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 export default class OverlayEditor extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
@@ -13,13 +14,14 @@ export default class OverlayEditor extends SvelteApplicationMixin(foundry.applic
 			width: 1000,
 		},
 		zIndex: 95,
-		resizable: true,
 		focusAuto: false,
 		actions: {
 			import: OverlayEditor.importCommand,
 			export: OverlayEditor.exportCommand,
+			openGlobalCSS: OverlayEditor.openGlobalCSSCommand,
 		},
 		window: {
+			resizable: true,
 			controls: [
 				{
 					icon: 'fas fa-file-import',
@@ -31,11 +33,20 @@ export default class OverlayEditor extends SvelteApplicationMixin(foundry.applic
 					label: 'obs-utils.applications.overlayEditor.exportButton',
 					action: 'export',
 				},
+				{
+					icon: 'fab fa-css3-alt',
+					label: 'obs-utils.applications.globalCSSEditor.menuLabel',
+					action: 'openGlobalCSS',
+				},
 			],
 		},
 	};
 
-	protected override root = OverlayEditorUI;
+	public static async openGlobalCSSCommand() {
+		new GlobalCSSEditor({}).render(true);
+	}
+
+	protected override root = Composer;
 
 	public static async importCommand() {
 		new Dialog(
@@ -135,7 +146,9 @@ function exportChatCommands() {
 
 	const data = {
 		type: 'ObsUtilsOverlays',
-		version: 1,
+		// v2: introduced overlay/component IDs, customCSS fields, name/enabled flags.
+		// v1 imports are still accepted (forward-compatible: IDs are backfilled on load).
+		version: 2,
 		overlays,
 		system: (game as ReadyGame).system?.id,
 	};
@@ -161,7 +174,7 @@ async function importChatCommands(data: string, join: boolean) {
 			(game as ReadyGame).i18n.localize('obs-utils.applications.overlayEditor.importDialog.formatError'),
 		);
 	}
-	if (imported.version !== 1) {
+	if (imported.version !== 1 && imported.version !== 2) {
 		throw new Error(
 			(game as ReadyGame).i18n.localize(
 				'obs-utils.applications.overlayEditor.importDialog.versionError',

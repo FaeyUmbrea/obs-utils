@@ -16,6 +16,8 @@
 				"fadeIn": "Появление (мс)"
 			},
 			"overlayEditor": {
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"exportDialog": {
 					"content": "Do you want to export your Overlay Settings?",
 					"noButton": "Нет",
@@ -41,6 +43,7 @@
 				"addButton": "Добавить новый компонент",
 				"editStyleButton": "Изменить стиль",
 				"addOverlayButton": "Добавить новый слой",
+				"componentType": "Component type",
 				"exportButton": "Экспорт"
 			},
 			"director": {
@@ -57,7 +60,12 @@
 				"resetButton": "Сброс",
 				"name": "Выбор Актёра",
 				"closeButton": "Закрыть",
-				"searchPlaceholder": "Поиск"
+				"searchPlaceholder": "Поиск",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"obsWebsocket": {
 				"portLabel": "Порт",
@@ -160,11 +168,6 @@
 			"showTrackerInCombat": {
 				"Name": "Показать Боевой трекер в бою?",
 				"Hint": "Если отмечено, то Боевой трекер будет виден во время Боя."
-			},
-			"rollOverlayEditor": {
-				"Name": "Roll Overlay Editor",
-				"Label": "Open Editor",
-				"Hint": "Edit the Roll Overlay"
 			},
 			"overlayEditor": {
 				"Name": "Overlay Editor",
@@ -282,6 +285,15 @@
 			},
 			"booleanAVIcon": {
 				"name": "Boolean AV Icon"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"strings": {

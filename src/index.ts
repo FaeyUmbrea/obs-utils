@@ -1,10 +1,11 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 import { expandTokenHud, isGM } from './utils/canvas.ts';
+import { backfillIds, installCSSInjection } from './utils/cssInjection.ts';
 import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
-import { getSetting, initRollOverlaySettings, initSettings, runMigrations } from './utils/settings.ts';
+import { getSetting, initOverlayDefaultsHooks, initRollOverlaySettings, initSettings, runMigrations, setSetting } from './utils/settings.ts';
 import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
 
 // Conditionally load the polyfill module only when the host browser is missing
@@ -34,6 +35,7 @@ async function start() {
 		}
 
 		initSettings();
+		initOverlayDefaultsHooks();
 		initRollOverlaySettings();
 		registerKeybindings();
 
@@ -54,7 +56,13 @@ async function start() {
 			// @ts-expect-error Typed incorrectly
 			Hooks.on('renderTokenHUD', expandTokenHud);
 			runMigrations();
+			// Stamp any pre-existing overlays/components with stable IDs (one-time, idempotent).
+			const overlays = getSetting('streamOverlays');
+			if (backfillIds(overlays)) {
+				await setSetting('streamOverlays', overlays!);
+			}
 		}
+		installCSSInjection();
 		if (isOBS()) {
 			// Simulate a user interaction to start video playback
 			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));

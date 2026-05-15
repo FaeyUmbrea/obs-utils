@@ -3,11 +3,14 @@
 	import type { OverlayData } from '../../utils/types.ts';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import StyleEditor from '../../applications/styleditor.ts';
-	import { preventUndefinedNullInArray } from '../../utils/helpers.ts';
+	import { getApi, preventUndefinedNullInArray } from '../../utils/helpers.ts';
 	import { OverlayComponentData } from '../../utils/types.ts';
 	import SingleLineOverlayEditor from './editors/SingleLineOverlayEditor.svelte';
 
 	let { overlay = $bindable(), removeFn = $bindable(), componentindex = $bindable(), refreshFn = $bindable() } = $props<{ overlay: OverlayData; removeFn: (index: number) => void; componentindex: number; refreshFn: () => void }>();
+
+	const overlayType = $derived(getApi().overlayTypes.get(overlay.type));
+	const customEditor = $derived(overlayType?.hasCustomOverlayEditor ? overlayType.overlayEditor : null);
 
 	function handleRemove(index: number) {
 		overlay.components = [
@@ -56,47 +59,61 @@
 	}
 </script>
 
-<div class='scroll'>
-	<ul>
-		<SortableList class='sortable' animation={150} handle='.grab' onEnd={handleReorder}>
-			{#key rerender}
-				{#each overlay.components as component, index (overlay.components.indexOf(component))}
-					{#if component !== null && component !== undefined}
-						<SingleLineOverlayEditor
-							bind:component={() => overlay.components[index], v => setComponentData(index, v)}
-							removeFn={handleRemove}
-							index={index}
-							refreshFn={refreshFn}
-						/>
-					{/if}
-				{/each}
-			{/key}
-		</SortableList>
-	</ul>
-</div>
-<footer>
-	<button
-		class='add'
-		aria-label='Add a new overlay'
-		onclick={() => handleAdd()}
-		title={game.i18n?.localize('obs-utils.applications.overlayEditor.addButton')}
-		type='button'><i class='fas fa-plus'></i></button
-	>
-	<button
-		class='add'
-		aria-label='Edit style'
-		onclick={() => openStyleEditor()}
-		title={game.i18n?.localize('obs-utils.applications.overlayEditor.editStyleButton')}
-		type='button'><i class='fas fa-pencil'></i></button
-	>
-	<button
-		class='remove-tab'
-		aria-label='Remove overlay'
-		onclick={() => removeFn(componentindex)}
-		title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
-		type='button'><i class='fas fa-trash'></i></button
-	>
-</footer>
+{#if customEditor}
+	{@const CustomEditor = customEditor}
+	<CustomEditor bind:overlay={overlay} refreshFn={refreshFn} />
+	<footer>
+		<button
+			class='remove-only'
+			aria-label='Remove overlay'
+			onclick={() => removeFn(componentindex)}
+			title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
+			type='button'><i class='fas fa-trash'></i></button
+		>
+	</footer>
+{:else}
+	<div class='scroll'>
+		<ul>
+			<SortableList class='sortable' animation={150} handle='.grab' onEnd={handleReorder}>
+				{#key rerender}
+					{#each overlay.components as component, index (overlay.components.indexOf(component))}
+						{#if component !== null && component !== undefined}
+							<SingleLineOverlayEditor
+								bind:component={() => overlay.components[index], v => setComponentData(index, v)}
+								removeFn={handleRemove}
+								index={index}
+								refreshFn={refreshFn}
+							/>
+						{/if}
+					{/each}
+				{/key}
+			</SortableList>
+		</ul>
+	</div>
+	<footer>
+		<button
+			class='add'
+			aria-label='Add a new overlay'
+			onclick={() => handleAdd()}
+			title={game.i18n?.localize('obs-utils.applications.overlayEditor.addButton')}
+			type='button'><i class='fas fa-plus'></i></button
+		>
+		<button
+			class='add'
+			aria-label='Edit style'
+			onclick={() => openStyleEditor()}
+			title={game.i18n?.localize('obs-utils.applications.overlayEditor.editStyleButton')}
+			type='button'><i class='fas fa-pencil'></i></button
+		>
+		<button
+			class='remove-tab'
+			aria-label='Remove overlay'
+			onclick={() => removeFn(componentindex)}
+			title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
+			type='button'><i class='fas fa-trash'></i></button
+		>
+	</footer>
+{/if}
 
 <style lang='stylus'>
   footer {
@@ -113,6 +130,10 @@
 
     .remove-tab {
       width: calc(100% - 35px);
+    }
+
+    .remove-only {
+      width: 100%;
     }
   }
 

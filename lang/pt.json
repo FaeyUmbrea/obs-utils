@@ -88,11 +88,6 @@
 				"Name": "Allow OBS Websocket API Access?",
 				"Hint": "If checked, other modules can access OBS Websocket directly"
 			},
-			"rollOverlayEditor": {
-				"Name": "Editor Sobreposição de Rolagem",
-				"Label": "Abrir Editor",
-				"Hint": "Edit the Roll Overlay"
-			},
 			"overlayEditor": {
 				"Name": "Editor de Sobreposição",
 				"Hint": "Edit the Overlays",
@@ -175,6 +170,8 @@
 		},
 		"applications": {
 			"overlayEditor": {
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"importDialog": {
 					"replaceButton": "Substituir",
 					"hint2": "Escolha se deseja substituir as suas sobreposições existentes ou adicionar a lista importada.",
@@ -200,6 +197,7 @@
 				"addButton": "Adicionar Novo Componente",
 				"editStyleButton": "Estilar Estilo",
 				"addOverlayButton": "Adicionar Nova Sobreposição",
+				"componentType": "Component type",
 				"exportButton": "Exportar"
 			},
 			"director": {
@@ -216,7 +214,12 @@
 				"resetButton": "Reiniciar",
 				"name": "Seleção de Atores",
 				"closeButton": "Fechar",
-				"searchPlaceholder": "Procurar"
+				"searchPlaceholder": "Procurar",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"obsWebsocket": {
 				"portLabel": "Porta",
@@ -308,6 +311,15 @@
 			},
 			"booleanAVIcon": {
 				"name": "Ícone Booleano Áudio/Vídeo"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		}
 	}

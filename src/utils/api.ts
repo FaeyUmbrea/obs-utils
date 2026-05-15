@@ -10,7 +10,10 @@ import AVMultiImageComponent from '../svelte/streamoverlays/overlaycomponents/AV
 import FAIconComponent from '../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte';
 import ProgressBarComponent from '../svelte/streamoverlays/overlaycomponents/ProgressBarComponent.svelte';
 import PlayerRollOverlay from '../svelte/streamoverlays/PlayerRollOverlay.svelte';
+import PlayerRollOverlayEditor from '../svelte/components/editors/PlayerRollOverlayEditor.svelte';
+import WYSIWYGOverlayEditor from '../svelte/components/editors/WYSIWYGOverlayEditor.svelte';
 import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte';
+import WYSIWYGOverlay from '../svelte/streamoverlays/WYSIWYGOverlay.svelte';
 import { MODULE_ID } from './const.ts';
 import { getApi, isOBS, setActorValues } from './helpers.ts';
 import { getWebsocket } from './obs.ts';
@@ -76,6 +79,8 @@ export class OverlayType {
 	overlayComponentNames: Map<string, string>;
 	overlayComponentEditors: Map<string, Component<any, any, any>>;
 	compactEditorButtons: Map<string, boolean>;
+	hasCustomOverlayEditor: boolean = false;
+	perActor: boolean = true;
 
 	constructor(overlayClass: Component<any, any, any>) {
 		this.overlayComponents = new Map();
@@ -88,6 +93,7 @@ export class OverlayType {
 
 	registerOverlayEditor(editor: Component<any, any, any>) {
 		this.overlayEditor = editor;
+		this.hasCustomOverlayEditor = true;
 	}
 
 	registerComponent(key: string, readableName: string, type: Component<any, any, any>) {
@@ -155,7 +161,22 @@ export function registerDefaultTypes() {
 	singleLineOverlay.overlayComponents.set('iav', AVImageDisplayComponent);
 	singleLineOverlay.overlayComponents.set('av', ActorValComponent);
 
-	getApi().registerOverlayType('sl', 'Single Line', singleLineOverlay);
+	getApi().registerOverlayType('sl', 'obs-utils.overlays.simpleOverlay.name', singleLineOverlay);
 	getApi().overlayTypes.set('Single Line', singleLineOverlay);
+
+	const wysiwygOverlay = new OverlayType(WYSIWYGOverlay);
+	wysiwygOverlay.overlayComponents = new Map(singleLineOverlay.overlayComponents);
+	wysiwygOverlay.overlayComponentNames = new Map(singleLineOverlay.overlayComponentNames);
+	wysiwygOverlay.overlayComponentEditors = new Map(singleLineOverlay.overlayComponentEditors);
+	wysiwygOverlay.compactEditorButtons = new Map(singleLineOverlay.compactEditorButtons);
+	wysiwygOverlay.registerOverlayEditor(WYSIWYGOverlayEditor);
+	wysiwygOverlay.perActor = true;
+	getApi().registerOverlayType('wysiwyg', 'obs-utils.overlays.wysiwygOverlay.name', wysiwygOverlay);
+
+	const rollOverlay = new OverlayType(PlayerRollOverlay);
+	rollOverlay.registerOverlayEditor(PlayerRollOverlayEditor);
+	rollOverlay.perActor = false;
+	getApi().registerOverlayType('roll', 'obs-utils.overlays.rollOverlay.name', rollOverlay);
+
 	getApi().registerUniqueOverlaySvelte5(PlayerRollOverlay);
 }

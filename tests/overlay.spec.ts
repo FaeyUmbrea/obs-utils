@@ -121,3 +121,134 @@ async function getOverlay(gmPage: Page, type: string) {
 	}
 	return { data: index !== -1 ? slo?.components[index]?.data : null, index };
 }
+
+async function openSettingsTo(gmPage: Page, key: string) {
+	await gmPage.locator('button[data-tab=settings]').click();
+	await gmPage.locator('button[data-app=\'configure\']').click();
+	await gmPage.locator('button[data-tab=\'obs-utils\']').click();
+	await gmPage.locator(`button[data-key='obs-utils.${key}']`).click();
+}
+
+async function closeApp(gmPage: Page, appId: string) {
+	await gmPage.locator(`div[id='${appId}'] header button[data-action=close]`).click();
+	await expect(gmPage.locator(`div[id='${appId}']`)).not.toBeVisible();
+}
+
+test.describe('WYSIWYG Overlay', () => {
+	test('renders component at configured absolute position', async ({ pages: { gmPage, obsPage } }) => {
+		// @ts-expect-error run in plain js
+		const actorID: string | null = await gmPage.evaluate(() => [...game.actors][0]?.id ?? null);
+
+		if (!actorID) {
+			test.skip();
+			return;
+		}
+
+		await gmPage.evaluate((id) => {
+			// @ts-expect-error run in plain js
+			game.settings.set('obs-utils', 'overlayActors', [id]);
+			// @ts-expect-error run in plain js
+			game.settings.set('obs-utils', 'streamOverlays', [{
+				type: 'wysiwyg',
+				components: [{ type: 'pt', data: 'name', style: '', x: 200, y: 100, w: 300, h: 50 }],
+				style: '',
+				config: { w: 1920, h: 1080 },
+			}]);
+		}, actorID);
+
+		await obsPage.goto('/stream');
+		const wrapper = obsPage.locator('#wysiwyg-component-0-0');
+		await wrapper.waitFor({ state: 'visible' });
+
+		await expect(wrapper).toHaveCSS('left', '200px');
+		await expect(wrapper).toHaveCSS('top', '100px');
+		await expect(wrapper).toHaveCSS('width', '300px');
+		await expect(wrapper).toHaveCSS('height', '50px');
+		await expect(wrapper).toHaveCSS('position', 'absolute');
+	});
+});
+
+test.describe('Overlay Editor', () => {
+	test('preview actor dropdown filters to single actor', async ({ pages: { gmPage } }) => {
+		// @ts-expect-error run in plain js
+		const actorIDs: string[] = await gmPage.evaluate(() => game.settings.get('obs-utils', 'overlayActors') ?? []);
+
+		if (actorIDs.length < 2) {
+			test.skip();
+			return;
+		}
+
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+
+		const preview = editorApp.locator('.preview');
+
+		for (const id of actorIDs) {
+			await expect(preview.locator(`#actor${id}`)).toBeVisible();
+		}
+
+		const select = editorApp.locator('.preview-actor-select select');
+		await select.selectOption({ value: actorIDs[0] });
+
+		await expect(preview.locator(`#actor${actorIDs[0]}`)).toBeVisible();
+		await expect(preview.locator(`#actor${actorIDs[1]}`)).not.toBeVisible();
+
+		await closeApp(gmPage, 'overlayeditor-application');
+	});
+
+	test('roll overlay editor writes rollStay to flat setting', async ({ pages: { gmPage } }) => {
+		await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			game.settings.set('obs-utils', 'rollOverlayRollStay', 5);
+			// @ts-expect-error run in plain js
+			game.settings.set('obs-utils', 'streamOverlays', [{
+				type: 'roll',
+				components: [],
+				style: '',
+				config: {},
+			}]);
+		});
+
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+
+		// rollStay is the second number input in .roll .content (fadeIn, duration, fadeOut)
+		const rollStayInput = editorApp.locator('.roll .content input[type=number]').nth(1);
+		await expect(rollStayInput).toHaveValue('5');
+
+		await rollStayInput.fill('15');
+		await rollStayInput.dispatchEvent('change');
+
+		await closeApp(gmPage, 'overlayeditor-application');
+
+		// @ts-expect-error run in plain js
+		const rollStay: number = await gmPage.evaluate(() => game.settings.get('obs-utils', 'rollOverlayRollStay'));
+		expect(rollStay).toBe(15);
+	});
+});
+
+test.describe('Actor Select', () => {
+	test('user-token quick-select section is visible when users have characters', async ({ pages: { gmPage } }) => {
+		// @ts-expect-error run in plain js
+		const hasUserActors: boolean = await gmPage.evaluate(() =>
+			// @ts-expect-error run in plain js
+			(game.users?.some((u: any) => !u.isGM && !!u.character)) ?? false
+		);
+
+		if (!hasUserActors) {
+			test.skip();
+			return;
+		}
+
+		await openSettingsTo(gmPage, 'overlayActorSelect');
+		const actorSelectApp = gmPage.locator('div#actorselect-application');
+		await expect(actorSelectApp).toBeVisible();
+
+		await expect(actorSelectApp.locator('.user-tokens-header')).toBeVisible();
+		await expect(actorSelectApp.locator('.user-token-chip').first()).toBeVisible();
+
+		await closeApp(gmPage, 'actorselect-application');
+	});
+});

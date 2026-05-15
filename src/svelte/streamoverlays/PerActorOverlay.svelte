@@ -5,7 +5,9 @@
 	let { overlays = $bindable(), actorIDs = $bindable() } = $props();
 
 	function getOverlayType(type) {
-		return getApi().overlayTypes.get(type).overlayClass;
+		const entry = getApi().overlayTypes.get(type);
+		if (!entry || !entry.perActor) return null;
+		return entry.overlayClass;
 	}
 </script>
 
@@ -14,11 +16,13 @@
 		<div class='actor' id={`actor${actorID}`}>
 			{#each overlays as overlay, index (overlays.indexOf(overlay))}
 				{@const Component = getOverlayType(overlay.type)}
-				<Component
-					overlayData={overlay}
-					actorID={actorID}
-					overlayIndex={index}
-				/>
+				{#if Component !== null && Component !== undefined && overlay?.enabled !== false}
+					<Component
+						overlayData={overlay}
+						actorID={actorID}
+						overlayIndex={index}
+					/>
+				{/if}
 			{/each}
 		</div>
 	{/each}

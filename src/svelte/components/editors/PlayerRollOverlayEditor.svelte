@@ -1,42 +1,43 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { settings as rollOverlaySettings } from '../../../utils/settings.ts';
-	import PlayerRollComponent from '../../streamoverlays/overlaycomponents/PlayerRollComponent.svelte';
+	import { settings as rollOverlaySettings, getSetting } from '../../../utils/settings.ts';
+	import { OverlayData } from '../../../utils/types.ts';
 
-	const preRollDelay = rollOverlaySettings.getStore('rollOverlayPreRollDelay');
-	const preRollStay = rollOverlaySettings.getStore('rollOverlayPreRollStay');
-	const preRollFadeIn = rollOverlaySettings.getStore('rollOverlayPreRollFadeIn');
-	const preRollFadeOut = rollOverlaySettings.getStore(
-		'rollOverlayPreRollFadeOut',
-	);
-	const rollStay = rollOverlaySettings.getStore('rollOverlayRollStay');
-	const rollFadeIn = rollOverlaySettings.getStore('rollOverlayRollFadeIn');
-	const rollFadeOut = rollOverlaySettings.getStore('rollOverlayRollFadeOut');
-	const postRollStay = rollOverlaySettings.getStore('rollOverlayPostRollStay');
-	const postRollFadeIn = rollOverlaySettings.getStore(
-		'rollOverlayPostRollFadeIn',
-	);
-	const postRollFadeOut = rollOverlaySettings.getStore(
-		'rollOverlayPostRollFadeOut',
-	);
+	let { overlay = $bindable<OverlayData>(), refreshFn = $bindable<() => void>() } = $props();
 
-	const preRollImage = rollOverlaySettings.getStore('rollOverlayPreRollImage');
-	const rollBackgroundImage = rollOverlaySettings.getStore(
-		'rollOverlayRollBackground',
-	);
-	const rollForegroundImage = rollOverlaySettings.getStore(
-		'rollOverlayRollForeground',
-	);
-	const postRollImage = rollOverlaySettings.getStore('rollOverlayPostRollImage');
+	let preEnabled = $state((overlay.config?.preRollEnabled ?? getSetting('rollOverlayPreRollEnabled')) as boolean ?? false);
+	let postEnabled = $state((overlay.config?.postRollEnabled ?? getSetting('rollOverlayPostRollEnabled')) as boolean ?? false);
+	let preRollDelay = $state((overlay.config?.preRollDelay ?? getSetting('rollOverlayPreRollDelay')) as number ?? 0);
+	let preRollFadeIn = $state((overlay.config?.preRollFadeIn ?? getSetting('rollOverlayPreRollFadeIn')) as number ?? 0);
+	let preRollFadeOut = $state((overlay.config?.preRollFadeOut ?? getSetting('rollOverlayPreRollFadeOut')) as number ?? 0);
+	let preRollStay = $state((overlay.config?.preRollStay ?? getSetting('rollOverlayPreRollStay')) as number ?? 0);
+	let preRollImage = $state((overlay.config?.preRollImage ?? getSetting('rollOverlayPreRollImage')) as string ?? '');
+	let rollFadeIn = $state((overlay.config?.rollFadeIn ?? getSetting('rollOverlayRollFadeIn')) as number ?? 0);
+	let rollFadeOut = $state((overlay.config?.rollFadeOut ?? getSetting('rollOverlayRollFadeOut')) as number ?? 0);
+	let rollStay = $state((overlay.config?.rollStay ?? getSetting('rollOverlayRollStay')) as number ?? 0);
+	let rollBackground = $state((overlay.config?.rollBackground ?? getSetting('rollOverlayRollBackground')) as string ?? '');
+	let rollForeground = $state((overlay.config?.rollForeground ?? getSetting('rollOverlayRollForeground')) as string ?? '');
+	let postRollFadeIn = $state((overlay.config?.postRollFadeIn ?? getSetting('rollOverlayPostRollFadeIn')) as number ?? 0);
+	let postRollFadeOut = $state((overlay.config?.postRollFadeOut ?? getSetting('rollOverlayPostRollFadeOut')) as number ?? 0);
+	let postRollStay = $state((overlay.config?.postRollStay ?? getSetting('rollOverlayPostRollStay')) as number ?? 0);
+	let postRollImage = $state((overlay.config?.postRollImage ?? getSetting('rollOverlayPostRollImage')) as string ?? '');
 
-	const pre = rollOverlaySettings.getStore('rollOverlayPostRollEnabled');
-	const post = rollOverlaySettings.getStore('rollOverlayPreRollEnabled');
-
-	let rollValue = $state('');
-
-	function test() {
-		rollValue = Math.round(Math.random() * 20).toString();
-	}
+	$effect(() => { overlay.config = { ...overlay.config, preRollEnabled: preEnabled }; rollOverlaySettings.getStore('rollOverlayPreRollEnabled').set(preEnabled); });
+	$effect(() => { overlay.config = { ...overlay.config, postRollEnabled: postEnabled }; rollOverlaySettings.getStore('rollOverlayPostRollEnabled').set(postEnabled); });
+	$effect(() => { overlay.config = { ...overlay.config, preRollDelay: preRollDelay }; rollOverlaySettings.getStore('rollOverlayPreRollDelay').set(preRollDelay); });
+	$effect(() => { overlay.config = { ...overlay.config, preRollFadeIn: preRollFadeIn }; rollOverlaySettings.getStore('rollOverlayPreRollFadeIn').set(preRollFadeIn); });
+	$effect(() => { overlay.config = { ...overlay.config, preRollFadeOut: preRollFadeOut }; rollOverlaySettings.getStore('rollOverlayPreRollFadeOut').set(preRollFadeOut); });
+	$effect(() => { overlay.config = { ...overlay.config, preRollStay: preRollStay }; rollOverlaySettings.getStore('rollOverlayPreRollStay').set(preRollStay); });
+	$effect(() => { overlay.config = { ...overlay.config, preRollImage: preRollImage }; rollOverlaySettings.getStore('rollOverlayPreRollImage').set(preRollImage); });
+	$effect(() => { overlay.config = { ...overlay.config, rollFadeIn: rollFadeIn }; rollOverlaySettings.getStore('rollOverlayRollFadeIn').set(rollFadeIn); });
+	$effect(() => { overlay.config = { ...overlay.config, rollFadeOut: rollFadeOut }; rollOverlaySettings.getStore('rollOverlayRollFadeOut').set(rollFadeOut); });
+	$effect(() => { overlay.config = { ...overlay.config, rollStay: rollStay }; rollOverlaySettings.getStore('rollOverlayRollStay').set(rollStay); });
+	$effect(() => { overlay.config = { ...overlay.config, rollBackground: rollBackground }; rollOverlaySettings.getStore('rollOverlayRollBackground').set(rollBackground); });
+	$effect(() => { overlay.config = { ...overlay.config, rollForeground: rollForeground }; rollOverlaySettings.getStore('rollOverlayRollForeground').set(rollForeground); });
+	$effect(() => { overlay.config = { ...overlay.config, postRollFadeIn: postRollFadeIn }; rollOverlaySettings.getStore('rollOverlayPostRollFadeIn').set(postRollFadeIn); });
+	$effect(() => { overlay.config = { ...overlay.config, postRollFadeOut: postRollFadeOut }; rollOverlaySettings.getStore('rollOverlayPostRollFadeOut').set(postRollFadeOut); });
+	$effect(() => { overlay.config = { ...overlay.config, postRollStay: postRollStay }; rollOverlaySettings.getStore('rollOverlayPostRollStay').set(postRollStay); });
+	$effect(() => { overlay.config = { ...overlay.config, postRollImage: postRollImage }; rollOverlaySettings.getStore('rollOverlayPostRollImage').set(postRollImage); });
 
 	let filePickerAppPreRoll: foundry.applications.apps.FilePicker | undefined;
 
@@ -47,7 +48,7 @@
 			filePickerAppPreRoll = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
-					$preRollImage = path;
+					preRollImage = path;
 					filePickerAppPreRoll = undefined;
 				},
 				window: {
@@ -67,7 +68,7 @@
 			filePickerAppForeground = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
-					$rollForegroundImage = path;
+					rollForeground = path;
 					filePickerAppForeground = undefined;
 				},
 				window: {
@@ -87,7 +88,7 @@
 			filePickerAppBackground = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
-					$rollBackgroundImage = path;
+					rollBackground = path;
 					filePickerAppBackground = undefined;
 				},
 				window: {
@@ -107,7 +108,7 @@
 			filePickerAppPostRoll = new foundry.applications.apps.FilePicker({
 				type: 'image',
 				callback: (path) => {
-					$postRollImage = path;
+					postRollImage = path;
 					filePickerAppPostRoll = undefined;
 				},
 				window: {
@@ -119,168 +120,202 @@
 	}
 </script>
 
-<div class='editor'>
-	<section class='preview obs-utils roll-overlay'>
-		<PlayerRollComponent
-			bind:rollValue={rollValue}
-			id='preview'
-		/>
-		<button onclick={test}
-		>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.test')}</button
-		>
+<div class='roll-editor'>
+	<section class='stage' class:disabled={!preEnabled}>
+		<header class='stage-header'>
+			<input bind:checked={preEnabled} type='checkbox' aria-label='Pre-Roll enabled' />
+			<span class='stage-title'>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.preRollImage')}</span>
+		</header>
+		<div class='stage-body'>
+			<label class='field'>
+				<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}</span>
+				<div class='filepicker'>
+					<input bind:value={preRollImage} type='text' />
+					<button type='button' aria-label='Open Filepicker' onclick={openFilePickerPreRoll}>
+						<i class='fa-solid fa-folder-open'></i>
+					</button>
+				</div>
+			</label>
+			<div class='row two-col'>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.delay')}</span>
+					<input bind:value={preRollDelay} min='0' type='number' />
+				</label>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}</span>
+					<input bind:value={preRollFadeIn} min='0' type='number' />
+				</label>
+			</div>
+			<div class='row two-col'>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}</span>
+					<input bind:value={preRollStay} min='0' type='number' />
+				</label>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}</span>
+					<input bind:value={preRollFadeOut} min='0' type='number' />
+				</label>
+			</div>
+		</div>
 	</section>
-	<section class='menu'>
-		<div class='pre'>
-			<section class='header'>
-				<input bind:checked={$pre} type='checkbox' />
 
-				<span
-				>{game.i18n?.localize(
-					'obs-utils.applications.rollOverlayEditor.preRollImage',
-				)}</span
-				>
-			</section>
-			<section class='content'>
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
-				<section class='filepicker'>
-					<input bind:value={$preRollImage} type='text' />
-					<button aria-label='Open Filepicker' onclick={openFilePickerPreRoll}
-					><i class='fa-solid fa-file'></i></button
-					>
-				</section>
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.delay')}
-				<input bind:value={$preRollDelay} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
-				<input bind:value={$preRollFadeIn} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}
-				<input bind:value={$preRollStay} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
-				<input bind:value={$preRollFadeOut} min='0' type='number' />
-			</section>
+	<section class='stage'>
+		<header class='stage-header'>
+			<i class='fas fa-dice-d20'></i>
+			<span class='stage-title'>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.rollImage')}</span>
+		</header>
+		<div class='stage-body'>
+			<label class='field'>
+				<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.foregroundImageUrl')}</span>
+				<div class='filepicker'>
+					<input bind:value={rollForeground} type='text' />
+					<button type='button' aria-label='Open Filepicker' onclick={openFilePickerForeground}>
+						<i class='fa-solid fa-folder-open'></i>
+					</button>
+				</div>
+			</label>
+			<label class='field'>
+				<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.backgroundImageUrl')}</span>
+				<div class='filepicker'>
+					<input bind:value={rollBackground} type='text' />
+					<button type='button' aria-label='Open Filepicker' onclick={openFilePickerBackground}>
+						<i class='fa-solid fa-folder-open'></i>
+					</button>
+				</div>
+			</label>
+			<div class='row two-col'>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}</span>
+					<input bind:value={rollFadeIn} min='0' type='number' />
+				</label>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}</span>
+					<input bind:value={rollFadeOut} min='0' type='number' />
+				</label>
+			</div>
+			<label class='field'>
+				<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}</span>
+				<input bind:value={rollStay} min='0' type='number' />
+			</label>
 		</div>
-		<div class='roll'>
-			<section class='header'>
-				<span
-				>&nbsp;{game.i18n?.localize(
-					'obs-utils.applications.rollOverlayEditor.rollImage',
-				)}</span
-				>
-			</section>
-			<section class='content'>
-				{game.i18n?.localize(
-					'obs-utils.applications.rollOverlayEditor.foregroundImageUrl',
-				)}
-				<section class='filepicker'>
-					<input bind:value={$rollForegroundImage} type='text' />
-					<button aria-label='Open Filepicker' onclick={openFilePickerForeground}
-					><i class='fa-solid fa-file'></i></button
-					>
-				</section>
-				{game.i18n?.localize(
-					'obs-utils.applications.rollOverlayEditor.backgroundImageUrl',
-				)}
-				<section class='filepicker'>
-					<input bind:value={$rollBackgroundImage} type='text' />
-					<button aria-label='Open Filepicker' onclick={openFilePickerBackground}
-					><i class='fa-solid fa-file'></i></button
-					>
-				</section>
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
-				<input bind:value={$rollFadeIn} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}
-				<input bind:value={$rollStay} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
-				<input bind:value={$rollFadeOut} min='0' type='number' />
-			</section>
-		</div>
-		<div class='post'>
-			<section class='header'>
-				<input bind:checked={$post} type='checkbox' />
-				<span>
-					{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.postRollImage')}
-				</span>
-			</section>
-			<section class='content'>
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}
-				<section class='filepicker'>
-					<input bind:value={$postRollImage} type='text' />
-					<button aria-label='Open Filepicker' onclick={openFilePickerPostRoll}
-					><i class='fa-solid fa-file'></i></button
-					>
-				</section>
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}
-				<input bind:value={$postRollFadeIn} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}
-				<input bind:value={$postRollStay} min='0' type='number' />
-				{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}
-				<input bind:value={$postRollFadeOut} min='0' type='number' />
-			</section>
+	</section>
+
+	<section class='stage' class:disabled={!postEnabled}>
+		<header class='stage-header'>
+			<input bind:checked={postEnabled} type='checkbox' aria-label='Post-Roll enabled' />
+			<span class='stage-title'>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.postRollImage')}</span>
+		</header>
+		<div class='stage-body'>
+			<label class='field'>
+				<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.imageUrl')}</span>
+				<div class='filepicker'>
+					<input bind:value={postRollImage} type='text' />
+					<button type='button' aria-label='Open Filepicker' onclick={openFilePickerPostRoll}>
+						<i class='fa-solid fa-folder-open'></i>
+					</button>
+				</div>
+			</label>
+			<div class='row two-col'>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeIn')}</span>
+					<input bind:value={postRollFadeIn} min='0' type='number' />
+				</label>
+				<label class='field'>
+					<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.fadeOut')}</span>
+					<input bind:value={postRollFadeOut} min='0' type='number' />
+				</label>
+			</div>
+			<label class='field'>
+				<span>{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.duration')}</span>
+				<input bind:value={postRollStay} min='0' type='number' />
+			</label>
 		</div>
 	</section>
 </div>
 
 <style lang='stylus'>
-  .editor
-    display grid
-    grid-template-rows auto auto
-    height 100%
+	.roll-editor
+		display flex
+		flex-direction column
+		flex 1 1 auto
+		min-height 0
+		height 100%
+		overflow-y auto
+		gap 8px
+		padding 4px 0
 
-    .preview
-      grid-row-start 1
-      background black
-      border-radius 5px
-      color white
-      margin unset
-      padding unset
-      position relative
+	.stage
+		border 1px solid rgba(255, 255, 255, 0.1)
+		border-radius 4px
+		background rgba(0, 0, 0, 0.1)
 
-      button
-        position absolute
-        bottom 1px
-        left 0
-        width 40px
-        background black
-        color white
-        border-color darkgray
+		&.disabled .stage-body
+			opacity 0.4
+			pointer-events none
 
-    .menu
-      grid-row-start 2
-      display grid
-      grid-template-columns 1fr 1fr 1fr
+	.stage-header
+		display flex
+		align-items center
+		gap 6px
+		padding 6px 8px
+		border-bottom 1px solid rgba(255, 255, 255, 0.08)
+		background rgba(255, 144, 0, 0.06)
 
-      // Text Inputs with 35px wide button on the right side
+		.stage-title
+			font-size 11px
+			font-weight 600
+			text-transform uppercase
+			letter-spacing 0.5px
 
-      .filepicker
-        display flex
+		input[type=checkbox]
+			width 14px
+			height 14px
 
-        button
-          width 35px
+	.stage-body
+		padding 6px 8px
+		display flex
+		flex-direction column
+		gap 4px
 
-      div
-        border-left 2px solid grey
-        border-right 2px solid grey
-        border-bottom 2px solid grey
-        border-radius 6px
-        margin 2px
+	.row
+		display flex
+		gap 6px
 
-        .header
-          display flex
-          height 30px
-          align-items center
-          border-bottom 1px solid gray
-          border-top 2px solid gray
-          border-top-left-radius 6px
-          border-top-right-radius 6px
+		&.two-col
+			display grid
+			grid-template-columns 1fr 1fr
 
-        .content
-          margin 2px
+	.field
+		display flex
+		flex-direction column
+		gap 2px
 
-      .pre
-        grid-column-start 1
+		span
+			font-size 10px
+			opacity 0.7
 
-      .roll
-        grid-column-start 2
+		input
+			width 100%
+			height 24px
+			padding 0 6px
+			font-size 12px
 
-      .post
-        grid-column-start 3
+	.filepicker
+		display flex
+		gap 4px
+
+		input
+			flex 1 1 auto
+			min-width 0
+			height 24px
+			padding 0 6px
+			font-size 12px
+
+		button
+			width 28px
+			height 24px
+			padding 0
+			display flex
+			align-items center
+			justify-content center
 </style>

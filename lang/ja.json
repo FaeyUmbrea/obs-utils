@@ -82,10 +82,17 @@
 				"name": "Actor Selection",
 				"searchPlaceholder": "Search",
 				"closeButton": "Close",
-				"resetButton": "Reset"
+				"resetButton": "Reset",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"overlayEditor": {
 				"name": "Overlay Editor",
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"addButton": "Add New Component",
 				"editStyleButton": "Edit Style",
 				"removeButton": "Remove Overlay",
@@ -93,6 +100,7 @@
 				"importButton": "Import",
 				"exportButton": "Export",
 				"addOverlayButton": "Add New Overlay",
+				"componentType": "Component type",
 				"closeButton": "Close",
 				"importDialog": {
 					"title": "Import Data: Overlays",
@@ -161,6 +169,15 @@
 			},
 			"progressBar": {
 				"name": "Progress Bar"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"settings": {
@@ -223,11 +240,6 @@
 			"enableOBSWebsocket": {
 				"Name": "Enable OBS Websocket?",
 				"Hint": "If checked, OBS Websocket will be used for Remoting"
-			},
-			"rollOverlayEditor": {
-				"Name": "Roll Overlay Editor",
-				"Hint": "Edit the Roll Overlay",
-				"Label": "Open Editor"
 			},
 			"showAV": {
 				"Name": "Show Video Overlay?",

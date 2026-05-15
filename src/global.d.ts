@@ -55,6 +55,9 @@ declare global {
 		'obs-utils.websocketSettings': typeof OBSWebsocketSettings;
 		'obs-utils.streamOverlays': OverlayData[];
 		'obs-utils.overlayActors': string[];
+		'obs-utils.overlayActorsModified': boolean;
+		'obs-utils.globalOverlayCSS': string;
+		'obs-utils.actorOverlayCSS': Record<string, string>;
 		'obs-utils.settingsVersion': number;
 		'obs-utils.showAV': boolean;
 		'obs-utils.showUserConfig': boolean;

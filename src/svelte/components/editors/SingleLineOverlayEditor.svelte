@@ -57,10 +57,16 @@
 	}
 </script>
 
-<li data-list-key={index}>
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<li data-list-key={index} tabindex='0'>
 	<div class='component handle'>
 		<i class='fa-light fa-bars grab'></i>
-		<select bind:value={() => component.type, v => setType(v)} name='types' onchange={() => refreshFn?.()}>
+		<select
+			aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.componentType') ?? 'Component type'}
+			bind:value={() => component.type, v => setType(v)}
+			name='types'
+			onchange={() => refreshFn?.()}
+		>
 			{#each [...componentNames] as [component, name]}
 				<option value={component}>{game.i18n?.localize(name)}</option>
 			{/each}

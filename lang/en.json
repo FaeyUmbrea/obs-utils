@@ -82,10 +82,24 @@
 				"name": "Actor Selection",
 				"searchPlaceholder": "Search",
 				"closeButton": "Close",
-				"resetButton": "Reset"
+				"resetButton": "Reset",
+				"userTokensHeader": "User Tokens",
+				"editCSS": "Edit per-actor CSS"
+			},
+			"globalCSSEditor": {
+				"name": "Global Overlay CSS",
+				"menuLabel": "Global CSS",
+				"saveButton": "Save & Close",
+				"intro": "Global CSS is applied to every overlay obs-utils renders. Use selectors like .obs-utils to scope to overlay containers, #actor{...} for a specific actor, or progress, .my-class etc. for elements."
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"overlayEditor": {
 				"name": "Overlay Editor",
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"addButton": "Add New Component",
 				"editStyleButton": "Edit Style",
 				"removeButton": "Remove Overlay",
@@ -93,7 +107,46 @@
 				"importButton": "Import",
 				"exportButton": "Export",
 				"addOverlayButton": "Add New Overlay",
+				"componentType": "Component type",
 				"closeButton": "Close",
+				"layersHeader": "Overlays",
+				"layerHeader": "Overlay",
+				"componentHeader": "Component",
+				"layerName": "Name",
+				"layerType": "Type",
+				"hideLayer": "Hide overlay",
+				"showLayer": "Show overlay",
+				"previewActorAll": "All actors",
+				"emptyLayers": "No overlays yet. Click + to add one.",
+				"noLayerSelected": "Select an overlay to edit its properties.",
+				"paletteLabel": "Drag onto canvas:",
+				"paletteDragHint": "drag onto the canvas to place",
+				"paletteNoSelection": "Select a layer to see its component palette.",
+				"paletteWysiwygOnly": "Component palette is available for WYSIWYG layers.",
+				"noCanvasForType": "This layer type is edited in the side panel.",
+				"selectLayerHint": "Select a layer to start editing.",
+				"selectComponentHint": "Click a component on the canvas or add one from the panel.",
+				"canvasSize": "Canvas Size",
+				"overlaySize": "Size",
+				"sizeHint": "For backgrounds, add an Image component sized to the overlay.",
+				"backgroundImage": "Background Image",
+				"componentData": "Data",
+				"componentsHeader": "Components",
+				"drawOrderHint": "(top of list = drawn first)",
+				"dragReorder": "Drag to reorder",
+				"emptyComponents": "No components yet. Add one above.",
+				"simpleIntro": "Simple overlays render components inline. Reorder to change layout order.",
+				"selectComponentHintSimple": "Pick a component from the list in the Overlay tab.",
+				"unknownType": "Unknown overlay type.",
+				"addComponent": "Add Component",
+				"tabLayer": "Overlay",
+				"tabComponent": "Component",
+				"tabStyle": "Style",
+				"styleNoTarget": "Select a component or overlay to style it.",
+				"stylingTarget": "Styling",
+				"easyHint": "Quick visual tweaks. These apply as inline CSS to the element.",
+				"advancedHint": "Full CSS with selectors, pseudo-elements, nesting. Rules are auto-scoped to this target.",
+				"previewReadOnly": "Read-only preview",
 				"importDialog": {
 					"title": "Import Data: Overlays",
 					"hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
@@ -161,6 +214,15 @@
 			},
 			"progressBar": {
 				"name": "Progress Bar"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"settings": {
@@ -231,11 +293,6 @@
 			"allowWebsocketAPI": {
 				"Name": "Allow OBS Websocket API Access?",
 				"Hint": "If checked, other modules can access OBS Websocket directly"
-			},
-			"rollOverlayEditor": {
-				"Name": "Roll Overlay Editor",
-				"Hint": "Edit the Roll Overlay",
-				"Label": "Open Editor"
 			},
 			"showAV": {
 				"Name": "Show Video Overlay?",

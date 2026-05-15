@@ -14,6 +14,7 @@
 	--sv-bg='var(--sidebar-background)'
 	--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
 	--sv-min-height='35px'
+	floatingConfig={{ strategy: 'fixed' }}
 	options={values}
 	bind:value={data}
 	labelField='label'

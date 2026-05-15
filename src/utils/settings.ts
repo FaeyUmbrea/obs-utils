@@ -4,7 +4,8 @@ import { writable } from 'svelte/store';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
 import { getGM, isOBS } from './helpers';
-import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
+import { getExampleOverlay } from './defaultOverlays.ts';
+import { OBSRemoteSettings, OBSWebsocketSettings, OverlayData } from './types.ts';
 
 export const OBSAction = {
 	SwitchScene: 'obs-utils.applications.obsRemote.switchScene',
@@ -13,7 +14,7 @@ export const OBSAction = {
 	DisableSource: 'obs-utils.applications.obsRemote.disableSource',
 };
 
-const SETTINGS_VERSION = 2;
+const SETTINGS_VERSION = 3;
 
 const OBS_MODIFIABLE_SETTINGS = new Set<ClientSettings.KeyFor<'obs-utils'>>([
 	'defaultOutOfCombat',
@@ -58,6 +59,63 @@ export function runMigrations() {
 				obssettings,
 			);
 			setSetting('obsRemote', obssettings).then();
+		}
+		if (version < 3) {
+			console.warn('Migrations for Data-Model Version 3');
+			// migrate flat rollOverlay* settings into streamOverlays as type 'roll'
+			const rollDefaults = {
+				preRollEnabled: false,
+				preRollDelay: 0,
+				preRollFadeIn: 0,
+				preRollFadeOut: 0,
+				preRollStay: 0,
+				preRollImage: '',
+				rollFadeIn: 0,
+				rollFadeOut: 0,
+				rollStay: 5000,
+				rollBackground: '',
+				rollForeground: '',
+				postRollEnabled: false,
+				postRollFadeIn: 0,
+				postRollFadeOut: 0,
+				postRollStay: 0,
+				postRollImage: '',
+			};
+			const rollConfig = {
+				preRollEnabled: getSetting('rollOverlayPreRollEnabled') ?? rollDefaults.preRollEnabled,
+				preRollDelay: getSetting('rollOverlayPreRollDelay') ?? rollDefaults.preRollDelay,
+				preRollFadeIn: getSetting('rollOverlayPreRollFadeIn') ?? rollDefaults.preRollFadeIn,
+				preRollFadeOut: getSetting('rollOverlayPreRollFadeOut') ?? rollDefaults.preRollFadeOut,
+				preRollStay: getSetting('rollOverlayPreRollStay') ?? rollDefaults.preRollStay,
+				preRollImage: getSetting('rollOverlayPreRollImage') ?? rollDefaults.preRollImage,
+				rollFadeIn: getSetting('rollOverlayRollFadeIn') ?? rollDefaults.rollFadeIn,
+				rollFadeOut: getSetting('rollOverlayRollFadeOut') ?? rollDefaults.rollFadeOut,
+				rollStay: getSetting('rollOverlayRollStay') ?? rollDefaults.rollStay,
+				rollBackground: getSetting('rollOverlayRollBackground') ?? rollDefaults.rollBackground,
+				rollForeground: getSetting('rollOverlayRollForeground') ?? rollDefaults.rollForeground,
+				postRollEnabled: getSetting('rollOverlayPostRollEnabled') ?? rollDefaults.postRollEnabled,
+				postRollFadeIn: getSetting('rollOverlayPostRollFadeIn') ?? rollDefaults.postRollFadeIn,
+				postRollFadeOut: getSetting('rollOverlayPostRollFadeOut') ?? rollDefaults.postRollFadeOut,
+				postRollStay: getSetting('rollOverlayPostRollStay') ?? rollDefaults.postRollStay,
+				postRollImage: getSetting('rollOverlayPostRollImage') ?? rollDefaults.postRollImage,
+			};
+			const hasNonDefaultRoll = JSON.stringify(rollConfig) !== JSON.stringify(rollDefaults);
+			const existingOverlays: OverlayData[] = (getSetting('streamOverlays') ?? []) as OverlayData[];
+			const hasRollEntry = existingOverlays.some(o => o.type === 'roll');
+			if (hasNonDefaultRoll && !hasRollEntry) {
+				existingOverlays.push(new OverlayData('roll', [], '', rollConfig));
+				setSetting('streamOverlays', existingOverlays).then();
+			}
+
+			// set overlayActorsModified based on existing state
+			const actors = getSetting('overlayActors') ?? [];
+			setSetting('overlayActorsModified', (actors as string[]).length > 0).then();
+
+			const currentOverlays = (getSetting('streamOverlays') ?? []) as OverlayData[];
+			if (currentOverlays.length === 0) {
+				currentOverlays.push(getExampleOverlay());
+				setSetting('streamOverlays', currentOverlays).then();
+			}
 		}
 		console.warn('OBS Utils Migrations Finished');
 		setSetting('settingsVersion', SETTINGS_VERSION).then();
@@ -279,6 +337,24 @@ export function	initSettings() {
 		scope: 'world',
 		config: false,
 		default: [],
+	});
+	createSetting('overlayActorsModified', {
+		type: Boolean,
+		scope: 'world',
+		config: false,
+		default: false,
+	});
+	createSetting('globalOverlayCSS', {
+		type: String,
+		scope: 'world',
+		config: false,
+		default: '',
+	});
+	createSetting('actorOverlayCSS', {
+		type: Object,
+		scope: 'world',
+		config: false,
+		default: {},
 	});
 	createSetting('settingsVersion', {
 		type: Number,
@@ -698,4 +774,17 @@ export function getPlayerRollStores() {
 		rollForegroundImage,
 		postRollImage,
 	};
+}
+
+export function initOverlayDefaultsHooks() {
+	Hooks.on('updateUser', (_user: User, diff: Record<string, any>) => {
+		if (!(game as ReadyGame).user?.isGM) return;
+		if (getSetting('overlayActorsModified')) return;
+		if (diff.character === undefined && diff.character !== null) return;
+		const userActors = (game as ReadyGame).users
+			?.filter((u: User) => !u.isGM && !!(u as any).character)
+			.map((u: User) => ((u as any).character as Actor)?.id)
+			.filter(Boolean) as string[] ?? [];
+		setSetting('overlayActors', userActors).then();
+	});
 }

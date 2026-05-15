@@ -24,17 +24,20 @@
 <div
 	class='single-line-overlay'
 	id={`overlay${overlayIndex.toString()}`}
+	data-overlay-id={overlayData.id ?? ''}
 	style={overlayData.style}
 >
 	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
 		{#if component !== null && component !== undefined}
 			{@const Component = getComponentType(component.type)}
-			<Component
-				data={component.data}
-				componentIndex={index}
-				actorID={actorID}
-				style={component.style}
-			/>
+			<div data-component-id={component.id ?? ''} style='display: contents;'>
+				<Component
+					data={component.data}
+					componentIndex={index}
+					actorID={actorID}
+					style={component.style}
+				/>
+			</div>
 		{/if}
 	{/each}
 </div>

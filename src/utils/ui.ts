@@ -6,12 +6,11 @@ import OBSRemoteApplication from '../applications/obsremote.ts';
 import OBSWebsocketApplication from '../applications/obswebsocket.ts';
 import OverlayActorSelect from '../applications/overlayactorselect.ts';
 import OverlayEditor from '../applications/overlayeditor.ts';
-import RollOverlay from '../applications/rolloverlay.ts';
+import OverlayPreview from '../applications/overlaypreview.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
 import MultiAVEditor from '../svelte/components/editors/MultiAVEditor.svelte';
 import MultiAVIconEditor from '../svelte/components/editors/MultiAVIconEditor.svelte';
-import SingleLineOverlayEditor from '../svelte/components/editors/SingleLineOverlayEditor.svelte';
 import { MODULE_ID as moduleID } from './const';
 import { getApi } from './helpers.js';
 
@@ -60,19 +59,6 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'rollOverlayEditor', {
-		name: `${moduleID}.settings.rollOverlayEditor.Name`,
-		label: `${moduleID}.settings.rollOverlayEditor.Label`,
-		hint: `${moduleID}.settings.rollOverlayEditor.Hint`,
-		icon: 'fas fa-bars',
-		type: RollOverlay,
-		restricted: true,
-	});
-
-	getApi()
-		.overlayTypes
-		.get('sl')
-		?.registerOverlayEditor(SingleLineOverlayEditor);
 	getApi().overlayTypes.get('sl')?.registerComponentEditor('pt', AVEditor);
 	getApi().overlayTypes.get('sl')?.registerComponentEditor('fai', AVEditor);
 	getApi().overlayTypes.get('sl')?.registerComponentEditor('img', AVEditor);
@@ -96,4 +82,15 @@ export function registerUI() {
 		.overlayTypes
 		.get('sl')
 		?.registerComponentEditor('pb', MultiAVEditor, true);
+}
+
+let previewApp: OverlayPreview | undefined;
+
+export async function openOverlayPreview() {
+	if (!previewApp) previewApp = new OverlayPreview({});
+	if (!previewApp.rendered) {
+		previewApp.render(true);
+	} else {
+		previewApp.bringToFront();
+	}
 }

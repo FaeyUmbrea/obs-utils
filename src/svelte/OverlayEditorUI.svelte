@@ -1,5 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
+	import type { ReadyGame } from 'fvtt-types/configuration';
 	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import { preventUndefinedNullInArray } from '../utils/helpers.ts';
 	import { settings } from '../utils/settings.ts';
@@ -13,6 +14,25 @@
 	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
 
 	let activeIndex = $state(0);
+
+	let previewActorID = $state<string | null>(null);
+
+	const previewActors = $derived(
+		($actorIDs ?? []).map((id: string) => ({
+			id,
+			name: (game as ReadyGame).actors?.get(id)?.name ?? id,
+		}))
+	);
+
+	$effect(() => {
+		if (previewActorID && !($actorIDs ?? []).includes(previewActorID)) {
+			previewActorID = null;
+		}
+	});
+
+	const previewIds = $derived(
+		previewActorID ? [previewActorID] : ($actorIDs ?? [])
+	);
 
 	function refresh() {
 		$overlays = $overlays;
@@ -50,7 +70,18 @@
 
 <div class='grid'>
 	<div class='preview'>
-		<InformationOverlay actorIDs={$actorIDs} overlays={$overlays} />
+		<div class='preview-actor-select'>
+			<select
+				bind:value={previewActorID}
+				aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorLabel')}
+			>
+				<option value={null}>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorLabel')} (All)</option>
+				{#each previewActors as actor}
+					<option value={actor.id}>{actor.name}</option>
+				{/each}
+			</select>
+		</div>
+		<InformationOverlay actorIDs={previewIds} overlays={$overlays} />
 	</div>
 
 	<div class='editor'>
@@ -67,13 +98,18 @@
 			<nav class='tabs' data-group='primary-tabs'>
 				{#each $overlays as overlay, index ($overlays.indexOf(overlay))}
 					<!-- svelte-ignore a11y_missing_attribute -->
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<a
 						role='tab'
-						tabindex={index}
+						tabindex={index === activeIndex ? 0 : -1}
+						aria-selected={index === activeIndex}
 						class="item {index === activeIndex ? 'active' : ''}"
 						data-tab={index}
-						onclick={() => changeTab(index)}>{index}</a
+						onclick={() => changeTab(index)}
+						onkeydown={(e) => {
+							if (e.key === 'ArrowRight') { changeTab(Math.min(index + 1, $overlays.length - 1)); e.preventDefault(); }
+							if (e.key === 'ArrowLeft') { changeTab(Math.max(index - 1, 0)); e.preventDefault(); }
+						}}
+					>{index}</a
 					>
 				{/each}
 			</nav>
@@ -101,6 +137,17 @@
 </div>
 <hr />
 <footer>
+	<button
+		onclick={async () => {
+			const { openOverlayPreview } = await import('../utils/ui.ts');
+			await openOverlayPreview();
+		}}
+		title={game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}
+		type='button'
+	>
+		<i class='fas fa-expand'></i>
+		{game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}
+	</button>
 	<button onclick={close}
 	>{game.i18n?.localize('obs-utils.applications.overlayEditor.closeButton')}</button
 	>
@@ -141,6 +188,13 @@
         border-radius: 4px;
         padding-right: 5px;
         overflow: scroll
+    }
+
+    .preview-actor-select {
+        padding: 4px;
+        select {
+            width: 100%;
+        }
     }
 
     .editor {

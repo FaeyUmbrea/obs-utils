@@ -42,6 +42,8 @@
 				"delay": "Forsinkelse (ms)"
 			},
 			"overlayEditor": {
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"importDialog": {
 					"replaceButton": "Erstatt",
 					"hint2": "Please choose if you want to replace your existing overlays or add the imported list.",
@@ -67,6 +69,7 @@
 				"addButton": "Legg til ny komponent",
 				"editStyleButton": "Rediger stil",
 				"addOverlayButton": "Add New Overlay",
+				"componentType": "Component type",
 				"exportButton": "Eksporter"
 			},
 			"director": {
@@ -83,7 +86,12 @@
 				"resetButton": "Tilbakestill",
 				"name": "Actor Selection",
 				"closeButton": "Lukk",
-				"searchPlaceholder": "Søk"
+				"searchPlaceholder": "Søk",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"obsWebsocket": {
 				"portLabel": "Port",
@@ -190,11 +198,6 @@
 			"showTrackerInCombat": {
 				"Name": "Show Combat Tracker in Combat?",
 				"Hint": "If checked, the Combat Tracker will be visible during Combat Turns"
-			},
-			"rollOverlayEditor": {
-				"Name": "Roll Overlay Editor",
-				"Label": "Open Editor",
-				"Hint": "Edit the Roll Overlay"
 			},
 			"overlayEditor": {
 				"Name": "Overlay Editor",
@@ -308,6 +311,15 @@
 			},
 			"booleanAVIcon": {
 				"name": "Boolean AV Icon"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		}
 	}

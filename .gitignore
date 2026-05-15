@@ -150,3 +150,6 @@ vite.config.js.timestamp-*
 *.iws
 
 reviews/
+
+# Claude Code local state (settings + ephemeral worktree gitlinks)
+.claude/

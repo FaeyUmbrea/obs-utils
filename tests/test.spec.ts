@@ -118,22 +118,6 @@ test.describe('DM Client Only Tests', () => {
 		await gmPage
 			.locator('div[id=\'overlayeditor-application\'] header button[data-action=close]')
 			.click();
-
-		// Roll Overlay Editor
-
-		await gmPage
-			.locator('button[data-key=\'obs-utils.rollOverlayEditor\']')
-			.click();
-
-		await expect(
-			gmPage.locator('div[id=\'rolloverlayeditor-application\']'),
-		).toBeVisible();
-
-		await gmPage
-			.locator(
-				'div[id=\'rolloverlayeditor-application\'] header button[data-action=close]',
-			)
-			.click();
 	});
 });
 

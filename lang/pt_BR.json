@@ -82,10 +82,17 @@
 				"name": "Seleção de Atores",
 				"searchPlaceholder": "Procurar",
 				"closeButton": "Fechar",
-				"resetButton": "Reiniciar"
+				"resetButton": "Reiniciar",
+				"userTokensHeader": "User Tokens"
+			},
+			"overlayPreview": {
+				"name": "Overlay Preview",
+				"chatDeadzoneLabel": "Chat Deadzone"
 			},
 			"overlayEditor": {
 				"name": "Editor de Sobreposição",
+				"previewActorLabel": "Preview as",
+				"showFullPreview": "Full Preview",
 				"addButton": "Adicionar Novo Componente",
 				"editStyleButton": "Estilar Estilo",
 				"removeButton": "Remover Sobreposição",
@@ -93,6 +100,7 @@
 				"importButton": "Importar",
 				"exportButton": "Exportar",
 				"addOverlayButton": "Adicionar Nova Sobreposição",
+				"componentType": "Component type",
 				"closeButton": "Fechar",
 				"importDialog": {
 					"title": "Importar Dados: Sobreposições",
@@ -161,6 +169,15 @@
 			},
 			"progressBar": {
 				"name": "Barra de Progresso"
+			},
+			"simpleOverlay": {
+				"name": "Simple Overlay"
+			},
+			"wysiwygOverlay": {
+				"name": "WYSIWYG Overlay"
+			},
+			"rollOverlay": {
+				"name": "Roll Overlay"
 			}
 		},
 		"settings": {
@@ -223,11 +240,6 @@
 			"enableOBSWebsocket": {
 				"Name": "Habilitar OBS Websocket?",
 				"Hint": "Se marcado, o OBS Websocket será usado para comunicação Remota."
-			},
-			"rollOverlayEditor": {
-				"Name": "Editor Sobreposição de Rolagem",
-				"Hint": "Edite a Sobreposição de Rolagem.",
-				"Label": "Abrir Editor"
 			},
 			"showAV": {
 				"Name": "Mostrar Sobreposição de Vídeo?",
