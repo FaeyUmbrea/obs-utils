@@ -116,7 +116,7 @@ function buildButtons(buttons: any) {
 		name: 'openStreamDirector',
 		title: 'Open Stream Director',
 		toggle: true,
-		onClick: async () => {
+		onChange: async () => {
 			const ui = await import('./utils/ui.ts');
 			await ui.openDirector(newButton);
 		},

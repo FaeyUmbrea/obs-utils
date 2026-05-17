@@ -139,13 +139,10 @@ test.describe('Multiclient UI', () => {
 
 		// @ts-expect-error run in plain js
 		await gmPage.evaluate(() => [...window.game.journal][0].show());
-		await expect(
-			obsPage.locator('div.app.window-app.sheet.journal-sheet'),
-		).toBeVisible();
+		const journalSheet = obsPage.locator('div.app.window-app.sheet.journal-sheet, form.application.sheet.journal-sheet');
+		await expect(journalSheet).toBeVisible();
 		await obsPage.waitForTimeout(delay);
-		await expect(
-			obsPage.locator('div.app.window-app.sheet.journal-sheet'),
-		).not.toBeVisible();
+		await expect(journalSheet).not.toBeVisible();
 	});
 	/**
 	test('Image Popout Close Delay', async ({ pages: { obsPage, gmPage } }) => {
@@ -377,6 +374,11 @@ test.describe('Player Client Additional Tests', () => {
 	test('Copy Player', async ({ pages: { obsPage, gmPage, playerPage } }) => {
 		await openDirector(gmPage);
 
+		const limitCanvasInput = gmPage.locator('div[id=director-application] input#limitCanvas');
+		const limitCanvasLabel = gmPage.locator('div[id=director-application] label[for=limitCanvas]');
+		const wasClampOn = await limitCanvasInput.isChecked();
+		if (wasClampOn) await limitCanvasLabel.click();
+
 		await gmPage
 			.locator('div[id=director-application] label[for=radiooocclonePlayer]')
 			.click();
@@ -415,6 +417,12 @@ test.describe('Player Client Additional Tests', () => {
 				return await getOBSViewport(obsPage);
 			})
 			.toEqual([200, 200, 1, 1]);
+
+		if (wasClampOn) {
+			await openDirector(gmPage);
+			await limitCanvasLabel.click();
+			await closeDirector(gmPage);
+		}
 	});
 });
 
@@ -429,9 +437,11 @@ async function startCombatWithAllTokens(gmPage: Page) {
 			token.control({ releaseOthers: false }),
 		);
 	});
-	await gmPage.evaluate(() => {
+	await gmPage.evaluate(async () => {
 		// @ts-expect-error run in plain js
-		window.canvas.tokens.toggleCombat(true);
+		for (const token of window.canvas.tokens.ownedTokens) {
+			await token.document.toggleCombatant();
+		}
 	});
 
 	await gmPage.locator('button.combat-control[data-action=startCombat]').click();

@@ -216,13 +216,16 @@ export function initOBS() {
 	Hooks.on('deleteCombat', hideSidebar);
 
 	// Close Popups after configurable Time
+	// renderJournalSheet is the V13 (ApplicationV1) hook; renderJournalEntrySheet is V14 (ApplicationV2).
 	Hooks.on('renderJournalSheet', closePopupWithDelay);
+	Hooks.on('renderJournalEntrySheet', closePopupWithDelay);
 	Hooks.on('renderImagePopout', (popout: foundry.applications.apps.ImagePopout) => {
 		closePopupWithDelay(popout).then();
 	});
 
 	// Resize and Reposition Popups if enabled
 	Hooks.on('renderJournalSheet', applyPopupConstrains);
+	Hooks.on('renderJournalEntrySheet', applyPopupConstrains);
 	Hooks.on('renderImagePopout', (popout: foundry.applications.apps.ImagePopout) => {
 		applyPopupConstrains(popout).then();
 	});

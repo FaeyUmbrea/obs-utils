@@ -100,6 +100,16 @@ export class ObsUtilsApi {
 		await triggerCustomEventInstances(reg, instances, context);
 	}
 
+	/**
+	 * Register a new overlay type. Surfaces in the Stream Composer's "+ new"
+	 * menu and elsewhere the type list is consumed.
+	 *
+	 * @param key Stable key written into `OverlayData.type` (e.g. 'wysiwyg').
+	 * @param readableName i18n key for the display label. Resolved via
+	 *   `game.i18n.localize()` at render time. Pass a literal string only if
+	 *   you intentionally ship a single-locale module.
+	 * @param type The OverlayType instance with the renderer and editor wired up.
+	 */
 	registerOverlayType(key: string, readableName: string, type: OverlayType) {
 		this.overlayTypes.set(key, type);
 		this.overlayTypeNames.set(key, readableName);

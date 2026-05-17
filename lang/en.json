@@ -65,7 +65,14 @@
 				"codmOffline": "offline",
 				"takeControl": "Take Control",
 				"tabControls": "Controls",
-				"tabCoDMs": "Co-DMs"
+				"tabCoDMs": "Co-DMs",
+				"tabPresets": "Presets",
+				"presetAdd": "Add preset",
+				"presetApply": "Apply (jump camera here)",
+				"presetUpdate": "Update to current camera",
+				"presetDelete": "Delete preset",
+				"presetsNoScene": "No scene loaded",
+				"presetsEmpty": "No camera presets saved for this scene yet. Pan and zoom your camera, then click Add preset to save it."
 			},
 			"obsRemote": {
 				"name": "OBS Remote Settings",
