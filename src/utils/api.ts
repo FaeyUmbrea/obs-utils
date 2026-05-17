@@ -1,5 +1,6 @@
 import type { Component } from 'svelte';
 import type { ActorValues } from './helpers.ts';
+import type { CustomEventInstance } from './types.ts';
 import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
 import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
 import AVBoolIconComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolIconComponent.svelte';
@@ -19,17 +20,84 @@ import { getApi, isOBS, setActorValues } from './helpers.ts';
 import { getWebsocket } from './obs.ts';
 import { getSetting, setSetting } from './settings.ts';
 
+// ─── OBS Remote event type registry ───────────────────────────────────────
+// A registration describes a single addressable event type that can be
+// triggered by either obs-utils itself (the built-in events: onLoad,
+// onCombatStart, etc.) or by a third-party system module that wants to
+// expose its own conditional triggers (e.g. HP threshold, crit, fumble).
+
+export interface OBSRemoteConditionField {
+	/** Storage key on the configured instance's `conditions` object. */
+	key: string;
+	/** What the user fills in. */
+	type: 'number' | 'string' | 'boolean';
+	/**
+	 * i18n key for the field label. Resolved via `game.i18n.localize()` at
+	 * render time. Pass a literal string only if you are intentionally
+	 * shipping a single-locale module — the UI will display it verbatim.
+	 */
+	label: string;
+	/** Default value when a new instance is added. */
+	default?: any;
+}
+
+export interface OBSRemoteEventTypeRegistration {
+	/** Unique key — namespace with your module id (e.g. 'dnd5e.hpThreshold'). */
+	key: string;
+	/**
+	 * i18n key for the section header. Resolved via `game.i18n.localize()`
+	 * at render time. Pass a literal string only if you are intentionally
+	 * shipping a single-locale module — the UI will display it verbatim.
+	 */
+	name: string;
+	/** Optional Font Awesome icon class for the header (e.g. 'fas fa-heart'). */
+	icon?: string;
+	/** Per-instance condition fields the user fills in when configuring. */
+	conditionFields?: OBSRemoteConditionField[];
+	/**
+	 * Decide whether a configured instance should fire given its saved
+	 * `conditions` and the runtime `context` passed to triggerOBSRemoteEvent.
+	 * Omit → instance always fires.
+	 */
+	matcher?: (conditions: Record<string, any>, context: any) => boolean;
+}
+
 export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
 	overlayTypeNames: Map<string, string>;
 	singleInstanceOverlays: Set<Component>;
 	singleInstanceOverlaysSvelte5: Set<Component>;
+	obsRemoteEventTypes: Map<string, OBSRemoteEventTypeRegistration>;
 
 	constructor() {
 		this.overlayTypes = new Map();
 		this.overlayTypeNames = new Map();
 		this.singleInstanceOverlays = new Set();
 		this.singleInstanceOverlaysSvelte5 = new Set();
+		this.obsRemoteEventTypes = new Map();
+	}
+
+	/** Public — modules call this in their init hook to expose a new event type. */
+	registerOBSRemoteEventType(reg: OBSRemoteEventTypeRegistration) {
+		this.obsRemoteEventTypes.set(reg.key, reg);
+	}
+
+	/**
+	 * Public — modules call this when their in-system condition fires
+	 * (e.g. on `updateActor` with `system.attributes.hp.value` changed).
+	 * Looks up every configured instance for the type, runs the matcher,
+	 * and executes the configured OBS actions for instances that pass.
+	 *
+	 * Safe to call from any client; the actual OBS action execution is
+	 * already gated to the OBS-mode client by triggerOBSAction.
+	 */
+	async triggerOBSRemoteEvent(key: string, context: Record<string, any> = {}) {
+		const reg = this.obsRemoteEventTypes.get(key);
+		if (!reg) return;
+		const { triggerCustomEventInstances } = await import('./obs.ts');
+		const instances = (getSetting('obsRemote') as any)?.customEvents?.[key] as CustomEventInstance[] | undefined;
+		if (!instances?.length) return;
+		await triggerCustomEventInstances(reg, instances, context);
 	}
 
 	registerOverlayType(key: string, readableName: string, type: OverlayType) {
@@ -96,6 +164,15 @@ export class OverlayType {
 		this.hasCustomOverlayEditor = true;
 	}
 
+	/**
+	 * Register a renderable component type for this overlay.
+	 *
+	 * @param key Stable key referenced from overlay data (e.g. 'pt', 'pb').
+	 * @param readableName i18n key for the display label. Resolved via
+	 *   `game.i18n.localize()` at render time. Pass a literal string only
+	 *   if you intentionally ship a single-locale module.
+	 * @param type The Svelte component class that renders the data.
+	 */
 	registerComponent(key: string, readableName: string, type: Component<any, any, any>) {
 		this.overlayComponents.set(key, type);
 		this.overlayComponentNames.set(key, readableName);
@@ -179,4 +256,55 @@ export function registerDefaultTypes() {
 	getApi().registerOverlayType('roll', 'obs-utils.overlays.rollOverlay.name', rollOverlay);
 
 	getApi().registerUniqueOverlaySvelte5(PlayerRollOverlay);
+
+	registerBuiltinOBSRemoteEvents();
+}
+
+/**
+ * Built-in OBS Remote event types are first-class registrations. Third-party
+ * modules use the same `registerOBSRemoteEventType` API to plug in their own
+ * (system-specific) events like HP threshold, crit/fumble, etc.
+ */
+function registerBuiltinOBSRemoteEvents() {
+	const api = getApi();
+	api.registerOBSRemoteEventType({
+		key: 'core.onLoad',
+		name: 'obs-utils.applications.obsRemote.onLoad',
+		icon: 'fas fa-play',
+	});
+	api.registerOBSRemoteEventType({
+		key: 'core.onCombatStart',
+		name: 'obs-utils.applications.obsRemote.onCombatStart',
+		icon: 'fas fa-swords',
+	});
+	api.registerOBSRemoteEventType({
+		key: 'core.onCombatEnd',
+		name: 'obs-utils.applications.obsRemote.onCombatEnd',
+		icon: 'fas fa-flag-checkered',
+	});
+	api.registerOBSRemoteEventType({
+		key: 'core.onPause',
+		name: 'obs-utils.applications.obsRemote.onPause',
+		icon: 'fas fa-pause',
+	});
+	api.registerOBSRemoteEventType({
+		key: 'core.onUnpause',
+		name: 'obs-utils.applications.obsRemote.onUnpause',
+		icon: 'fas fa-play',
+	});
+	api.registerOBSRemoteEventType({
+		key: 'core.onSceneLoad',
+		name: 'obs-utils.applications.obsRemote.onSceneLoad',
+		icon: 'fas fa-map',
+		conditionFields: [
+			{ key: 'sceneName', type: 'string', label: 'obs-utils.applications.obsRemote.vttSceneLabel' },
+		],
+		// Only fire when the loaded scene's name matches what the user configured.
+		matcher: (cond, ctx) => !!cond.sceneName && cond.sceneName === ctx.sceneName,
+	});
+	api.registerOBSRemoteEventType({
+		key: 'core.onStopStreaming',
+		name: 'obs-utils.applications.obsRemote.onStopStreaming',
+		icon: 'fas fa-signal-stream',
+	});
 }

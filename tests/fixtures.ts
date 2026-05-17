@@ -3,6 +3,35 @@ import type { Page } from '@playwright/test';
 import { expect, test as testBase } from '@playwright/test';
 import { addCoverageReport } from 'monocart-reporter';
 
+/**
+ * Reset every obs-utils world/client setting on the GM page back to its
+ * registered default. Run before each test so cases don't pollute each other.
+ * Also clears overlays and CSS so tests start from a clean slate.
+ *
+ * Per-test setup that needs specific state (e.g. an overlay, an actor pinned)
+ * should set it AFTER this runs.
+ */
+export async function resetObsUtilsState(gmPage: Page) {
+	await gmPage.waitForFunction(() => (window as any).game?.ready);
+	await gmPage.evaluate(async () => {
+		const g = (window as any).game;
+		if (!g?.settings) return;
+		const entries: any[] = [];
+		for (const [key, setting] of g.settings.settings) {
+			if (typeof key !== 'string' || !key.startsWith('obs-utils.')) continue;
+			if (setting?.default === undefined) continue;
+			entries.push({ key: setting.key, def: setting.default });
+		}
+		for (const { key, def } of entries) {
+			try {
+				await g.settings.set('obs-utils', key, def);
+			} catch {
+				// Some keys (e.g. version markers) may resist updates; skip.
+			}
+		}
+	});
+}
+
 async function setupGMPage(gmPage: Page) {
 	await gmPage.goto('/join');
 
@@ -98,6 +127,10 @@ const test = testBase.extend<{ pages: { gmPage: Page; obsPage: Page; playerPage:
 				setupOBSPage(obsPage),
 				setupPlayerPage(playerPage),
 			]);
+
+			// Wipe obs-utils settings back to defaults before handing the pages
+			// to the test body — gives every test a clean, predictable start.
+			await resetObsUtilsState(gmPage);
 
 			// NOTE: it depends on your project name
 			const isChromium = test.info().project.name === 'Desktop Chromium';

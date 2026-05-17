@@ -14,7 +14,7 @@ export const OBSAction = {
 	DisableSource: 'obs-utils.applications.obsRemote.disableSource',
 };
 
-const SETTINGS_VERSION = 3;
+const SETTINGS_VERSION = 4;
 
 const OBS_MODIFIABLE_SETTINGS = new Set<ClientSettings.KeyFor<'obs-utils'>>([
 	'defaultOutOfCombat',
@@ -115,6 +115,37 @@ export function runMigrations() {
 			if (currentOverlays.length === 0) {
 				currentOverlays.push(getExampleOverlay());
 				setSetting('streamOverlays', currentOverlays).then();
+			}
+		}
+		if (version < 4) {
+			console.warn('Migrations for Data-Model Version 4');
+			// Fold the legacy named event arrays into the registry-keyed customEvents map.
+			// All built-in event types are namespaced under 'core.*'.
+			const obs = getSetting('obsRemote');
+			if (obs) {
+				const customEvents: Record<string, any[]> = (obs as any).customEvents ?? {};
+				const fold = (legacyKey: string, registryKey: string) => {
+					const arr = (obs as any)[legacyKey];
+					if (Array.isArray(arr) && arr.length > 0 && !customEvents[registryKey]?.length) {
+						customEvents[registryKey] = [{ conditions: {}, actions: arr }];
+					}
+				};
+				fold('onLoad', 'core.onLoad');
+				fold('onCombatStart', 'core.onCombatStart');
+				fold('onCombatEnd', 'core.onCombatEnd');
+				fold('onPause', 'core.onPause');
+				fold('onUnpause', 'core.onUnpause');
+				fold('onStopStreaming', 'core.onStopStreaming');
+				// onSceneLoad is per-scene — each legacy entry becomes its own instance.
+				const sceneLegacy = (obs as any).onSceneLoad;
+				if (Array.isArray(sceneLegacy) && sceneLegacy.length > 0 && !customEvents['core.onSceneLoad']?.length) {
+					customEvents['core.onSceneLoad'] = sceneLegacy.map((sle: any) => ({
+						conditions: { sceneName: sle?.sceneName ?? '' },
+						actions: sle?.obsActions ?? [],
+					}));
+				}
+				(obs as any).customEvents = customEvents;
+				setSetting('obsRemote', obs).then();
 			}
 		}
 		console.warn('OBS Utils Migrations Finished');
@@ -495,6 +526,13 @@ export function	initSettings() {
 		scope: 'world',
 		config: false,
 		default: 'easeOutCircle',
+	});
+
+	createSetting('activeGMUserId', {
+		type: String,
+		scope: 'world',
+		config: false,
+		default: '',
 	});
 
 	createSetting('proxyOBSMessages', {

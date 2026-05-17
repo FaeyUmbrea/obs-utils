@@ -1,6 +1,7 @@
 import type { NotificationType } from './socket.ts';
-import type { OBSEvent } from './types.ts';
+import type { CustomEventInstance, OBSEvent } from './types.ts';
 import OBSWebSocket from 'obs-websocket-js';
+import type { OBSRemoteEventTypeRegistration } from './api.ts';
 import {
 	applyPopupConstrains,
 	closePopupWithDelay,
@@ -15,7 +16,7 @@ import {
 } from './canvas.ts';
 import { handleCombat, stopCombat } from './combat.ts';
 import { proxyError, proxyLog, proxyWarn } from './console.ts';
-import { isOBS } from './helpers';
+import { getApi, isOBS } from './helpers';
 import { getSetting, OBSAction } from './settings.ts';
 import { proxyNotification } from './socket.ts';
 import { renderOverlays } from './stream.ts';
@@ -39,26 +40,34 @@ function getWSSettings() {
 	return setting;
 }
 
-export async function handleOBS(event: string) {
+/**
+ * Run every configured instance of a registered OBS Remote event type whose
+ * matcher passes the runtime context. Only executes on the OBS client — the
+ * GM client receives the same call but exits early.
+ */
+export async function triggerCustomEventInstances(
+	reg: OBSRemoteEventTypeRegistration,
+	instances: CustomEventInstance[],
+	context: Record<string, any>,
+) {
 	if (!isOBS()) return;
-	const obsEvents = getSetting('obsRemote')![event];
-	const useWS = getSetting('enableOBSWebsocket');
-	await Promise.all(obsEvents.map(
-		async (obsEvent: any) => await triggerOBSAction(obsEvent, !!useWS),
-	));
+	const useWS = !!getSetting('enableOBSWebsocket');
+	for (const inst of instances) {
+		try {
+			if (reg.matcher && !reg.matcher(inst.conditions ?? {}, context)) continue;
+		} catch (e) {
+			console.warn(`obs-utils: matcher for '${reg.key}' threw, skipping instance`, e);
+			continue;
+		}
+		for (const action of inst.actions ?? []) {
+			await triggerOBSAction(action, useWS);
+		}
+	}
 }
 
-export async function handleOBSScene(sceneName: string) {
-	if (!isOBS()) return;
-	const obsEvents = getSetting('obsRemote')!.onSceneLoad;
-	const useWS = getSetting('enableOBSWebsocket');
-	obsEvents.forEach((event) => {
-		if (event.sceneName === sceneName) {
-			event.obsActions.forEach(
-				async obsAction => await triggerOBSAction(obsAction, !!useWS),
-			);
-		}
-	});
+/** Convenience used by internal hooks — fires a built-in event type registered under 'core.*'. */
+async function fireBuiltin(key: string, context: Record<string, any> = {}) {
+	await getApi().triggerOBSRemoteEvent(key, context);
 }
 
 async function triggerOBSAction(obsevent: OBSEvent, useWS: boolean) {
@@ -153,12 +162,12 @@ async function registerOBSEvents() {
 	if (useWS) {
 		(await getWebsocket()).addListener('StreamStateChanged', (returnValue) => {
 			if (returnValue.outputState === 'OBS_WEBSOCKET_OUTPUT_STOPPED')
-				handleOBS('onStopStreaming');
+				fireBuiltin('core.onStopStreaming');
 		});
 	} else {
 		window.addEventListener(
 			'obsStreamingStopped',
-			async () => await handleOBS('onStopStreaming'),
+			async () => await fireBuiltin('core.onStopStreaming'),
 		);
 	}
 }
@@ -172,7 +181,7 @@ export function initOBS() {
 		screenReload().then();
 	});
 	Hooks.on('canvasReady', (canvas) => {
-		handleOBSScene(canvas.scene!.name).then();
+		fireBuiltin('core.onSceneLoad', { sceneName: canvas.scene!.name }).then();
 	});
 
 	Hooks.on('renderSidebar', hideSidebar);
@@ -218,25 +227,25 @@ export function initOBS() {
 		applyPopupConstrains(popout).then();
 	});
 
-	// Adding OBS Remote hooks;
+	// Adding OBS Remote hooks; everything routes through the registry now.
 	Hooks.on('updateCombat', async (_combat, change) => {
 		if (change.turn === 0 && change.round === 1)
-			await handleOBS('onCombatStart');
+			await fireBuiltin('core.onCombatStart');
 	});
 	Hooks.on('deleteCombat', async () => {
-		await handleOBS('onCombatEnd');
+		await fireBuiltin('core.onCombatEnd');
 	});
 	Hooks.on('pauseGame', async (pause) => {
 		if (pause) {
-			await handleOBS('onPause');
+			await fireBuiltin('core.onPause');
 		} else {
-			await handleOBS('onUnpause');
+			await fireBuiltin('core.onUnpause');
 		}
 	});
 	registerLibWrapper();
 
 	Hooks.once('ready', async () => {
-		await handleOBS('onLoad');
+		await fireBuiltin('core.onLoad');
 		if ((game as ReadyGame).combat?.isActive) {
 			await showTracker();
 		} else {

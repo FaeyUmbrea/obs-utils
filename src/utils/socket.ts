@@ -1,5 +1,5 @@
 import type { OBSWebsocketSettings } from './types.ts';
-import { getCurrentUser, VIEWPORT_DATA, viewportChanged } from './canvas';
+import { clampAndApplyExternal, getCurrentUser, getLocalViewport, VIEWPORT_DATA, viewportChanged } from './canvas';
 import { debounce, isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';
 
@@ -24,6 +24,10 @@ async function handleEvent({ eventType, targetUser, payload }: {
 		openSettingsConfig();
 	} else if (eventType === 'notification') {
 		showProxiedNotification(payload);
+	} else if (eventType === 'gmHandoverRequest') {
+		await handleGMHandoverRequest(payload);
+	} else if (eventType === 'gmHandoverGrant') {
+		await handleGMHandoverGrant(payload);
 	}
 }
 
@@ -108,4 +112,42 @@ export function socketCanvas(_canvas: Canvas, position: Canvas.ViewPosition) {
 	} else {
 		socketCanvasInternal(position);
 	}
+}
+
+// ─── Multi-GM handover ────────────────────────────────────────────────────
+// Flow: claimant emits gmHandoverRequest → current active GM responds with
+// gmHandoverGrant carrying their current viewport → claimant applies it and
+// writes activeGMUserId. Only GMs participate.
+
+interface GMHandoverRequestPayload { fromUserId: string; toUserId: string }
+interface GMHandoverGrantPayload { viewport: { x: number; y: number; scale: number }; toUserId: string }
+
+/** Claimant invokes this. Asks the named GM to grant control. */
+export function requestGMHandover(fromUserId: string) {
+	const me = (game as ReadyGame).user?.id;
+	if (!me) return;
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'gmHandoverRequest',
+		targetUser: fromUserId,
+		payload: { fromUserId, toUserId: me } satisfies GMHandoverRequestPayload,
+	});
+}
+
+async function handleGMHandoverRequest(payload: GMHandoverRequestPayload) {
+	if (!(game as ReadyGame).user?.isGM) return;
+	const viewport = getLocalViewport();
+	if (!viewport) return;
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'gmHandoverGrant',
+		targetUser: payload.toUserId,
+		payload: { viewport, toUserId: payload.toUserId } satisfies GMHandoverGrantPayload,
+	});
+}
+
+async function handleGMHandoverGrant(payload: GMHandoverGrantPayload) {
+	const me = (game as ReadyGame).user?.id;
+	if (!me || me !== payload.toUserId) return;
+	if (!(game as ReadyGame).user?.isGM) return;
+	clampAndApplyExternal(payload.viewport);
+	await setSetting('activeGMUserId', me);
 }

@@ -1,5 +1,5 @@
 import { getCurrentCombatants } from './combat.ts';
-import { isOBS, sleep } from './helpers.ts';
+import { getActiveGM, isOBS, sleep } from './helpers.ts';
 import { getSetting } from './settings.ts';
 
 export const VIEWPORT_DATA: Map<string, { x: number; y: number; scale: number }> = new Map();
@@ -210,13 +210,15 @@ export function viewportChanged(userId: string) {
 	}
 	if ((game as ReadyGame).combat?.started) {
 		switch (getSetting('defaultInCombat')) {
-			case 'cloneDM':
-				if (user?.isGM) {
+			case 'cloneDM': {
+				const active = getActiveGM();
+				if (active && user?.id === active.id) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
 						clampAndApply(viewportData);
 				}
 				break;
+			}
 			case 'cloneTurnPlayer':
 				if (getCurrentCombatants()?.some(e => e.id === userId)) {
 					const viewportData = VIEWPORT_DATA.get(userId);
@@ -236,14 +238,15 @@ export function viewportChanged(userId: string) {
 		}
 	} else {
 		switch (getSetting('defaultOutOfCombat')) {
-			case 'cloneDM':
-
-				if (user?.isGM) {
+			case 'cloneDM': {
+				const active = getActiveGM();
+				if (active && user?.id === active.id) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
 						clampAndApply(viewportData);
 				}
 				break;
+			}
 			case 'clonePlayer':
 				if (userId === getSetting('trackedUser')) {
 					const viewportData = VIEWPORT_DATA.get(userId);
@@ -401,4 +404,20 @@ function clampAndApply(canvasPos: { x: number; y: number; scale: number }) {
 	const opts: any = { ...canvasPos, duration };
 	if (easing) opts.easing = easing;
 	canvas!.animatePan(opts).then();
+}
+
+/** Public wrapper around clampAndApply for use by the multi-GM handover. */
+export function clampAndApplyExternal(canvasPos: { x: number; y: number; scale: number }) {
+	clampAndApply(canvasPos);
+}
+
+/** Read the local canvas viewport (current pan + zoom). */
+export function getLocalViewport(): { x: number; y: number; scale: number } | null {
+	const stage = (canvas as any)?.stage;
+	if (!stage) return null;
+	return {
+		x: stage.pivot?.x ?? 0,
+		y: stage.pivot?.y ?? 0,
+		scale: stage.scale?.x ?? 1,
+	};
 }

@@ -4,8 +4,39 @@ import { expect, test } from './fixtures.js';
 
 test.describe.configure({ mode: 'serial' });
 
+// Populates a comprehensive Simple Overlay with one of each component type so
+// the per-type rendering assertions below have data to read. Assumes a D&D 5e-
+// shaped actor (system.attributes.hp.{value,max}); adjust the data paths if
+// the test world uses a different system.
+async function seedReferenceOverlay(gmPage: Page) {
+	await gmPage.evaluate(() => {
+		// @ts-expect-error run in plain js
+		const actor = [...game.actors][0];
+		if (!actor) return;
+		// @ts-expect-error run in plain js
+		game.settings.set('obs-utils', 'overlayActors', [actor.id]);
+		// @ts-expect-error run in plain js
+		game.settings.set('obs-utils', 'streamOverlays', [{
+			type: 'sl',
+			style: '',
+			config: {},
+			components: [
+				{ type: 'pt', data: 'name', style: '' },
+				{ type: 'fai', data: 'fas fa-shield-halved', style: '' },
+				{ type: 'bav', data: 'system.attributes.hp.value;fas fa-heart;fas fa-skull', style: '' },
+				{ type: 'bavimg', data: 'system.attributes.hp.value;heart.png;skull.png', style: '' },
+				{ type: 'img', data: 'img', style: '' },
+				{ type: 'micoav', data: 'system.attributes.hp.value;fas fa-heart;system.attributes.hp.max;fas fa-heart-broken', style: '' },
+				{ type: 'mimgav', data: 'system.attributes.hp.value;heart.png;system.attributes.hp.max;skull.png', style: '' },
+				{ type: 'pb', data: 'system.attributes.hp.value;system.attributes.hp.max', style: '' },
+			],
+		}]);
+	});
+}
+
 test.describe('Overlay Tests', () => {
-	test.beforeEach(async ({ pages: { obsPage } }) => {
+	test.beforeEach(async ({ pages: { gmPage, obsPage } }) => {
+		await seedReferenceOverlay(gmPage);
 		await obsPage.goto('/stream');
 	});
 	test('Text', async ({ pages: { gmPage, obsPage } }) => {
@@ -256,5 +287,185 @@ test.describe('Actor Select', () => {
 
 		await closeApp(gmPage, 'actorselect-application');
 		await closeApp(gmPage, 'overlayeditor-application');
+	});
+});
+
+test.describe('Composer (empty + create)', () => {
+	test('empty state CTA is shown when no overlays exist', async ({ pages: { gmPage } }) => {
+		// streamOverlays was wiped by the per-test reset; the composer should show
+		// the centered "No overlays yet" card with create buttons.
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+
+		await expect(editorApp.locator('.composer-empty')).toBeVisible();
+		await expect(editorApp.locator('.empty-actions button')).toHaveCount(3);
+
+		await closeApp(gmPage, 'overlayeditor-application');
+	});
+
+	test('clicking a create button adds the overlay and exits the empty state', async ({ pages: { gmPage } }) => {
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+		await expect(editorApp.locator('.composer-empty')).toBeVisible();
+
+		// Click the WYSIWYG create button (first action).
+		await editorApp.locator('.empty-actions button').nth(0).click();
+
+		// Empty state vanishes, layers panel renders the new overlay row.
+		await expect(editorApp.locator('.composer-empty')).not.toBeVisible();
+		await expect(editorApp.locator('.layers-pane .layer')).toHaveCount(1);
+
+		// And the setting reflects it.
+		// @ts-expect-error run in plain js
+		const overlays: OverlayData[] = await gmPage.evaluate(() => game.settings.get('obs-utils', 'streamOverlays'));
+		expect(overlays).toHaveLength(1);
+		expect(overlays[0].type).toBe('wysiwyg');
+
+		await closeApp(gmPage, 'overlayeditor-application');
+	});
+
+	test('layer name input persists to the setting', async ({ pages: { gmPage } }) => {
+		// Pre-seed one overlay so the composer renders its tabbed layout immediately.
+		await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			game.settings.set('obs-utils', 'streamOverlays', [{
+				type: 'wysiwyg',
+				style: '',
+				config: { w: 300, h: 300 },
+				components: [],
+			}]);
+		});
+
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+
+		const nameInput = editorApp.locator('.layer-summary input.layer-name');
+		await expect(nameInput).toBeVisible();
+		await nameInput.fill('My HP Bar');
+		await nameInput.blur();
+
+		// @ts-expect-error run in plain js
+		const overlays: OverlayData[] = await gmPage.evaluate(() => game.settings.get('obs-utils', 'streamOverlays'));
+		expect(overlays[0].name).toBe('My HP Bar');
+
+		await closeApp(gmPage, 'overlayeditor-application');
+	});
+
+	test('visibility toggle flips the enabled flag', async ({ pages: { gmPage } }) => {
+		await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			game.settings.set('obs-utils', 'streamOverlays', [{
+				type: 'wysiwyg',
+				style: '',
+				config: { w: 300, h: 300 },
+				components: [],
+			}]);
+		});
+
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+
+		const layerRow = editorApp.locator('.layers-pane .layer').first();
+		await layerRow.locator('button.visibility').click();
+
+		// @ts-expect-error run in plain js
+		const overlays: any[] = await gmPage.evaluate(() => game.settings.get('obs-utils', 'streamOverlays'));
+		expect(overlays[0].enabled).toBe(false);
+
+		// And the row picks up the disabled visual class.
+		await expect(layerRow).toHaveClass(/disabled/);
+
+		await closeApp(gmPage, 'overlayeditor-application');
+	});
+});
+
+test.describe('Composer (style tab)', () => {
+	test('global CSS editor opens from the footer and writes back to the setting', async ({ pages: { gmPage } }) => {
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+
+		// Footer's Global CSS button (fab-css3-alt icon)
+		await editorApp.locator('button.footer-btn:has(.fa-css3-alt)').click();
+
+		const cssApp = gmPage.locator('div#globalcsseditor-application');
+		await expect(cssApp).toBeVisible();
+
+		const sample = '.obs-utils { color: cyan; }';
+		await cssApp.locator('textarea').fill(sample);
+		await cssApp.locator('button.primary').click();
+		await expect(cssApp).not.toBeVisible();
+
+		// @ts-expect-error run in plain js
+		const value: string = await gmPage.evaluate(() => game.settings.get('obs-utils', 'globalOverlayCSS'));
+		expect(value).toBe(sample);
+
+		await closeApp(gmPage, 'overlayeditor-application');
+	});
+});
+
+test.describe('Director (tabs)', () => {
+	test('opens to the Controls tab by default with mode radios visible', async ({ pages: { gmPage } }) => {
+		await gmPage.locator('button[data-tool=openStreamDirector]').click();
+		const director = gmPage.locator('div#director-application');
+		await expect(director).toBeVisible();
+
+		const tabs = director.locator('button[role=tab]');
+		await expect(tabs).toHaveCount(2);
+		await expect(tabs.nth(0)).toHaveAttribute('aria-selected', 'true');
+
+		// IC + OOC radios live in the Controls tab — visible without clicking anything.
+		await expect(director.locator('label[for^=radioic]').first()).toBeVisible();
+		await expect(director.locator('label[for^=radioooc]').first()).toBeVisible();
+		await expect(director.locator('select[name=trackedPlayer]')).toBeVisible();
+
+		// Close.
+		await gmPage.locator('button[data-tool=openStreamDirector]').click();
+		await expect(director).not.toBeVisible();
+	});
+
+	test('Co-DMs tab shows the single-GM empty-state explainer', async ({ pages: { gmPage } }) => {
+		// Test world has a single Gamemaster account by default.
+		await gmPage.locator('button[data-tool=openStreamDirector]').click();
+		const director = gmPage.locator('div#director-application');
+		await expect(director).toBeVisible();
+
+		const tabs = director.locator('button[role=tab]');
+		await tabs.nth(1).click(); // Co-DMs tab
+
+		await expect(director.locator('.empty-codms')).toBeVisible();
+		await expect(director.locator('.codm-list')).not.toBeVisible();
+
+		await gmPage.locator('button[data-tool=openStreamDirector]').click();
+		await expect(director).not.toBeVisible();
+	});
+
+	test('camera-smoothing controls persist to settings', async ({ pages: { gmPage } }) => {
+		await gmPage.locator('button[data-tool=openStreamDirector]').click();
+		const director = gmPage.locator('div#director-application');
+		await expect(director).toBeVisible();
+
+		// Easing dropdown.
+		await director.locator('select#cameraEasing').selectOption('easeInOutCircle');
+		// @ts-expect-error run in plain js
+		const easing: string = await gmPage.evaluate(() => game.settings.get('obs-utils', 'cameraEasing'));
+		expect(easing).toBe('easeInOutCircle');
+
+		// Duration slider — set via input event since range sliders aren't easily clicked.
+		await director.locator('input#cameraSmoothing').evaluate((el: HTMLInputElement) => {
+			el.value = '750';
+			el.dispatchEvent(new Event('input', { bubbles: true }));
+			el.dispatchEvent(new Event('change', { bubbles: true }));
+		});
+		// @ts-expect-error run in plain js
+		const duration: number = await gmPage.evaluate(() => game.settings.get('obs-utils', 'cameraSmoothing'));
+		expect(duration).toBe(750);
+
+		await gmPage.locator('button[data-tool=openStreamDirector]').click();
+		await expect(director).not.toBeVisible();
 	});
 });

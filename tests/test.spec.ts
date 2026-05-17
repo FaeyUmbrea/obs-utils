@@ -458,6 +458,11 @@ async function endCombat(gmPage: Page) {
 async function openDirector(gmPage: Page) {
 	await gmPage.locator('button[data-tool=openStreamDirector]').click();
 	await expect(gmPage.locator('div[id=director-application]')).toBeVisible();
+	// The Director is tabbed; mode radios + tracked-player select live in the
+	// "Modes" tab. It's the default on open, but click it explicitly so tests
+	// stay robust if the default ever changes.
+	const modesTab = gmPage.locator('div[id=director-application] button[role=tab]').first();
+	if (await modesTab.isVisible()) await modesTab.click();
 }
 
 async function closeDirector(gmPage: Page) {

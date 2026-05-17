@@ -18,8 +18,19 @@ export class SceneLoadEvent {
 	obsActions = [];
 }
 
+/**
+ * One configured firing of a registered OBS Remote event type — the per-instance
+ * condition values the user filled in (matched against context at fire time)
+ * plus the OBS actions to run when the matcher passes.
+ */
+export interface CustomEventInstance {
+	conditions: Record<string, any>;
+	actions: OBSEvent[];
+}
+
 export class OBSRemoteSettings implements StringMap {
 	[key: string]: any;
+	/** Legacy fields — retained for read-side migration only, no longer the source of truth. */
 	onLoad: OBSEvent[] = [];
 	onCombatStart: OBSEvent[] = [];
 	onCombatEnd: OBSEvent[] = [];
@@ -27,6 +38,14 @@ export class OBSRemoteSettings implements StringMap {
 	onUnpause: OBSEvent[] = [];
 	onSceneLoad: SceneLoadEvent[] = [];
 	onStopStreaming: OBSEvent[] = [];
+
+	/**
+	 * Registry-driven storage. Keyed by the event type's registration key
+	 * (e.g. 'core.onCombatStart', 'dnd5e.hpThreshold'). Both built-in event
+	 * types (registered by obs-utils itself) and third-party module types
+	 * share this map.
+	 */
+	customEvents: Record<string, CustomEventInstance[]> = {};
 }
 
 export function generateId(): string {

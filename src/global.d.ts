@@ -77,6 +77,7 @@ declare global {
 		'obs-utils.smoothUserCamera': boolean;
 		'obs-utils.cameraSmoothing': number;
 		'obs-utils.cameraEasing': string;
+		'obs-utils.activeGMUserId': string;
 		'obs-utils.rollOverlayPreRollDelay': number;
 		'obs-utils.rollOverlayRollFadeIn': number;
 		'obs-utils.rollOverlayRollFadeOut': number;

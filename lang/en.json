@@ -58,7 +58,14 @@
 				"easingEaseOut": "Ease Out (default)",
 				"easingEaseInOut": "Ease In / Out (cinematic)",
 				"easingEaseOutCosine": "Ease Out Cosine",
-				"easingEaseInOutCosine": "Ease In / Out Cosine"
+				"easingEaseInOutCosine": "Ease In / Out Cosine",
+				"coDMsHeader": "Co-DMs",
+				"coDMsEmpty": "Only you have GM permission in this world. The Co-DMs tab will let you hand camera control to other GMs once at least one more user is given the Gamemaster or Assistant role.",
+				"codmInControl": "in control",
+				"codmOffline": "offline",
+				"takeControl": "Take Control",
+				"tabControls": "Controls",
+				"tabCoDMs": "Co-DMs"
 			},
 			"obsRemote": {
 				"name": "OBS Remote Settings",
@@ -76,7 +83,12 @@
 				"onPause": "Pause",
 				"onUnpause": "Unpause",
 				"onSceneLoad": "Scene Load",
-				"onStopStreaming": "Stop Streaming"
+				"onStopStreaming": "Stop Streaming",
+				"instance": "Configured",
+				"addInstance": "Add another configured instance",
+				"removeInstance": "Remove this instance",
+				"addAction": "Add OBS action",
+				"noInstancesYet": "No configured instances yet. Click + to add one."
 			},
 			"obsWebsocket": {
 				"name": "OBS Websocket Settings",

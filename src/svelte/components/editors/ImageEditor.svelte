@@ -1,15 +1,31 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Svelecte from 'svelecte';
+	import { tick } from 'svelte';
 	import { getActorValues } from '../../../utils/helpers';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
-	// Same value source as the regular AVEditor — typeahead for actor value paths.
-	// Users can also paste a literal path/URL since Svelecte is `creatable`.
-	const values = getActorValues();
-	if (data !== null && !values.some(v => v.value === data)) {
-		values.push({ value: data, label: data, $created: true });
+	// Local, reassignable copy of the actor-value catalog. We must reassign
+	// (not just push) when adding entries so Svelecte's `options` prop sees
+	// a fresh reference and re-evaluates — otherwise it can't find a freshly
+	// file-picked path in the options list and clears `data` back to empty.
+	let options = $state<{ value: string; label: string; $created?: boolean }[]>(
+		(() => {
+			const base = getActorValues().slice();
+			if (data && !base.some(v => v.value === data)) {
+				base.push({ value: data, label: data, $created: true });
+			}
+			return base;
+		})(),
+	);
+
+	async function setValue(path: string) {
+		if (!options.some(v => v.value === path)) {
+			options = [...options, { value: path, label: path, $created: true }];
+			await tick(); // let Svelecte ingest the new options list first
+		}
+		data = path;
 	}
 
 	let filePickerApp: foundry.applications.apps.FilePicker | undefined;
@@ -21,15 +37,10 @@
 		}
 		filePickerApp = new foundry.applications.apps.FilePicker({
 			type: 'image',
-			current: typeof data === 'string' ? data : undefined,
+			current: typeof data === 'string' && data.length > 0 ? data : undefined,
 			callback: (path: string) => {
-				// Foundry's FilePicker hands back a path string; route it through
-				// the same typeahead value store so it shows up as a chosen option.
-				if (!values.some(v => v.value === path)) {
-					values.push({ value: path, label: path, $created: true });
-				}
-				data = path;
 				filePickerApp = undefined;
+				setValue(path);
 			},
 			window: { title: game.i18n.localize('obs-utils.applications.overlayEditor.backgroundImage') },
 		});
@@ -44,7 +55,7 @@
 			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
 			--sv-min-height='35px'
 			floatingConfig={{ strategy: 'fixed' }}
-			options={values}
+			options={options}
 			bind:value={data}
 			labelField='label'
 			valueField='value'

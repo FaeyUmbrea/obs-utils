@@ -32,6 +32,28 @@ export function getGM(): User | undefined {
 	return (game as ReadyGame | undefined)?.users?.find((user: User) => user.isGM && user.active);
 }
 
+/** All users with GM permission (online or offline). */
+export function getAllGMs(): User[] {
+	return (
+		(game as ReadyGame | undefined)?.users?.filter((u: User) => u.isGM) ?? []
+	) as User[];
+}
+
+/**
+ * Resolve the GM whose viewport should drive `cloneDM`-mode camera tracking.
+ * Honors the `activeGMUserId` setting when that user is online; otherwise
+ * falls back to the first active GM (legacy behavior).
+ */
+export function getActiveGM(): User | undefined {
+	const wantedId = (game as ReadyGame | undefined)?.settings?.get('obs-utils', 'activeGMUserId') as string | undefined;
+	const users = (game as ReadyGame | undefined)?.users;
+	if (wantedId) {
+		const u = users?.get(wantedId);
+		if (u?.isGM && u?.active) return u as User;
+	}
+	return users?.find((user: User) => user.isGM && user.active) as User | undefined;
+}
+
 export type ActorValues = { value: string; label: string }[];
 
 let actorValues: ActorValues = [];
