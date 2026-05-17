@@ -482,6 +482,21 @@ export function	initSettings() {
 		default: true,
 	});
 
+	createSetting('cameraSmoothing', {
+		type: Number,
+		scope: 'world',
+		config: false,
+		default: 400,
+		range: { min: 0, max: 1500, step: 50 },
+	});
+
+	createSetting('cameraEasing', {
+		type: String,
+		scope: 'world',
+		config: false,
+		default: 'easeOutCircle',
+	});
+
 	createSetting('proxyOBSMessages', {
 		type: Boolean,
 		scope: 'world',

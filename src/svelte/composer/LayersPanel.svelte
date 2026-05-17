@@ -39,7 +39,7 @@
 
 	function typeLabel(type: string): string {
 		const key = getApi().overlayTypeNames?.get(type);
-		return key ? (game.i18n?.localize(key) ?? type) : type;
+		return key ? game.i18n.localize(key) : type;
 	}
 
 	function layerLabel(overlay: OverlayData, index: number): string {
@@ -116,7 +116,10 @@
 						class='layer-body'
 						onclick={() => selectLayer(index)}
 					>
-						<span class='name'>{layerLabel(overlay, index)}</span>
+						<span class='name'>
+							{layerLabel(overlay, index)}
+							{#if disabled}<span class='hidden-tag'>·&nbsp;hidden</span>{/if}
+						</span>
 						<span class='type'>{typeLabel(overlay.type)}</span>
 					</button>
 					<button
@@ -243,8 +246,23 @@
 			background rgba(255, 144, 0, 0.18)
 			border-color rgba(255, 144, 0, 0.5)
 
-		&.disabled .layer-body .name, &.disabled .layer-body .type
-			opacity 0.4
+		&.disabled .layer-body .name
+			opacity 0.55
+			text-decoration line-through
+			text-decoration-color rgba(255, 255, 255, 0.35)
+
+		&.disabled .layer-body .type
+			opacity 0.35
+
+		&.disabled .layer-body .name .hidden-tag
+			text-decoration none
+			font-size 9px
+			font-weight 500
+			opacity 0.7
+			color #ff9000
+			text-transform uppercase
+			letter-spacing 0.5px
+			margin-left 4px
 
 		.visibility, .delete
 			background transparent

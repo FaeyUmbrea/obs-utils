@@ -10,7 +10,17 @@
 	const currentTrackedPlayer = settings.getStore('trackedUser');
 	const clampCanvas = settings.getStore('clampCanvas');
 	const pauseCameraTracking = settings.getStore('pauseCameraTracking');
+	const cameraSmoothing = settings.getStore('cameraSmoothing');
+	const cameraEasing = settings.getStore('cameraEasing');
 	const isDisabled = getGM()?.active !== true;
+
+	const easingOptions = [
+		{ value: 'linear', labelKey: 'obs-utils.applications.director.easingLinear' },
+		{ value: 'easeOutCircle', labelKey: 'obs-utils.applications.director.easingEaseOut' },
+		{ value: 'easeInOutCircle', labelKey: 'obs-utils.applications.director.easingEaseInOut' },
+		{ value: 'easeOutCosine', labelKey: 'obs-utils.applications.director.easingEaseOutCosine' },
+		{ value: 'easeInOutCosine', labelKey: 'obs-utils.applications.director.easingEaseInOutCosine' },
+	];
 
 	async function onChangeIC(event: Event) {
 		$currentIC = event.target.value;
@@ -68,9 +78,43 @@
 				>
 			{/each}
 		</div>
+		<div class='smoothing'>
+			<hr />
+			<b>{game.i18n?.localize('obs-utils.applications.director.cameraSmoothingHeader')}</b>
+			<div class='smoothing-row'>
+				<label for='cameraEasing' class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.easing')}</label>
+				<select id='cameraEasing' bind:value={$cameraEasing} disabled={isDisabled}>
+					{#each easingOptions as opt}
+						<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
+					{/each}
+				</select>
+			</div>
+			<div class='smoothing-row'>
+				<label for='cameraSmoothing' class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.duration')}</label>
+				<input id='cameraSmoothing' type='range' min='0' max='1500' step='50' bind:value={$cameraSmoothing} disabled={isDisabled} />
+				<span class='value-readout'>{$cameraSmoothing}ms</span>
+			</div>
+		</div>
+	</section>
+	<section>
+		<div>
+			<b>{game.i18n?.localize('obs-utils.applications.director.trackedPlayerHeader')}</b>
+			<hr />
+			<select
+				bind:value={$currentTrackedPlayer}
+				name='trackedPlayer'
+				id='trackedPlayer'
+				onchange={onChangePlayer}
+				disabled={isDisabled}
+			>
+				{#each players as { id, name }}
+					<option value={id}>{name}</option>
+				{/each}
+			</select>
+		</div>
 		<div>
 			<hr />
-			<b>{game.i18n?.localize('obs-utils.applications.director.canvasOptionsHeader')}</b>
+			<b>{game.i18n?.localize('obs-utils.applications.director.controlsHeader')}</b>
 			<hr />
 			<input
 				name='limitCanvas'
@@ -98,28 +142,6 @@
 				title={game.i18n?.localize('obs-utils.strings.pauseCameraTracking')}
 				for='pauseCameraTracking'><i class='fas fa-pause'></i></label
 			>
-		</div>
-	</section>
-	<section>
-		<div>
-			<b>{game.i18n?.localize('obs-utils.applications.director.trackedPlayerHeader')}</b>
-			<hr />
-			<select
-				bind:value={$currentTrackedPlayer}
-				name='trackedPlayer'
-				id='trackedPlayer'
-				onchange={onChangePlayer}
-				disabled={isDisabled}
-			>
-				{#each players as { id, name }}
-					<option value={id}>{name}</option>
-				{/each}
-			</select>
-		</div>
-		<div>
-			<hr />
-			<b>{game.i18n?.localize('obs-utils.applications.director.obsUserCommands')}</b>
-			<hr />
 			<input
 				name='forceOpenSettingsForOBSUser'
 				id='forceOpenSettingsForOBSUser'
@@ -192,5 +214,38 @@
 
   label.button.disabled:hover
     background-color transparent
+
+  .smoothing
+    margin-top 6px
+
+    b
+      display block
+      margin-bottom 4px
+
+    .smoothing-row
+      display grid
+      grid-template-columns 70px 1fr 56px
+      align-items center
+      gap 8px
+      margin 4px 0
+
+      .inline-label
+        font-size 12px
+        opacity 0.8
+
+      select, input[type=range]
+        opacity 1
+        position relative
+        width 100%
+        height 26px
+
+      input[type=range]
+        padding 0
+
+      .value-readout
+        font-family monospace
+        font-size 11px
+        opacity 0.7
+        text-align right
 
 </style>

@@ -46,10 +46,19 @@
 				"icTypeHeader": "In Combat Type",
 				"oocTypeHeader": "Out of Combat Type",
 				"canvasOptionsHeader": "Canvas Options",
+				"controlsHeader": "Controls",
 				"trackedPlayerHeader": "Tracked Player",
 				"obsUserCommands": "OBS User Commands",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
-				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
+				"noGMWarning": "No GM is currently logged in, director settings cannot be changed",
+				"cameraSmoothingHeader": "Camera Smoothing",
+				"easing": "Easing",
+				"duration": "Duration",
+				"easingLinear": "Linear (snappy)",
+				"easingEaseOut": "Ease Out (default)",
+				"easingEaseInOut": "Ease In / Out (cinematic)",
+				"easingEaseOutCosine": "Ease Out Cosine",
+				"easingEaseInOutCosine": "Ease In / Out Cosine"
 			},
 			"obsRemote": {
 				"name": "OBS Remote Settings",
@@ -147,6 +156,10 @@
 				"easyHint": "Quick visual tweaks. These apply as inline CSS to the element.",
 				"advancedHint": "Full CSS with selectors, pseudo-elements, nesting. Rules are auto-scoped to this target.",
 				"previewReadOnly": "Read-only preview",
+				"emptyTitle": "No overlays yet",
+				"emptyDescription": "Overlays are the building blocks of what shows up on your stream. Pick a type to get started — you can always add more.",
+				"manageActors": "Manage Actors",
+				"confirmTypeChange": "Changing overlay type may discard position or rendering data for existing components. Continue?",
 				"importDialog": {
 					"title": "Import Data: Overlays",
 					"hint1": "You are about to import an exported Overlay configuration. Please ensure that it was exported in the same system or AV Overlays may not work.",
@@ -181,6 +194,7 @@
 				"padding": "Padding",
 				"margin": "Margin",
 				"textAlign": "Text align",
+				"verticalAlign": "Vertical align",
 				"lineHeight": "Line height",
 				"letterSpacing": "Letter spacing",
 				"border": "Border",
@@ -227,20 +241,20 @@
 		},
 		"settings": {
 			"forceStreamPageOBSMode": {
-				"Name": "Force OBS Mode on Stream Page",
-				"Hint": "Forces the /stream output to be in OBS mode at all times"
+				"Name": "Force OBS Mode on /stream",
+				"Hint": "Always render overlays on the /stream page."
 			},
 			"obsMode": {
-				"Name": "OBS Mode",
-				"Hint": "Sets this browser as the OBS browser. Only enable this if you are not able to use a browser source"
+				"Name": "Pin This Browser to OBS Mode",
+				"Hint": "⚠ Locks THIS browser into OBS Mode on every tab until disabled. OBS browser sources autodetect — only use this for manual setups."
 			},
 			"obsModeUser": {
-				"Name": "OBS Mode User (Username)",
-				"Hint": "Sets this User to always be in OBS Mode, regardless of browser"
+				"Name": "Designate User as OBS Client",
+				"Hint": "Treat the selected user's browser as OBS — UI hidden, overlays rendered."
 			},
 			"obsModeGlobalDisable": {
-				"Name": "OBS View Global Disable",
-				"Hint": "This will turn off the OBS features for all clients, regardless of method"
+				"Name": "Disable OBS Mode for Everyone",
+				"Hint": "Kill switch. Disables OBS Mode on all clients. Use to recover a stuck browser."
 			},
 			"minScale": {
 				"Name": "Minimum Scale",
@@ -275,11 +289,6 @@
 				"Label": "Open Menu",
 				"Name": "OBS Websocket Settings",
 				"Hint": "Configure OBS Websocket"
-			},
-			"overlayActorSelect": {
-				"Label": "Open Menu",
-				"Name": "Overlay Actors",
-				"Hint": "Select the Actors for the Overlay"
 			},
 			"overlayEditor": {
 				"Label": "Open Editor",

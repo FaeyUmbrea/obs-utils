@@ -28,7 +28,7 @@
 		"test:e2e:headed": "yarn playwright test --headed",
 		"coverage:merge": "node tools/merge-coverage.js",
 		"watch": "vite build --watch",
-		"dev": "vite",
+		"dev": "vite --host",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"linkFoundry": "node tools/foundryLink.js"

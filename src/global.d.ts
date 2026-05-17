@@ -75,6 +75,8 @@ declare global {
 		'obs-utils.obsModeGlobalDisable': boolean;
 		'obs-utils.showKeybindingPopup': boolean;
 		'obs-utils.smoothUserCamera': boolean;
+		'obs-utils.cameraSmoothing': number;
+		'obs-utils.cameraEasing': string;
 		'obs-utils.rollOverlayPreRollDelay': number;
 		'obs-utils.rollOverlayRollFadeIn': number;
 		'obs-utils.rollOverlayRollFadeOut': number;

@@ -11,6 +11,7 @@
 		overlays,
 		selectedLayerIndex,
 		selectedComponentIndex = $bindable(),
+		addedComponentTick = 0,
 		renameLayer,
 		changeLayerType,
 		setLayer,
@@ -23,6 +24,7 @@
 		overlays: OverlayData[];
 		selectedLayerIndex: number | null;
 		selectedComponentIndex: number | null;
+		addedComponentTick?: number;
 		renameLayer: (index: number, name: string) => void;
 		changeLayerType: (index: number, type: string) => void;
 		setLayer: (index: number, value: OverlayData) => void;
@@ -32,6 +34,10 @@
 		removeComponent: (layerIndex: number, compIndex: number) => void;
 		commit: () => void;
 	}>();
+
+	// Style tab can target either the layer or the selected component.
+	// Default: component when one is selected, layer otherwise.
+	let styleTargetKind = $state<'layer' | 'component'>('component');
 
 	type TabKey = 'layer' | 'component' | 'style';
 	let activeTab = $state<TabKey>('layer');
@@ -44,12 +50,37 @@
 			? selectedLayer.components?.[selectedComponentIndex] ?? null
 			: null
 	);
-	const styleTarget = $derived(selectedComponent ?? selectedLayer);
+	// The Style tab respects the user's explicit kind choice, falling back to
+	// whichever target actually exists (component if selected, otherwise layer).
+	const styleTarget = $derived(
+		styleTargetKind === 'component'
+			? (selectedComponent ?? selectedLayer)
+			: selectedLayer
+	);
 
-	// Auto-switch to Component tab when a component is picked from the canvas
+	// Auto-switch to Component tab only on the null → non-null transition
+	// (don't read activeTab here, so the user can freely click back to Overlay)
+	let prevSelectedComponentIndex: number | null = null;
 	$effect(() => {
-		if (selectedComponentIndex !== null && activeTab === 'layer') {
+		const current = selectedComponentIndex;
+		if (current !== null && prevSelectedComponentIndex === null) {
 			activeTab = 'component';
+			styleTargetKind = 'component';
+		}
+		if (current === null) styleTargetKind = 'layer';
+		prevSelectedComponentIndex = current;
+	});
+
+	// When Composer signals a freshly-added component, force the Component tab
+	// regardless of any prior selection state.
+	let prevAddedTick: number | undefined;
+	$effect(() => {
+		const tick = addedComponentTick;
+		if (prevAddedTick === undefined) { prevAddedTick = tick; return; }
+		if (tick !== prevAddedTick) {
+			prevAddedTick = tick;
+			activeTab = 'component';
+			styleTargetKind = 'component';
 		}
 	});
 
@@ -60,7 +91,7 @@
 			.filter(k => k === 'sl' || k === 'wysiwyg' || k === 'roll')
 			.map((k) => {
 				const nameKey = getApi().overlayTypeNames?.get(k);
-				return { key: k, label: nameKey ? (game.i18n?.localize(nameKey) ?? k) : k };
+				return { key: k, label: nameKey ? game.i18n.localize(nameKey) : k };
 			});
 	});
 
@@ -70,8 +101,29 @@
 	}
 	function onTypeChange(e: Event) {
 		if (selectedLayerIndex === null) return;
-		changeLayerType(selectedLayerIndex, (e.currentTarget as HTMLSelectElement).value);
+		const newType = (e.currentTarget as HTMLSelectElement).value;
+		const current = overlays[selectedLayerIndex]?.type;
+		if (newType === current) return;
+		// Changing type can drop positioning data (sl <-> wysiwyg) or render config (roll).
+		// Only confirm when there are components to lose meaning from.
+		const hasComponents = (overlays[selectedLayerIndex]?.components?.length ?? 0) > 0;
+		if (hasComponents) {
+			const proceed = window.confirm(
+				game.i18n.localize('obs-utils.applications.overlayEditor.confirmTypeChange'),
+			);
+			if (!proceed) {
+				// Revert the visual selection
+				(e.currentTarget as HTMLSelectElement).value = current;
+				return;
+			}
+		}
+		changeLayerType(selectedLayerIndex, newType);
 	}
+
+	const componentCount = $derived(selectedLayer?.components?.length ?? 0);
+	const styleHasCustomCSS = $derived(
+		!!(styleTarget && (styleTarget as any).customCSS && (styleTarget as any).customCSS.trim().length)
+	);
 	function getLayer() {
 		return selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null as any;
 	}
@@ -80,16 +132,13 @@
 		setLayer(selectedLayerIndex, value);
 	}
 
-	function t(key: string, fallback: string) {
-		return game.i18n?.localize(key) || fallback;
-	}
 </script>
 
 <div class='properties'>
 	{#if !selectedLayer}
 		<div class='empty'>
 			<i class='fas fa-arrow-left'></i>
-			<span>{t('obs-utils.applications.overlayEditor.noLayerSelected', 'Select a layer to edit its properties.')}</span>
+			<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.noLayerSelected')}</span>
 		</div>
 	{:else}
 		<header class='layer-summary'>
@@ -99,9 +148,9 @@
 				value={selectedLayer.name ?? ''}
 				placeholder={`#${selectedLayerIndex} ${selectedLayer.type}`}
 				onchange={onRename}
-				aria-label={t('obs-utils.applications.overlayEditor.layerName', 'Name')}
+				aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.layerName')}
 			/>
-			<select class='layer-type' value={selectedLayer.type} onchange={onTypeChange} aria-label={t('obs-utils.applications.overlayEditor.layerType', 'Type')}>
+			<select class='layer-type' value={selectedLayer.type} onchange={onTypeChange} aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.layerType')}>
 				{#each overlayTypeOptions as opt}
 					<option value={opt.key}>{opt.label}</option>
 				{/each}
@@ -117,7 +166,10 @@
 				onclick={() => (activeTab = 'layer')}
 			>
 				<i class='fas fa-layer-group'></i>
-				<span>{t('obs-utils.applications.overlayEditor.tabLayer', 'Layer')}</span>
+				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabLayer')}</span>
+				{#if componentCount > 0}
+					<span class='badge count'>{componentCount}</span>
+				{/if}
 			</button>
 			<button
 				type='button'
@@ -128,7 +180,7 @@
 				onclick={() => (activeTab = 'component')}
 			>
 				<i class='fas fa-vector-square'></i>
-				<span>{t('obs-utils.applications.overlayEditor.tabComponent', 'Component')}</span>
+				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabComponent')}</span>
 				{#if selectedComponentIndex !== null}
 					<span class='badge'>#{selectedComponentIndex}</span>
 				{/if}
@@ -141,7 +193,10 @@
 				onclick={() => (activeTab = 'style')}
 			>
 				<i class='fas fa-paint-brush'></i>
-				<span>{t('obs-utils.applications.overlayEditor.tabStyle', 'Style')}</span>
+				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabStyle')}</span>
+				{#if styleHasCustomCSS}
+					<span class='dot' aria-label='custom CSS set' title='Custom CSS is set'></span>
+				{/if}
 			</button>
 		</nav>
 
@@ -180,7 +235,7 @@
 					{:else}
 						<div class='empty'>
 							<i class='fas fa-question-circle'></i>
-							<span>{t('obs-utils.applications.overlayEditor.unknownType', 'Unknown overlay type.')}</span>
+							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.unknownType')}</span>
 						</div>
 					{/if}
 				{:else if activeTab === 'component'}
@@ -209,11 +264,16 @@
 					{:else}
 						<div class='empty'>
 							<i class='fas fa-hand-pointer'></i>
-							<span>{t('obs-utils.applications.overlayEditor.selectComponentHint', 'Click a component on the canvas or add one from the panel.')}</span>
+							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.selectComponentHint')}</span>
 						</div>
 					{/if}
 				{:else if activeTab === 'style'}
-					<StyleTab target={styleTarget} {commit} />
+					<StyleTab
+						target={styleTarget}
+						hasComponent={selectedComponent !== null}
+						bind:targetKind={styleTargetKind}
+						{commit}
+					/>
 				{/if}
 			{/key}
 		</section>
@@ -289,10 +349,24 @@
 			.badge
 				font-family monospace
 				font-size 9px
-				opacity 0.5
-				padding 0 4px
-				border-radius 2px
+				opacity 0.7
+				padding 0 5px
+				min-width 16px
+				text-align center
+				border-radius 8px
 				background rgba(255, 255, 255, 0.1)
+
+				&.count
+					background rgba(255, 144, 0, 0.25)
+					color #ffb95c
+
+			.dot
+				display inline-block
+				width 6px
+				height 6px
+				border-radius 50%
+				background #ff9000
+				margin-left 2px
 
 			&:hover
 				opacity 1

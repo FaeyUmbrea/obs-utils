@@ -4,11 +4,11 @@ import DirectorApplication from '../applications/director.ts';
  */
 import OBSRemoteApplication from '../applications/obsremote.ts';
 import OBSWebsocketApplication from '../applications/obswebsocket.ts';
-import OverlayActorSelect from '../applications/overlayactorselect.ts';
 import OverlayEditor from '../applications/overlayeditor.ts';
 import OverlayPreview from '../applications/overlaypreview.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
+import ImageEditor from '../svelte/components/editors/ImageEditor.svelte';
 import MultiAVEditor from '../svelte/components/editors/MultiAVEditor.svelte';
 import MultiAVIconEditor from '../svelte/components/editors/MultiAVIconEditor.svelte';
 import { MODULE_ID as moduleID } from './const';
@@ -43,14 +43,6 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'overlayActorSelect', {
-		name: `${moduleID}.settings.overlayActorSelect.Name`,
-		label: `${moduleID}.settings.overlayActorSelect.Label`,
-		hint: `${moduleID}.settings.overlayActorSelect.Hint`,
-		type: OverlayActorSelect,
-		icon: 'fas fa-bars',
-		restricted: true,
-	});
 	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'overlayEditor', {
 		name: `${moduleID}.settings.overlayEditor.Name`,
 		label: `${moduleID}.settings.overlayEditor.Label`,
@@ -59,29 +51,21 @@ export function registerUI() {
 		icon: 'fas fa-bars',
 		restricted: true,
 	});
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('pt', AVEditor);
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('fai', AVEditor);
-	getApi().overlayTypes.get('sl')?.registerComponentEditor('img', AVEditor);
-	getApi()
-		.overlayTypes
-		.get('sl')
-		?.registerComponentEditor('bav', BooleanEditor, true);
-	getApi()
-		.overlayTypes
-		.get('sl')
-		?.registerComponentEditor('bavimg', BooleanEditor, true);
-	getApi()
-		.overlayTypes
-		.get('sl')
-		?.registerComponentEditor('micoav', MultiAVIconEditor, true);
-	getApi()
-		.overlayTypes
-		.get('sl')
-		?.registerComponentEditor('mimgav', MultiAVIconEditor, true);
-	getApi()
-		.overlayTypes
-		.get('sl')
-		?.registerComponentEditor('pb', MultiAVEditor, true);
+	// Register component editors for both Simple ('sl') and WYSIWYG overlay types.
+	// They share the same component renderers but maintain independent editor maps,
+	// so each registration must happen for both keys.
+	for (const overlayKey of ['sl', 'wysiwyg']) {
+		const t = getApi().overlayTypes.get(overlayKey);
+		if (!t) continue;
+		t.registerComponentEditor('pt', AVEditor);
+		t.registerComponentEditor('fai', AVEditor);
+		t.registerComponentEditor('img', ImageEditor);
+		t.registerComponentEditor('bav', BooleanEditor, true);
+		t.registerComponentEditor('bavimg', BooleanEditor, true);
+		t.registerComponentEditor('micoav', MultiAVIconEditor, true);
+		t.registerComponentEditor('mimgav', MultiAVIconEditor, true);
+		t.registerComponentEditor('pb', MultiAVEditor, true);
+	}
 }
 
 let previewApp: OverlayPreview | undefined;

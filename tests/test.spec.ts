@@ -93,19 +93,8 @@ test.describe('DM Client Only Tests', () => {
 			.locator('div[id=\'obswebsocket-application\'] header button[data-action=close]')
 			.click();
 
-		// Overlay Actor Menu
+		// (Overlay Actor menu removed; manage actors is now in the Overlay Editor footer.)
 
-		await gmPage
-			.locator('button[data-key=\'obs-utils.overlayActorSelect\']')
-			.click();
-
-		await expect(
-			gmPage.locator('div[id=\'actorselect-application\']'),
-		).toBeVisible();
-
-		await gmPage
-			.locator('div[id=\'actorselect-application\'] header button[data-action=close]')
-			.click();
 
 		// Overlay Editor
 

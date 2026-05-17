@@ -165,10 +165,10 @@ export function registerDefaultTypes() {
 	getApi().overlayTypes.set('Single Line', singleLineOverlay);
 
 	const wysiwygOverlay = new OverlayType(WYSIWYGOverlay);
+	// Component renderers + display names are stable at this point (registered just above for 'sl'),
+	// so they can be copied. Editors are registered later in ui.ts for both 'sl' and 'wysiwyg'.
 	wysiwygOverlay.overlayComponents = new Map(singleLineOverlay.overlayComponents);
 	wysiwygOverlay.overlayComponentNames = new Map(singleLineOverlay.overlayComponentNames);
-	wysiwygOverlay.overlayComponentEditors = new Map(singleLineOverlay.overlayComponentEditors);
-	wysiwygOverlay.compactEditorButtons = new Map(singleLineOverlay.compactEditorButtons);
 	wysiwygOverlay.registerOverlayEditor(WYSIWYGOverlayEditor);
 	wysiwygOverlay.perActor = true;
 	getApi().registerOverlayType('wysiwyg', 'obs-utils.overlays.wysiwygOverlay.name', wysiwygOverlay);

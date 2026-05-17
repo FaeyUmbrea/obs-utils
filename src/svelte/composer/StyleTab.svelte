@@ -5,16 +5,17 @@
 
 	let {
 		target,
+		hasComponent = false,
+		targetKind = $bindable('component'),
 		commit,
 	} = $props<{
 		target: OverlayData | OverlayComponentData | null;
+		hasComponent?: boolean;
+		targetKind?: 'layer' | 'component';
 		commit: () => void;
 	}>();
 
 	let mode = $state<'easy' | 'advanced'>('easy');
-
-	const targetIsComponent = $derived(target ? 'data' in (target as any) && (target as any).data !== undefined && !('components' in (target as any)) : false);
-	const targetLabel = $derived(target == null ? '' : (targetIsComponent ? 'Component' : 'Overlay'));
 
 	function getInlineStyle(): string {
 		return target?.style ?? '';
@@ -34,20 +35,36 @@
 		commit?.();
 	}
 
-	function t(key: string, fallback: string) {
-		return game.i18n?.localize(key) || fallback;
-	}
 </script>
 
 <div class='style-tab'>
 	{#if !target}
-		<div class='hint'>{t('obs-utils.applications.overlayEditor.styleNoTarget', 'Select a component or overlay to style it.')}</div>
+		<div class='hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.styleNoTarget')}</div>
 	{:else}
 		<header class='target-bar'>
-			<span class='target-name'>
-				<i class='fas fa-paint-brush'></i>
-				{t('obs-utils.applications.overlayEditor.stylingTarget', 'Styling')}: <strong>{targetLabel}</strong>
-			</span>
+			{#if hasComponent}
+				<div class='mode-pill kind' role='tablist' aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.stylingTarget')}>
+					<button
+						type='button'
+						role='tab'
+						aria-selected={targetKind === 'layer'}
+						class:active={targetKind === 'layer'}
+						onclick={() => (targetKind = 'layer')}
+					>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabLayer')}</button>
+					<button
+						type='button'
+						role='tab'
+						aria-selected={targetKind === 'component'}
+						class:active={targetKind === 'component'}
+						onclick={() => (targetKind = 'component')}
+					>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabComponent')}</button>
+				</div>
+			{:else}
+				<span class='target-name'>
+					<i class='fas fa-paint-brush'></i>
+					{game.i18n?.localize('obs-utils.applications.overlayEditor.stylingTarget')}: <strong>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabLayer')}</strong>
+				</span>
+			{/if}
 			<div class='mode-pill' role='tablist'>
 				<button
 					type='button'
@@ -55,28 +72,28 @@
 					aria-selected={mode === 'easy'}
 					class:active={mode === 'easy'}
 					onclick={() => (mode = 'easy')}
-				>{t('obs-utils.applications.styleEditor.mode.simple', 'Easy')}</button>
+				>{game.i18n?.localize('obs-utils.applications.styleEditor.mode.simple')}</button>
 				<button
 					type='button'
 					role='tab'
 					aria-selected={mode === 'advanced'}
 					class:active={mode === 'advanced'}
 					onclick={() => (mode = 'advanced')}
-				>{t('obs-utils.applications.styleEditor.mode.advanced', 'Advanced')}</button>
+				>{game.i18n?.localize('obs-utils.applications.styleEditor.mode.advanced')}</button>
 			</div>
 		</header>
 
 		{#if mode === 'easy'}
 			<section class='mode-body easy'>
 				<p class='mode-hint'>
-					{t('obs-utils.applications.overlayEditor.easyHint', 'Quick visual tweaks. These apply as inline CSS to the element.')}
+					{game.i18n?.localize('obs-utils.applications.overlayEditor.easyHint')}
 				</p>
 				<EasyStyleFields bind:value={() => getInlineStyle(), v => setInlineStyle(v)} />
 			</section>
 		{:else}
 			<section class='mode-body advanced'>
 				<p class='mode-hint'>
-					{t('obs-utils.applications.overlayEditor.advancedHint', 'Full CSS with selectors, pseudo-elements, nesting. Rules are auto-scoped to this target.')}
+					{game.i18n?.localize('obs-utils.applications.overlayEditor.advancedHint')}
 				</p>
 				<textarea
 					class='css-editor'

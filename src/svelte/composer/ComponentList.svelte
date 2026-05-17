@@ -2,6 +2,7 @@
 <script lang='ts'>
 	import type { OverlayComponentData } from '../../utils/types.ts';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
+	import { tick } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
 
 	let {
@@ -19,12 +20,36 @@
 	}>();
 
 	let rerender = $state(0);
+	let listEl: HTMLDivElement | null = $state(null);
+
+	// Scroll the selected row into view when selection changes from the outside (e.g. canvas click)
+	$effect(() => {
+		if (selectedIndex === null || !listEl) return;
+		tick().then(() => {
+			const row = listEl?.querySelector<HTMLElement>(`[data-comp-index="${selectedIndex}"]`);
+			row?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+		});
+	});
 
 	function typeLabel(type: string): string {
 		const entry = getApi().overlayTypes.get(overlayType);
 		const key = entry?.overlayComponentNames?.get(type);
-		if (key) return game.i18n?.localize(key) ?? type;
+		if (key) return game.i18n.localize(key);
 		return type;
+	}
+
+	function typeIcon(type: string): string {
+		switch (type) {
+			case 'pt': return 'fas fa-font';
+			case 'fai': return 'fas fa-icons';
+			case 'img': return 'fas fa-image';
+			case 'bav': return 'fas fa-toggle-on';
+			case 'bavimg': return 'fas fa-image';
+			case 'micoav': return 'fas fa-grip';
+			case 'mimgav': return 'fas fa-images';
+			case 'pb': return 'fas fa-chart-line';
+			default: return 'fas fa-cube';
+		}
 	}
 
 	function dataPreview(data: string | undefined | null): string {
@@ -48,12 +73,9 @@
 		selectedIndex = index;
 	}
 
-	function t(key: string, fallback: string) {
-		return game.i18n?.localize(key) || fallback;
-	}
 </script>
 
-<div class='component-list'>
+<div class='component-list' bind:this={listEl}>
 	<SortableList class='sortable' animation={150} handle='.grab' onEnd={handleReorder}>
 		{#key rerender}
 			{#each components as comp, index (comp?.id ?? `idx-${index}`)}
@@ -61,22 +83,25 @@
 					<div
 						class='comp-row'
 						class:selected={selectedIndex === index}
+						data-comp-index={index}
 						onclick={(e) => selectRow(e, index)}
 						role='button'
 						tabindex='0'
 						aria-label={`${typeLabel(comp.type)} component`}
 					>
-						<span class='grab' aria-hidden='true' title={t('obs-utils.applications.overlayEditor.dragReorder', 'Drag to reorder')}>
+						<span class='grab' aria-hidden='true' title={game.i18n?.localize('obs-utils.applications.overlayEditor.dragReorder')}>
 							<i class='fas fa-grip-vertical'></i>
 						</span>
-						<span class='type-tag'>{comp.type}</span>
-						<span class='data-preview'>{dataPreview(comp.data)}</span>
+						<span class='type-icon' title={typeLabel(comp.type)} aria-label={typeLabel(comp.type)}>
+							<i class={typeIcon(comp.type)}></i>
+						</span>
+						<span class='data-preview' title={dataPreview(comp.data)}>{dataPreview(comp.data)}</span>
 						<button
 							type='button'
 							class='delete'
 							onclick={(e) => { e.stopPropagation(); onRemove(index); }}
-							title={t('obs-utils.applications.overlayEditor.removeComponentButton', 'Remove Component')}
-							aria-label={t('obs-utils.applications.overlayEditor.removeComponentButton', 'Remove Component')}
+							title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeComponentButton')}
+							aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.removeComponentButton')}
 						>
 							<i class='fas fa-trash'></i>
 						</button>
@@ -87,7 +112,7 @@
 	</SortableList>
 	{#if components.length === 0}
 		<div class='empty'>
-			{t('obs-utils.applications.overlayEditor.emptyComponents', 'No components yet. Add one above.')}
+			{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyComponents')}
 		</div>
 	{/if}
 </div>
@@ -106,7 +131,7 @@
 
 	.comp-row
 		display grid
-		grid-template-columns 18px 60px 1fr 24px
+		grid-template-columns 18px 22px 1fr 24px
 		align-items center
 		gap 6px
 		padding 4px 6px
@@ -139,15 +164,14 @@
 		&:hover .grab
 			opacity 0.7
 
-		.type-tag
-			font-family monospace
-			font-size 10px
-			padding 2px 5px
-			background rgba(255, 255, 255, 0.06)
-			border-radius 2px
-			opacity 0.85
-			text-align center
-			text-transform lowercase
+		.type-icon
+			display flex
+			align-items center
+			justify-content center
+			width 22px
+			height 24px
+			color rgba(255, 144, 0, 0.85)
+			font-size 13px
 
 		.data-preview
 			font-size 11px

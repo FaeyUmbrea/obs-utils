@@ -1,3 +1,74 @@
+## Version 5.0.0
+
+### Stream Composer — overlay editor rewritten
+
+The overlay editor has been rebuilt from the ground up as a unified three-pane "Stream Composer":
+
+- **Overlays panel (left)** lists every overlay with drag-to-reorder, visibility toggle (`enabled` flag), inline rename, type tag, and add menu. Disabled overlays render with a strikethrough name and a `HIDDEN` chip and are skipped at render time on the live stream.
+- **Canvas (center)** previews exactly one overlay at a time at its native reference resolution:
+  - WYSIWYG layers are interactive — drag components to move, drag corner handles to resize, arrow-key nudge (Shift for 10px), Delete/Backspace to remove, Escape to deselect, Tab to cycle.
+  - Simple and Roll layers render as read-only previews. The Roll preview has an inline Test button that fires the pre/roll/post animation with a random value.
+  - Drag uses direct DOM transforms during interaction so the visible element follows the cursor instantly; data commits to the store on release.
+- **Properties pane (right)** is tabbed: **Overlay** (layer-level config + component list), **Component** (per-component edit — auto-switches to this tab when you click a component on the canvas), **Style** (Easy form fields OR full advanced CSS with auto-scoping). Tabs show counts and indicators (component count, custom-CSS dot).
+- Removed the separate Roll Overlay Editor menu — roll overlays are first-class overlays in the unified composer.
+
+### Custom CSS at four scopes
+
+Every level can carry its own CSS, injected into a managed `<style>` element with native CSS nesting for the wrapper:
+
+- **Global** — applied to every overlay obs-utils renders. New toolbar/footer button on the Overlay Editor opens a dedicated editor; the example global CSS block previously maintained as OBS browser-source overrides can now live entirely in-app.
+- **Per actor** — accessed from a CSS button on each actor row in Manage Actors. Scoped to `#actor{id}`.
+- **Per overlay** — Style tab → Advanced. Scoped to `[data-overlay-id="UUID"]`.
+- **Per component** — Style tab → Advanced when a component is selected. Scoped to `[data-component-id="UUID"]`.
+
+Easy mode (form fields for the common cases — color, font, padding, border) and Advanced mode (full CSS textarea) coexist in the same tab. Easy writes inline `style`; Advanced writes scoped `customCSS`. Overlays and components now carry stable UUIDs so scoped CSS survives reorders.
+
+### Data model
+
+- `OverlayData` gained `id`, `customCSS`, `name`, `enabled`.
+- `OverlayComponentData` gained `id`, `customCSS`.
+- All optional. IDs are auto-generated on creation and back-filled into existing worlds at ready.
+- New world-scoped settings: `globalOverlayCSS`, `actorOverlayCSS`.
+- Import/export bumped to version 2. v1 imports are still accepted (forward-compatible — IDs back-fill on load). Older obs-utils versions refuse to import v2 exports.
+
+### WYSIWYG overlays
+
+- Default size dropped from 1920×1080 to 300×300. The renderer falls back to the same default for legacy data without `config.w/h`.
+- Background image is no longer an overlay-level config field — add an Image component sized to the overlay if you want a background.
+- Component draw order follows the array order (top of the list draws first); reorder via the Components list in the Overlay tab.
+
+### Director — smoother camera
+
+- New camera tween settings exposed directly in the Director window:
+  - **Easing curve**: Linear / Ease Out / Ease In-Out / Ease Out Cosine / Ease In-Out Cosine.
+  - **Duration**: 0–1500ms slider with live readout.
+- These apply to all camera tracking modes (manual track, track-all, clone-DM, clone-player, etc.) and replace the previous abrupt behavior driven by debounced socket emits.
+
+### OBS Mode wording
+
+The four OBS-related settings have been re-titled and the hints rewritten to make clear:
+
+- **Pin This Browser to OBS Mode** — calls out that enabling locks the browser into OBS Mode on every tab until disabled, and points to the recommended alternative.
+- **Designate User as OBS Client** — explains that any browser the chosen user logs into is treated as the OBS source.
+- **Disable OBS Mode for Everyone** — labelled as a kill switch.
+- **Force OBS Mode on /stream** — clarified to "Always render overlays on the /stream page."
+
+### Polish
+
+- Add-Component menu opens as a fixed-position popover that escapes pane overflow.
+- Component list rows show Font Awesome icons per component type for fast visual scanning.
+- The Style tab badges with a dot when its current target has custom CSS.
+- Confirm dialog before changing an overlay's type when it already has components (which would lose layout data).
+- Selected component auto-scrolls into view in the component list when picked from the canvas.
+- Empty editor opens to a centered "No overlays yet" card with one-click create buttons for each overlay type.
+- AVEditor's Svelecte dropdown now positions itself with `strategy: 'fixed'` so it doesn't get clipped by ancestor `overflow: hidden`.
+- Composer panes use container queries (`@container`) so they collapse based on the Foundry window's width, not the viewport's.
+- Composer footer surfaces Manage Actors and Global CSS as visible buttons.
+
+### Migration
+
+- Settings schema bumped to version 3. Roll overlay settings that diverge from defaults are migrated into a `streamOverlays` entry of type `roll`; user-actor selection populates from assigned characters for fresh worlds.
+
 ## Version 4.5.0
 
 ### New

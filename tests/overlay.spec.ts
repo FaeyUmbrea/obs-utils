@@ -242,7 +242,12 @@ test.describe('Actor Select', () => {
 			return;
 		}
 
-		await openSettingsTo(gmPage, 'overlayActorSelect');
+		// Manage Actors is now reachable only from the Overlay Editor footer.
+		await openSettingsTo(gmPage, 'overlayEditor');
+		const editorApp = gmPage.locator('div#overlayeditor-application');
+		await expect(editorApp).toBeVisible();
+		await editorApp.locator('button.footer-btn:has(.fa-users)').click();
+
 		const actorSelectApp = gmPage.locator('div#actorselect-application');
 		await expect(actorSelectApp).toBeVisible();
 
@@ -250,5 +255,6 @@ test.describe('Actor Select', () => {
 		await expect(actorSelectApp.locator('.user-token-chip').first()).toBeVisible();
 
 		await closeApp(gmPage, 'actorselect-application');
+		await closeApp(gmPage, 'overlayeditor-application');
 	});
 });

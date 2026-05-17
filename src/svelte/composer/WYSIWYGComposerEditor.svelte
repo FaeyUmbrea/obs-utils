@@ -29,10 +29,17 @@
 	let addBtnEl: HTMLButtonElement | null = $state(null);
 	let addMenuStyle = $state('');
 
+	// Portal action: relocate the node to document.body so position:fixed isn't
+	// affected by transformed ancestors (Foundry ApplicationV2 uses transforms).
+	function portalToBody(node: HTMLElement) {
+		document.body.appendChild(node);
+		return { destroy() { node.parentNode?.removeChild(node); } };
+	}
+
 	function openAddMenu() {
 		if (!addBtnEl) { addMenuOpen = true; return; }
 		const rect = addBtnEl.getBoundingClientRect();
-		// Position below the trigger, anchor by viewport (escapes overflow:hidden ancestors)
+		// Viewport-relative — valid once portalled out of any transformed ancestor.
 		addMenuStyle = `position: fixed; top: ${Math.round(rect.bottom + 4)}px; left: ${Math.round(rect.left)}px; width: ${Math.round(rect.width)}px;`;
 		addMenuOpen = true;
 	}
@@ -47,6 +54,11 @@
 		if (t.closest('[data-add-component-menu]')) return;
 		closeAddMenu();
 	}
+	function onAddBtnClick(e: MouseEvent) {
+		e.stopPropagation();
+		if (addMenuOpen) closeAddMenu();
+		else openAddMenu();
+	}
 
 	const componentTypes = $derived.by(() => {
 		const entry = getApi().overlayTypes.get('wysiwyg');
@@ -55,7 +67,7 @@
 		const out: Array<{ key: string; label: string }> = [];
 		for (const [key, nameKey] of names) {
 			if (key !== key.toLowerCase()) continue;
-			out.push({ key, label: game.i18n?.localize(nameKey) ?? key });
+			out.push({ key, label: game.i18n.localize(nameKey) });
 		}
 		return out;
 	});
@@ -98,15 +110,12 @@
 		selectedComp ? getComponentEditor(selectedComp.type) : null
 	);
 
-	function t(key: string, fallback: string) {
-		return game.i18n?.localize(key) || fallback;
-	}
 </script>
 
 <div class='wysiwyg-pane'>
 	{#if view === 'layer'}
 		<section>
-			<h4>{t('obs-utils.applications.overlayEditor.overlaySize', 'Size')}</h4>
+			<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.overlaySize')}</h4>
 			<div class='row two-col'>
 				<label class='field'>
 					<span>W</span>
@@ -127,7 +136,7 @@
 					/>
 				</label>
 			</div>
-			<p class='size-hint'>{t('obs-utils.applications.overlayEditor.sizeHint', 'For backgrounds, add an Image component sized to the overlay.')}</p>
+			<p class='size-hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.sizeHint')}</p>
 		</section>
 
 		<section class='add-component'>
@@ -135,19 +144,19 @@
 				type='button'
 				class='add-toggle'
 				bind:this={addBtnEl}
-				onclick={() => (addMenuOpen ? closeAddMenu() : openAddMenu())}
+				onclick={onAddBtnClick}
 				aria-expanded={addMenuOpen}
 			>
 				<i class='fas fa-plus'></i>
-				<span>{t('obs-utils.applications.overlayEditor.addComponent', 'Add Component')}</span>
+				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.addComponent')}</span>
 				<i class='fas fa-caret-down'></i>
 			</button>
 		</section>
 
 		<section class='components-section'>
 			<h4>
-				{t('obs-utils.applications.overlayEditor.componentsHeader', 'Components')}
-				<span class='order-hint'>{t('obs-utils.applications.overlayEditor.drawOrderHint', '(top of list = drawn first)')}</span>
+				{game.i18n?.localize('obs-utils.applications.overlayEditor.componentsHeader')}
+				<span class='order-hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.drawOrderHint')}</span>
 			</h4>
 			<ComponentList
 				components={layer.components ?? []}
@@ -163,15 +172,15 @@
 				<header>
 					<h4>
 						<i class='fas fa-vector-square'></i>
-						{t('obs-utils.applications.overlayEditor.componentHeader', 'Component')}
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.componentHeader')}
 						<span class='comp-index'>#{selectedComponentIndex}</span>
 					</h4>
 					<button
 						type='button'
 						class='delete-comp'
 						onclick={removeSelectedComponent}
-						title={t('obs-utils.applications.overlayEditor.removeComponentButton', 'Remove Component')}
-						aria-label={t('obs-utils.applications.overlayEditor.removeComponentButton', 'Remove Component')}
+						title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeComponentButton')}
+						aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.removeComponentButton')}
 					>
 						<i class='fas fa-trash'></i>
 					</button>
@@ -179,7 +188,7 @@
 
 				<div class='row'>
 					<label class='field'>
-						<span>{t('obs-utils.applications.overlayEditor.componentType', 'Component type')}</span>
+						<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.componentType')}</span>
 						<select
 							value={selectedComp.type}
 							onchange={(e) => updateComponent(selectedComponentIndex!, { type: (e.currentTarget as HTMLSelectElement).value })}
@@ -249,7 +258,7 @@
 				</div>
 
 				<header>
-					<h4>{t('obs-utils.applications.overlayEditor.componentData', 'Data')}</h4>
+					<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.componentData')}</h4>
 				</header>
 				<div class='component-editor'>
 					{#key `${selectedComp?.id ?? selectedComponentIndex}-${selectedComp?.type ?? ''}`}
@@ -265,7 +274,7 @@
 		{:else}
 			<div class='no-selection'>
 				<i class='fas fa-hand-pointer'></i>
-				<p>{t('obs-utils.applications.overlayEditor.selectComponentHint', 'Click a component on the canvas or add one from the panel.')}</p>
+				<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.selectComponentHint')}</p>
 			</div>
 		{/if}
 	{/if}
@@ -274,7 +283,7 @@
 <svelte:window onclick={onWindowClick} />
 
 {#if addMenuOpen}
-	<div class='add-menu' role='menu' data-add-component-menu style={addMenuStyle}>
+	<div use:portalToBody class='add-menu' role='menu' data-add-component-menu style={addMenuStyle}>
 		{#each componentTypes as opt}
 			<button type='button' role='menuitem' onclick={() => { closeAddMenu(); addComponent(opt.key); }}>
 				<span class='menu-key'>{opt.key}</span>

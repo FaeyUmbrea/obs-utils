@@ -17,15 +17,12 @@
 		await foundryApp.close();
 	}
 
-	function t(key: string, fallback: string) {
-		return game.i18n?.localize(key) || fallback;
-	}
 </script>
 
 <div class='global-css'>
 	<header class='intro'>
 		<p>
-			{t('obs-utils.applications.globalCSSEditor.intro', 'Global CSS is applied to every overlay obs-utils renders. Use selectors like .obs-utils to scope to overlay containers, #actor{...} for a specific actor, or progress, .my-class etc. for elements.')}
+			{game.i18n?.localize('obs-utils.applications.globalCSSEditor.intro')}
 		</p>
 	</header>
 
@@ -39,14 +36,14 @@
 
 	<footer>
 		<button type='button' class='secondary' onclick={() => (local = '')}>
-			{t('obs-utils.applications.styleEditor.clear', 'Clear')}
+			{game.i18n?.localize('obs-utils.applications.styleEditor.clear')}
 		</button>
 		<div class='right'>
 			<button type='button' onclick={() => foundryApp.close()}>
-				{t('obs-utils.applications.overlayEditor.closeButton', 'Close')}
+				{game.i18n?.localize('obs-utils.applications.overlayEditor.closeButton')}
 			</button>
 			<button type='button' class='primary' onclick={saveAndClose}>
-				{t('obs-utils.applications.globalCSSEditor.saveButton', 'Save & Close')}
+				{game.i18n?.localize('obs-utils.applications.globalCSSEditor.saveButton')}
 			</button>
 		</div>
 	</footer>

@@ -88,31 +88,39 @@
 		if (!comp || comp.locked) return;
 		e.preventDefault();
 		e.stopPropagation();
+		const layerIdx = selectedLayerIndex;
 		selectedComponentIndex = index;
 
 		const startClientX = e.clientX;
 		const startClientY = e.clientY;
 		const origX = comp.x ?? 0;
 		const origY = comp.y ?? 0;
-		const { wrapper, hit, handles } = getDOMRefs(selectedLayerIndex, index);
-		const allFollowers: HTMLElement[] = [];
-		if (wrapper) allFollowers.push(wrapper);
-		if (hit) allFollowers.push(hit);
-		handles?.forEach(h => allFollowers.push(h));
+		const { wrapper, hit } = getDOMRefs(layerIdx, index);
+		// Handles may not be in the DOM yet (they only render once the component is selected,
+		// which happens on this same mousedown). Re-query each frame so we catch them.
+		let cachedHandles: NodeListOf<HTMLElement> | null = null;
 
 		let lastDx = 0, lastDy = 0;
+
+		function applyTransform(t: string) {
+			if (wrapper) wrapper.style.transform = t;
+			if (hit) hit.style.transform = t;
+			if (!cachedHandles || cachedHandles.length === 0) {
+				const root = document.getElementById(`composer-canvas-${layerIdx}`);
+				cachedHandles = root?.querySelectorAll<HTMLElement>(`[data-handle-for="${index}"]`) ?? null;
+			}
+			cachedHandles?.forEach((h) => { h.style.transform = t; });
+		}
 
 		function onMove(ev: MouseEvent) {
 			lastDx = ev.clientX - startClientX;
 			lastDy = ev.clientY - startClientY;
-			for (const el of allFollowers) {
-				el.style.transform = `translate(${lastDx}px, ${lastDy}px)`;
-			}
+			applyTransform(`translate(${lastDx}px, ${lastDy}px)`);
 		}
 		function onUp() {
 			window.removeEventListener('mousemove', onMove);
 			window.removeEventListener('mouseup', onUp);
-			for (const el of allFollowers) el.style.transform = '';
+			applyTransform('');
 			const c = layer.components[index];
 			if (c) {
 				c.x = Math.round(origX + lastDx);
@@ -240,7 +248,8 @@
 	<div class='canvas-scroll'>
 		<div
 			class='canvas-area'
-			style={`width: ${canvasW}px; height: ${canvasH}px;`}
+			class:auto-size={!selectedIsWYSIWYG}
+			style={selectedIsWYSIWYG ? `width: ${canvasW}px; height: ${canvasH}px;` : undefined}
 			onmousedown={onCanvasMouseDown}
 			role='presentation'
 			id={selectedLayerIndex !== null ? `composer-canvas-${selectedLayerIndex}` : undefined}
@@ -307,7 +316,7 @@
 				{/each}
 			{:else if selectedIsSimple && selectedLayer}
 				<div class='preview-host' aria-label='Simple Overlay preview'>
-					<div class='preview-tag'>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewReadOnly') ?? 'Preview (read-only)'}</div>
+					<div class='preview-tag'>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewReadOnly')}</div>
 					<div class='simple-host'>
 						<SingleLineOverlay
 							overlayData={selectedLayer}
@@ -319,10 +328,10 @@
 			{:else if selectedIsRoll && selectedLayer}
 				<div class='preview-host' aria-label='Roll Overlay preview'>
 					<div class='preview-tag'>
-						{game.i18n?.localize('obs-utils.applications.overlayEditor.previewReadOnly') ?? 'Preview (read-only)'}
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.previewReadOnly')}
 						<button type='button' class='roll-test' onclick={triggerRollPreview}>
 							<i class='fas fa-dice-d20'></i>
-							{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.test') ?? 'Test'}
+							{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.test')}
 						</button>
 					</div>
 					<div class='roll-host obs-utils roll-overlay'>
@@ -358,6 +367,16 @@
 		background #000
 		box-shadow 0 0 0 1px rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.4)
 		margin 16px
+
+		// For non-WYSIWYG previews the area sizes to its content (no fixed 1920×1080)
+		// so the read-only Simple/Roll preview doesn't generate phantom scroll space.
+		&.auto-size
+			width auto
+			height auto
+			max-width calc(100% - 32px)
+			background transparent
+			box-shadow none
+			margin 0
 
 	.comp-wrapper
 		position absolute
@@ -401,8 +420,7 @@
 			cursor nwse-resize
 
 	.preview-host
-		position absolute
-		inset 0
+		// Sized by content, not stretched to fill the canvas-area.
 		display flex
 		flex-direction column
 		align-items center

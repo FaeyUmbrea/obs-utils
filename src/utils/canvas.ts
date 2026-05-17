@@ -371,9 +371,34 @@ function clamp(canvasPos: { x: number; y: number; scale: number }) {
 	return { x, y, scale };
 }
 
+/** Map our string-named easing setting to a Foundry CanvasAnimation easing function. */
+function getEasingFn() {
+	const name = (getSetting('cameraEasing') ?? 'easeOutCubic') as string;
+	// V13 exposes CanvasAnimation under foundry.canvas.animation
+	const CA: any = (foundry as any)?.canvas?.animation?.CanvasAnimation ?? (globalThis as any).CanvasAnimation;
+	if (!CA) return undefined;
+	switch (name) {
+		case 'linear': return undefined; // Foundry's default linear when no easing fn passed
+		case 'easeInCircle': return CA.easeInCircle;
+		case 'easeOutCircle': return CA.easeOutCircle;
+		case 'easeInOutCircle': return CA.easeInOutCircle ?? CA.easeOutCircle;
+		case 'easeInCosine': return CA.easeInCosine;
+		case 'easeOutCosine': return CA.easeOutCosine;
+		case 'easeInOutCosine': return CA.easeInOutCosine ?? CA.easeOutCosine;
+		// Cubic isn't always in CanvasAnimation; fall back to circle approximation.
+		case 'easeOutCubic': return CA.easeOutCircle;
+		case 'easeInOutCubic': return CA.easeInOutCircle ?? CA.easeOutCircle;
+		default: return CA.easeOutCircle;
+	}
+}
+
 function clampAndApply(canvasPos: { x: number; y: number; scale: number }) {
 	if (getSetting('clampCanvas')) {
 		canvasPos = clamp(canvasPos);
 	}
-	canvas!.animatePan(canvasPos).then();
+	const duration = Math.max(0, Math.min(2000, getSetting('cameraSmoothing') ?? 400));
+	const easing = getEasingFn();
+	const opts: any = { ...canvasPos, duration };
+	if (easing) opts.easing = easing;
+	canvas!.animatePan(opts).then();
 }

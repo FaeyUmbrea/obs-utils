@@ -138,10 +138,16 @@
 		commit();
 	}
 
+	function defaultStyleFor(type: string): string {
+		// Plain Text labels look best centered horizontally + vertically in their box.
+		if (type === 'pt') return 'text-align: center; display: flex; align-items: center; justify-content: center;';
+		return '';
+	}
+
 	function addComponentToLayer(layerIndex: number, type: string) {
 		const layer = ($overlays ?? [])[layerIndex];
 		if (!layer) return;
-		const comp = new OverlayComponentData(type, '', '');
+		const comp = new OverlayComponentData(type, '', defaultStyleFor(type));
 		const refW = layer.config?.w ?? 300;
 		const refH = layer.config?.h ?? 300;
 		// New components default to ~half the canvas, centered
@@ -152,8 +158,13 @@
 		layer.components = [...(layer.components ?? []), comp];
 		selectedLayerIndex = layerIndex;
 		selectedComponentIndex = layer.components.length - 1;
+		addedComponentTick++;
 		commit();
 	}
+
+	// Bumped whenever a new component is added; PropertiesPanel watches this
+	// to auto-switch to the Component tab.
+	let addedComponentTick = $state(0);
 
 	const selectedLayer = $derived(
 		selectedLayerIndex !== null ? (($overlays ?? [])[selectedLayerIndex] ?? null) : null
@@ -169,8 +180,45 @@
 			name: (game as ReadyGame).actors?.get(id)?.name ?? id,
 		}))
 	);
+
+	const isEmpty = $derived(($overlays ?? []).length === 0);
+
+	async function openManageActors() {
+		const { default: OverlayActorSelect } = await import('../../applications/overlayactorselect.ts');
+		new OverlayActorSelect({}).render(true);
+	}
+
+	async function openGlobalCSS() {
+		const { default: GlobalCSSEditor } = await import('../../applications/globalcsseditor.ts');
+		new GlobalCSSEditor({}).render(true);
+	}
 </script>
 
+{#if isEmpty}
+	<div class='composer-empty'>
+		<div class='empty-card'>
+			<div class='empty-icon'>
+				<i class='fas fa-layer-group'></i>
+			</div>
+			<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyTitle')}</h2>
+			<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyDescription')}</p>
+			<div class='empty-actions'>
+				<button type='button' onclick={() => addLayer('wysiwyg')}>
+					<i class='fas fa-vector-square'></i>
+					<span>{game.i18n?.localize('obs-utils.overlays.wysiwygOverlay.name')}</span>
+				</button>
+				<button type='button' onclick={() => addLayer('sl')}>
+					<i class='fas fa-grip-lines'></i>
+					<span>{game.i18n?.localize('obs-utils.overlays.simpleOverlay.name')}</span>
+				</button>
+				<button type='button' onclick={() => addLayer('roll')}>
+					<i class='fas fa-dice-d20'></i>
+					<span>{game.i18n?.localize('obs-utils.overlays.rollOverlay.name')}</span>
+				</button>
+			</div>
+		</div>
+	</div>
+{:else}
 <div class='composer'>
 	<aside class='pane layers-pane'>
 		<LayersPanel
@@ -224,6 +272,7 @@
 			overlays={$overlays ?? []}
 			selectedLayerIndex={selectedLayerIndex}
 			bind:selectedComponentIndex={selectedComponentIndex}
+			{addedComponentTick}
 			{renameLayer}
 			{changeLayerType}
 			{setLayer}
@@ -235,9 +284,19 @@
 		/>
 	</aside>
 </div>
+{/if}
 
 <footer class='composer-footer'>
-	<button type='button' class='done' onclick={close}>
+	<button type='button' class='footer-btn secondary' onclick={openManageActors}>
+		<i class='fas fa-users'></i>
+		<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.manageActors')}</span>
+	</button>
+	<button type='button' class='footer-btn secondary' onclick={openGlobalCSS}>
+		<i class='fab fa-css3-alt'></i>
+		<span>{game.i18n?.localize('obs-utils.applications.globalCSSEditor.menuLabel')}</span>
+	</button>
+	<span class='spacer'></span>
+	<button type='button' class='footer-btn primary done' onclick={close}>
 		{game.i18n?.localize('obs-utils.applications.overlayEditor.closeButton')}
 	</button>
 </footer>
@@ -328,6 +387,65 @@
 	.properties-pane
 		// editor panel scrolls internally
 
+	.composer-empty
+		display flex
+		align-items center
+		justify-content center
+		height calc(100% - 44px)
+		padding 24px
+		container-type inline-size
+		container-name composer
+
+	.empty-card
+		max-width 480px
+		text-align center
+		padding 32px
+		background rgba(0, 0, 0, 0.18)
+		border 1px solid rgba(255, 255, 255, 0.08)
+		border-radius 8px
+
+		.empty-icon
+			font-size 36px
+			opacity 0.4
+			margin-bottom 16px
+
+		h2
+			margin 0 0 8px 0
+			font-size 18px
+			font-weight 600
+
+		p
+			margin 0 0 20px 0
+			font-size 13px
+			line-height 1.5
+			opacity 0.7
+
+		.empty-actions
+			display grid
+			grid-template-columns repeat(3, minmax(0, 1fr))
+			gap 10px
+
+			button
+				display flex
+				flex-direction column
+				align-items center
+				gap 8px
+				padding 14px 8px
+				height auto
+				background rgba(255, 144, 0, 0.1)
+				border 1px solid rgba(255, 144, 0, 0.4)
+				border-radius 6px
+				cursor pointer
+				font-size 12px
+
+				i
+					font-size 18px
+					opacity 0.8
+
+				&:hover
+					background rgba(255, 144, 0, 0.2)
+					border-color rgba(255, 144, 0, 0.7)
+
 	.composer-footer
 		position absolute
 		left 0
@@ -336,12 +454,35 @@
 		height 44px
 		display flex
 		align-items center
-		justify-content flex-end
 		gap 8px
 		padding 0 8px
 		border-top 1px solid rgba(255, 255, 255, 0.08)
 
-		.done
+		.footer-btn
 			height 30px
-			padding 0 16px
+			padding 0 12px
+			display inline-flex
+			align-items center
+			gap 6px
+			font-size 12px
+			border-radius 4px
+
+			i
+				font-size 11px
+				opacity 0.8
+
+			&.secondary
+				background transparent
+				border 1px solid rgba(255, 255, 255, 0.12)
+				opacity 0.85
+
+				&:hover
+					opacity 1
+					background rgba(255, 255, 255, 0.06)
+
+			&.primary
+				padding 0 18px
+
+		.spacer
+			flex 1 1 auto
 </style>

@@ -15,16 +15,21 @@
 		'padding': 'padding',
 		'margin': 'margin',
 		'text-align': 'textAlign',
+		'vertical-align': 'verticalAlign',
 		'line-height': 'lineHeight',
 		'letter-spacing': 'letterSpacing',
 		'border': 'border',
 		'border-radius': 'borderRadius',
+		'display': 'display',
+		'align-items': 'alignItems',
+		'justify-content': 'justifyContent',
 	};
 
 	let fields = $state({
 		fontFamily: '', fontSize: '', fontWeight: '', color: '', backgroundColor: '',
-		width: '', height: '', padding: '', margin: '', textAlign: '',
+		width: '', height: '', padding: '', margin: '', textAlign: '', verticalAlign: '',
 		lineHeight: '', letterSpacing: '', border: '', borderRadius: '',
+		display: '', alignItems: '', justifyContent: '',
 	});
 	let extras = $state<StrMap>({});
 
@@ -39,8 +44,9 @@
 	function parseStyleString(input: string) {
 		const newFields: typeof fields = {
 			fontFamily: '', fontSize: '', fontWeight: '', color: '', backgroundColor: '',
-			width: '', height: '', padding: '', margin: '', textAlign: '',
+			width: '', height: '', padding: '', margin: '', textAlign: '', verticalAlign: '',
 			lineHeight: '', letterSpacing: '', border: '', borderRadius: '',
+			display: '', alignItems: '', justifyContent: '',
 		};
 		const newExtras: StrMap = {};
 
@@ -83,38 +89,56 @@
 	function clearAll() {
 		fields = {
 			fontFamily: '', fontSize: '', fontWeight: '', color: '', backgroundColor: '',
-			width: '', height: '', padding: '', margin: '', textAlign: '',
+			width: '', height: '', padding: '', margin: '', textAlign: '', verticalAlign: '',
 			lineHeight: '', letterSpacing: '', border: '', borderRadius: '',
+			display: '', alignItems: '', justifyContent: '',
 		};
 		extras = {};
 		lastSerialized = '';
 		value = '';
 	}
 
-	function t(key: string, fallback: string) {
-		return game.i18n?.localize(key) || fallback;
+	// Vertical-align preset that writes the matching flex declarations so
+	// it actually works on a fixed-height block (not just inline content).
+	function setVerticalAlign(v: string) {
+		if (!v) {
+			fields.verticalAlign = '';
+			fields.display = '';
+			fields.alignItems = '';
+		} else {
+			fields.verticalAlign = v;
+			fields.display = 'flex';
+			fields.alignItems = v === 'top' ? 'flex-start' : v === 'bottom' ? 'flex-end' : 'center';
+			// If text-align center is set, mirror it into justify-content so flex children center horizontally too.
+			if (fields.textAlign === 'center') fields.justifyContent = 'center';
+			else if (fields.textAlign === 'right') fields.justifyContent = 'flex-end';
+			else if (fields.textAlign === 'left') fields.justifyContent = 'flex-start';
+		}
+		lastSerialized = serialize();
+		value = lastSerialized;
 	}
+
 </script>
 
 <div class='easy-fields'>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.color', 'Text color')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.color')}</span>
 		<input type='text' value={fields.color} oninput={(e) => update('color', (e.currentTarget as HTMLInputElement).value)} placeholder='#fff' />
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.backgroundColor', 'Background')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.backgroundColor')}</span>
 		<input type='text' value={fields.backgroundColor} oninput={(e) => update('backgroundColor', (e.currentTarget as HTMLInputElement).value)} placeholder='transparent' />
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.fontFamily', 'Font family')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.fontFamily')}</span>
 		<input type='text' value={fields.fontFamily} oninput={(e) => update('fontFamily', (e.currentTarget as HTMLInputElement).value)} placeholder='Arial, sans-serif' />
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.fontSize', 'Font size')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.fontSize')}</span>
 		<input type='text' value={fields.fontSize} oninput={(e) => update('fontSize', (e.currentTarget as HTMLInputElement).value)} placeholder='16px' />
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.fontWeight', 'Font weight')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.fontWeight')}</span>
 		<select value={fields.fontWeight} onchange={(e) => update('fontWeight', (e.currentTarget as HTMLSelectElement).value)}>
 			<option value=''></option>
 			<option value='300'>Light</option>
@@ -126,7 +150,7 @@
 		</select>
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.textAlign', 'Text align')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.textAlign')}</span>
 		<select value={fields.textAlign} onchange={(e) => update('textAlign', (e.currentTarget as HTMLSelectElement).value)}>
 			<option value=''></option>
 			<option value='left'>left</option>
@@ -136,25 +160,34 @@
 		</select>
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.padding', 'Padding')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.verticalAlign')}</span>
+		<select value={fields.verticalAlign} onchange={(e) => setVerticalAlign((e.currentTarget as HTMLSelectElement).value)}>
+			<option value=''></option>
+			<option value='top'>top</option>
+			<option value='middle'>middle</option>
+			<option value='bottom'>bottom</option>
+		</select>
+	</label>
+	<label>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.padding')}</span>
 		<input type='text' value={fields.padding} oninput={(e) => update('padding', (e.currentTarget as HTMLInputElement).value)} placeholder='4px 8px' />
 	</label>
 	<label>
-		<span>{t('obs-utils.applications.styleEditor.margin', 'Margin')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.margin')}</span>
 		<input type='text' value={fields.margin} oninput={(e) => update('margin', (e.currentTarget as HTMLInputElement).value)} placeholder='0' />
 	</label>
 	<label class='span-2'>
-		<span>{t('obs-utils.applications.styleEditor.border', 'Border')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.border')}</span>
 		<input type='text' value={fields.border} oninput={(e) => update('border', (e.currentTarget as HTMLInputElement).value)} placeholder='1px solid #fff' />
 	</label>
 	<label class='span-2'>
-		<span>{t('obs-utils.applications.styleEditor.borderRadius', 'Border radius')}</span>
+		<span>{game.i18n?.localize('obs-utils.applications.styleEditor.borderRadius')}</span>
 		<input type='text' value={fields.borderRadius} oninput={(e) => update('borderRadius', (e.currentTarget as HTMLInputElement).value)} placeholder='8px' />
 	</label>
 
 	{#if Object.keys(extras).length}
 		<div class='extras span-2'>
-			<strong>{t('obs-utils.applications.styleEditor.preservedExtras', 'Additional rules (preserved)')}</strong>
+			<strong>{game.i18n?.localize('obs-utils.applications.styleEditor.preservedExtras')}</strong>
 			<ul>
 				{#each Object.entries(extras) as [k, v]}
 					<li><code>{k}: {v};</code></li>
@@ -164,7 +197,7 @@
 	{/if}
 
 	<button type='button' class='clear span-2' onclick={clearAll}>
-		{t('obs-utils.applications.styleEditor.clear', 'Clear')}
+		{game.i18n?.localize('obs-utils.applications.styleEditor.clear')}
 	</button>
 </div>
 
