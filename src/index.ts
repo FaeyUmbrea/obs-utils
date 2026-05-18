@@ -5,7 +5,7 @@ import { backfillIds } from './utils/cssInjection.ts';
 import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
-import { getSetting, initOverlayDefaultsHooks, initRollOverlaySettings, initSettings, runMigrations, setSetting } from './utils/settings.ts';
+import { getSetting, initOverlayDefaultsHooks, initSettings, runMigrations, setSetting } from './utils/settings.ts';
 import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
 
 // Conditionally load the polyfill module only when the host browser is missing
@@ -36,7 +36,6 @@ async function start() {
 
 		initSettings();
 		initOverlayDefaultsHooks();
-		initRollOverlaySettings();
 		registerKeybindings();
 
 		// Load UI Component only on /game

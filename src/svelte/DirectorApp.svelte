@@ -19,7 +19,7 @@
 		</div>
 	{/if}
 
-	<nav class='tab-bar' role='tablist'>
+	<div class='tab-bar' role='tablist'>
 		<button
 			type='button'
 			role='tab'
@@ -50,7 +50,7 @@
 			<i class='fas fa-users'></i>
 			<span>{game.i18n?.localize('obs-utils.applications.director.tabCoDMs')}</span>
 		</button>
-	</nav>
+	</div>
 
 	<section class='tab-body'>
 		{#if activeTab === 'controls'}

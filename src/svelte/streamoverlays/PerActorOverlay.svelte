@@ -12,7 +12,7 @@
 </script>
 
 <div class='obs-utils overlay'>
-	{#each actorIDs as actorID}
+	{#each actorIDs as actorID (actorID)}
 		{@const actorName = (game as any).actors?.get?.(actorID)?.name ?? actorID}
 		<div class='actor' id={`actor${actorID}`} data-actor-name={actorName}>
 			{#each overlays as overlay, index (overlays.indexOf(overlay))}

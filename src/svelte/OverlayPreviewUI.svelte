@@ -1,6 +1,5 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { activateCSSInjection, deactivateCSSInjection } from '../utils/cssInjection.ts';
 	import { getApi } from '../utils/helpers.ts';
@@ -10,8 +9,6 @@
 
 	onMount(() => activateCSSInjection());
 	onDestroy(() => deactivateCSSInjection());
-
-	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
 
 	const overlays = settings.getReadableStore('streamOverlays');
 	const actors = settings.getReadableStore('overlayActors');
@@ -33,7 +30,7 @@
 
 	$effect(() => {
 		if (!containerEl) return;
-		const ro = new ResizeObserver(entries => {
+		const ro = new ResizeObserver((entries) => {
 			containerWidth = entries[0].contentRect.width;
 			containerHeight = entries[0].contentRect.height;
 		});
@@ -74,7 +71,7 @@
 				style={`position: absolute; left: ${CHAT_DEADZONE_W}px; top: 0; width: ${REF_W - CHAT_DEADZONE_W}px; height: ${REF_H}px; overflow: hidden;`}
 			>
 				<PerActorOverlay actorIDs={$actors} overlays={$overlays} />
-				{#each [...singleInstanceSvelte5] as overlay}
+				{#each [...singleInstanceSvelte5] as overlay (overlay)}
 					<ExternalComponent ExternalClass={overlay} />
 				{/each}
 			</div>

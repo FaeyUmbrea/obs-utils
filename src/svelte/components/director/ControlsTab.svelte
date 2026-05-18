@@ -3,7 +3,7 @@
 	import { generateDataBlockFromSetting, settings } from '../../../utils/settings.ts';
 	import { sendOpenSettingsConfig } from '../../../utils/socket.ts';
 
-	let { disabled = false } = $props<{ disabled?: boolean }>();
+	const { disabled = false } = $props<{ disabled?: boolean }>();
 
 	const { ic, ooc, players } = generateDataBlockFromSetting();
 	const currentIC = settings.getStore('defaultInCombat');
@@ -28,7 +28,7 @@
 		<div class='mode-row'>
 			<b>{game.i18n?.localize('obs-utils.applications.director.icTypeHeader')}</b>
 			<div class='radio-row'>
-				{#each ic as { id, tooltip, icon }}
+				{#each ic as { id, tooltip, icon } (id)}
 					<input
 						type='radio'
 						bind:group={$currentIC}
@@ -46,7 +46,7 @@
 		<div class='mode-row'>
 			<b>{game.i18n?.localize('obs-utils.applications.director.oocTypeHeader')}</b>
 			<div class='radio-row'>
-				{#each ooc as { id, tooltip, icon }}
+				{#each ooc as { id, tooltip, icon } (id)}
 					<input
 						type='radio'
 						bind:group={$currentOOC}
@@ -66,7 +66,7 @@
 			<div class='smoothing-row'>
 				<label for='cameraEasing' class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.easing')}</label>
 				<select id='cameraEasing' bind:value={$cameraEasing} {disabled}>
-					{#each easingOptions as opt}
+					{#each easingOptions as opt (opt.value)}
 						<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
 					{/each}
 				</select>
@@ -87,7 +87,7 @@
 				id='trackedPlayer'
 				{disabled}
 			>
-				{#each players as { id, name }}
+				{#each players as { id, name } (id)}
 					<option value={id}>{name}</option>
 				{/each}
 			</select>
@@ -228,7 +228,7 @@
 				opacity 0.7
 				text-align right
 
-		.controls-row
-			display flex
-			gap 6px
+	.controls-row
+		display flex
+		gap 6px
 </style>

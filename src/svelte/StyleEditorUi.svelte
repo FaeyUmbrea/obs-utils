@@ -4,7 +4,8 @@
 	// Style Editor with dual-mode (Simple/Advanced) that edits a single CSS string
 	const { foundryApp } = $props();
 
-	// The raw style string that gets saved back
+	// The raw style string that gets saved back — foundryApp is a stable reference, initial capture is intentional
+	// eslint-disable-next-line svelte/valid-compile
 	let style = $state(foundryApp.style ?? '');
 
 	type StrMap = Record<string, string>;
@@ -241,7 +242,7 @@
 				<div class='extras span-2'>
 					<strong>{t('obs-utils.applications.styleEditor.preservedExtras', 'Additional preserved rules')}</strong>
 					<ul>
-						{#each Object.entries(extras) as [k, v]}
+						{#each Object.entries(extras) as [k, v] (k)}
 							<li><code>{k}: {v};</code></li>
 						{/each}
 					</ul>

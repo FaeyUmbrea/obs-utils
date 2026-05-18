@@ -30,7 +30,7 @@
 	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
 		{#if component !== null && component !== undefined}
 			{@const Component = getComponentType(component.type)}
-			<div data-component-id={component.id ?? ''} style='display: contents;'>
+			<div data-component-id={component.id ?? ''} style:display='contents'>
 				<Component
 					data={component.data}
 					componentIndex={index}

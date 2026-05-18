@@ -51,12 +51,21 @@
 		selectedComponentIndex = null;
 	}
 
+	// PlayerRollOverlay is a singleton renderer — it picks the first 'roll'
+	// layer and ignores any others. Disable the Roll option in the Add menu
+	// when one is already present.
+	const hasRollLayer = $derived((overlays ?? []).some((o: OverlayData) => o?.type === 'roll'));
+
 	const overlayTypeOptions = $derived.by(() => {
 		const types = getApi().overlayTypes;
-		if (!types) return [] as Array<{ key: string; label: string }>;
+		if (!types) return [] as Array<{ key: string; label: string; disabled: boolean }>;
 		return Array.from(types.keys())
 			.filter(k => k === 'sl' || k === 'wysiwyg' || k === 'roll')
-			.map(k => ({ key: k, label: typeLabel(k) }));
+			.map(k => ({
+				key: k,
+				label: typeLabel(k),
+				disabled: k === 'roll' && hasRollLayer,
+			}));
 	});
 </script>
 
@@ -76,11 +85,17 @@
 			</button>
 			{#if addMenuOpen}
 				<div class='add-menu' role='menu'>
-					{#each overlayTypeOptions as opt}
+					{#each overlayTypeOptions as opt (opt.key)}
 						<button
 							type='button'
 							role='menuitem'
-							onclick={() => { addMenuOpen = false; addLayer(opt.key); }}
+							disabled={opt.disabled}
+							title={opt.disabled ? game.i18n?.localize('obs-utils.applications.overlayEditor.rollOverlayAlreadyExists') : undefined}
+							onclick={() => {
+								if (opt.disabled) return;
+								addMenuOpen = false;
+								addLayer(opt.key);
+							}}
 						>{opt.label}</button>
 					{/each}
 				</div>
@@ -95,44 +110,50 @@
 					{@const active = selectedLayerIndex === index}
 					{@const disabled = overlay?.enabled === false}
 					<div class='layer' class:active class:disabled>
-					<span class='grab' aria-hidden='true' title='Drag to reorder'>
-						<i class='fas fa-grip-vertical'></i>
-					</span>
-					<button
-						type='button'
-						class='visibility'
-						aria-label={disabled
-							? game.i18n?.localize('obs-utils.applications.overlayEditor.showLayer')
-							: game.i18n?.localize('obs-utils.applications.overlayEditor.hideLayer')}
-						title={disabled
-							? game.i18n?.localize('obs-utils.applications.overlayEditor.showLayer')
-							: game.i18n?.localize('obs-utils.applications.overlayEditor.hideLayer')}
-						onclick={(e) => { e.stopPropagation(); toggleLayerEnabled(index); }}
-					>
-						<i class={disabled ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
-					</button>
-					<button
-						type='button'
-						class='layer-body'
-						onclick={() => selectLayer(index)}
-					>
-						<span class='name'>
-							{layerLabel(overlay, index)}
-							{#if disabled}<span class='hidden-tag'>·&nbsp;hidden</span>{/if}
+						<span class='grab' aria-hidden='true' title='Drag to reorder'>
+							<i class='fas fa-grip-vertical'></i>
 						</span>
-						<span class='type'>{typeLabel(overlay.type)}</span>
-					</button>
-					<button
-						type='button'
-						class='delete'
-						aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
-						title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
-						onclick={(e) => { e.stopPropagation(); removeLayer(index); }}
-					>
-						<i class='fas fa-trash'></i>
-					</button>
-				</div>
-			{/each}
+						<button
+							type='button'
+							class='visibility'
+							aria-label={disabled
+								? game.i18n?.localize('obs-utils.applications.overlayEditor.showLayer')
+								: game.i18n?.localize('obs-utils.applications.overlayEditor.hideLayer')}
+							title={disabled
+								? game.i18n?.localize('obs-utils.applications.overlayEditor.showLayer')
+								: game.i18n?.localize('obs-utils.applications.overlayEditor.hideLayer')}
+							onclick={(e) => {
+								e.stopPropagation();
+								toggleLayerEnabled(index);
+							}}
+						>
+							<i class={disabled ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
+						</button>
+						<button
+							type='button'
+							class='layer-body'
+							onclick={() => selectLayer(index)}
+						>
+							<span class='name'>
+								{layerLabel(overlay, index)}
+								{#if disabled}<span class='hidden-tag'>·&nbsp;hidden</span>{/if}
+							</span>
+							<span class='type'>{typeLabel(overlay.type)}</span>
+						</button>
+						<button
+							type='button'
+							class='delete'
+							aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
+							title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeButton')}
+							onclick={(e) => {
+								e.stopPropagation();
+								removeLayer(index);
+							}}
+						>
+							<i class='fas fa-trash'></i>
+						</button>
+					</div>
+				{/each}
 			{/key}
 		</SortableList>
 		{#if overlays.length === 0}
@@ -197,8 +218,12 @@
 				padding 6px 10px
 				font-size 12px
 
-				&:hover
+				&:hover:not(:disabled)
 					background rgba(255, 255, 255, 0.08)
+
+				&:disabled
+					opacity 0.4
+					cursor not-allowed
 
 	.layer-list
 		margin 0

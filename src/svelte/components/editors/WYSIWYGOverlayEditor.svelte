@@ -2,7 +2,6 @@
 <script lang='ts'>
 	import { getApi } from '../../../utils/helpers.ts';
 	import { OverlayComponentData } from '../../../utils/types.ts';
-	import FallbackEditor from './FallbackEditor.svelte';
 
 	let { overlay = $bindable(), refreshFn = $bindable() } = $props();
 
@@ -20,7 +19,7 @@
 
 	$effect(() => {
 		if (!canvasContainer) return;
-		const ro = new ResizeObserver(entries => {
+		const ro = new ResizeObserver((entries) => {
 			containerWidth = entries[0].contentRect.width;
 		});
 		ro.observe(canvasContainer);
@@ -34,7 +33,7 @@
 	let addType = $state('');
 
 	const componentNames = $derived(
-		getApi().overlayTypes.get('wysiwyg')?.overlayComponentNames ?? new Map<string, string>()
+		getApi().overlayTypes.get('wysiwyg')?.overlayComponentNames ?? new Map<string, string>(),
 	);
 
 	$effect(() => {
@@ -95,8 +94,14 @@
 			const dy = Math.round((e.clientY - startY) / scaleFactor);
 			if (dir.includes('e')) comp.w = Math.max(20, origW + dx);
 			if (dir.includes('s')) comp.h = Math.max(10, origH + dy);
-			if (dir.includes('w')) { comp.x = origX + dx; comp.w = Math.max(20, origW - dx); }
-			if (dir.includes('n')) { comp.y = origY + dy; comp.h = Math.max(10, origH - dy); }
+			if (dir.includes('w')) {
+				comp.x = origX + dx;
+				comp.w = Math.max(20, origW - dx);
+			}
+			if (dir.includes('n')) {
+				comp.y = origY + dy;
+				comp.h = Math.max(10, origH - dy);
+			}
 			overlay.components = [...overlay.components];
 		}
 		function onUp() {
@@ -112,16 +117,31 @@
 		if (selectedIndex < 0) return;
 		const step = e.shiftKey ? 10 : 1;
 		const comp = overlay.components[selectedIndex];
-		if (e.key === 'ArrowLeft') { comp.x = (comp.x ?? 0) - step; e.preventDefault(); }
-		if (e.key === 'ArrowRight') { comp.x = (comp.x ?? 0) + step; e.preventDefault(); }
-		if (e.key === 'ArrowUp') { comp.y = (comp.y ?? 0) - step; e.preventDefault(); }
-		if (e.key === 'ArrowDown') { comp.y = (comp.y ?? 0) + step; e.preventDefault(); }
+		if (e.key === 'ArrowLeft') {
+			comp.x = (comp.x ?? 0) - step;
+			e.preventDefault();
+		}
+		if (e.key === 'ArrowRight') {
+			comp.x = (comp.x ?? 0) + step;
+			e.preventDefault();
+		}
+		if (e.key === 'ArrowUp') {
+			comp.y = (comp.y ?? 0) - step;
+			e.preventDefault();
+		}
+		if (e.key === 'ArrowDown') {
+			comp.y = (comp.y ?? 0) + step;
+			e.preventDefault();
+		}
 		if (e.key === 'Delete' || e.key === 'Backspace') {
 			overlay.components = overlay.components.filter((_, i) => i !== selectedIndex);
 			selectedIndex = -1;
 			e.preventDefault();
 		}
-		if (e.key === 'Escape') { selectedIndex = -1; e.preventDefault(); }
+		if (e.key === 'Escape') {
+			selectedIndex = -1;
+			e.preventDefault();
+		}
 		if (e.key === 'Tab' && overlay.components.length > 0) {
 			e.preventDefault();
 			selectedIndex = (selectedIndex + 1) % overlay.components.length;
@@ -165,7 +185,7 @@
 			type='number'
 			value={w}
 			min='1'
-			onchange={(e) => setConfig('w', parseInt((e.target as HTMLInputElement).value) || 1920)}
+			onchange={e => setConfig('w', Number.parseInt((e.target as HTMLInputElement).value) || 1920)}
 		/>
 		<span>H:</span>
 		<input
@@ -173,14 +193,14 @@
 			type='number'
 			value={h}
 			min='1'
-			onchange={(e) => setConfig('h', parseInt((e.target as HTMLInputElement).value) || 1080)}
+			onchange={e => setConfig('h', Number.parseInt((e.target as HTMLInputElement).value) || 1080)}
 		/>
 		<span>BG:</span>
 		<input
 			class='bg-input'
 			type='text'
 			value={bg}
-			onchange={(e) => setConfig('bg', (e.target as HTMLInputElement).value)}
+			onchange={e => setConfig('bg', (e.target as HTMLInputElement).value)}
 		/>
 		<button aria-label='Browse' onclick={openFilePicker} type='button'>
 			<i class='fa-solid fa-file'></i>
@@ -191,7 +211,7 @@
 		<span class='toolbar-sep'></span>
 		<span>Add:</span>
 		<select bind:value={addType}>
-			{#each [...componentNames] as [key, name]}
+			{#each [...componentNames] as [key, name] (key)}
 				<option value={key}>{game.i18n?.localize(name)}</option>
 			{/each}
 		</select>
@@ -217,7 +237,9 @@
 				class='canvas-bg'
 				style={`width: ${w}px; height: ${h}px; ${bg ? `background-image: url('${bg}'); background-size: cover; background-position: center;` : ''}`}
 				role='presentation'
-				onmousedown={(e) => { if (e.target === e.currentTarget) selectedIndex = -1; }}
+				onmousedown={(e) => {
+					if (e.target === e.currentTarget) selectedIndex = -1;
+				}}
 			>
 				{#each overlay.components as comp, i (i)}
 					{#if comp}
@@ -227,13 +249,13 @@
 							role='button'
 							tabindex={i}
 							aria-label={`Component ${i}`}
-							onmousedown={(e) => onComponentMousedown(e, i)}
+							onmousedown={e => onComponentMousedown(e, i)}
 						>
 							{#if selectedIndex === i}
-								<div class='handle nw' role='presentation' onmousedown={(e) => onHandleMousedown(e, 'nw', i)}></div>
-								<div class='handle ne' role='presentation' onmousedown={(e) => onHandleMousedown(e, 'ne', i)}></div>
-								<div class='handle sw' role='presentation' onmousedown={(e) => onHandleMousedown(e, 'sw', i)}></div>
-								<div class='handle se' role='presentation' onmousedown={(e) => onHandleMousedown(e, 'se', i)}></div>
+								<div class='handle nw' role='presentation' onmousedown={e => onHandleMousedown(e, 'nw', i)}></div>
+								<div class='handle ne' role='presentation' onmousedown={e => onHandleMousedown(e, 'ne', i)}></div>
+								<div class='handle sw' role='presentation' onmousedown={e => onHandleMousedown(e, 'sw', i)}></div>
+								<div class='handle se' role='presentation' onmousedown={e => onHandleMousedown(e, 'se', i)}></div>
 							{/if}
 						</div>
 					{/if}
@@ -245,15 +267,39 @@
 	{#if selectedComp}
 		<div class='properties-panel'>
 			<div class='props-row'>
-				<label>X:<input type='number' value={selectedComp.x ?? 0} onchange={(e) => { selectedComp.x = parseInt((e.target as HTMLInputElement).value) || 0; overlay.components = [...overlay.components]; refreshFn?.(); }} /></label>
-				<label>Y:<input type='number' value={selectedComp.y ?? 0} onchange={(e) => { selectedComp.y = parseInt((e.target as HTMLInputElement).value) || 0; overlay.components = [...overlay.components]; refreshFn?.(); }} /></label>
-				<label>W:<input type='number' min='1' value={selectedComp.w ?? 100} onchange={(e) => { selectedComp.w = parseInt((e.target as HTMLInputElement).value) || 100; overlay.components = [...overlay.components]; refreshFn?.(); }} /></label>
-				<label>H:<input type='number' min='1' value={selectedComp.h ?? 30} onchange={(e) => { selectedComp.h = parseInt((e.target as HTMLInputElement).value) || 30; overlay.components = [...overlay.components]; refreshFn?.(); }} /></label>
-				<label>Rot:<input type='number' value={selectedComp.rotation ?? 0} onchange={(e) => { selectedComp.rotation = parseFloat((e.target as HTMLInputElement).value) || 0; overlay.components = [...overlay.components]; refreshFn?.(); }} /></label>
+				<label>X:<input type='number' value={selectedComp.x ?? 0} onchange={(e) => {
+					selectedComp.x = Number.parseInt((e.target as HTMLInputElement).value) || 0;
+					overlay.components = [...overlay.components];
+					refreshFn?.();
+				}} /></label>
+				<label>Y:<input type='number' value={selectedComp.y ?? 0} onchange={(e) => {
+					selectedComp.y = Number.parseInt((e.target as HTMLInputElement).value) || 0;
+					overlay.components = [...overlay.components];
+					refreshFn?.();
+				}} /></label>
+				<label>W:<input type='number' min='1' value={selectedComp.w ?? 100} onchange={(e) => {
+					selectedComp.w = Number.parseInt((e.target as HTMLInputElement).value) || 100;
+					overlay.components = [...overlay.components];
+					refreshFn?.();
+				}} /></label>
+				<label>H:<input type='number' min='1' value={selectedComp.h ?? 30} onchange={(e) => {
+					selectedComp.h = Number.parseInt((e.target as HTMLInputElement).value) || 30;
+					overlay.components = [...overlay.components];
+					refreshFn?.();
+				}} /></label>
+				<label>Rot:<input type='number' value={selectedComp.rotation ?? 0} onchange={(e) => {
+					selectedComp.rotation = Number.parseFloat((e.target as HTMLInputElement).value) || 0;
+					overlay.components = [...overlay.components];
+					refreshFn?.();
+				}} /></label>
 				<button
 					aria-label={selectedComp.locked ? 'Unlock' : 'Lock'}
 					title={selectedComp.locked ? 'Unlock' : 'Lock'}
-					onclick={() => { selectedComp.locked = !selectedComp.locked; overlay.components = [...overlay.components]; refreshFn?.(); }}
+					onclick={() => {
+						selectedComp.locked = !selectedComp.locked;
+						overlay.components = [...overlay.components];
+						refreshFn?.();
+					}}
 					type='button'
 				>
 					<i class={selectedComp.locked ? 'fa-solid fa-lock' : 'fa-solid fa-lock-open'}></i>
@@ -261,7 +307,11 @@
 				<button
 					aria-label='Delete Component'
 					title='Delete'
-					onclick={() => { overlay.components = overlay.components.filter((_, i) => i !== selectedIndex); selectedIndex = -1; refreshFn?.(); }}
+					onclick={() => {
+						overlay.components = overlay.components.filter((_, i) => i !== selectedIndex);
+						selectedIndex = -1;
+						refreshFn?.();
+					}}
 					type='button'
 				>
 					<i class='fa-solid fa-trash'></i>
@@ -271,9 +321,13 @@
 				<label>Type:
 					<select
 						value={selectedComp.type}
-						onchange={(e) => { selectedComp.type = (e.target as HTMLSelectElement).value; overlay.components = [...overlay.components]; refreshFn?.(); }}
+						onchange={(e) => {
+							selectedComp.type = (e.target as HTMLSelectElement).value;
+							overlay.components = [...overlay.components];
+							refreshFn?.();
+						}}
 					>
-						{#each [...componentNames] as [key, name]}
+						{#each [...componentNames] as [key, name] (key)}
 							<option value={key}>{game.i18n?.localize(name)}</option>
 						{/each}
 					</select>
@@ -283,14 +337,22 @@
 				{#if selectedEditor}
 					{@const EditorComponent = selectedEditor}
 					<EditorComponent
-						bind:data={() => selectedComp.data, (v) => { selectedComp.data = v; overlay.components = [...overlay.components]; refreshFn?.(); }}
+						bind:data={() => selectedComp.data, (v) => {
+						selectedComp.data = v;
+						overlay.components = [...overlay.components];
+						refreshFn?.();
+					}}
 					/>
 				{:else}
 					<label>Data:
 						<input
 							type='text'
 							value={selectedComp.data}
-							onchange={(e) => { selectedComp.data = (e.target as HTMLInputElement).value; overlay.components = [...overlay.components]; refreshFn?.(); }}
+							onchange={(e) => {
+								selectedComp.data = (e.target as HTMLInputElement).value;
+								overlay.components = [...overlay.components];
+								refreshFn?.();
+							}}
 						/>
 					</label>
 				{/if}

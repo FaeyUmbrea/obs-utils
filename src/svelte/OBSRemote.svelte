@@ -41,7 +41,10 @@
 			: allRegistrations.filter(r => r.key !== 'core.onStopStreaming');
 	});
 
-	let selectedKey = $state(visibleRegistrations[0]?.key ?? '');
+	let selectedKey = $state('');
+	$effect.pre(() => {
+		if (!selectedKey) selectedKey = visibleRegistrations[0]?.key ?? '';
+	});
 	const selectedReg = $derived(visibleRegistrations.find(r => r.key === selectedKey));
 	const hasConditions = $derived((selectedReg?.conditionFields?.length ?? 0) > 0);
 
@@ -111,7 +114,7 @@
 </script>
 
 <main>
-	<nav class='menu-tabs' role='tablist'>
+	<div class='menu-tabs' role='tablist'>
 		<button
 			type='button'
 			role='tab'
@@ -132,7 +135,7 @@
 			<i class='fas fa-bolt'></i>
 			<span>{game.i18n?.localize('obs-utils.applications.obsRemote.tabEvents')}</span>
 		</button>
-	</nav>
+	</div>
 	<hr />
 
 	{#if activeTab === 'connection'}
@@ -156,7 +159,7 @@
 			<div class='sync'>
 				<span class='sync-label'>{game.i18n?.localize('obs-utils.applications.obsWebsocket.syncLabel')}</span>
 				<select bind:value={currentTrackedPlayer} name='trackedPlayer' id='trackedPlayer'>
-					{#each onlineUsers as { id, name }}
+					{#each onlineUsers as { id, name } (id)}
 						<option value={id}>{name}</option>
 					{/each}
 				</select>
@@ -185,7 +188,9 @@
 				{/snippet}
 			</Select>
 			<button
-				aria-label='add'
+				aria-label={hasConditions
+					? game.i18n?.localize('obs-utils.applications.obsRemote.addInstance')
+					: game.i18n?.localize('obs-utils.applications.obsRemote.addAction')}
 				class='add'
 				onclick={onEventsAddClick}
 				type='button'
@@ -230,26 +235,26 @@
 												<input
 													type='number'
 													value={inst.conditions[field.key] ?? 0}
-													onchange={(e) => updateCondition(idx, field.key, Number((e.currentTarget as HTMLInputElement).value))}
+													onchange={e => updateCondition(idx, field.key, Number((e.currentTarget as HTMLInputElement).value))}
 												/>
 											{:else if field.type === 'boolean'}
 												<input
 													type='checkbox'
 													checked={!!inst.conditions[field.key]}
-													onchange={(e) => updateCondition(idx, field.key, (e.currentTarget as HTMLInputElement).checked)}
+													onchange={e => updateCondition(idx, field.key, (e.currentTarget as HTMLInputElement).checked)}
 												/>
 											{:else}
 												<input
 													type='text'
 													value={inst.conditions[field.key] ?? ''}
-													onchange={(e) => updateCondition(idx, field.key, (e.currentTarget as HTMLInputElement).value)}
+													onchange={e => updateCondition(idx, field.key, (e.currentTarget as HTMLInputElement).value)}
 												/>
 											{/if}
 										</label>
 									{/each}
 								</div>
 								<ObsTab
-									bind:handleAdd={() => perInstanceHandleAdd[idx], (v) => (perInstanceHandleAdd[idx] = v)}
+									bind:handleAdd={() => perInstanceHandleAdd[idx], v => (perInstanceHandleAdd[idx] = v)}
 									bind:eventArray={() => getInstanceActions(idx), v => setInstanceActions(idx, v)}
 									useWebSocket={$useWebSocket}
 								/>
@@ -312,9 +317,26 @@
 	}
 	.header {
 		display: grid;
-		grid-template-columns: auto 45px;
+		grid-template-columns: 1fr 38px;
 		gap: 6px;
 		flex: 0 0 auto;
+		align-items: center;
+	}
+	.add {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		height: 38px;
+		width: 38px;
+		background: rgba(255, 144, 0, 0.15);
+		border: 1px solid rgba(255, 144, 0, 0.45);
+		border-radius: 3px;
+		font-size: 13px;
+		cursor: pointer;
+	}
+	.add:hover {
+		background: rgba(255, 144, 0, 0.25);
+		border-color: rgba(255, 144, 0, 0.7);
 	}
 	.content {
 		flex: 1 1 auto;

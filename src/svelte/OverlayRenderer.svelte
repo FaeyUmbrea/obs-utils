@@ -20,10 +20,10 @@
 
 <div class='overlay-renderer'>
 	<PerActorOverlay actorIDs={$actors} overlays={$overlays} />
-	{#each [...singleTimeOverlaysLegacy] as overlay}
+	{#each [...singleTimeOverlaysLegacy] as overlay (overlay)}
 		<LegacyExternalComponent ExternalClass={overlay} />
 	{/each}
-	{#each [...singleTimeOverlaysSvelte5] as overlay}
+	{#each [...singleTimeOverlaysSvelte5] as overlay (overlay)}
 		<ExternalComponent ExternalClass={overlay} />
 	{/each}
 </div>

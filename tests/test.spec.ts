@@ -79,7 +79,6 @@ test.describe('DM Client Only Tests', () => {
 
 		// (Overlay Actor menu removed; manage actors is now in the Overlay Editor footer.)
 
-
 		// Overlay Editor
 
 		await gmPage.locator('button[data-key=\'obs-utils.overlayEditor\']').click();

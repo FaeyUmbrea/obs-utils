@@ -28,7 +28,7 @@
 {#if showCoDMs}
 	<b>{game.i18n?.localize('obs-utils.applications.director.coDMsHeader')}</b>
 	<ul class='codm-list'>
-		{#each allGMs as gm}
+		{#each allGMs as gm (gm.id)}
 			{@const isActive = gm.id === activeGMId}
 			{@const isMe = gm.id === myUserId}
 			{@const isOnline = !!gm.active}

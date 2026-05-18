@@ -2,6 +2,8 @@ import type { Component } from 'svelte';
 import type { ActorValues } from './helpers.ts';
 import type { CustomEventInstance } from './types.ts';
 import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
+import PlayerRollOverlayEditor from '../svelte/components/editors/PlayerRollOverlayEditor.svelte';
+import WYSIWYGOverlayEditor from '../svelte/components/editors/WYSIWYGOverlayEditor.svelte';
 import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
 import AVBoolIconComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolIconComponent.svelte';
 import AVBoolImageComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolImageComponent.svelte';
@@ -11,8 +13,6 @@ import AVMultiImageComponent from '../svelte/streamoverlays/overlaycomponents/AV
 import FAIconComponent from '../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte';
 import ProgressBarComponent from '../svelte/streamoverlays/overlaycomponents/ProgressBarComponent.svelte';
 import PlayerRollOverlay from '../svelte/streamoverlays/PlayerRollOverlay.svelte';
-import PlayerRollOverlayEditor from '../svelte/components/editors/PlayerRollOverlayEditor.svelte';
-import WYSIWYGOverlayEditor from '../svelte/components/editors/WYSIWYGOverlayEditor.svelte';
 import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte';
 import WYSIWYGOverlay from '../svelte/streamoverlays/WYSIWYGOverlay.svelte';
 import { MODULE_ID } from './const.ts';

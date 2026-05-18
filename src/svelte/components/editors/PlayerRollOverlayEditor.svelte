@@ -1,43 +1,42 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { settings as rollOverlaySettings, getSetting } from '../../../utils/settings.ts';
 	import { OverlayData } from '../../../utils/types.ts';
 
 	let { overlay = $bindable<OverlayData>(), refreshFn = $bindable<() => void>() } = $props();
 
-	let preEnabled = $state((overlay.config?.preRollEnabled ?? getSetting('rollOverlayPreRollEnabled')) as boolean ?? false);
-	let postEnabled = $state((overlay.config?.postRollEnabled ?? getSetting('rollOverlayPostRollEnabled')) as boolean ?? false);
-	let preRollDelay = $state((overlay.config?.preRollDelay ?? getSetting('rollOverlayPreRollDelay')) as number ?? 0);
-	let preRollFadeIn = $state((overlay.config?.preRollFadeIn ?? getSetting('rollOverlayPreRollFadeIn')) as number ?? 0);
-	let preRollFadeOut = $state((overlay.config?.preRollFadeOut ?? getSetting('rollOverlayPreRollFadeOut')) as number ?? 0);
-	let preRollStay = $state((overlay.config?.preRollStay ?? getSetting('rollOverlayPreRollStay')) as number ?? 0);
-	let preRollImage = $state((overlay.config?.preRollImage ?? getSetting('rollOverlayPreRollImage')) as string ?? '');
-	let rollFadeIn = $state((overlay.config?.rollFadeIn ?? getSetting('rollOverlayRollFadeIn')) as number ?? 0);
-	let rollFadeOut = $state((overlay.config?.rollFadeOut ?? getSetting('rollOverlayRollFadeOut')) as number ?? 0);
-	let rollStay = $state((overlay.config?.rollStay ?? getSetting('rollOverlayRollStay')) as number ?? 0);
-	let rollBackground = $state((overlay.config?.rollBackground ?? getSetting('rollOverlayRollBackground')) as string ?? '');
-	let rollForeground = $state((overlay.config?.rollForeground ?? getSetting('rollOverlayRollForeground')) as string ?? '');
-	let postRollFadeIn = $state((overlay.config?.postRollFadeIn ?? getSetting('rollOverlayPostRollFadeIn')) as number ?? 0);
-	let postRollFadeOut = $state((overlay.config?.postRollFadeOut ?? getSetting('rollOverlayPostRollFadeOut')) as number ?? 0);
-	let postRollStay = $state((overlay.config?.postRollStay ?? getSetting('rollOverlayPostRollStay')) as number ?? 0);
-	let postRollImage = $state((overlay.config?.postRollImage ?? getSetting('rollOverlayPostRollImage')) as string ?? '');
+	let preEnabled = $state((overlay.config?.preRollEnabled ?? false) as boolean);
+	let postEnabled = $state((overlay.config?.postRollEnabled ?? false) as boolean);
+	let preRollDelay = $state((overlay.config?.preRollDelay ?? 0) as number);
+	let preRollFadeIn = $state((overlay.config?.preRollFadeIn ?? 0) as number);
+	let preRollFadeOut = $state((overlay.config?.preRollFadeOut ?? 0) as number);
+	let preRollStay = $state((overlay.config?.preRollStay ?? 0) as number);
+	let preRollImage = $state((overlay.config?.preRollImage ?? '') as string);
+	let rollFadeIn = $state((overlay.config?.rollFadeIn ?? 0) as number);
+	let rollFadeOut = $state((overlay.config?.rollFadeOut ?? 0) as number);
+	let rollStay = $state((overlay.config?.rollStay ?? 5000) as number);
+	let rollBackground = $state((overlay.config?.rollBackground ?? '') as string);
+	let rollForeground = $state((overlay.config?.rollForeground ?? '') as string);
+	let postRollFadeIn = $state((overlay.config?.postRollFadeIn ?? 0) as number);
+	let postRollFadeOut = $state((overlay.config?.postRollFadeOut ?? 0) as number);
+	let postRollStay = $state((overlay.config?.postRollStay ?? 0) as number);
+	let postRollImage = $state((overlay.config?.postRollImage ?? '') as string);
 
-	$effect(() => { overlay.config = { ...overlay.config, preRollEnabled: preEnabled }; rollOverlaySettings.getStore('rollOverlayPreRollEnabled').set(preEnabled); });
-	$effect(() => { overlay.config = { ...overlay.config, postRollEnabled: postEnabled }; rollOverlaySettings.getStore('rollOverlayPostRollEnabled').set(postEnabled); });
-	$effect(() => { overlay.config = { ...overlay.config, preRollDelay: preRollDelay }; rollOverlaySettings.getStore('rollOverlayPreRollDelay').set(preRollDelay); });
-	$effect(() => { overlay.config = { ...overlay.config, preRollFadeIn: preRollFadeIn }; rollOverlaySettings.getStore('rollOverlayPreRollFadeIn').set(preRollFadeIn); });
-	$effect(() => { overlay.config = { ...overlay.config, preRollFadeOut: preRollFadeOut }; rollOverlaySettings.getStore('rollOverlayPreRollFadeOut').set(preRollFadeOut); });
-	$effect(() => { overlay.config = { ...overlay.config, preRollStay: preRollStay }; rollOverlaySettings.getStore('rollOverlayPreRollStay').set(preRollStay); });
-	$effect(() => { overlay.config = { ...overlay.config, preRollImage: preRollImage }; rollOverlaySettings.getStore('rollOverlayPreRollImage').set(preRollImage); });
-	$effect(() => { overlay.config = { ...overlay.config, rollFadeIn: rollFadeIn }; rollOverlaySettings.getStore('rollOverlayRollFadeIn').set(rollFadeIn); });
-	$effect(() => { overlay.config = { ...overlay.config, rollFadeOut: rollFadeOut }; rollOverlaySettings.getStore('rollOverlayRollFadeOut').set(rollFadeOut); });
-	$effect(() => { overlay.config = { ...overlay.config, rollStay: rollStay }; rollOverlaySettings.getStore('rollOverlayRollStay').set(rollStay); });
-	$effect(() => { overlay.config = { ...overlay.config, rollBackground: rollBackground }; rollOverlaySettings.getStore('rollOverlayRollBackground').set(rollBackground); });
-	$effect(() => { overlay.config = { ...overlay.config, rollForeground: rollForeground }; rollOverlaySettings.getStore('rollOverlayRollForeground').set(rollForeground); });
-	$effect(() => { overlay.config = { ...overlay.config, postRollFadeIn: postRollFadeIn }; rollOverlaySettings.getStore('rollOverlayPostRollFadeIn').set(postRollFadeIn); });
-	$effect(() => { overlay.config = { ...overlay.config, postRollFadeOut: postRollFadeOut }; rollOverlaySettings.getStore('rollOverlayPostRollFadeOut').set(postRollFadeOut); });
-	$effect(() => { overlay.config = { ...overlay.config, postRollStay: postRollStay }; rollOverlaySettings.getStore('rollOverlayPostRollStay').set(postRollStay); });
-	$effect(() => { overlay.config = { ...overlay.config, postRollImage: postRollImage }; rollOverlaySettings.getStore('rollOverlayPostRollImage').set(postRollImage); });
+	$effect(() => { overlay.config = { ...overlay.config, preRollEnabled: preEnabled }; });
+	$effect(() => { overlay.config = { ...overlay.config, postRollEnabled: postEnabled }; });
+	$effect(() => { overlay.config = { ...overlay.config, preRollDelay }; });
+	$effect(() => { overlay.config = { ...overlay.config, preRollFadeIn }; });
+	$effect(() => { overlay.config = { ...overlay.config, preRollFadeOut }; });
+	$effect(() => { overlay.config = { ...overlay.config, preRollStay }; });
+	$effect(() => { overlay.config = { ...overlay.config, preRollImage }; });
+	$effect(() => { overlay.config = { ...overlay.config, rollFadeIn }; });
+	$effect(() => { overlay.config = { ...overlay.config, rollFadeOut }; });
+	$effect(() => { overlay.config = { ...overlay.config, rollStay }; });
+	$effect(() => { overlay.config = { ...overlay.config, rollBackground }; });
+	$effect(() => { overlay.config = { ...overlay.config, rollForeground }; });
+	$effect(() => { overlay.config = { ...overlay.config, postRollFadeIn }; });
+	$effect(() => { overlay.config = { ...overlay.config, postRollFadeOut }; });
+	$effect(() => { overlay.config = { ...overlay.config, postRollStay }; });
+	$effect(() => { overlay.config = { ...overlay.config, postRollImage }; });
 
 	let filePickerAppPreRoll: foundry.applications.apps.FilePicker | undefined;
 

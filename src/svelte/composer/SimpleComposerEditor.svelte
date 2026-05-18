@@ -31,16 +31,25 @@
 
 	function portalToBody(node: HTMLElement) {
 		document.body.appendChild(node);
-		return { destroy() { node.parentNode?.removeChild(node); } };
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node);
+			},
+		};
 	}
 
 	function openAddMenu() {
-		if (!addBtnEl) { addMenuOpen = true; return; }
+		if (!addBtnEl) {
+			addMenuOpen = true;
+			return;
+		}
 		const rect = addBtnEl.getBoundingClientRect();
 		addMenuStyle = `position: fixed; top: ${Math.round(rect.bottom + 4)}px; left: ${Math.round(rect.left)}px; width: ${Math.round(rect.width)}px;`;
 		addMenuOpen = true;
 	}
-	function closeAddMenu() { addMenuOpen = false; }
+	function closeAddMenu() {
+		addMenuOpen = false;
+	}
 	function onWindowClick(e: MouseEvent) {
 		if (!addMenuOpen) return;
 		const t = e.target as HTMLElement | null;
@@ -86,10 +95,10 @@
 	}
 
 	const selectedComp = $derived(
-		selectedComponentIndex !== null ? layer.components[selectedComponentIndex] : null
+		selectedComponentIndex !== null ? layer.components[selectedComponentIndex] : null,
 	);
 	const selectedComponentEditor = $derived(
-		selectedComp ? getComponentEditor(selectedComp.type) : null
+		selectedComp ? getComponentEditor(selectedComp.type) : null,
 	);
 
 </script>
@@ -121,7 +130,7 @@
 				overlayType='sl'
 				bind:selectedIndex={selectedComponentIndex}
 				onReorder={(from, to) => reorderComponents(layerIndex, from, to)}
-				onRemove={(i) => removeComponent(layerIndex, i)}
+				onRemove={i => removeComponent(layerIndex, i)}
 			/>
 		</section>
 	{:else if view === 'component'}
@@ -138,9 +147,9 @@
 						<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.componentType')}</span>
 						<select
 							value={selectedComp.type}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { type: (e.currentTarget as HTMLSelectElement).value })}
+							onchange={e => updateComponent(selectedComponentIndex!, { type: (e.currentTarget as HTMLSelectElement).value })}
 						>
-							{#each componentTypes as opt}
+							{#each componentTypes as opt (opt.key)}
 								<option value={opt.key}>{opt.label}</option>
 							{/each}
 						</select>
@@ -172,7 +181,7 @@
 
 {#if addMenuOpen}
 	<div use:portalToBody class='add-menu-simple' role='menu' data-add-component-menu style={addMenuStyle}>
-		{#each componentTypes as opt}
+		{#each componentTypes as opt (opt.key)}
 			<button type='button' role='menuitem' onclick={() => addComponent(opt.key)}>
 				<span class='menu-key'>{opt.key}</span>
 				<span class='menu-name'>{opt.label}</span>
@@ -229,7 +238,7 @@
 			font-size 10px
 			opacity 0.7
 
-		input, select
+		select
 			width 100%
 			height 24px
 			padding 0 6px

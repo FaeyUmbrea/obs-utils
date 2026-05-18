@@ -33,11 +33,18 @@
 	// affected by transformed ancestors (Foundry ApplicationV2 uses transforms).
 	function portalToBody(node: HTMLElement) {
 		document.body.appendChild(node);
-		return { destroy() { node.parentNode?.removeChild(node); } };
+		return {
+			destroy() {
+				node.parentNode?.removeChild(node);
+			},
+		};
 	}
 
 	function openAddMenu() {
-		if (!addBtnEl) { addMenuOpen = true; return; }
+		if (!addBtnEl) {
+			addMenuOpen = true;
+			return;
+		}
 		const rect = addBtnEl.getBoundingClientRect();
 		// Viewport-relative — valid once portalled out of any transformed ancestor.
 		addMenuStyle = `position: fixed; top: ${Math.round(rect.bottom + 4)}px; left: ${Math.round(rect.left)}px; width: ${Math.round(rect.width)}px;`;
@@ -104,10 +111,10 @@
 	}
 
 	const selectedComp = $derived(
-		selectedComponentIndex !== null ? layer.components[selectedComponentIndex] : null
+		selectedComponentIndex !== null ? layer.components[selectedComponentIndex] : null,
 	);
 	const selectedComponentEditor = $derived(
-		selectedComp ? getComponentEditor(selectedComp.type) : null
+		selectedComp ? getComponentEditor(selectedComp.type) : null,
 	);
 
 </script>
@@ -123,7 +130,7 @@
 						type='number'
 						min='1'
 						value={layer.config?.w ?? 300}
-						onchange={(e) => setConfig('w', parseInt((e.currentTarget as HTMLInputElement).value) || 300)}
+						onchange={e => setConfig('w', Number.parseInt((e.currentTarget as HTMLInputElement).value) || 300)}
 					/>
 				</label>
 				<label class='field'>
@@ -132,7 +139,7 @@
 						type='number'
 						min='1'
 						value={layer.config?.h ?? 300}
-						onchange={(e) => setConfig('h', parseInt((e.currentTarget as HTMLInputElement).value) || 300)}
+						onchange={e => setConfig('h', Number.parseInt((e.currentTarget as HTMLInputElement).value) || 300)}
 					/>
 				</label>
 			</div>
@@ -163,7 +170,7 @@
 				overlayType='wysiwyg'
 				bind:selectedIndex={selectedComponentIndex}
 				onReorder={(from, to) => reorderComponents(layerIndex, from, to)}
-				onRemove={(i) => removeComponent(layerIndex, i)}
+				onRemove={i => removeComponent(layerIndex, i)}
 			/>
 		</section>
 	{:else if view === 'component'}
@@ -191,9 +198,9 @@
 						<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.componentType')}</span>
 						<select
 							value={selectedComp.type}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { type: (e.currentTarget as HTMLSelectElement).value })}
+							onchange={e => updateComponent(selectedComponentIndex!, { type: (e.currentTarget as HTMLSelectElement).value })}
 						>
-							{#each componentTypes as opt}
+							{#each componentTypes as opt (opt.key)}
 								<option value={opt.key}>{opt.label}</option>
 							{/each}
 						</select>
@@ -206,7 +213,7 @@
 						<input
 							type='number'
 							value={selectedComp.x ?? 0}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { x: parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
+							onchange={e => updateComponent(selectedComponentIndex!, { x: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
 						/>
 					</label>
 					<label class='field'>
@@ -214,7 +221,7 @@
 						<input
 							type='number'
 							value={selectedComp.y ?? 0}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { y: parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
+							onchange={e => updateComponent(selectedComponentIndex!, { y: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
 						/>
 					</label>
 				</div>
@@ -225,7 +232,7 @@
 							type='number'
 							min='1'
 							value={selectedComp.w ?? 100}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { w: parseInt((e.currentTarget as HTMLInputElement).value) || 100 })}
+							onchange={e => updateComponent(selectedComponentIndex!, { w: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 100 })}
 						/>
 					</label>
 					<label class='field'>
@@ -234,7 +241,7 @@
 							type='number'
 							min='1'
 							value={selectedComp.h ?? 30}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { h: parseInt((e.currentTarget as HTMLInputElement).value) || 30 })}
+							onchange={e => updateComponent(selectedComponentIndex!, { h: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 30 })}
 						/>
 					</label>
 				</div>
@@ -244,14 +251,14 @@
 						<input
 							type='number'
 							value={selectedComp.rotation ?? 0}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { rotation: parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
+							onchange={e => updateComponent(selectedComponentIndex!, { rotation: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
 						/>
 					</label>
 					<label class='field locked'>
 						<input
 							type='checkbox'
 							checked={!!selectedComp.locked}
-							onchange={(e) => updateComponent(selectedComponentIndex!, { locked: (e.currentTarget as HTMLInputElement).checked })}
+							onchange={e => updateComponent(selectedComponentIndex!, { locked: (e.currentTarget as HTMLInputElement).checked })}
 						/>
 						<span>Locked</span>
 					</label>
@@ -284,8 +291,11 @@
 
 {#if addMenuOpen}
 	<div use:portalToBody class='add-menu' role='menu' data-add-component-menu style={addMenuStyle}>
-		{#each componentTypes as opt}
-			<button type='button' role='menuitem' onclick={() => { closeAddMenu(); addComponent(opt.key); }}>
+		{#each componentTypes as opt (opt.key)}
+			<button type='button' role='menuitem' onclick={() => {
+				closeAddMenu();
+				addComponent(opt.key);
+			}}>
 				<span class='menu-key'>{opt.key}</span>
 				<span class='menu-name'>{opt.label}</span>
 			</button>

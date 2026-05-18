@@ -1,9 +1,9 @@
 <svelte:options runes={true} />
 <script lang='ts'>
+	import type { ReadyGame } from 'fvtt-types/configuration';
 	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
 	import VirtualList from 'svelte-tiny-virtual-list';
-	import type { ReadyGame } from 'fvtt-types/configuration';
-	import { settings, setSetting } from '../utils/settings.ts';
+	import { setSetting, settings } from '../utils/settings.ts';
 
 	// props via rune
 	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
@@ -20,10 +20,7 @@
 		actors.filter((item: any) => item.name?.indexOf(searchTerm) !== -1),
 	);
 	const userTokenActors = $derived(
-		(game as ReadyGame).users
-			?.filter((u: User) => !u.isGM && !!(u as any).character)
-			.map((u: User) => (u as any).character as Actor)
-			.filter(Boolean) ?? []
+		(game as ReadyGame).users?.filter((u: User) => !u.isGM && !!(u as any).character).map((u: User) => (u as any).character as Actor).filter(Boolean) ?? [],
 	);
 
 	async function submit() {
@@ -64,7 +61,7 @@
 	}
 
 	const cssActorName = $derived(
-		cssActorID ? ((game as ReadyGame).actors?.get(cssActorID)?.name ?? cssActorID) : ''
+		cssActorID ? ((game as ReadyGame).actors?.get(cssActorID)?.name ?? cssActorID) : '',
 	);
 </script>
 
@@ -81,7 +78,7 @@
 		<div class='user-tokens'>
 			<span class='user-tokens-header'>{game.i18n?.localize('obs-utils.applications.actorSelect.userTokensHeader')}</span>
 			<div class='user-tokens-list'>
-				{#each userTokenActors as actor}
+				{#each userTokenActors as actor (actor.id)}
 					<button
 						type='button'
 						role='checkbox'

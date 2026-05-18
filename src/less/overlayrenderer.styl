@@ -2,7 +2,11 @@
 
 @import 'rolloverlay.styl';
 
-.overlay-renderer {
+// /stream-only positioning: keep the overlay tree past Foundry's chat sidebar.
+// Scoped to body.stream so it doesn't apply in the editor canvas pane or the
+// Full Preview window, both of which also wear .overlay-renderer for CSS
+// injection scoping.
+body.stream .overlay-renderer {
   left: 320px;
   position: absolute;
 }

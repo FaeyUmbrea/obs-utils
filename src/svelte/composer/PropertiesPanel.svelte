@@ -15,7 +15,6 @@
 		renameLayer,
 		changeLayerType,
 		setLayer,
-		removeLayer,
 		addComponentToLayer,
 		reorderComponents,
 		removeComponent,
@@ -28,7 +27,6 @@
 		renameLayer: (index: number, name: string) => void;
 		changeLayerType: (index: number, type: string) => void;
 		setLayer: (index: number, value: OverlayData) => void;
-		removeLayer: (index: number) => void;
 		addComponentToLayer: (layerIndex: number, type: string) => void;
 		reorderComponents: (layerIndex: number, from: number, to: number) => void;
 		removeComponent: (layerIndex: number, compIndex: number) => void;
@@ -43,19 +41,19 @@
 	let activeTab = $state<TabKey>('layer');
 
 	const selectedLayer = $derived(
-		selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null
+		selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null,
 	);
 	const selectedComponent = $derived(
 		selectedLayer && selectedComponentIndex !== null
 			? selectedLayer.components?.[selectedComponentIndex] ?? null
-			: null
+			: null,
 	);
 	// The Style tab respects the user's explicit kind choice, falling back to
 	// whichever target actually exists (component if selected, otherwise layer).
 	const styleTarget = $derived(
 		styleTargetKind === 'component'
 			? (selectedComponent ?? selectedLayer)
-			: selectedLayer
+			: selectedLayer,
 	);
 
 	// Auto-switch to Component tab only on the null → non-null transition
@@ -76,7 +74,10 @@
 	let prevAddedTick: number | undefined;
 	$effect(() => {
 		const tick = addedComponentTick;
-		if (prevAddedTick === undefined) { prevAddedTick = tick; return; }
+		if (prevAddedTick === undefined) {
+			prevAddedTick = tick;
+			return;
+		}
 		if (tick !== prevAddedTick) {
 			prevAddedTick = tick;
 			activeTab = 'component';
@@ -99,7 +100,7 @@
 		if (selectedLayerIndex === null) return;
 		renameLayer(selectedLayerIndex, (e.currentTarget as HTMLInputElement).value);
 	}
-	function onTypeChange(e: Event) {
+	async function onTypeChange(e: Event) {
 		if (selectedLayerIndex === null) return;
 		const newType = (e.currentTarget as HTMLSelectElement).value;
 		const current = overlays[selectedLayerIndex]?.type;
@@ -108,9 +109,9 @@
 		// Only confirm when there are components to lose meaning from.
 		const hasComponents = (overlays[selectedLayerIndex]?.components?.length ?? 0) > 0;
 		if (hasComponents) {
-			const proceed = window.confirm(
-				game.i18n.localize('obs-utils.applications.overlayEditor.confirmTypeChange'),
-			);
+			const proceed = await foundry.applications.api.DialogV2.confirm({
+				content: game.i18n.localize('obs-utils.applications.overlayEditor.confirmTypeChange'),
+			});
 			if (!proceed) {
 				// Revert the visual selection
 				(e.currentTarget as HTMLSelectElement).value = current;
@@ -122,7 +123,7 @@
 
 	const componentCount = $derived(selectedLayer?.components?.length ?? 0);
 	const styleHasCustomCSS = $derived(
-		!!(styleTarget && (styleTarget as any).customCSS && (styleTarget as any).customCSS.trim().length)
+		!!(styleTarget && (styleTarget as any).customCSS && (styleTarget as any).customCSS.trim().length),
 	);
 	function getLayer() {
 		return selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null as any;
@@ -151,13 +152,13 @@
 				aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.layerName')}
 			/>
 			<select class='layer-type' value={selectedLayer.type} onchange={onTypeChange} aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.layerType')}>
-				{#each overlayTypeOptions as opt}
+				{#each overlayTypeOptions as opt (opt.key)}
 					<option value={opt.key}>{opt.label}</option>
 				{/each}
 			</select>
 		</header>
 
-		<nav class='tabs' role='tablist'>
+		<div class='tabs' role='tablist'>
 			<button
 				type='button'
 				role='tab'
@@ -198,7 +199,7 @@
 					<span class='dot' aria-label='custom CSS set' title='Custom CSS is set'></span>
 				{/if}
 			</button>
-		</nav>
+		</div>
 
 		<section class='tab-body'>
 			{#key `${selectedLayerIndex}-${selectedLayer.type}-${activeTab}-${activeTab === 'component' ? selectedComponentIndex : ''}`}

@@ -1,7 +1,7 @@
+import type { OBSRemoteEventTypeRegistration } from './api.ts';
 import type { NotificationType } from './socket.ts';
 import type { CustomEventInstance, OBSEvent } from './types.ts';
 import OBSWebSocket from 'obs-websocket-js';
-import type { OBSRemoteEventTypeRegistration } from './api.ts';
 import {
 	applyPopupConstrains,
 	closePopupWithDelay,

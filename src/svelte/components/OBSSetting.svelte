@@ -41,7 +41,7 @@
 			name='types'
 			onchange={changeEvent}
 		>
-			{#each actionTypes as action}
+			{#each actionTypes as action (action)}
 				<option value={action}>{game.i18n.localize(action)}</option>
 			{/each}
 		</select>

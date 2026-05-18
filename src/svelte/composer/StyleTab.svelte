@@ -114,7 +114,7 @@
 					spellcheck='false'
 					placeholder={'color: white;\nfont-size: 18px;\n\nprogress {\n  width: 200px;\n  &::-webkit-progress-value {\n    background: linear-gradient(green, lime);\n  }\n}'}
 					value={getCSS()}
-					oninput={(e) => setCSS((e.currentTarget as HTMLTextAreaElement).value)}
+					oninput={e => setCSS((e.currentTarget as HTMLTextAreaElement).value)}
 				></textarea>
 			</section>
 		{/if}

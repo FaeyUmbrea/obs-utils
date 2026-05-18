@@ -14,15 +14,29 @@
 
 	const KNOWN_PROPS: readonly string[] = [
 		// Typography
-		'font-family', 'font-size', 'font-weight', 'text-align', 'line-height', 'letter-spacing',
+		'font-family',
+		'font-size',
+		'font-weight',
+		'text-align',
+		'line-height',
+		'letter-spacing',
 		// Color
-		'color', 'background-color',
+		'color',
+		'background-color',
 		// Layout & spacing
-		'width', 'height', 'display', 'padding', 'margin', 'align-items', 'justify-content',
+		'width',
+		'height',
+		'display',
+		'padding',
+		'margin',
+		'align-items',
+		'justify-content',
 		// Border
-		'border', 'border-radius',
+		'border',
+		'border-radius',
 		// Image
-		'object-fit', 'object-position',
+		'object-fit',
+		'object-position',
 	] as const;
 
 	let fields = $state<Record<string, string>>({});
@@ -57,11 +71,9 @@
 				const decl = src.slice(start, i).trim();
 				if (decl) tryDecl(decl, out);
 				i++;
-			}
-			else if (src[i] === '}') {
+			} else if (src[i] === '}') {
 				i++;
-			}
-			else if (src[i] === '{') {
+			} else if (src[i] === '{') {
 				let depth = 1;
 				i++;
 				while (i < n && depth > 0) {
@@ -91,8 +103,7 @@
 		for (const b of blocks) {
 			if (b.kind === 'decl' && KNOWN_PROPS.includes(b.prop)) {
 				nextFields[b.prop] = b.value;
-			}
-			else {
+			} else {
 				pres.push(b);
 			}
 		}
@@ -122,8 +133,7 @@
 	function setVerticalAlign(v: string) {
 		if (!v) {
 			delete fields['align-items'];
-		}
-		else {
+		} else {
 			fields.display = fields.display || 'flex';
 			fields['align-items'] = v === 'top' ? 'flex-start' : v === 'bottom' ? 'flex-end' : 'center';
 			if (fields['text-align'] === 'center') fields['justify-content'] = 'center';

@@ -1,11 +1,9 @@
 <svelte:options runes={true} />
 <script>
-	// This is to decouple the roll listener from the actual component
-
 	import { onDestroy } from 'svelte';
 	import PlayerRollComponent from './PlayerRollComponent.svelte';
 
-	let { id = $bindable() } = $props();
+	let { id = $bindable(), config = {} } = $props();
 
 	let rollValue = $state('');
 	const hook = Hooks.on('createChatMessage', (e) => {
@@ -16,7 +14,6 @@
 					accumulator + Number.parseInt(currentValue.total),
 				0,
 			);
-			rollShow = true;
 		}
 	});
 
@@ -28,4 +25,5 @@
 <PlayerRollComponent
 	bind:rollValue={rollValue}
 	id={id}
+	{config}
 />

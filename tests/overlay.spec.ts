@@ -435,10 +435,10 @@ test.describe('OBS Remote menu', () => {
 		await gmPage.locator('.sv-dropdown-content .sv-item--wrap', { hasText: /Scene Load/i }).click();
 
 		await expect(app.locator('.empty-instances, .instance').first()).toBeVisible();
-		await expect(app.locator('button.add[aria-label=add]')).toBeVisible();
+		await expect(app.locator('button.add')).toBeVisible();
 
 		// Adding an instance renders an instance card with the sceneName condition input.
-		await app.locator('button.add[aria-label=add]').click();
+		await app.locator('button.add').click();
 		const instance = app.locator('.instance').first();
 		await expect(instance).toBeVisible();
 		await expect(instance.locator('.condition-field input[type=text]')).toBeVisible();

@@ -55,7 +55,7 @@
 	function dataPreview(data: string | undefined | null): string {
 		const v = (data ?? '').toString().trim();
 		if (!v) return '(empty)';
-		return v.length > 36 ? v.slice(0, 36) + '…' : v;
+		return v.length > 36 ? `${v.slice(0, 36)}…` : v;
 	}
 
 	function handleReorder(e: any) {
@@ -84,7 +84,8 @@
 						class='comp-row'
 						class:selected={selectedIndex === index}
 						data-comp-index={index}
-						onclick={(e) => selectRow(e, index)}
+						onclick={e => selectRow(e, index)}
+						onkeydown={e => (e.key === 'Enter' || e.key === ' ') && selectRow(e as any, index)}
 						role='button'
 						tabindex='0'
 						aria-label={`${typeLabel(comp.type)} component`}
@@ -99,7 +100,10 @@
 						<button
 							type='button'
 							class='delete'
-							onclick={(e) => { e.stopPropagation(); onRemove(index); }}
+							onclick={(e) => {
+								e.stopPropagation();
+								onRemove(index);
+							}}
 							title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeComponentButton')}
 							aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.removeComponentButton')}
 						>

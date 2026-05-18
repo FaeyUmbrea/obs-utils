@@ -2,11 +2,12 @@
 <script lang='ts'>
 	import type { CameraPreset } from '../../../utils/cameraPresets.ts';
 	import { onDestroy, onMount } from 'svelte';
-	import { clampAndApplyExternal, getLocalViewport } from '../../../utils/canvas.ts';
 	import { makePreset, readPresets, writePresets } from '../../../utils/cameraPresets.ts';
+	import { clampAndApplyExternal, getLocalViewport } from '../../../utils/canvas.ts';
 
 	let currentScene = $state<any>((canvas as any)?.scene ?? null);
-	let presets = $state<CameraPreset[]>(readPresets(currentScene));
+	// initializer captures currentScene once — refreshFromCurrentScene keeps them in sync
+	let presets = $state<CameraPreset[]>(readPresets((canvas as any)?.scene ?? null));
 
 	function refreshFromCurrentScene() {
 		currentScene = (canvas as any)?.scene ?? null;
@@ -89,7 +90,7 @@
 					type='text'
 					class='preset-name'
 					value={p.name}
-					onchange={(e) => renamePreset(p.id, (e.currentTarget as HTMLInputElement).value)}
+					onchange={e => renamePreset(p.id, (e.currentTarget as HTMLInputElement).value)}
 				/>
 				<button
 					type='button'

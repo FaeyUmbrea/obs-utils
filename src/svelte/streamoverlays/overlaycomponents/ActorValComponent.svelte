@@ -5,7 +5,9 @@
 
 	const { data, actorID, style, componentIndex } = $props();
 
-	let actor = game.actors?.get(actorID);
+	// actorID is stable per component mount; initial capture is intentional
+	// eslint-disable-next-line svelte/valid-compile
+	let actor = $state(game.actors?.get(actorID));
 
 	let value = $state('');
 

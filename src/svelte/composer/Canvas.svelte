@@ -24,16 +24,16 @@
 	const REF_H_DEFAULT = 1080;
 
 	const selectedLayer = $derived(
-		selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null
+		selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null,
 	);
 	const selectedIsWYSIWYG = $derived(
-		!!selectedLayer && selectedLayer.type === 'wysiwyg'
+		!!selectedLayer && selectedLayer.type === 'wysiwyg',
 	);
 	const selectedIsSimple = $derived(
-		!!selectedLayer && selectedLayer.type === 'sl'
+		!!selectedLayer && selectedLayer.type === 'sl',
 	);
 	const selectedIsRoll = $derived(
-		!!selectedLayer && selectedLayer.type === 'roll'
+		!!selectedLayer && selectedLayer.type === 'roll',
 	);
 
 	const canvasW = $derived.by(() => {
@@ -101,7 +101,8 @@
 		// which happens on this same mousedown). Re-query each frame so we catch them.
 		let cachedHandles: NodeListOf<HTMLElement> | null = null;
 
-		let lastDx = 0, lastDy = 0;
+		let lastDx = 0;
+		let lastDy = 0;
 
 		function applyTransform(t: string) {
 			if (wrapper) wrapper.style.transform = t;
@@ -110,7 +111,9 @@
 				const root = document.getElementById(`composer-canvas-${layerIdx}`);
 				cachedHandles = root?.querySelectorAll<HTMLElement>(`[data-handle-for="${index}"]`) ?? null;
 			}
-			cachedHandles?.forEach((h) => { h.style.transform = t; });
+			cachedHandles?.forEach((h) => {
+				h.style.transform = t;
+			});
 		}
 
 		function onMove(ev: MouseEvent) {
@@ -163,11 +166,20 @@
 		function compute(ev: MouseEvent) {
 			const dx = ev.clientX - startClientX;
 			const dy = ev.clientY - startClientY;
-			let x = origX, y = origY, w = origW, h = origH;
+			let x = origX;
+			let y = origY;
+			let w = origW;
+			let h = origH;
 			if (dir.includes('e')) w = Math.max(20, origW + dx);
 			if (dir.includes('s')) h = Math.max(10, origH + dy);
-			if (dir.includes('w')) { x = origX + dx; w = Math.max(20, origW - dx); }
-			if (dir.includes('n')) { y = origY + dy; h = Math.max(10, origH - dy); }
+			if (dir.includes('w')) {
+				x = origX + dx;
+				w = Math.max(20, origW - dx);
+			}
+			if (dir.includes('n')) {
+				y = origY + dy;
+				h = Math.max(10, origH - dy);
+			}
 			return { x, y, w, h };
 		}
 
@@ -224,17 +236,29 @@
 		if (!comp) return;
 		const step = e.shiftKey ? 10 : 1;
 
-		if (e.key === 'ArrowLeft') { comp.x = (comp.x ?? 0) - step; e.preventDefault(); }
-		else if (e.key === 'ArrowRight') { comp.x = (comp.x ?? 0) + step; e.preventDefault(); }
-		else if (e.key === 'ArrowUp') { comp.y = (comp.y ?? 0) - step; e.preventDefault(); }
-		else if (e.key === 'ArrowDown') { comp.y = (comp.y ?? 0) + step; e.preventDefault(); }
-		else if (e.key === 'Escape') { selectedComponentIndex = null; e.preventDefault(); return; }
-		else if (e.key === 'Tab' && layer.components.length > 0) {
+		if (e.key === 'ArrowLeft') {
+			comp.x = (comp.x ?? 0) - step;
+			e.preventDefault();
+		} else if (e.key === 'ArrowRight') {
+			comp.x = (comp.x ?? 0) + step;
+			e.preventDefault();
+		} else if (e.key === 'ArrowUp') {
+			comp.y = (comp.y ?? 0) - step;
+			e.preventDefault();
+		} else if (e.key === 'ArrowDown') {
+			comp.y = (comp.y ?? 0) + step;
+			e.preventDefault();
+		} else if (e.key === 'Escape') {
+			selectedComponentIndex = null;
+			e.preventDefault();
+			return;
+		} else if (e.key === 'Tab' && layer.components.length > 0) {
 			e.preventDefault();
 			selectedComponentIndex = (idx + 1) % layer.components.length;
 			return;
+		} else {
+			return;
 		}
-		else return;
 
 		layer.components = [...layer.components];
 		commit?.();
@@ -291,15 +315,16 @@
 							class:locked={comp.locked}
 							data-hit={index}
 							style={`left: ${x}px; top: ${y}px; width: ${w}px; height: ${h}px;`}
-							onmousedown={(e) => onComponentMousedown(e, index)}
-							onclick={(e) => selectComponent(e, index)}
+							onmousedown={e => onComponentMousedown(e, index)}
+							onclick={e => selectComponent(e, index)}
+							onkeydown={e => (e.key === 'Enter' || e.key === ' ') && selectComponent(e as any, index)}
 							role='button'
 							tabindex='0'
 							aria-label={`Component ${index}: ${comp.type}`}
 						></div>
 
 						{#if selected && !comp.locked}
-							{#each ['nw', 'ne', 'sw', 'se'] as dir}
+							{#each ['nw', 'ne', 'sw', 'se'] as dir (dir)}
 								{@const cornerX = dir.includes('w') ? x : x + w}
 								{@const cornerY = dir.includes('n') ? y : y + h}
 								<div
@@ -307,7 +332,7 @@
 									data-handle-for={index}
 									data-handle-dir={dir}
 									style={`left: ${cornerX}px; top: ${cornerY}px;`}
-									onmousedown={(e) => onHandleMousedown(e, dir as HandleDir, index)}
+									onmousedown={e => onHandleMousedown(e, dir as HandleDir, index)}
 									role='presentation'
 								></div>
 							{/each}

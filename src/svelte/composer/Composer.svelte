@@ -38,7 +38,7 @@
 	});
 
 	const previewIDs = $derived(
-		previewActorID ? [previewActorID] : ($actorIDs ?? [])
+		previewActorID ? [previewActorID] : ($actorIDs ?? []),
 	);
 
 	function commit() {
@@ -86,7 +86,7 @@
 	function toggleLayerEnabled(index: number) {
 		const layer = ($overlays ?? [])[index];
 		if (!layer) return;
-		layer.enabled = layer.enabled === false ? true : false;
+		layer.enabled = layer.enabled === false;
 		commit();
 	}
 
@@ -123,8 +123,9 @@
 		next.splice(to, 0, moved);
 		layer.components = next;
 		// Keep selection on the moved component
-		if (selectedComponentIndex === from) selectedComponentIndex = to;
-		else if (selectedComponentIndex !== null) {
+		if (selectedComponentIndex === from) {
+			selectedComponentIndex = to;
+		} else if (selectedComponentIndex !== null) {
 			const i = selectedComponentIndex;
 			if (from < i && to >= i) selectedComponentIndex = i - 1;
 			else if (from > i && to <= i) selectedComponentIndex = i + 1;
@@ -136,12 +137,17 @@
 		const layer = ($overlays ?? [])[layerIndex];
 		if (!layer?.components) return;
 		layer.components = layer.components.filter((_: any, i: number) => i !== compIndex);
-		if (selectedComponentIndex === compIndex) selectedComponentIndex = null;
-		else if (selectedComponentIndex !== null && selectedComponentIndex > compIndex) {
+		if (selectedComponentIndex === compIndex) {
+			selectedComponentIndex = null;
+		} else if (selectedComponentIndex !== null && selectedComponentIndex > compIndex) {
 			selectedComponentIndex = selectedComponentIndex - 1;
 		}
 		commit();
 	}
+
+	// Bumped whenever a new component is added; PropertiesPanel watches this
+	// to auto-switch to the Component tab.
+	let addedComponentTick = $state(0);
 
 	function defaultStyleFor(type: string): string {
 		// Plain Text labels look best centered horizontally + vertically in their box.
@@ -167,14 +173,6 @@
 		commit();
 	}
 
-	// Bumped whenever a new component is added; PropertiesPanel watches this
-	// to auto-switch to the Component tab.
-	let addedComponentTick = $state(0);
-
-	const selectedLayer = $derived(
-		selectedLayerIndex !== null ? (($overlays ?? [])[selectedLayerIndex] ?? null) : null
-	);
-
 	async function close() {
 		await foundryApp.close();
 	}
@@ -183,7 +181,7 @@
 		($actorIDs ?? []).map((id: string) => ({
 			id,
 			name: (game as ReadyGame).actors?.get(id)?.name ?? id,
-		}))
+		})),
 	);
 
 	const isEmpty = $derived(($overlays ?? []).length === 0);
@@ -224,71 +222,71 @@
 		</div>
 	</div>
 {:else}
-<div class='composer'>
-	<aside class='pane layers-pane'>
-		<LayersPanel
-			overlays={$overlays ?? []}
-			bind:selectedLayerIndex={selectedLayerIndex}
-			bind:selectedComponentIndex={selectedComponentIndex}
-			{addLayer}
-			{removeLayer}
-			{reorderLayers}
-			{toggleLayerEnabled}
-		/>
-	</aside>
-
-	<section class='pane canvas-pane'>
-		<header class='canvas-header'>
-			<label class='preview-actor'>
-				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorLabel')}</span>
-				<select bind:value={previewActorID}>
-					<option value={null}>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorAll')}</option>
-					{#each previewActors as actor}
-						<option value={actor.id}>{actor.name}</option>
-					{/each}
-				</select>
-			</label>
-			<button
-				type='button'
-				class='full-preview'
-				title={game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}
-				onclick={async () => {
-					const { openOverlayPreview } = await import('../../utils/ui.ts');
-					await openOverlayPreview();
-				}}
-			>
-				<i class='fas fa-expand'></i>
-				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}</span>
-			</button>
-		</header>
-		<div class='canvas-host'>
-			<Canvas
+	<div class='composer'>
+		<aside class='pane layers-pane'>
+			<LayersPanel
 				overlays={$overlays ?? []}
-				actorIDs={previewIDs}
 				bind:selectedLayerIndex={selectedLayerIndex}
 				bind:selectedComponentIndex={selectedComponentIndex}
+				{addLayer}
+				{removeLayer}
+				{reorderLayers}
+				{toggleLayerEnabled}
+			/>
+		</aside>
+
+		<section class='pane canvas-pane'>
+			<header class='canvas-header'>
+				<label class='preview-actor'>
+					<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorLabel')}</span>
+					<select bind:value={previewActorID}>
+						<option value={null}>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorAll')}</option>
+						{#each previewActors as actor (actor.id)}
+							<option value={actor.id}>{actor.name}</option>
+						{/each}
+					</select>
+				</label>
+				<button
+					type='button'
+					class='full-preview'
+					title={game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}
+					onclick={async () => {
+						const { openOverlayPreview } = await import('../../utils/ui.ts');
+						await openOverlayPreview();
+					}}
+				>
+					<i class='fas fa-expand'></i>
+					<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}</span>
+				</button>
+			</header>
+			<div class='canvas-host'>
+				<Canvas
+					overlays={$overlays ?? []}
+					actorIDs={previewIDs}
+					bind:selectedLayerIndex={selectedLayerIndex}
+					bind:selectedComponentIndex={selectedComponentIndex}
+					{commit}
+				/>
+			</div>
+		</section>
+
+		<aside class='pane properties-pane'>
+			<PropertiesPanel
+				overlays={$overlays ?? []}
+				selectedLayerIndex={selectedLayerIndex}
+				bind:selectedComponentIndex={selectedComponentIndex}
+				{addedComponentTick}
+				{renameLayer}
+				{changeLayerType}
+				{setLayer}
+				{removeLayer}
+				{addComponentToLayer}
+				{reorderComponents}
+				{removeComponent}
 				{commit}
 			/>
-		</div>
-	</section>
-
-	<aside class='pane properties-pane'>
-		<PropertiesPanel
-			overlays={$overlays ?? []}
-			selectedLayerIndex={selectedLayerIndex}
-			bind:selectedComponentIndex={selectedComponentIndex}
-			{addedComponentTick}
-			{renameLayer}
-			{changeLayerType}
-			{setLayer}
-			{removeLayer}
-			{addComponentToLayer}
-			{reorderComponents}
-			{removeComponent}
-			{commit}
-		/>
-	</aside>
-</div>
+		</aside>
+	</div>
 {/if}
 
 <footer class='composer-footer'>
