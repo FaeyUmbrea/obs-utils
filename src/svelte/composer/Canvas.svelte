@@ -1,7 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
-	import { getApi, preventUndefinedNullInArray } from '../../utils/helpers.ts';
+	import { tick } from 'svelte';
+	import { getApi } from '../../utils/helpers.ts';
 	import PlayerRollComponent from '../streamoverlays/overlaycomponents/PlayerRollComponent.svelte';
 	import SingleLineOverlay from '../streamoverlays/SingleLineOverlay.svelte';
 
@@ -117,17 +118,23 @@
 			lastDy = ev.clientY - startClientY;
 			applyTransform(`translate(${lastDx}px, ${lastDy}px)`);
 		}
-		function onUp() {
+		async function onUp() {
 			window.removeEventListener('mousemove', onMove);
 			window.removeEventListener('mouseup', onUp);
-			applyTransform('');
 			const c = layer.components[index];
-			if (c) {
-				c.x = Math.round(origX + lastDx);
-				c.y = Math.round(origY + lastDy);
-				layer.components = [...layer.components];
-				commit?.();
+			if (!c) {
+				applyTransform('');
+				return;
 			}
+			c.x = Math.round(origX + lastDx);
+			c.y = Math.round(origY + lastDy);
+			layer.components = [...layer.components];
+			// Clear the translate only after Svelte has reflected the new x/y into
+			// the template's inline style, otherwise the element flashes back at
+			// its original position for one frame.
+			await tick();
+			applyTransform('');
+			commit?.();
 		}
 		window.addEventListener('mousemove', onMove);
 		window.addEventListener('mouseup', onUp);
@@ -221,13 +228,6 @@
 		else if (e.key === 'ArrowRight') { comp.x = (comp.x ?? 0) + step; e.preventDefault(); }
 		else if (e.key === 'ArrowUp') { comp.y = (comp.y ?? 0) - step; e.preventDefault(); }
 		else if (e.key === 'ArrowDown') { comp.y = (comp.y ?? 0) + step; e.preventDefault(); }
-		else if (e.key === 'Delete' || e.key === 'Backspace') {
-			layer.components = preventUndefinedNullInArray(layer.components.filter((_: any, i: number) => i !== idx));
-			selectedComponentIndex = null;
-			commit?.();
-			e.preventDefault();
-			return;
-		}
 		else if (e.key === 'Escape') { selectedComponentIndex = null; e.preventDefault(); return; }
 		else if (e.key === 'Tab' && layer.components.length > 0) {
 			e.preventDefault();
@@ -244,7 +244,7 @@
 
 <svelte:window onkeydown={onKeydown} />
 
-<div class='canvas-shell'>
+<div class='canvas-shell overlay-renderer'>
 	<div class='canvas-scroll'>
 		<div
 			class='canvas-area'

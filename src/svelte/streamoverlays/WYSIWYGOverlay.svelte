@@ -20,7 +20,7 @@
 	class='wysiwyg-overlay'
 	id={`overlay${overlayIndex.toString()}`}
 	data-overlay-id={overlayData.id ?? ''}
-	style={`position: relative; width: ${w}px; height: ${h}px; overflow: hidden;`}
+	style={`position: relative; width: ${w}px; height: ${h}px; overflow: hidden; ${overlayData.style ?? ''}`}
 >
 	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
 		{#if component !== null && component !== undefined}

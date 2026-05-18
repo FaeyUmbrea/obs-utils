@@ -1,5 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
+	import { onDestroy, onMount } from 'svelte';
+	import { activateCSSInjection, deactivateCSSInjection } from '../utils/cssInjection.ts';
 	import { getApi } from '../utils/helpers';
 	import { settings } from '../utils/settings.ts';
 	import PerActorOverlay from './streamoverlays/PerActorOverlay.svelte';
@@ -11,6 +13,9 @@
 
 	const singleTimeOverlaysLegacy = getApi().singleInstanceOverlays;
 	const singleTimeOverlaysSvelte5 = getApi().singleInstanceOverlaysSvelte5;
+
+	onMount(() => activateCSSInjection());
+	onDestroy(() => deactivateCSSInjection());
 </script>
 
 <div class='overlay-renderer'>

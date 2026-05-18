@@ -2,12 +2,17 @@
 <script lang='ts'>
 	import type { ReadyGame } from 'fvtt-types/configuration';
 	import type { SvelteApplication } from '../../applications/mixin.svelte.ts';
+	import { onDestroy, onMount } from 'svelte';
+	import { activateCSSInjection, deactivateCSSInjection } from '../../utils/cssInjection.ts';
 	import { preventUndefinedNullInArray } from '../../utils/helpers.ts';
 	import { settings } from '../../utils/settings.ts';
 	import { OverlayComponentData, OverlayData } from '../../utils/types.ts';
 	import Canvas from './Canvas.svelte';
 	import LayersPanel from './LayersPanel.svelte';
 	import PropertiesPanel from './PropertiesPanel.svelte';
+
+	onMount(() => activateCSSInjection());
+	onDestroy(() => deactivateCSSInjection());
 
 	const overlays = settings.getStore('streamOverlays');
 	const actorIDs = settings.getReadableStore('overlayActors');

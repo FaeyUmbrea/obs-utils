@@ -13,15 +13,18 @@
 
 <div class='obs-utils overlay'>
 	{#each actorIDs as actorID}
-		<div class='actor' id={`actor${actorID}`}>
+		{@const actorName = (game as any).actors?.get?.(actorID)?.name ?? actorID}
+		<div class='actor' id={`actor${actorID}`} data-actor-name={actorName}>
 			{#each overlays as overlay, index (overlays.indexOf(overlay))}
 				{@const Component = getOverlayType(overlay.type)}
 				{#if Component !== null && Component !== undefined && overlay?.enabled !== false}
-					<Component
-						overlayData={overlay}
-						actorID={actorID}
-						overlayIndex={index}
-					/>
+					<div class='actor-layer' data-actor-name={actorName}>
+						<Component
+							overlayData={overlay}
+							actorID={actorID}
+							overlayIndex={index}
+						/>
+					</div>
 				{/if}
 			{/each}
 		</div>

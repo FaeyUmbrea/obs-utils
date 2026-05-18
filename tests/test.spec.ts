@@ -67,31 +67,15 @@ test.describe('DM Client Only Tests', () => {
 
 		await gmPage.locator('button[data-tab=\'obs-utils\']').click();
 
-		// OBS Remote Menu
+		// OBS Remote Menu (combined connection + events; the obsWebsocket menu was folded in)
 
 		await gmPage.locator('button[data-key=\'obs-utils.obsRemoteMenu\']').click();
 
-		await expect(
-			gmPage.locator('div[id=\'obsremote-application\']'),
-		).toBeVisible();
+		const obsRemote = gmPage.locator('div[id=\'obsremote-application\']');
+		await expect(obsRemote).toBeVisible();
+		await expect(obsRemote.locator('nav.menu-tabs button[role=tab]')).toHaveCount(2);
 
-		await gmPage
-			.locator('div[id=\'obsremote-application\'] header button[data-action=close]')
-			.click();
-
-		// OBS Websocket Menu
-
-		await gmPage
-			.locator('button[data-key=\'obs-utils.obsWebsocketMenu\']')
-			.click();
-
-		await expect(
-			gmPage.locator('div[id=\'obswebsocket-application\']'),
-		).toBeVisible();
-
-		await gmPage
-			.locator('div[id=\'obswebsocket-application\'] header button[data-action=close]')
-			.click();
+		await obsRemote.locator('header button[data-action=close]').click();
 
 		// (Overlay Actor menu removed; manage actors is now in the Overlay Editor footer.)
 
@@ -425,6 +409,168 @@ test.describe('Player Client Additional Tests', () => {
 		}
 	});
 });
+
+test.describe('Multi-GM Handover', () => {
+	test('Take Active swaps the cloneDM mirror to the claimant', async ({ browser, pages: { gmPage, obsPage } }) => {
+		// Spin up GM2 — only this test needs them, so we own the context here.
+		const gm2Context = await browser.newContext();
+		const gm2Page = await gm2Context.newPage();
+		try {
+			await gm2Page.goto('/join');
+			await gm2Page.locator('select[name="userid"]').selectOption({ label: 'GM2' });
+			await gm2Page.locator('input[name=password]').fill(
+				process.env.TEST_INSTALL_PASSWORD ? process.env.TEST_INSTALL_PASSWORD : '',
+			);
+			await gm2Page.getByRole('button', { name: 'Join Game Session' }).click();
+			await expect(gm2Page).toHaveURL('/game');
+			// @ts-expect-error run in plain js
+			await gm2Page.waitForFunction(() => window.game?.ready && window.canvas?.ready);
+
+			const gmId = await gmPage.evaluate(() => (window as any).game.user.id);
+			const gm2Id = await gm2Page.evaluate(() => (window as any).game.user.id);
+
+			// Configure OOC mode to cloneDM + disable canvas clamp via the active GM's Director.
+			// Resolve "who is active" the same way the OBS page does: explicit setting first,
+			// fallback to the first online GM. Reading the setting alone is not enough — it
+			// defaults to '' on a fresh world.
+			const initialActiveId = await obsPage.evaluate(() => {
+				const g = (window as any).game;
+				const wanted = g.settings.get('obs-utils', 'activeGMUserId') as string;
+				const users = g.users;
+				if (wanted) {
+					const u = users.get(wanted);
+					if (u?.isGM && u?.active) return u.id;
+				}
+				return users.find((u: any) => u.isGM && u.active)?.id ?? null;
+			});
+			const initialActivePage = initialActiveId === gm2Id ? gm2Page : gmPage;
+			const initialClaimantPage = initialActivePage === gmPage ? gm2Page : gmPage;
+
+			await openDirector(initialActivePage);
+			const limitCanvasInput = initialActivePage.locator('div[id=director-application] input#limitCanvas');
+			const limitCanvasLabel = initialActivePage.locator('div[id=director-application] label[for=limitCanvas]');
+			const wasClampOn = await limitCanvasInput.isChecked();
+			if (wasClampOn) await limitCanvasLabel.click();
+			await initialActivePage.locator('div[id=director-application] label[for=radioooccloneDM]').click();
+			await closeDirector(initialActivePage);
+
+			// Active GM pans; OBS mirrors.
+			await panGMViewport(initialActivePage, 1800, 1300, 0.7);
+			await expect.poll(() => getOBSViewport(obsPage)).toEqual([1800, 1300, 0.7, 0.7]);
+
+			// Claimant opens Director, navigates to Co-DMs, clicks Take Active on their own row.
+			await initialClaimantPage.locator('button[data-tool=openStreamDirector]').click();
+			await expect(initialClaimantPage.locator('div#director-application')).toBeVisible();
+			await initialClaimantPage.locator('div#director-application button[role=tab]').nth(2).click();
+			await initialClaimantPage.locator('li.codm.me button.take-control').click();
+
+			const claimantId = initialClaimantPage === gm2Page ? gm2Id : gmId;
+			await expect.poll(() =>
+				initialClaimantPage.evaluate(() => (window as any).game.settings.get('obs-utils', 'activeGMUserId')),
+			).toBe(claimantId);
+			// Wait for the world setting to propagate to the OBS page too — that's
+			// what its viewportChanged filter consults via getActiveGM().
+			await expect.poll(() =>
+				obsPage.evaluate(() => (window as any).game.settings.get('obs-utils', 'activeGMUserId')),
+			).toBe(claimantId);
+
+			// The handover grant runs clampAndApplyExternal on the claimant, which
+			// animates their viewport to match the previous active GM's. Wait for
+			// that animation to settle before issuing the next pan, otherwise the
+			// animation clobbers it.
+			await expect.poll(() => initialClaimantPage.evaluate(() => [
+				(window as any).canvas.stage.pivot.x,
+				(window as any).canvas.stage.pivot.y,
+				(window as any).canvas.stage.scale.x,
+			])).toEqual([1800, 1300, 0.7]);
+
+			// Close Director on claimant then pan — OBS mirrors them now.
+			await initialClaimantPage.locator('button[data-tool=openStreamDirector]').click();
+			await panGMViewport(initialClaimantPage, 2100, 1500, 0.9);
+			await expect.poll(() => getOBSViewport(obsPage)).toEqual([2100, 1500, 0.9, 0.9]);
+
+			// Old active GM pans; OBS should NOT follow them anymore.
+			await panGMViewport(initialActivePage, 1500, 1100, 0.5);
+			await initialActivePage.waitForTimeout(800);
+			await expect(await getOBSViewport(obsPage)).toEqual([2100, 1500, 0.9, 0.9]);
+
+			// Cleanup: hand active back, restore canvas-clamp + OOC mode.
+			await initialClaimantPage.locator('button[data-tool=openStreamDirector]').click();
+			await initialClaimantPage.locator('div#director-application button[role=tab]').nth(0).click();
+			await closeDirector(initialClaimantPage);
+
+			await openDirector(initialActivePage);
+			await initialActivePage.locator('div[id=director-application] label[for=radiooocbirdseye]').click();
+			if (wasClampOn) await limitCanvasLabel.click();
+			await closeDirector(initialActivePage);
+		} finally {
+			await gm2Context.close();
+		}
+	});
+});
+
+test.describe('Scene Camera Presets', () => {
+	test('add, apply, update, and delete a preset via the Director', async ({ pages: { gmPage } }) => {
+		// Disable clampCanvas if on so test pans aren't clipped.
+		await openDirector(gmPage);
+		const limitCanvasInput = gmPage.locator('div[id=director-application] input#limitCanvas');
+		const limitCanvasLabel = gmPage.locator('div[id=director-application] label[for=limitCanvas]');
+		const wasClampOn = await limitCanvasInput.isChecked();
+		if (wasClampOn) await limitCanvasLabel.click();
+
+		// Switch to the Presets tab (3rd tab: Controls/Presets/Co-DMs).
+		const director = gmPage.locator('div#director-application');
+		await director.locator('button[role=tab]').nth(1).click();
+
+		// Empty state visible, no rows.
+		await expect(director.locator('.empty-presets')).toBeVisible();
+		await expect(director.locator('.preset-list .preset')).toHaveCount(0);
+
+		// Pan to a known position and save it as Preset 1.
+		await panGMViewport(gmPage, 1500, 1200, 0.8);
+		await director.locator('.preset-add-btn').click();
+		await expect(director.locator('.preset-list .preset')).toHaveCount(1);
+		await expect(director.locator('.empty-presets')).not.toBeVisible();
+
+		// Pan to a different position, then apply Preset 1 — viewport snaps back.
+		await panGMViewport(gmPage, 2200, 1800, 1);
+		await director.locator('.preset .preset-action').nth(0).click();
+		await expect.poll(async () => getGMViewport(gmPage)).toEqual([1500, 1200, 0.8, 0.8]);
+
+		// Pan again, then click "update preset to current" — preset now reflects the new viewport.
+		await panGMViewport(gmPage, 2400, 1700, 0.6);
+		await director.locator('.preset .preset-action').nth(1).click();
+		// Pan elsewhere to prove apply uses the *updated* values.
+		await panGMViewport(gmPage, 100, 100, 1);
+		await director.locator('.preset .preset-action').nth(0).click();
+		await expect.poll(async () => getGMViewport(gmPage)).toEqual([2400, 1700, 0.6, 0.6]);
+
+		// Delete: row disappears, empty state returns.
+		await director.locator('.preset .preset-action.danger').click();
+		await expect(director.locator('.preset-list .preset')).toHaveCount(0);
+		await expect(director.locator('.empty-presets')).toBeVisible();
+
+		// Restore clampCanvas if we changed it.
+		if (wasClampOn) {
+			await director.locator('button[role=tab]').nth(0).click();
+			await limitCanvasLabel.click();
+		}
+		await closeDirector(gmPage);
+	});
+});
+
+async function getGMViewport(gmPage: Page) {
+	return await gmPage.evaluate(() => [
+		// @ts-expect-error run in plain js
+		window.canvas.stage.position.scope.pivot.x,
+		// @ts-expect-error run in plain js
+		window.canvas.stage.position.scope.pivot.y,
+		// @ts-expect-error run in plain js
+		window.canvas.stage.position.scope.scale.x,
+		// @ts-expect-error run in plain js
+		window.canvas.stage.position.scope.scale.y,
+	]);
+}
 
 async function startCombatWithAllTokens(gmPage: Page) {
 	if (!await gmPage.locator('section#combat.active').isVisible()) {

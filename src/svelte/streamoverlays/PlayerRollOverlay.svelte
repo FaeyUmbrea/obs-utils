@@ -8,7 +8,7 @@
 
 	const players = (game as any).users
 		.filter((e: any) => e.id !== (game as any).user.id)
-		.map((user: any) => user.id);
+		.map((user: any) => ({ id: user.id, name: user.name }));
 
 	const enabled = $derived.by(() => {
 		const entry = ($overlays ?? []).find(o => o?.type === 'roll');
@@ -18,8 +18,10 @@
 
 {#if enabled}
 	<div class='obs-utils roll-overlay'>
-		{#each players as id}
-			<RollListenerComponent id={id} />
+		{#each players as player (player.id)}
+			<div class='roll-instance' data-player-name={player.name}>
+				<RollListenerComponent id={player.id} />
+			</div>
 		{/each}
 	</div>
 {/if}

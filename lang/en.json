@@ -95,7 +95,9 @@
 				"addInstance": "Add another configured instance",
 				"removeInstance": "Remove this instance",
 				"addAction": "Add OBS action",
-				"noInstancesYet": "No configured instances yet. Click + to add one."
+				"noInstancesYet": "No configured instances yet. Click + to add one.",
+				"tabConnection": "Connection",
+				"tabEvents": "Events"
 			},
 			"obsWebsocket": {
 				"name": "OBS Websocket Settings",
@@ -122,7 +124,8 @@
 			},
 			"overlayPreview": {
 				"name": "Overlay Preview",
-				"chatDeadzoneLabel": "Chat Deadzone"
+				"chatDeadzoneLabel": "Chat Deadzone",
+				"toggleBboxes": "Bounding boxes"
 			},
 			"overlayEditor": {
 				"name": "Overlay Editor",
@@ -203,6 +206,11 @@
 					"simple": "Simple",
 					"advanced": "Advanced"
 				},
+				"groupTypography": "Typography",
+				"groupColor": "Color",
+				"groupLayout": "Layout & Spacing",
+				"groupBorder": "Border",
+				"groupImage": "Image",
 				"fontFamily": "Font family",
 				"fontSize": "Font size",
 				"fontWeight": "Font weight",
@@ -210,6 +218,7 @@
 				"backgroundColor": "Background color",
 				"width": "Width",
 				"height": "Height",
+				"display": "Display",
 				"padding": "Padding",
 				"margin": "Margin",
 				"textAlign": "Text align",
@@ -218,6 +227,10 @@
 				"letterSpacing": "Letter spacing",
 				"border": "Border",
 				"borderRadius": "Border radius",
+				"objectFit": "Image fit",
+				"objectPosition": "Image position",
+				"preservedHeader": "Preserved CSS",
+				"preservedHint": "Rules outside the simple-mode field set are kept as-is and only visible in Advanced.",
 				"preservedExtras": "Additional preserved rules",
 				"clear": "Clear",
 				"submitButton": "Apply & Close"
@@ -302,12 +315,7 @@
 			"obsRemoteMenu": {
 				"Label": "Open Menu",
 				"Name": "OBS Remote Settings",
-				"Hint": "Configure the OBS Remote"
-			},
-			"obsWebsocketMenu": {
-				"Label": "Open Menu",
-				"Name": "OBS Websocket Settings",
-				"Hint": "Configure OBS Websocket"
+				"Hint": "Configure the OBS Websocket connection and event-driven actions"
 			},
 			"overlayEditor": {
 				"Label": "Open Editor",

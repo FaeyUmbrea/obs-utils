@@ -1,7 +1,7 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 import { expandTokenHud, isGM } from './utils/canvas.ts';
-import { backfillIds, installCSSInjection } from './utils/cssInjection.ts';
+import { backfillIds } from './utils/cssInjection.ts';
 import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
@@ -62,7 +62,6 @@ async function start() {
 				await setSetting('streamOverlays', overlays!);
 			}
 		}
-		installCSSInjection();
 		if (isOBS()) {
 			// Simulate a user interaction to start video playback
 			document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' }));

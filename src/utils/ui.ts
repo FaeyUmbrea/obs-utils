@@ -1,9 +1,5 @@
 import DirectorApplication from '../applications/director.ts';
-/**
- * @type {Array<any>}
- */
 import OBSRemoteApplication from '../applications/obsremote.ts';
-import OBSWebsocketApplication from '../applications/obswebsocket.ts';
 import OverlayEditor from '../applications/overlayeditor.ts';
 import OverlayPreview from '../applications/overlaypreview.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
@@ -32,14 +28,6 @@ export function registerUI() {
 		label: `${moduleID}.settings.obsRemoteMenu.Label`,
 		hint: `${moduleID}.settings.obsRemoteMenu.Hint`,
 		type: OBSRemoteApplication,
-		icon: 'fas fa-bars',
-		restricted: true,
-	});
-	(game as ReadyGame | undefined)?.settings?.registerMenu(moduleID, 'obsWebsocketMenu', {
-		name: `${moduleID}.settings.obsWebsocketMenu.Name`,
-		label: `${moduleID}.settings.obsWebsocketMenu.Label`,
-		hint: `${moduleID}.settings.obsWebsocketMenu.Hint`,
-		type: OBSWebsocketApplication,
 		icon: 'fas fa-bars',
 		restricted: true,
 	});

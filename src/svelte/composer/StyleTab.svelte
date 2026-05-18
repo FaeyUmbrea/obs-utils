@@ -17,24 +17,35 @@
 
 	let mode = $state<'easy' | 'advanced'>('easy');
 
-	function getInlineStyle(): string {
-		return target?.style ?? '';
+	// One-shot migration when the editor focuses on a new target: anything
+	// still sitting in the legacy inline `style` field gets folded into
+	// `customCSS` so Simple/Advanced never disagree about what's there.
+	$effect(() => {
+		const t = target as any;
+		if (!t || !t.style || !String(t.style).trim()) return;
+		const legacy = String(t.style).trim();
+		const existing = String(t.customCSS ?? '').trim();
+		t.customCSS = existing ? `${legacy}\n${existing}` : legacy;
+		t.style = '';
+		commit?.();
+	});
+
+	function getCSS(): string {
+		if (!target) return '';
+		return (target as any).customCSS ?? '';
 	}
-	function setInlineStyle(v: string) {
+	function setCSS(v: string) {
 		if (!target) return;
-		target.style = v;
+		(target as any).customCSS = v;
 		commit?.();
 	}
 
-	function getCustomCSS(): string {
-		return target?.customCSS ?? '';
-	}
-	function setCustomCSS(v: string) {
-		if (!target) return;
-		target.customCSS = v;
-		commit?.();
-	}
-
+	// `target` is either a layer (OverlayData) or a component (OverlayComponentData).
+	// Image-related fields only make sense on image-rendering component types.
+	const IMAGE_COMPONENT_TYPES = new Set(['img', 'bavimg', 'mimgav']);
+	const showImage = $derived(
+		targetKind === 'component' && target && IMAGE_COMPONENT_TYPES.has((target as any).type),
+	);
 </script>
 
 <div class='style-tab'>
@@ -88,7 +99,10 @@
 				<p class='mode-hint'>
 					{game.i18n?.localize('obs-utils.applications.overlayEditor.easyHint')}
 				</p>
-				<EasyStyleFields bind:value={() => getInlineStyle(), v => setInlineStyle(v)} />
+				<EasyStyleFields
+					bind:value={() => getCSS(), v => setCSS(v)}
+					showImage={showImage}
+				/>
 			</section>
 		{:else}
 			<section class='mode-body advanced'>
@@ -98,9 +112,9 @@
 				<textarea
 					class='css-editor'
 					spellcheck='false'
-					placeholder={'progress {\n  width: 200px;\n  &::-webkit-progress-value {\n    background: linear-gradient(green, lime);\n  }\n}'}
-					value={getCustomCSS()}
-					oninput={(e) => setCustomCSS((e.currentTarget as HTMLTextAreaElement).value)}
+					placeholder={'color: white;\nfont-size: 18px;\n\nprogress {\n  width: 200px;\n  &::-webkit-progress-value {\n    background: linear-gradient(green, lime);\n  }\n}'}
+					value={getCSS()}
+					oninput={(e) => setCSS((e.currentTarget as HTMLTextAreaElement).value)}
 				></textarea>
 			</section>
 		{/if}

@@ -56,26 +56,51 @@ function buildActorsCSS(map: Record<string, string> | undefined): string {
 	return parts.join('\n\n');
 }
 
-let installed = false;
+let activeRenderers = 0;
+let unsubs: Array<() => void> = [];
 
-export function installCSSInjection() {
-	if (installed) return;
-	installed = true;
+/**
+ * Mounts the four obs-utils style tags into document.head and starts the
+ * subscriptions that keep them in sync. Call from a renderer's onMount. Safe
+ * to call multiple times — refcounted, only the first call installs.
+ *
+ * Gated so we don't pollute Foundry's document with our scoped CSS when no
+ * overlay renderer is even live (e.g. /game without the editor open).
+ */
+export function activateCSSInjection() {
+	activeRenderers++;
+	if (activeRenderers > 1) return;
 
 	const globalStore = settings.getStore('globalOverlayCSS');
 	const actorsStore = settings.getStore('actorOverlayCSS');
 	const overlaysStore = settings.getStore('streamOverlays');
 
-	globalStore.subscribe((value: string | undefined) => {
-		setStyle(GLOBAL_ID, value ?? '');
-	});
-	actorsStore.subscribe((value: Record<string, string> | undefined) => {
+	unsubs.push(globalStore.subscribe((value: string | undefined) => {
+		// Auto-scope global CSS to the overlay-renderer subtree so a careless
+		// rule like `.app { ... }` can't bleed into Foundry's UI or another
+		// module's DOM. The scope is wide enough that nested selectors keep
+		// working as users expect, but narrow enough to never escape.
+		const css = value?.trim();
+		setStyle(GLOBAL_ID, css ? `.overlay-renderer {\n${css}\n}` : '');
+	}));
+	unsubs.push(actorsStore.subscribe((value: Record<string, string> | undefined) => {
 		setStyle(ACTORS_ID, buildActorsCSS(value));
-	});
-	overlaysStore.subscribe((value: OverlayData[] | undefined) => {
+	}));
+	unsubs.push(overlaysStore.subscribe((value: OverlayData[] | undefined) => {
 		setStyle(OVERLAYS_ID, buildOverlaysCSS(value));
 		setStyle(COMPONENTS_ID, buildComponentsCSS(value));
-	});
+	}));
+}
+
+/** Counterpart to {@link activateCSSInjection}. Removes style tags when the last renderer unmounts. */
+export function deactivateCSSInjection() {
+	activeRenderers = Math.max(0, activeRenderers - 1);
+	if (activeRenderers > 0) return;
+	for (const u of unsubs) u();
+	unsubs = [];
+	for (const id of [GLOBAL_ID, ACTORS_ID, OVERLAYS_ID, COMPONENTS_ID]) {
+		document.getElementById(id)?.remove();
+	}
 }
 
 /** Walk an overlays array and stamp missing IDs in place. Returns true if anything was changed. */
