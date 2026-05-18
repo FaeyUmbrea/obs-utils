@@ -6,9 +6,7 @@
 
 	const overlays = settings.getReadableStore<OverlayData[]>('streamOverlays');
 
-	const players = (game as any).users
-		.filter((e: any) => e.id !== (game as any).user.id)
-		.map((user: any) => ({ id: user.id, name: user.name }));
+	const players = (game as any).users.filter((e: any) => e.id !== (game as any).user.id).map((user: any) => ({ id: user.id, name: user.name }));
 
 	// PlayerRollOverlay is a singleton renderer: it picks the first 'roll' layer
 	// and uses its config. Additional roll layers are ignored.

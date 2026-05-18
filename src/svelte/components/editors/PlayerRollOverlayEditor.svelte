@@ -21,22 +21,54 @@
 	let postRollStay = $state((overlay.config?.postRollStay ?? 0) as number);
 	let postRollImage = $state((overlay.config?.postRollImage ?? '') as string);
 
-	$effect(() => { overlay.config = { ...overlay.config, preRollEnabled: preEnabled }; });
-	$effect(() => { overlay.config = { ...overlay.config, postRollEnabled: postEnabled }; });
-	$effect(() => { overlay.config = { ...overlay.config, preRollDelay }; });
-	$effect(() => { overlay.config = { ...overlay.config, preRollFadeIn }; });
-	$effect(() => { overlay.config = { ...overlay.config, preRollFadeOut }; });
-	$effect(() => { overlay.config = { ...overlay.config, preRollStay }; });
-	$effect(() => { overlay.config = { ...overlay.config, preRollImage }; });
-	$effect(() => { overlay.config = { ...overlay.config, rollFadeIn }; });
-	$effect(() => { overlay.config = { ...overlay.config, rollFadeOut }; });
-	$effect(() => { overlay.config = { ...overlay.config, rollStay }; });
-	$effect(() => { overlay.config = { ...overlay.config, rollBackground }; });
-	$effect(() => { overlay.config = { ...overlay.config, rollForeground }; });
-	$effect(() => { overlay.config = { ...overlay.config, postRollFadeIn }; });
-	$effect(() => { overlay.config = { ...overlay.config, postRollFadeOut }; });
-	$effect(() => { overlay.config = { ...overlay.config, postRollStay }; });
-	$effect(() => { overlay.config = { ...overlay.config, postRollImage }; });
+	$effect(() => {
+		overlay.config = { ...overlay.config, preRollEnabled: preEnabled };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, postRollEnabled: postEnabled };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, preRollDelay };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, preRollFadeIn };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, preRollFadeOut };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, preRollStay };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, preRollImage };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, rollFadeIn };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, rollFadeOut };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, rollStay };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, rollBackground };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, rollForeground };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, postRollFadeIn };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, postRollFadeOut };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, postRollStay };
+	});
+	$effect(() => {
+		overlay.config = { ...overlay.config, postRollImage };
+	});
 
 	let filePickerAppPreRoll: foundry.applications.apps.FilePicker | undefined;
 

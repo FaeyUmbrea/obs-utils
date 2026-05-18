@@ -9,9 +9,7 @@
 	let icon1 = $state(data?.split(';')[1] ?? '');
 	let icon2 = $state(data?.split(';')[2] ?? '');
 	const values = getActorValues();
-	// eslint-disable-next-line svelte/valid-compile
 	if (av1 !== null && !values.some(v => v.value === av1)) {
-		// eslint-disable-next-line svelte/valid-compile
 		values.push({ value: av1, label: av1 });
 	}
 
@@ -20,58 +18,68 @@
 	}
 </script>
 
-<div class='input'>
-	<Svelecte
-		--sv-bg='var(--sidebar-background)'
-		--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-		--sv-min-height='35px'
-		floatingConfig={{
-			strategy: 'fixed',
-		}}
-		creatable={true}
-		creatablePrefix=""
-		options={values}
-		bind:value={av1}
-		onChange={onChange}
-		placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
-	/>
-	<div class='labeled'>
-		<label for='bool-icon1'>{game.i18n.localize('obs-utils.strings.true')}</label>
+<div class='editor'>
+	<label class='row'>
+		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
+		<Svelecte
+			--sv-bg='var(--sidebar-background)'
+			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
+			--sv-min-height='32px'
+			floatingConfig={{ strategy: 'fixed' }}
+			creatable={true}
+			creatablePrefix=""
+			options={values}
+			bind:value={av1}
+			onChange={onChange}
+			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
+		/>
+	</label>
+	<label class='row'>
+		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.iconWhenTrue')}</span>
 		<input
-			id='bool-icon1'
 			type='text'
 			onchange={onChange}
 			bind:value={icon1}
+			placeholder={game.i18n?.localize('obs-utils.strings.iconPlaceholder')}
 		/>
-	</div>
-	<div class='labeled'>
-		<label for='bool-icon2'>{game.i18n.localize('obs-utils.strings.false')}</label>
+	</label>
+	<label class='row'>
+		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.iconWhenFalse')}</span>
 		<input
-			id='bool-icon2'
 			type='text'
 			onchange={onChange}
 			bind:value={icon2}
+			placeholder={game.i18n?.localize('obs-utils.strings.iconPlaceholder')}
 		/>
-	</div>
+	</label>
 </div>
 
 <style lang='stylus'>
-  .input {
-    display grid;
-    grid-column-start span 2;
-    grid-template-columns auto;
-    grid-template-rows auto auto;
-  }
+	.editor
+		display flex
+		flex-direction column
+		gap 8px
 
-  .labeled {
-    display grid;
-    grid-template-columns 50px auto;
+	.row
+		display flex
+		flex-direction column
+		gap 4px
 
-    label {
-      display flex;
-      justify-content center;
-      position relative;
-      top 5px;
-    }
-  }
+	.lbl
+		font-size 11px
+		opacity 0.7
+		letter-spacing 0.3px
+
+	input
+		height 32px
+		padding 0 8px
+		font-size 13px
+		border 1px solid rgba(255, 255, 255, 0.15)
+		border-radius 3px
+		background var(--sidebar-background, transparent)
+		color inherit
+
+		&:focus
+			outline none
+			border-color rgba(255, 144, 0, 0.6)
 </style>

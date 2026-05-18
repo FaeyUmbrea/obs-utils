@@ -1,11 +1,12 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import type { Readable, Writable } from 'svelte/store';
+import type { OverlayData } from './types.ts';
 import { writable } from 'svelte/store';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
 import { getExampleOverlay } from './defaultOverlays.ts';
 import { getGM, isOBS } from './helpers';
-import { OBSRemoteSettings, OBSWebsocketSettings, OverlayData } from './types.ts';
+import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
 
 export const OBSAction = {
 	SwitchScene: 'obs-utils.applications.obsRemote.switchScene',

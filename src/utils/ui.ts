@@ -4,9 +4,11 @@ import OverlayEditor from '../applications/overlayeditor.ts';
 import OverlayPreview from '../applications/overlaypreview.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
+import BooleanImageEditor from '../svelte/components/editors/BooleanImageEditor.svelte';
 import ImageEditor from '../svelte/components/editors/ImageEditor.svelte';
 import MultiAVEditor from '../svelte/components/editors/MultiAVEditor.svelte';
 import MultiAVIconEditor from '../svelte/components/editors/MultiAVIconEditor.svelte';
+import MultiAVImageEditor from '../svelte/components/editors/MultiAVImageEditor.svelte';
 import { MODULE_ID as moduleID } from './const';
 import { getApi } from './helpers.js';
 
@@ -49,9 +51,9 @@ export function registerUI() {
 		t.registerComponentEditor('fai', AVEditor);
 		t.registerComponentEditor('img', ImageEditor);
 		t.registerComponentEditor('bav', BooleanEditor, true);
-		t.registerComponentEditor('bavimg', BooleanEditor, true);
+		t.registerComponentEditor('bavimg', BooleanImageEditor, true);
 		t.registerComponentEditor('micoav', MultiAVIconEditor, true);
-		t.registerComponentEditor('mimgav', MultiAVIconEditor, true);
+		t.registerComponentEditor('mimgav', MultiAVImageEditor, true);
 		t.registerComponentEditor('pb', MultiAVEditor, true);
 	}
 }

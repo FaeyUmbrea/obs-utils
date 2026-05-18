@@ -70,13 +70,23 @@
 
 		preRollShow = pre;
 		if (pre) {
-			timeouts.push(setTimeout(() => { preRollShow = false; }, preRollDuration) as unknown as number);
+			timeouts.push(setTimeout(() => {
+				preRollShow = false;
+			}, preRollDuration) as unknown as number);
 		}
-		timeouts.push(setTimeout(() => { rollShow = true; }, rollDelay) as unknown as number);
-		timeouts.push(setTimeout(() => { rollShow = false; }, rollDuration) as unknown as number);
+		timeouts.push(setTimeout(() => {
+			rollShow = true;
+		}, rollDelay) as unknown as number);
+		timeouts.push(setTimeout(() => {
+			rollShow = false;
+		}, rollDuration) as unknown as number);
 		if (post) {
-			timeouts.push(setTimeout(() => { postRollShow = true; }, postRollDelay) as unknown as number);
-			timeouts.push(setTimeout(() => { postRollShow = false; }, postRollDuration) as unknown as number);
+			timeouts.push(setTimeout(() => {
+				postRollShow = true;
+			}, postRollDelay) as unknown as number);
+			timeouts.push(setTimeout(() => {
+				postRollShow = false;
+			}, postRollDuration) as unknown as number);
 		}
 	}
 

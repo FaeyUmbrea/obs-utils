@@ -240,6 +240,31 @@
 						</div>
 					{/if}
 				{:else if activeTab === 'component'}
+					{#if selectedComponentIndex !== null && (selectedLayer.components?.length ?? 0) > 1}
+						<nav class='component-nav' aria-label='Cycle components'>
+							<button
+								type='button'
+								class='nav-btn'
+								disabled={selectedComponentIndex === 0}
+								onclick={() => (selectedComponentIndex = Math.max(0, (selectedComponentIndex ?? 0) - 1))}
+								title={game.i18n?.localize('obs-utils.applications.overlayEditor.previousComponent')}
+								aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.previousComponent')}
+							><i class='fas fa-chevron-left'></i></button>
+							<span class='nav-label'>
+								{game.i18n?.localize('obs-utils.applications.overlayEditor.componentNavLabel')
+									?.replace('{current}', String((selectedComponentIndex ?? 0) + 1))
+									?.replace('{total}', String(selectedLayer.components?.length ?? 0))}
+							</span>
+							<button
+								type='button'
+								class='nav-btn'
+								disabled={selectedComponentIndex >= (selectedLayer.components?.length ?? 0) - 1}
+								onclick={() => (selectedComponentIndex = Math.min((selectedLayer.components?.length ?? 0) - 1, (selectedComponentIndex ?? 0) + 1))}
+								title={game.i18n?.localize('obs-utils.applications.overlayEditor.nextComponent')}
+								aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.nextComponent')}
+							><i class='fas fa-chevron-right'></i></button>
+						</nav>
+					{/if}
 					{#if selectedLayer.type === 'wysiwyg' && selectedComponentIndex !== null}
 						<WYSIWYGComposerEditor
 							layer={selectedLayer}
@@ -403,4 +428,41 @@
 			left 0
 			right 0
 			bottom 0
+
+	.component-nav
+		display grid
+		grid-template-columns 28px 1fr 28px
+		gap 6px
+		align-items center
+		padding 4px 0 8px 0
+		border-bottom 1px solid rgba(255, 255, 255, 0.06)
+		margin-bottom 8px
+
+		.nav-btn
+			width 28px
+			height 24px
+			padding 0
+			display flex
+			align-items center
+			justify-content center
+			background transparent
+			border 1px solid rgba(255, 255, 255, 0.12)
+			border-radius 3px
+			opacity 0.75
+			font-size 11px
+			cursor pointer
+
+			&:hover:not(:disabled)
+				opacity 1
+				background rgba(255, 255, 255, 0.06)
+
+			&:disabled
+				opacity 0.25
+				cursor not-allowed
+
+		.nav-label
+			font-size 11px
+			text-align center
+			opacity 0.7
+			letter-spacing 0.3px
 </style>
