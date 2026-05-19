@@ -1,7 +1,7 @@
 import type { CameraPreset } from './cameraPresets.ts';
-import gsap from 'gsap';
 import { toGsapEase } from './cameraPresets.ts';
 import { clampAndApplyExternal } from './canvas.ts';
+import gsap from './gsap.ts';
 
 export interface SequenceController {
 	/** Stop and dispose. Idempotent. */

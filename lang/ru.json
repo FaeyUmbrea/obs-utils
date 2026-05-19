@@ -1,20 +1,6 @@
 {
 	"obs-utils": {
 		"applications": {
-			"rollOverlayEditor": {
-				"name": "Roll Overlay Editor",
-				"preRollImage": "Pre Roll Image",
-				"backgroundImageUrl": "URL Заднего плана",
-				"imageUrl": "URL Изображения",
-				"foregroundImageUrl": "URL Переднего плана",
-				"rollImage": "Roll Image",
-				"test": "Тест",
-				"fadeOut": "Затухание (мс)",
-				"postRollImage": "Post Roll Image",
-				"duration": "Длительность (мс)",
-				"delay": "Задержка (мс)",
-				"fadeIn": "Появление (мс)"
-			},
 			"overlayEditor": {
 				"previewActorLabel": "Preview as",
 				"showFullPreview": "Full Preview",
@@ -291,9 +277,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		},
 		"strings": {

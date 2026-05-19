@@ -27,20 +27,6 @@
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
-			"rollOverlayEditor": {
-				"name": "Würfel Overlay Editor",
-				"test": "Test",
-				"preRollImage": "Vor-Würfel Bild",
-				"rollImage": "Würfel Bild",
-				"postRollImage": "Nach-Würfel Bild",
-				"imageUrl": "Bild URL",
-				"foregroundImageUrl": "Vordergrundbild URL",
-				"backgroundImageUrl": "Hintergrundbild URL",
-				"delay": "Verzögerung (ms)",
-				"fadeIn": "Einblendezeit (ms)",
-				"duration": "Dauer (ms)",
-				"fadeOut": "Ausblendezeit (ms)"
-			},
 			"director": {
 				"name": "Director",
 				"icTypeHeader": "Verhalten im Kampf",
@@ -175,9 +161,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		},
 		"settings": {

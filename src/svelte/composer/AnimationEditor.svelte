@@ -194,8 +194,10 @@
 		}
 	}
 
-	// Debounce for drag-updated keyframe offsets
-	const debouncedCommit = debounce(commit, 200);
+	// Debounce for drag-updated keyframe offsets. Wrapped so the debounce holds a
+	// closure over the live `commit` prop instead of the initial reference (which
+	// trips Svelte 5's `state_referenced_locally` warning otherwise).
+	const debouncedCommit = debounce(() => commit(), 200);
 
 	function patchPhase(
 		stateKey: string,

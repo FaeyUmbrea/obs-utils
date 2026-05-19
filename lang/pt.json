@@ -248,20 +248,6 @@
 				"toggleSource": "Alternar Fonte",
 				"onSceneLoad": "Carregar Cena"
 			},
-			"rollOverlayEditor": {
-				"backgroundImageUrl": "URL Imagem de Fundo",
-				"name": "Editor Sobreposição de Rolagem",
-				"preRollImage": "Imagem Pré-Rolagem",
-				"imageUrl": "URL da Imagem",
-				"foregroundImageUrl": "URL Imagem de Primeiro Plano",
-				"rollImage": "Imagem Rolagem",
-				"test": "Teste",
-				"fadeOut": "Fade Out (ms)",
-				"postRollImage": "Imagem Pós-Rolagem",
-				"duration": "Duração (ms)",
-				"delay": "Atraso (ms)",
-				"fadeIn": "Fade In (ms)"
-			},
 			"styleEditor": {
 				"submitButton": "Enviar",
 				"name": "Editor de Estilo",
@@ -317,9 +303,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		}
 	}

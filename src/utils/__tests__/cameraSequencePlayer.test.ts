@@ -20,13 +20,6 @@ vi.mock('../canvas.ts', () => ({
 vi.mock('../obs.ts', () => ({}));
 vi.mock('../defaultOverlays.ts', () => ({ getExampleOverlay: vi.fn(() => []) }));
 
-vi.mock('gsap/CustomEase', () => ({
-	CustomEase: {
-		create: vi.fn((id: string, _data: string) => `custom:${id}`),
-		register: vi.fn(),
-	},
-}));
-
 const mockTimeline = {
 	to: vi.fn().mockReturnThis(),
 	set: vi.fn().mockReturnThis(),
@@ -38,12 +31,14 @@ const mockTimeline = {
 	isActive: vi.fn().mockReturnValue(true),
 };
 
-vi.mock('gsap', () => ({
-	default: {
-		timeline: vi.fn(() => mockTimeline),
-		registerPlugin: vi.fn(),
-	},
-}));
+vi.mock('../gsap.ts', async () => {
+	const actual = await vi.importActual<typeof import('../gsap.ts')>('../gsap.ts');
+	return {
+		default: { timeline: vi.fn(() => mockTimeline) },
+		// Use the real cubicBezier — it's a pure function with no GSAP dep.
+		cubicBezier: actual.cubicBezier,
+	};
+});
 
 // ─── toGsapEase ───────────────────────────────────────────────────────────────
 
@@ -67,18 +62,19 @@ describe('toGsapEase', () => {
 		expect(toGsapEase('linear')).toBe('linear');
 	});
 
-	it('delegates cubicBezier objects to CustomEase.create', () => {
+	it('returns a function for cubicBezier objects', () => {
 		const ease: EasingKind = { cubicBezier: [0.25, 0.1, 0.25, 1] };
 		const result = toGsapEase(ease);
-		expect(typeof result === 'string' && result.startsWith('custom:')).toBe(true);
+		expect(typeof result).toBe('function');
 	});
 
-	it('produces a deterministic id for the same cubic-bezier values', () => {
-		const ease1: EasingKind = { cubicBezier: [0.42, 0, 0.58, 1] };
-		const ease2: EasingKind = { cubicBezier: [0.42, 0, 0.58, 1] };
-		const a = toGsapEase(ease1) as string;
-		const b = toGsapEase(ease2) as string;
-		expect(a).toBe(b);
+	it('the cubic-bezier function clamps to [0,1] at the endpoints', () => {
+		const ease: EasingKind = { cubicBezier: [0.42, 0, 0.58, 1] };
+		const fn = toGsapEase(ease) as (t: number) => number;
+		expect(fn(0)).toBe(0);
+		expect(fn(1)).toBe(1);
+		expect(fn(0.5)).toBeGreaterThan(0);
+		expect(fn(0.5)).toBeLessThan(1);
 	});
 });
 

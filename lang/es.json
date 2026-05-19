@@ -27,20 +27,6 @@
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
-			"rollOverlayEditor": {
-				"backgroundImageUrl": "URL de la Imagen de Fondo",
-				"imageUrl": "URL de la Imagen",
-				"name": "Editor de la Capa de Dados",
-				"preRollImage": "Imagen Pre Lanzamiento de dados",
-				"foregroundImageUrl": "URL de la Imagen en Primer Plano",
-				"rollImage": "Imagen de Lanzamiento de dados",
-				"test": "Prueba",
-				"fadeOut": "Fundido de Salida (ms)",
-				"postRollImage": "Imagen Post Lanzamiento de dados",
-				"duration": "Duración (ms)",
-				"delay": "Retraso (ms)",
-				"fadeIn": "Fundido de entrada (ms)"
-			},
 			"director": {
 				"oocTypeHeader": "Tipo Fuera del Combate",
 				"obsUserCommands": "Comandos de Usuario OBS",
@@ -175,9 +161,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		},
 		"settings": {

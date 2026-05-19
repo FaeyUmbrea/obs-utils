@@ -27,20 +27,6 @@
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
-			"rollOverlayEditor": {
-				"name": "Roll Overlay Editor",
-				"test": "Test",
-				"preRollImage": "Pre Roll Image",
-				"rollImage": "Roll Image",
-				"postRollImage": "Post Roll Image",
-				"imageUrl": "Image URL",
-				"foregroundImageUrl": "Foreground Image URL",
-				"backgroundImageUrl": "Background Image URL",
-				"delay": "Delay (ms)",
-				"fadeIn": "Fade In (ms)",
-				"duration": "Duration (ms)",
-				"fadeOut": "Fade Out (ms)"
-			},
 			"director": {
 				"name": "Director",
 				"icTypeHeader": "In Combat Type",
@@ -175,9 +161,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		},
 		"settings": {

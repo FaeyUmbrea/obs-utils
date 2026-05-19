@@ -1,5 +1,5 @@
 import type { AnimationState, ComponentAnimationConfig, KeyframeAnimation } from './types.ts';
-import gsap from 'gsap';
+import gsap from './gsap.ts';
 
 // ─── AnimationController ─────────────────────────────────────────────────────
 

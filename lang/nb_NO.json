@@ -27,20 +27,6 @@
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
-			"rollOverlayEditor": {
-				"name": "Roll Overlay Editor",
-				"backgroundImageUrl": "Nettadresse for bakgrunnsbilde",
-				"preRollImage": "Pre Roll Image",
-				"imageUrl": "Bildenettadresse",
-				"foregroundImageUrl": "Nettadresse for forgrunnsbilde",
-				"rollImage": "Roll Image",
-				"test": "Test",
-				"fadeOut": "Uttoning (ms)",
-				"postRollImage": "Post Roll Image",
-				"duration": "Varighet (ms)",
-				"fadeIn": "Inntoning (ms)",
-				"delay": "Forsinkelse (ms)"
-			},
 			"overlayEditor": {
 				"previewActorLabel": "Preview as",
 				"showFullPreview": "Full Preview",
@@ -317,9 +303,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		}
 	}

@@ -248,20 +248,6 @@
 				"toggleSource": "Toggle Source",
 				"onSceneLoad": "Lataa kohtaus"
 			},
-			"rollOverlayEditor": {
-				"backgroundImageUrl": "Background Image URL",
-				"name": "Roll Overlay Editor",
-				"preRollImage": "Pre Roll Image",
-				"imageUrl": "Image URL",
-				"foregroundImageUrl": "Foreground Image URL",
-				"rollImage": "Roll Image",
-				"test": "Test",
-				"fadeOut": "Häivytä (ms)",
-				"postRollImage": "Post Roll Image",
-				"duration": "Kesto (ms)",
-				"delay": "Delay (ms)",
-				"fadeIn": "Fade In (ms)"
-			},
 			"styleEditor": {
 				"submitButton": "Hyväksy",
 				"name": "Tyylieditori",
@@ -317,9 +303,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		}
 	}

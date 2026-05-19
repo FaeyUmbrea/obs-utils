@@ -27,20 +27,6 @@
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
 		},
 		"applications": {
-			"rollOverlayEditor": {
-				"name": "Éditeur de Superposition de Jet",
-				"test": "Test",
-				"preRollImage": "Image Avant Jet",
-				"rollImage": "Image de Jet",
-				"postRollImage": "Image Après Jet",
-				"imageUrl": "URL de l'Image",
-				"foregroundImageUrl": "URL de l'Image de Premier Plan",
-				"backgroundImageUrl": "URL de l'Image d'Arrière-Plan",
-				"delay": "Délai (ms)",
-				"fadeIn": "Fondu Entrant (ms)",
-				"duration": "Durée (ms)",
-				"fadeOut": "Fondu Sortant (ms)"
-			},
 			"director": {
 				"name": "Directeur",
 				"icTypeHeader": "Type en Combat",
@@ -175,9 +161,6 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
 			}
 		},
 		"settings": {

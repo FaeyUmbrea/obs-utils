@@ -1,9 +1,7 @@
-import gsap from 'gsap';
-import { CustomEase } from 'gsap/CustomEase';
+import type gsap from 'gsap';
 import { MODULE_ID } from './const.ts';
+import { cubicBezier } from './gsap.ts';
 import { generateId } from './types.ts';
-
-gsap.registerPlugin(CustomEase);
 
 const FLAG_KEY = 'cameraPresets';
 
@@ -46,10 +44,7 @@ export interface CameraPreset {
 export function toGsapEase(easing: EasingKind): string | gsap.EaseFunction {
 	if (typeof easing === 'object' && 'cubicBezier' in easing) {
 		const [x1, y1, x2, y2] = easing.cubicBezier;
-		// Build a unique, deterministic id so re-registration is idempotent.
-		const id = `_cb_${x1}_${y1}_${x2}_${y2}`.replace(/\./g, 'p');
-		// CustomEase.create returns the ease function and caches it by id.
-		return CustomEase.create(id, `M0,0 C${x1},${y1} ${x2},${y2} 1,1`);
+		return cubicBezier(x1, y1, x2, y2);
 	}
 	switch (easing) {
 		// CSS-style aliases → power1

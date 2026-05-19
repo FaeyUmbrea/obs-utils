@@ -31,14 +31,13 @@ function makeFakeTl() {
 
 let createdTimelines: ReturnType<typeof makeFakeTl>[] = [];
 
-vi.mock('gsap', () => ({
+vi.mock('../gsap.ts', () => ({
 	default: {
 		timeline: vi.fn(() => {
 			const tl = makeFakeTl();
 			createdTimelines.push(tl);
 			return tl;
 		}),
-		registerPlugin: vi.fn(),
 	},
 }));
 
