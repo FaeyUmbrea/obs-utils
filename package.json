@@ -37,6 +37,7 @@
 		"@antfu/eslint-config": "^9.0.0",
 		"eslint-plugin-antfu": "^3.2.3",
 		"eslint-plugin-format": "^2.0.1",
+		"gsap": "^3.15.0",
 		"obs-websocket-js": "^5.0.8",
 		"svelecte": "^5.3.0",
 		"svelte-tiny-virtual-list": "^3.0.1"

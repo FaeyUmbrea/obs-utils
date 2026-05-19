@@ -1,8 +1,10 @@
 import type { Component } from 'svelte';
+import type { CameraPreset } from './cameraPresets.ts';
+import type { SequenceController } from './cameraSequencePlayer.ts';
+import type { DirectorState } from './directorState.ts';
 import type { ActorValues } from './helpers.ts';
-import type { CustomEventInstance } from './types.ts';
+import type { CustomEventInstance, TriggerPayloadField } from './types.ts';
 import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
-import PlayerRollOverlayEditor from '../svelte/components/editors/PlayerRollOverlayEditor.svelte';
 import WYSIWYGOverlayEditor from '../svelte/components/editors/WYSIWYGOverlayEditor.svelte';
 import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
 import AVBoolIconComponent from '../svelte/streamoverlays/overlaycomponents/AVBoolIconComponent.svelte';
@@ -12,12 +14,14 @@ import AVMultiIconComponent from '../svelte/streamoverlays/overlaycomponents/AVM
 import AVMultiImageComponent from '../svelte/streamoverlays/overlaycomponents/AVMultiImageComponent.svelte';
 import FAIconComponent from '../svelte/streamoverlays/overlaycomponents/FAIconComponent.svelte';
 import ProgressBarComponent from '../svelte/streamoverlays/overlaycomponents/ProgressBarComponent.svelte';
-import PlayerRollOverlay from '../svelte/streamoverlays/PlayerRollOverlay.svelte';
 import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte';
 import WYSIWYGOverlay from '../svelte/streamoverlays/WYSIWYGOverlay.svelte';
+import { playSequence } from './cameraSequencePlayer.ts';
 import { MODULE_ID } from './const.ts';
+import { getDirectorState as readDirectorState } from './directorState.ts';
 import { getApi, isOBS, setActorValues } from './helpers.ts';
 import { getWebsocket } from './obs.ts';
+
 import { getSetting, setSetting } from './settings.ts';
 
 // ─── OBS Remote event type registry ───────────────────────────────────────
@@ -62,12 +66,42 @@ export interface OBSRemoteEventTypeRegistration {
 	matcher?: (conditions: Record<string, any>, context: any) => boolean;
 }
 
+export interface OverlayTriggerRegistration {
+	/** Unique key — namespace with your module id (e.g. 'dnd5e.spellCast'). */
+	key: string;
+	/**
+	 * i18n key for the display name. Resolved via `game.i18n.localize()` at
+	 * render time. Pass a literal string only if you intentionally ship a
+	 * single-locale module — the UI will display it verbatim.
+	 */
+	name: string;
+	/** Optional Font Awesome icon class (e.g. 'fas fa-dice-d20'). */
+	icon?: string;
+	/** Fields carried in the event payload — drives editor condition inputs and trigger.X references. */
+	payloadSchema?: TriggerPayloadField[];
+}
+
+export interface DirectorTabRegistration {
+	/** Unique key — namespace with your module id (e.g. 'my-module.weatherTab'). */
+	key: string;
+	/** i18n key for the tab button label. */
+	label: string;
+	/** Optional Font Awesome icon class for the tab button. */
+	icon?: string;
+	/** Svelte component rendered when this tab is active. Receives `{ disabled }` prop. */
+	component: Component;
+	/** Sort order. Built-ins use 10/20/30; default for module tabs is 100 (placed after built-ins). */
+	order?: number;
+}
+
 export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
 	overlayTypeNames: Map<string, string>;
 	singleInstanceOverlays: Set<Component>;
 	singleInstanceOverlaysSvelte5: Set<Component>;
 	obsRemoteEventTypes: Map<string, OBSRemoteEventTypeRegistration>;
+	overlayTriggers: Map<string, OverlayTriggerRegistration>;
+	directorTabs: Map<string, DirectorTabRegistration>;
 
 	constructor() {
 		this.overlayTypes = new Map();
@@ -75,11 +109,48 @@ export class ObsUtilsApi {
 		this.singleInstanceOverlays = new Set();
 		this.singleInstanceOverlaysSvelte5 = new Set();
 		this.obsRemoteEventTypes = new Map();
+		this.overlayTriggers = new Map();
+		this.directorTabs = new Map();
 	}
 
 	/** Public — modules call this in their init hook to expose a new event type. */
 	registerOBSRemoteEventType(reg: OBSRemoteEventTypeRegistration) {
 		this.obsRemoteEventTypes.set(reg.key, reg);
+	}
+
+	/** Public — modules call this to expose a new overlay trigger type. */
+	registerOverlayTrigger(reg: OverlayTriggerRegistration) {
+		this.overlayTriggers.set(reg.key, reg);
+	}
+
+	/** Public — modules call this to register a tab in the Director window. */
+	registerDirectorTab(reg: DirectorTabRegistration) {
+		this.directorTabs.set(reg.key, reg);
+	}
+
+	/**
+	 * Public — snapshot of Director state (tracking modes, combat, focused user).
+	 * Subscribe to `obs-utils.director.stateChanged` to react to changes; the
+	 * hook payload is `(next: DirectorState, prev: DirectorState | undefined)`.
+	 */
+	getDirectorState(): DirectorState {
+		return readDirectorState();
+	}
+
+	/** Public — set one of the tracking-mode slots. Mirrors the Controls tab UI. */
+	async setTrackingMode(slot: 'inCombat' | 'outOfCombat', mode: string) {
+		const key = slot === 'inCombat' ? 'defaultInCombat' : 'defaultOutOfCombat';
+		await setSetting(key as any, mode as any);
+	}
+
+	/**
+	 * Public — modules call this when their in-system event fires (e.g. a chat
+	 * message is created, a roll is made). Dispatches via Foundry's Hooks bus
+	 * so any number of overlay renderers can react without tight coupling.
+	 */
+	fireOverlayTrigger(key: string, payload: Record<string, any>) {
+		// Cast required — fvtt-types only knows built-in hook names.
+		(Hooks.callAll as (hook: string, ...args: any[]) => boolean)('obs-utils.overlayTrigger', key, payload);
 	}
 
 	/**
@@ -148,6 +219,22 @@ export class ObsUtilsApi {
 	isOBS() {
 		return isOBS();
 	}
+
+	/**
+	 * Public — play a camera preset. Single-waypoint presets apply immediately;
+	 * keyframed presets drive a GSAP timeline. Returns a controller for
+	 * pause/resume/scrub/stop.
+	 */
+	playPreset(preset: CameraPreset): SequenceController {
+		return playSequence(preset);
+	}
+}
+
+export interface ImageSlotHandlers {
+	/** Extract all image-ref strings from a component's data field. */
+	extract: (data: string) => string[];
+	/** Rewrite all image refs in data using the path-map. Return the new data string. */
+	rewrite: (data: string, pathMap: ReadonlyMap<string, string>) => string;
 }
 
 export class OverlayType {
@@ -157,6 +244,7 @@ export class OverlayType {
 	overlayComponentNames: Map<string, string>;
 	overlayComponentEditors: Map<string, Component<any, any, any>>;
 	compactEditorButtons: Map<string, boolean>;
+	overlayComponentImageSlots: Map<string, ImageSlotHandlers>;
 	hasCustomOverlayEditor: boolean = false;
 	perActor: boolean = true;
 
@@ -166,6 +254,7 @@ export class OverlayType {
 		this.overlayComponentNames = new Map();
 		this.overlayComponentEditors = new Map();
 		this.compactEditorButtons = new Map();
+		this.overlayComponentImageSlots = new Map();
 		this.overlayEditor = FallbackEditor;
 	}
 
@@ -191,6 +280,10 @@ export class OverlayType {
 	registerComponentEditor(key: string, editor: Component<any, any, any>, compactButtons: boolean = false) {
 		this.overlayComponentEditors.set(key, editor);
 		this.compactEditorButtons.set(key, compactButtons);
+	}
+
+	registerComponentImageSlots(key: string, handlers: ImageSlotHandlers) {
+		this.overlayComponentImageSlots.set(key, handlers);
 	}
 }
 
@@ -237,6 +330,40 @@ export function registerDefaultTypes() {
 		ProgressBarComponent,
 	);
 
+	// img: data IS the path
+	singleLineOverlay.registerComponentImageSlots('img', {
+		extract: d => (d ? [d] : []),
+		rewrite: (d, m) => m.get(d) ?? d,
+	});
+
+	// bavimg: "avPath;trueImg;falseImg" — slots 1 and 2 carry images
+	singleLineOverlay.registerComponentImageSlots('bavimg', {
+		extract: (d) => {
+			const parts = d.split(';');
+			return [parts[1], parts[2]].filter(p => p && p.length > 0);
+		},
+		rewrite: (d, m) => {
+			const parts = d.split(';');
+			if (parts[1]) parts[1] = m.get(parts[1]) ?? parts[1];
+			if (parts[2]) parts[2] = m.get(parts[2]) ?? parts[2];
+			return parts.join(';');
+		},
+	});
+
+	// mimgav: "valuePath;filledImg;maxPath;emptyImg" — slots 1 and 3 carry images
+	singleLineOverlay.registerComponentImageSlots('mimgav', {
+		extract: (d) => {
+			const parts = d.split(';');
+			return [parts[1], parts[3]].filter(p => p && p.length > 0);
+		},
+		rewrite: (d, m) => {
+			const parts = d.split(';');
+			if (parts[1]) parts[1] = m.get(parts[1]) ?? parts[1];
+			if (parts[3]) parts[3] = m.get(parts[3]) ?? parts[3];
+			return parts.join(';');
+		},
+	});
+
 	// Register Legacy Names
 	singleLineOverlay.overlayComponents.set('Plain Text', ActorValComponent);
 	singleLineOverlay.overlayComponents.set('Font Awesome Icon', FAIconComponent);
@@ -256,18 +383,71 @@ export function registerDefaultTypes() {
 	// so they can be copied. Editors are registered later in ui.ts for both 'sl' and 'wysiwyg'.
 	wysiwygOverlay.overlayComponents = new Map(singleLineOverlay.overlayComponents);
 	wysiwygOverlay.overlayComponentNames = new Map(singleLineOverlay.overlayComponentNames);
+	wysiwygOverlay.overlayComponentImageSlots = new Map(singleLineOverlay.overlayComponentImageSlots);
 	wysiwygOverlay.registerOverlayEditor(WYSIWYGOverlayEditor);
 	wysiwygOverlay.perActor = true;
 	getApi().registerOverlayType('wysiwyg', 'obs-utils.overlays.wysiwygOverlay.name', wysiwygOverlay);
 
-	const rollOverlay = new OverlayType(PlayerRollOverlay);
-	rollOverlay.registerOverlayEditor(PlayerRollOverlayEditor);
-	rollOverlay.perActor = false;
-	getApi().registerOverlayType('roll', 'obs-utils.overlays.rollOverlay.name', rollOverlay);
-
-	getApi().registerUniqueOverlaySvelte5(PlayerRollOverlay);
-
 	registerBuiltinOBSRemoteEvents();
+	registerBuiltinOverlayTriggers();
+	registerBuiltinDirectorTabs();
+}
+
+async function registerBuiltinDirectorTabs() {
+	const [{ default: ControlsTab }, { default: PresetsTab }, { default: CoDMsTab }] = await Promise.all([
+		import('../svelte/components/director/ControlsTab.svelte'),
+		import('../svelte/components/director/PresetsTab.svelte'),
+		import('../svelte/components/director/CoDMsTab.svelte'),
+	]);
+	const api = getApi();
+	api.registerDirectorTab({
+		key: 'core.controls',
+		label: 'obs-utils.applications.director.tabControls',
+		icon: 'fas fa-video',
+		component: ControlsTab,
+		order: 10,
+	});
+	api.registerDirectorTab({
+		key: 'core.presets',
+		label: 'obs-utils.applications.director.tabPresets',
+		icon: 'fas fa-bookmark',
+		component: PresetsTab,
+		order: 20,
+	});
+	api.registerDirectorTab({
+		key: 'core.codms',
+		label: 'obs-utils.applications.director.tabCoDMs',
+		icon: 'fas fa-users',
+		component: CoDMsTab,
+		order: 30,
+	});
+}
+
+function registerBuiltinOverlayTriggers() {
+	const api = getApi();
+	api.registerOverlayTrigger({
+		key: 'core.onPlayerRoll',
+		name: 'obs-utils.triggers.core.onPlayerRoll.name',
+		icon: 'fas fa-dice-d20',
+		payloadSchema: [
+			{ key: 'actor', type: 'Actor', label: 'obs-utils.triggers.core.onPlayerRoll.fields.actor', display: true, filter: true },
+			{ key: 'roll', type: 'Roll', label: 'obs-utils.triggers.core.onPlayerRoll.fields.roll', display: true, filter: false },
+			{ key: 'total', type: 'number', label: 'obs-utils.triggers.core.onPlayerRoll.fields.total', display: true, filter: true },
+			{ key: 'formula', type: 'string', label: 'obs-utils.triggers.core.onPlayerRoll.fields.formula', display: true, filter: true },
+			{ key: 'isCritical', type: 'boolean', label: 'obs-utils.triggers.core.onPlayerRoll.fields.isCritical', display: true, filter: true },
+			{ key: 'isFumble', type: 'boolean', label: 'obs-utils.triggers.core.onPlayerRoll.fields.isFumble', display: true, filter: true },
+		],
+	});
+	api.registerOverlayTrigger({
+		key: 'core.onChatMessage',
+		name: 'obs-utils.triggers.core.onChatMessage.name',
+		icon: 'fas fa-comment',
+		payloadSchema: [
+			{ key: 'message', type: 'ChatMessage', label: 'obs-utils.triggers.core.onChatMessage.fields.message', display: true, filter: false },
+			{ key: 'content', type: 'string', label: 'obs-utils.triggers.core.onChatMessage.fields.content', display: true, filter: true },
+			{ key: 'speakerAlias', type: 'string', label: 'obs-utils.triggers.core.onChatMessage.fields.speakerAlias', display: true, filter: true },
+		],
+	});
 }
 
 /**

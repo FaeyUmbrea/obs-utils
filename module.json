@@ -4,6 +4,7 @@
 	"description": "",
 	"version": "This is auto replaced",
 	"library": "false",
+	"persistentStorage": true,
 	"manifestPlusVersion": "1.2.0",
 	"compatibility": {
 		"minimum": 13.344,

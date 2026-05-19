@@ -3,7 +3,8 @@
 	import type { CameraPreset } from '../../../utils/cameraPresets.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { makePreset, readPresets, writePresets } from '../../../utils/cameraPresets.ts';
-	import { clampAndApplyExternal, getLocalViewport } from '../../../utils/canvas.ts';
+	import { getLocalViewport } from '../../../utils/canvas.ts';
+	import { getApi } from '../../../utils/helpers.ts';
 
 	let currentScene = $state<any>((canvas as any)?.scene ?? null);
 	// initializer captures currentScene once — refreshFromCurrentScene keeps them in sync
@@ -39,7 +40,7 @@
 		await writePresets(currentScene, next);
 	}
 	function applyPreset(p: CameraPreset) {
-		clampAndApplyExternal({ x: p.x, y: p.y, scale: p.scale });
+		getApi().playPreset(p);
 	}
 	async function updatePresetToCurrent(id: string) {
 		if (!currentScene) return;

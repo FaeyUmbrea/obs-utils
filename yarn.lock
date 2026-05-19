@@ -6433,6 +6433,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gsap@npm:^3.15.0":
+  version: 3.15.0
+  resolution: "gsap@npm:3.15.0"
+  checksum: 10/235b10d3c15f276a2ab2173c536c79a4ba34f9c478f4d509d3e2fc28aa4caac27fe1dd1554ce317d89e6747537367ef15c3cb98a94af685a7aa1c7f278ff6553
+  languageName: node
+  linkType: hard
+
 "handlebars-intl@npm:^1.1.2":
   version: 1.1.2
   resolution: "handlebars-intl@npm:1.1.2"
@@ -8528,6 +8535,7 @@ __metadata:
     flat: "npm:^6.0.1"
     fvtt-types: "npm:13.346.0-beta.20251209192131"
     globals: "npm:^17.6.0"
+    gsap: "npm:^3.15.0"
     istanbul-lib-coverage: "npm:^3.2.2"
     jsdom: "npm:^29.1.1"
     monocart-reporter: "npm:^2.11.2"

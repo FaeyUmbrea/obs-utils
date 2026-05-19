@@ -51,20 +51,15 @@
 		selectedComponentIndex = null;
 	}
 
-	// PlayerRollOverlay is a singleton renderer — it picks the first 'roll'
-	// layer and ignores any others. Disable the Roll option in the Add menu
-	// when one is already present.
-	const hasRollLayer = $derived((overlays ?? []).some((o: OverlayData) => o?.type === 'roll'));
-
 	const overlayTypeOptions = $derived.by(() => {
 		const types = getApi().overlayTypes;
 		if (!types) return [] as Array<{ key: string; label: string; disabled: boolean }>;
 		return Array.from(types.keys())
-			.filter(k => k === 'sl' || k === 'wysiwyg' || k === 'roll')
+			.filter(k => k === 'sl' || k === 'wysiwyg')
 			.map(k => ({
 				key: k,
 				label: typeLabel(k),
-				disabled: k === 'roll' && hasRollLayer,
+				disabled: false,
 			}));
 	});
 </script>
@@ -89,10 +84,7 @@
 						<button
 							type='button'
 							role='menuitem'
-							disabled={opt.disabled}
-							title={opt.disabled ? game.i18n?.localize('obs-utils.applications.overlayEditor.rollOverlayAlreadyExists') : undefined}
 							onclick={() => {
-								if (opt.disabled) return;
 								addMenuOpen = false;
 								addLayer(opt.key);
 							}}

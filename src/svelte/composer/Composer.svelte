@@ -108,13 +108,6 @@
 		commit();
 	}
 
-	function setLayer(index: number, value: OverlayData) {
-		const list = $overlays ?? [];
-		if (index < 0 || index >= list.length) return;
-		list[index] = value;
-		$overlays = preventUndefinedNullInArray(list);
-	}
-
 	function reorderComponents(layerIndex: number, from: number, to: number) {
 		const layer = ($overlays ?? [])[layerIndex];
 		if (!layer?.components) return;
@@ -214,10 +207,6 @@
 					<i class='fas fa-grip-lines'></i>
 					<span>{game.i18n?.localize('obs-utils.overlays.simpleOverlay.name')}</span>
 				</button>
-				<button type='button' onclick={() => addLayer('roll')}>
-					<i class='fas fa-dice-d20'></i>
-					<span>{game.i18n?.localize('obs-utils.overlays.rollOverlay.name')}</span>
-				</button>
 			</div>
 		</div>
 	</div>
@@ -278,8 +267,6 @@
 				{addedComponentTick}
 				{renameLayer}
 				{changeLayerType}
-				{setLayer}
-				{removeLayer}
 				{addComponentToLayer}
 				{reorderComponents}
 				{removeComponent}
@@ -425,7 +412,7 @@
 
 		.empty-actions
 			display grid
-			grid-template-columns repeat(3, minmax(0, 1fr))
+			grid-template-columns repeat(2, minmax(0, 1fr))
 			gap 10px
 
 			button

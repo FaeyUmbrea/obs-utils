@@ -3,7 +3,6 @@
 	import type { OverlayData } from '../../utils/types.ts';
 	import { tick } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
-	import PlayerRollComponent from '../streamoverlays/overlaycomponents/PlayerRollComponent.svelte';
 	import SingleLineOverlay from '../streamoverlays/SingleLineOverlay.svelte';
 
 	let {
@@ -32,9 +31,6 @@
 	const selectedIsSimple = $derived(
 		!!selectedLayer && selectedLayer.type === 'sl',
 	);
-	const selectedIsRoll = $derived(
-		!!selectedLayer && selectedLayer.type === 'roll',
-	);
 
 	const canvasW = $derived.by(() => {
 		if (selectedLayer?.type === 'wysiwyg') return selectedLayer.config?.w ?? REF_W_DEFAULT;
@@ -44,11 +40,6 @@
 		if (selectedLayer?.type === 'wysiwyg') return selectedLayer.config?.h ?? REF_H_DEFAULT;
 		return REF_H_DEFAULT;
 	});
-
-	let rollPreviewValue = $state('');
-	function triggerRollPreview() {
-		rollPreviewValue = Math.round(Math.random() * 20).toString();
-	}
 
 	function getComponentRenderer(type: string) {
 		const entry = getApi().overlayTypes.get('wysiwyg');
@@ -350,19 +341,6 @@
 						/>
 					</div>
 				</div>
-			{:else if selectedIsRoll && selectedLayer}
-				<div class='preview-host' aria-label='Roll Overlay preview'>
-					<div class='preview-tag'>
-						{game.i18n?.localize('obs-utils.applications.overlayEditor.previewReadOnly')}
-						<button type='button' class='roll-test' onclick={triggerRollPreview}>
-							<i class='fas fa-dice-d20'></i>
-							{game.i18n?.localize('obs-utils.applications.rollOverlayEditor.test')}
-						</button>
-					</div>
-					<div class='roll-host obs-utils roll-overlay'>
-						<PlayerRollComponent id='composer-roll-preview' bind:rollValue={rollPreviewValue} />
-					</div>
-				</div>
 			{:else}
 				<div class='non-canvas-hint'>
 					<i class='fas fa-arrow-left'></i>
@@ -466,39 +444,12 @@
 			border-radius 3px
 			align-self flex-start
 
-			.roll-test
-				display inline-flex
-				align-items center
-				gap 4px
-				height 22px
-				padding 0 8px
-				margin-left 6px
-				font-size 11px
-				background rgba(255, 144, 0, 0.18)
-				border 1px solid rgba(255, 144, 0, 0.4)
-				border-radius 3px
-				cursor pointer
-				color inherit
-
-				&:hover
-					background rgba(255, 144, 0, 0.28)
-					border-color rgba(255, 144, 0, 0.7)
-
 		.simple-host
 			width 100%
 			max-width 100%
 			padding 8px
 			background rgba(255, 255, 255, 0.02)
 			border 1px dashed rgba(255, 255, 255, 0.08)
-
-		.roll-host
-			margin-top 40px
-			position relative
-			min-height 200px
-			width 100%
-			display flex
-			align-items center
-			justify-content center
 
 	.non-canvas-hint
 		position absolute

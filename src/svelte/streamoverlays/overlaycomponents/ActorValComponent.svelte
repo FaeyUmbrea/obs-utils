@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { onDestroy } from 'svelte';
-	import { getByDataPath, removeQuotes } from '../../../utils/helpers.ts';
+	import { getContext, onDestroy } from 'svelte';
+	import { getByTriggerOrDataPath, removeQuotes } from '../../../utils/helpers.ts';
 
 	const { data, actorID, style, componentIndex } = $props();
 
@@ -9,6 +9,7 @@
 	// eslint-disable-next-line svelte/valid-compile
 	let actor = $state(game.actors?.get(actorID));
 
+	const triggerCtx = getContext<{ current?: Record<string, any> }>('obs-utils.triggerPayload');
 	let value = $state('');
 
 	const hook = Hooks.on('obs-utils.refreshActor', (changedactor) => {
@@ -18,7 +19,7 @@
 	});
 
 	function getValue() {
-		const resolved = getByDataPath(actor, data);
+		const resolved = getByTriggerOrDataPath(actor, triggerCtx?.current, data);
 		if (resolved === '') {
 			value = data !== undefined && data !== null ? removeQuotes(data) : '';
 		} else {

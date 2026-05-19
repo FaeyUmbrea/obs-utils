@@ -1,6 +1,41 @@
 import type { StringMap } from './const.ts';
 import { OBSAction } from './settings.ts';
 
+/**
+ * One field in a trigger's payload schema. Drives both the editor's condition
+ * inputs (when filter !== false) and the value paths components can reference
+ * via `trigger.X` (when display !== false).
+ */
+export interface TriggerPayloadField {
+	/** Storage / lookup key. */
+	key: string;
+	type: 'number' | 'string' | 'boolean' | 'Actor' | 'ChatMessage' | 'Roll';
+	/** i18n key for the label. Resolved via game.i18n.localize() at render time. */
+	label: string;
+	/** Default value used when the editor seeds a fresh condition. */
+	default?: any;
+	/** If false, this field cannot be referenced via trigger.<key>. Defaults to true. */
+	display?: boolean;
+	/** If false, this field is not exposed to the editor condition inputs. Defaults to true. */
+	filter?: boolean;
+}
+
+/**
+ * Per-overlay trigger configuration written into OverlayData.trigger when the
+ * layer should be event-driven instead of always-on.
+ */
+export interface OverlayTriggerConfig {
+	eventKey: string;
+	conditions: Record<string, any>;
+	/** Total visible time in ms after the trigger fires (including show/hide). -1 = sticky until next fire. */
+	duration: number;
+	/** Entrance animation duration in ms. */
+	showMs: number;
+	/** Exit animation duration in ms. */
+	hideMs: number;
+	transition: 'fade' | 'slide-up' | 'slide-down' | 'scale' | 'flash';
+}
+
 export class OBSEvent {
 	targetAction = OBSAction.SwitchScene;
 	sceneName = '';
@@ -65,16 +100,18 @@ export class OverlayData {
 	config: Record<string, any>;
 	name?: string;
 	enabled?: boolean;
+	trigger?: OverlayTriggerConfig;
 	id?: string;
 	customCSS?: string;
 
-	constructor(type = 'sl', components = [], style = '', config: Record<string, any> = {}, name?: string, enabled?: boolean) {
+	constructor(type = 'sl', components = [], style = '', config: Record<string, any> = {}, name?: string, enabled?: boolean, trigger?: OverlayTriggerConfig) {
 		this.type = type;
 		this.components = components;
 		this.style = style;
 		this.config = config;
 		this.name = name;
 		this.enabled = enabled;
+		this.trigger = trigger;
 		this.id = generateId();
 	}
 }

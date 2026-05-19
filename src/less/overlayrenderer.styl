@@ -1,7 +1,5 @@
 @import 'streamoverlay.styl';
 
-@import 'rolloverlay.styl';
-
 // /stream-only positioning: keep the overlay tree past Foundry's chat sidebar.
 // Scoped to body.stream so it doesn't apply in the editor canvas pane or the
 // Full Preview window, both of which also wear .overlay-renderer for CSS
@@ -17,17 +15,3 @@ body.stream .overlay-renderer {
     flex-direction: row;
   }
 }
-.obs-utils.roll-overlay {
-  .roll.layer {
-    position: relative;
-    span {
-      position: absolute;
-      color: red;
-      top: 50%;
-      left: 50%
-      transform: translate(-50%, -50%);
-    }
-  }
-}
-
-

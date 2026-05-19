@@ -39,19 +39,6 @@
 				"filledImage": "Filled image",
 				"emptyImage": "Empty image"
 			},
-			"rollOverlayEditor": {
-				"test": "Test",
-				"preRollImage": "Pre Roll Image",
-				"rollImage": "Roll Image",
-				"postRollImage": "Post Roll Image",
-				"imageUrl": "Image URL",
-				"foregroundImageUrl": "Foreground Image URL",
-				"backgroundImageUrl": "Background Image URL",
-				"delay": "Delay (ms)",
-				"fadeIn": "Fade In (ms)",
-				"duration": "Duration (ms)",
-				"fadeOut": "Fade Out (ms)"
-			},
 			"director": {
 				"name": "Director",
 				"icTypeHeader": "In Combat Type",
@@ -135,6 +122,25 @@
 			},
 			"overlayEditor": {
 				"name": "Overlay Editor",
+				"triggerSection": {
+					"header": "Trigger",
+					"enable": "Event-driven",
+					"event": "Event",
+					"conditions": "Conditions",
+					"conditionEmpty": "(any)",
+					"clearCondition": "Clear",
+					"duration": "Duration (ms, -1 = sticky)",
+					"showMs": "Show animation (ms)",
+					"hideMs": "Hide animation (ms)",
+					"transition": "Transition",
+					"transitionFade": "Fade",
+					"transitionSlideUp": "Slide up",
+					"transitionSlideDown": "Slide down",
+					"transitionScale": "Scale",
+					"transitionFlash": "Flash",
+					"test": "Test",
+					"testHint": "Fires the trigger with the current conditions as payload"
+				},
 				"previewActorLabel": "Preview as",
 				"showFullPreview": "Full Preview",
 				"removeButton": "Remove Overlay",
@@ -142,7 +148,6 @@
 				"importButton": "Import",
 				"exportButton": "Export",
 				"addOverlayButton": "Add New Overlay",
-				"rollOverlayAlreadyExists": "Only one roll overlay can exist per world.",
 				"previousComponent": "Previous component",
 				"nextComponent": "Next component",
 				"componentNavLabel": "Component {current} of {total}",
@@ -192,13 +197,24 @@
 					"fileError": "You did not upload a data file",
 					"versionError": "Version unsupported",
 					"formatError": "Imported file is not an OBS Utils Overlay Export",
-					"cancelButton": "Cancel"
+					"cancelButton": "Cancel",
+					"unknownType": "Unrecognized file. Expected a v1/v2 overlay export or a .vmoverlay bundle.",
+					"bundleImported": "Imported \"{name}\" — {count} overlay(s) added.",
+					"bundleImageWarning": "Some bundle images failed to upload: {names}",
+					"bundleValidationFailed": "Bundle is malformed: {reason}"
 				},
 				"exportDialog": {
 					"title": "Export your settings?",
 					"content": "Do you want to export your Overlay Settings?",
-					"yesButton": "Yes",
-					"noButton": "No"
+					"yesButton": "JSON",
+					"bundleButton": "Bundle",
+					"noButton": "Cancel",
+					"bundleFormTitle": "Export as Bundle",
+					"bundleId": "Bundle ID (slug)",
+					"bundleName": "Display name",
+					"bundleAuthor": "Author",
+					"bundleLicense": "License (SPDX)",
+					"bundleUrl": "URL (optional)"
 				}
 			},
 			"styleEditor": {
@@ -267,9 +283,28 @@
 			},
 			"wysiwygOverlay": {
 				"name": "WYSIWYG Overlay"
-			},
-			"rollOverlay": {
-				"name": "Roll Overlay"
+			}
+		},
+		"triggers": {
+			"core": {
+				"onPlayerRoll": {
+					"name": "Player Roll",
+					"fields": {
+						"actor": "Rolling Actor",
+						"roll": "Roll Object",
+						"total": "Roll Total",
+						"formula": "Roll Formula",
+						"isCritical": "Is Critical (Nat 20)",
+						"isFumble": "Is Fumble (Nat 1)"
+					}
+				},
+				"onChatMessage": {
+					"name": "Chat Message",
+					"fields": {
+						"content": "Message Content",
+						"speakerAlias": "Speaker Name"
+					}
+				}
 			}
 		},
 		"settings": {

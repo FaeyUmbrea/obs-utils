@@ -1,14 +1,24 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { getGM } from '../utils/helpers.ts';
-	import CoDMsTab from './components/director/CoDMsTab.svelte';
-	import ControlsTab from './components/director/ControlsTab.svelte';
-	import PresetsTab from './components/director/PresetsTab.svelte';
+	import { getApi, getGM } from '../utils/helpers.ts';
 
 	const isDisabled = getGM()?.active !== true;
 
-	type TabKey = 'controls' | 'presets' | 'codms';
-	let activeTab = $state<TabKey>('controls');
+	// Tabs come from the registry. Built-in tabs are pre-registered at module init;
+	// other modules can register their own via api.registerDirectorTab().
+	const tabs = $derived.by(() => {
+		return Array.from(getApi().directorTabs.values())
+			.sort((a, b) => (a.order ?? 100) - (b.order ?? 100));
+	});
+
+	// Seeded once the registry has tabs; also reseeded if the active tab vanishes
+	// (e.g. a module unregisters — defensive, not common).
+	let activeTabKey = $state<string>('');
+	$effect(() => {
+		if (tabs.length > 0 && !tabs.some(t => t.key === activeTabKey)) {
+			activeTabKey = tabs[0].key;
+		}
+	});
 </script>
 
 <main>
@@ -20,46 +30,27 @@
 	{/if}
 
 	<div class='tab-bar' role='tablist'>
-		<button
-			type='button'
-			role='tab'
-			class:active={activeTab === 'controls'}
-			aria-selected={activeTab === 'controls'}
-			onclick={() => (activeTab = 'controls')}
-		>
-			<i class='fas fa-video'></i>
-			<span>{game.i18n?.localize('obs-utils.applications.director.tabControls')}</span>
-		</button>
-		<button
-			type='button'
-			role='tab'
-			class:active={activeTab === 'presets'}
-			aria-selected={activeTab === 'presets'}
-			onclick={() => (activeTab = 'presets')}
-		>
-			<i class='fas fa-bookmark'></i>
-			<span>{game.i18n?.localize('obs-utils.applications.director.tabPresets')}</span>
-		</button>
-		<button
-			type='button'
-			role='tab'
-			class:active={activeTab === 'codms'}
-			aria-selected={activeTab === 'codms'}
-			onclick={() => (activeTab = 'codms')}
-		>
-			<i class='fas fa-users'></i>
-			<span>{game.i18n?.localize('obs-utils.applications.director.tabCoDMs')}</span>
-		</button>
+		{#each tabs as tab (tab.key)}
+			<button
+				type='button'
+				role='tab'
+				class:active={activeTabKey === tab.key}
+				aria-selected={activeTabKey === tab.key}
+				onclick={() => (activeTabKey = tab.key)}
+			>
+				{#if tab.icon}<i class={tab.icon}></i>{/if}
+				<span>{game.i18n?.localize(tab.label)}</span>
+			</button>
+		{/each}
 	</div>
 
 	<section class='tab-body'>
-		{#if activeTab === 'controls'}
-			<ControlsTab disabled={isDisabled} />
-		{:else if activeTab === 'presets'}
-			<PresetsTab />
-		{:else if activeTab === 'codms'}
-			<CoDMsTab />
-		{/if}
+		{#each tabs as tab (tab.key)}
+			{#if activeTabKey === tab.key}
+				{@const Tab = tab.component}
+				<Tab disabled={isDisabled} />
+			{/if}
+		{/each}
 	</section>
 </main>
 

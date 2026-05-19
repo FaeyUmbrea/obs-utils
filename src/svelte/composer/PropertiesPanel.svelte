@@ -2,7 +2,6 @@
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
 	import { getApi } from '../../utils/helpers.ts';
-	import PlayerRollOverlayEditor from '../components/editors/PlayerRollOverlayEditor.svelte';
 	import SimpleComposerEditor from './SimpleComposerEditor.svelte';
 	import StyleTab from './StyleTab.svelte';
 	import WYSIWYGComposerEditor from './WYSIWYGComposerEditor.svelte';
@@ -14,7 +13,6 @@
 		addedComponentTick = 0,
 		renameLayer,
 		changeLayerType,
-		setLayer,
 		addComponentToLayer,
 		reorderComponents,
 		removeComponent,
@@ -26,7 +24,6 @@
 		addedComponentTick?: number;
 		renameLayer: (index: number, name: string) => void;
 		changeLayerType: (index: number, type: string) => void;
-		setLayer: (index: number, value: OverlayData) => void;
 		addComponentToLayer: (layerIndex: number, type: string) => void;
 		reorderComponents: (layerIndex: number, from: number, to: number) => void;
 		removeComponent: (layerIndex: number, compIndex: number) => void;
@@ -89,7 +86,7 @@
 		const types = getApi().overlayTypes;
 		if (!types) return [] as Array<{ key: string; label: string }>;
 		return Array.from(types.keys())
-			.filter(k => k === 'sl' || k === 'wysiwyg' || k === 'roll')
+			.filter(k => k === 'sl' || k === 'wysiwyg')
 			.map((k) => {
 				const nameKey = getApi().overlayTypeNames?.get(k);
 				return { key: k, label: nameKey ? game.i18n.localize(nameKey) : k };
@@ -125,13 +122,6 @@
 	const styleHasCustomCSS = $derived(
 		!!(styleTarget && (styleTarget as any).customCSS && (styleTarget as any).customCSS.trim().length),
 	);
-	function getLayer() {
-		return selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null as any;
-	}
-	function setSelectedLayer(value: OverlayData) {
-		if (selectedLayerIndex === null) return;
-		setLayer(selectedLayerIndex, value);
-	}
 
 </script>
 
@@ -226,13 +216,6 @@
 							{removeComponent}
 							{commit}
 						/>
-					{:else if selectedLayer.type === 'roll'}
-						<div class='legacy-host'>
-							<PlayerRollOverlayEditor
-								bind:overlay={getLayer, setSelectedLayer}
-								refreshFn={commit}
-							/>
-						</div>
 					{:else}
 						<div class='empty'>
 							<i class='fas fa-question-circle'></i>
@@ -414,20 +397,6 @@
 		display flex
 		flex-direction column
 		padding 6px 10px
-
-	.legacy-host
-		height 100%
-		overflow auto
-		position relative
-
-		:global(.remove-tab), :global(.remove-only)
-			display none
-
-		:global(footer)
-			position absolute
-			left 0
-			right 0
-			bottom 0
 
 	.component-nav
 		display grid

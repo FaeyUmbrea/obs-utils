@@ -164,6 +164,19 @@ export function getByDataPath(obj: unknown, path: string | undefined | null): un
 }
 
 /**
+ * Like getByDataPath, but paths prefixed with `trigger.` are resolved against
+ * the event payload instead of the actor. Returns '' if the payload is absent
+ * or the path cannot be resolved.
+ */
+export function getByTriggerOrDataPath(actor: unknown, payload: Record<string, any> | undefined, path: string | undefined | null): unknown {
+	if (path?.startsWith('trigger.')) {
+		if (payload == null) return '';
+		return getByDataPath(payload, path.slice('trigger.'.length));
+	}
+	return getByDataPath(actor, path);
+}
+
+/**
  * Minimal debounce implementation with optional maxWait.
  */
 export function debounce<F extends (...args: any[]) => void>(fn: F, wait = 0, options?: { maxWait?: number }) {

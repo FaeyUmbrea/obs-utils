@@ -1,12 +1,13 @@
 <svelte:options runes={true} />
 <script>
-	import { onDestroy } from 'svelte';
-	import { getByDataPath, removeQuotes } from '../../../utils/helpers.ts';
+	import { getContext, onDestroy } from 'svelte';
+	import { getByTriggerOrDataPath, removeQuotes } from '../../../utils/helpers.ts';
 
 	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
 
 	let actor = game.actors?.get(actorID);
 
+	const triggerCtx = getContext('obs-utils.triggerPayload');
 	let value1 = $state('');
 	let value2 = $state('');
 	const hook = Hooks.on('obs-utils.refreshActor', (changedactor) => {
@@ -17,14 +18,14 @@
 
 	function getValue() {
 		const path1 = data.split(';')[0];
-		const r1 = getByDataPath(actor, path1);
+		const r1 = getByTriggerOrDataPath(actor, triggerCtx?.current, path1);
 		if (r1 === '') {
 			value1 = path1 !== undefined && path1 !== null ? removeQuotes(path1) : '';
 		} else {
 			value1 = r1;
 		}
 		const path2 = data.split(';')[1];
-		const r2 = getByDataPath(actor, path2);
+		const r2 = getByTriggerOrDataPath(actor, triggerCtx?.current, path2);
 		if (r2 === '') {
 			value2 = path2 !== undefined && path2 !== null ? removeQuotes(path2) : '';
 		} else {
