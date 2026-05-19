@@ -5,10 +5,14 @@
 	import { makePreset, readPresets, writePresets } from '../../../utils/cameraPresets.ts';
 	import { getLocalViewport } from '../../../utils/canvas.ts';
 	import { getApi } from '../../../utils/helpers.ts';
+	import KeyframeEditor from './KeyframeEditor.svelte';
 
 	let currentScene = $state<any>((canvas as any)?.scene ?? null);
 	// initializer captures currentScene once — refreshFromCurrentScene keeps them in sync
 	let presets = $state<CameraPreset[]>(readPresets((canvas as any)?.scene ?? null));
+
+	// Id of the preset whose keyframe editor is currently open. Only one at a time.
+	let expandedId = $state<string | null>(null);
 
 	function refreshFromCurrentScene() {
 		currentScene = (canvas as any)?.scene ?? null;
@@ -58,8 +62,13 @@
 	}
 	async function deletePreset(id: string) {
 		if (!currentScene) return;
+		if (expandedId === id) expandedId = null;
 		presets = presets.filter(p => p.id !== id);
 		await writePresets(currentScene, presets);
+	}
+
+	function toggleEditor(id: string) {
+		expandedId = expandedId === id ? null : id;
 	}
 </script>
 
@@ -86,34 +95,60 @@
 {#if presets.length > 0}
 	<ul class='preset-list'>
 		{#each presets as p (p.id)}
-			<li class='preset'>
-				<input
-					type='text'
-					class='preset-name'
-					value={p.name}
-					onchange={e => renamePreset(p.id, (e.currentTarget as HTMLInputElement).value)}
-				/>
-				<button
-					type='button'
-					class='preset-action'
-					onclick={() => applyPreset(p)}
-					title={game.i18n?.localize('obs-utils.applications.director.presetApply')}
-					aria-label={game.i18n?.localize('obs-utils.applications.director.presetApply')}
-				><i class='fas fa-eye'></i></button>
-				<button
-					type='button'
-					class='preset-action'
-					onclick={() => updatePresetToCurrent(p.id)}
-					title={game.i18n?.localize('obs-utils.applications.director.presetUpdate')}
-					aria-label={game.i18n?.localize('obs-utils.applications.director.presetUpdate')}
-				><i class='fas fa-arrows-rotate'></i></button>
-				<button
-					type='button'
-					class='preset-action danger'
-					onclick={() => deletePreset(p.id)}
-					title={game.i18n?.localize('obs-utils.applications.director.presetDelete')}
-					aria-label={game.i18n?.localize('obs-utils.applications.director.presetDelete')}
-				><i class='fas fa-trash'></i></button>
+			<li class='preset-item'>
+				<div class='preset' class:preset--expanded={expandedId === p.id}>
+					<input
+						type='text'
+						class='preset-name'
+						value={p.name}
+						onchange={e => renamePreset(p.id, (e.currentTarget as HTMLInputElement).value)}
+					/>
+					<button
+						type='button'
+						class='preset-action'
+						onclick={() => applyPreset(p)}
+						title={game.i18n?.localize('obs-utils.applications.director.presetApply')}
+						aria-label={game.i18n?.localize('obs-utils.applications.director.presetApply')}
+					><i class='fas fa-eye'></i></button>
+					<button
+						type='button'
+						class='preset-action'
+						onclick={() => updatePresetToCurrent(p.id)}
+						title={game.i18n?.localize('obs-utils.applications.director.presetUpdate')}
+						aria-label={game.i18n?.localize('obs-utils.applications.director.presetUpdate')}
+					><i class='fas fa-arrows-rotate'></i></button>
+					<button
+						type='button'
+						class='preset-action'
+						class:active={expandedId === p.id}
+						onclick={() => toggleEditor(p.id)}
+						title={game.i18n?.localize('obs-utils.applications.director.keyframeEditor.expandLabel')}
+						aria-label={game.i18n?.localize('obs-utils.applications.director.keyframeEditor.expandLabel')}
+						aria-expanded={expandedId === p.id}
+					>
+						{#if expandedId === p.id}
+							<i class='fas fa-chevron-up'></i>
+						{:else}
+							<i class='fas fa-chevron-down'></i>
+						{/if}
+					</button>
+					<button
+						type='button'
+						class='preset-action danger'
+						onclick={() => deletePreset(p.id)}
+						title={game.i18n?.localize('obs-utils.applications.director.presetDelete')}
+						aria-label={game.i18n?.localize('obs-utils.applications.director.presetDelete')}
+					><i class='fas fa-trash'></i></button>
+				</div>
+				{#if expandedId === p.id}
+					<KeyframeEditor
+						preset={p}
+						{presets}
+						scene={currentScene}
+						onClose={() => (expandedId = null)}
+						onPresetsChange={next => (presets = next)}
+					/>
+				{/if}
 			</li>
 		{/each}
 	</ul>
@@ -174,15 +209,24 @@
 		flex-direction column
 		gap 4px
 
+	.preset-item
+		display flex
+		flex-direction column
+
 	.preset
 		display grid
-		grid-template-columns 1fr 26px 26px 26px
+		grid-template-columns 1fr 26px 26px 26px 26px
 		gap 4px
 		align-items center
 		padding 4px 6px
 		background rgba(255, 255, 255, 0.03)
 		border 1px solid rgba(255, 255, 255, 0.07)
 		border-radius 4px
+
+		&--expanded
+			border-bottom-left-radius 0
+			border-bottom-right-radius 0
+			border-bottom-color rgba(255, 144, 0, 0.2)
 
 		.preset-name
 			width 100%
@@ -213,6 +257,11 @@
 			&:hover
 				opacity 1
 				background rgba(255, 255, 255, 0.06)
+
+			&.active
+				opacity 1
+				background rgba(255, 144, 0, 0.15)
+				border-color rgba(255, 144, 0, 0.45)
 
 			&.danger:hover
 				background rgba(220, 60, 60, 0.15)

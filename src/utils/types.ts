@@ -1,5 +1,14 @@
+import type { ComponentAnimationConfig } from './componentAnimation.ts';
 import type { StringMap } from './const.ts';
 import { OBSAction } from './settings.ts';
+
+export type {
+	AnimationState,
+	AnimKeyframe,
+	AnimReEntryPolicy,
+	ComponentAnimationConfig,
+	KeyframeAnimation,
+} from './componentAnimation.ts';
 
 /**
  * One field in a trigger's payload schema. Drives both the editor's condition
@@ -128,6 +137,7 @@ export class OverlayComponentData {
 	locked?: boolean;
 	id?: string;
 	customCSS?: string;
+	animation?: ComponentAnimationConfig;
 
 	constructor(type = 'pt', data = '', style = '') {
 		this.type = type;

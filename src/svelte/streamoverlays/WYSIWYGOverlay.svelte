@@ -3,6 +3,7 @@
 	import { onDestroy, setContext } from 'svelte';
 	import { fade, fly, scale } from 'svelte/transition';
 	import { getApi } from '../../utils/helpers.ts';
+	import Animator from '../utilities/Animator.svelte';
 	import EmptyComponent from './overlaycomponents/EmptyComponent.svelte';
 
 	let { overlayData = $bindable(), actorID = $bindable(), overlayIndex = $bindable() } = $props();
@@ -22,6 +23,10 @@
 	// Components opt in with getContext('obs-utils.triggerPayload').
 	const triggerCtx = $state<{ current: Record<string, any> | undefined }>({ current: undefined });
 	setContext('obs-utils.triggerPayload', triggerCtx);
+
+	// Animator component refs keyed by component index. Only populated for components
+	// with an animation config; other slots remain null/undefined.
+	const animatorRefs: Array<{ fireTrigger: (k: string) => boolean; returnToDefault: () => void } | null> = [];
 
 	function conditionMatches(payload: Record<string, any>): boolean {
 		const conditions = overlayData.trigger?.conditions as Record<string, any> | undefined;
@@ -44,8 +49,11 @@
 			if (dur > 0) {
 				hideTimer = setTimeout(() => {
 					visible = false;
+					for (const a of animatorRefs) a?.returnToDefault();
 				}, dur);
 			}
+			// Forward the trigger to each component's state machine.
+			for (const a of animatorRefs) a?.fireTrigger(key);
 		})
 		: undefined;
 
@@ -88,18 +96,38 @@
 		{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
 			{#if component !== null && component !== undefined}
 				{@const Component = getComponentClass(component.type)}
-				<div
-					id={`wysiwyg-component-${overlayIndex}-${index}`}
-					data-component-id={component.id ?? ''}
-					style={`position: absolute; left: ${component.x ?? 0}px; top: ${component.y ?? 0}px; width: ${component.w ?? 100}px; height: ${component.h ?? 30}px; transform: rotate(${component.rotation ?? 0}deg);`}
-				>
-					<Component
-						data={component.data}
-						componentIndex={index}
-						actorID={actorID}
-						style={component.style}
-					/>
-				</div>
+				{#if component.animation}
+					<Animator
+						bind:this={animatorRefs[index]}
+						animation={component.animation}
+					>
+						<div
+							id={`wysiwyg-component-${overlayIndex}-${index}`}
+							data-component-id={component.id ?? ''}
+							style={`position: absolute; left: ${component.x ?? 0}px; top: ${component.y ?? 0}px; width: ${component.w ?? 100}px; height: ${component.h ?? 30}px; transform: rotate(${component.rotation ?? 0}deg);`}
+						>
+							<Component
+								data={component.data}
+								componentIndex={index}
+								actorID={actorID}
+								style={component.style}
+							/>
+						</div>
+					</Animator>
+				{:else}
+					<div
+						id={`wysiwyg-component-${overlayIndex}-${index}`}
+						data-component-id={component.id ?? ''}
+						style={`position: absolute; left: ${component.x ?? 0}px; top: ${component.y ?? 0}px; width: ${component.w ?? 100}px; height: ${component.h ?? 30}px; transform: rotate(${component.rotation ?? 0}deg);`}
+					>
+						<Component
+							data={component.data}
+							componentIndex={index}
+							actorID={actorID}
+							style={component.style}
+						/>
+					</div>
+				{/if}
 			{/if}
 		{/each}
 	</div>

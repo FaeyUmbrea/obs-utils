@@ -4,9 +4,10 @@
 	import type { SvelteApplication } from '../../applications/mixin.svelte.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { activateCSSInjection, deactivateCSSInjection } from '../../utils/cssInjection.ts';
-	import { preventUndefinedNullInArray } from '../../utils/helpers.ts';
+	import { getApi, preventUndefinedNullInArray } from '../../utils/helpers.ts';
 	import { settings } from '../../utils/settings.ts';
 	import { OverlayComponentData, OverlayData } from '../../utils/types.ts';
+	import AnimationEditor from './AnimationEditor.svelte';
 	import Canvas from './Canvas.svelte';
 	import LayersPanel from './LayersPanel.svelte';
 	import PropertiesPanel from './PropertiesPanel.svelte';
@@ -179,6 +180,24 @@
 
 	const isEmpty = $derived(($overlays ?? []).length === 0);
 
+	const selectedLayer = $derived(
+		selectedLayerIndex !== null ? ($overlays ?? [])[selectedLayerIndex] : null,
+	);
+
+	// Only WYSIWYG layers support component-level animations.
+	const selectedComponent = $derived(
+		selectedLayer?.type === 'wysiwyg' && selectedComponentIndex !== null
+			? selectedLayer.components?.[selectedComponentIndex] ?? null
+			: null,
+	);
+
+	const selectedComponentLabel = $derived.by(() => {
+		if (!selectedComponent) return '';
+		const entry = getApi().overlayTypes.get('wysiwyg');
+		const nameKey = entry?.overlayComponentNames?.get(selectedComponent.type);
+		return nameKey ? (game.i18n?.localize(nameKey) ?? selectedComponent.type) : selectedComponent.type;
+	});
+
 	async function openManageActors() {
 		const { default: OverlayActorSelect } = await import('../../applications/overlayactorselect.ts');
 		new OverlayActorSelect({}).render(true);
@@ -257,6 +276,11 @@
 					{commit}
 				/>
 			</div>
+			<AnimationEditor
+				component={selectedComponent}
+				componentLabel={selectedComponentLabel}
+				{commit}
+			/>
 		</section>
 
 		<aside class='pane properties-pane'>
