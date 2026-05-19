@@ -5,6 +5,8 @@ import { getSetting, setSetting } from '../utils/settings.ts';
 import GlobalCSSEditor from './globalcsseditor.ts';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
+const DialogV2 = foundry.applications.api.DialogV2;
+
 export default class OverlayEditor extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {
 	static override DEFAULT_OPTIONS = {
 		classes: ['overlayeditor', 'themed'],
@@ -51,92 +53,77 @@ export default class OverlayEditor extends SvelteApplicationMixin(foundry.applic
 	protected override root = Composer;
 
 	public static async importCommand() {
-		new foundry.appv1.api.Dialog(
-			{
-				title: (game as ReadyGame).i18n.localize(
-					'obs-utils.applications.overlayEditor.importDialog.title',
-				),
-				content: await foundry.applications.handlebars.renderTemplate('templates/apps/import-data.hbs', {
-					hint1: (game as ReadyGame).i18n.localize(
-						'obs-utils.applications.overlayEditor.importDialog.hint1',
-					),
-					hint2: (game as ReadyGame).i18n.localize(
-						'obs-utils.applications.overlayEditor.importDialog.hint2',
-					),
-				}),
-				buttons: {
-					replace: {
-						icon: '<i class="fas fa-file-import"></i>',
-						label: (game as ReadyGame).i18n.localize(
-							'obs-utils.applications.overlayEditor.importDialog.replaceButton',
-						),
-						callback: (html) => {
-							const form = (html as JQuery<HTMLElement>).find('form')[0];
-							if (!form.data.files.length) {
-								return ui?.notifications?.error(
-									(game as ReadyGame).i18n.localize(
-										'obs-utils.applications.overlayEditor.importDialog.fileError',
-									),
-								);
-							}
-							foundry.utils.readTextFromFile(form.data.files[0]).then(text =>
-								importFromFileText(text, 'replace'),
-							);
-						},
-					},
-					append: {
-						icon: '<i class="fas fa-file-import"></i>',
-						label: (game as ReadyGame).i18n.localize(
-							'obs-utils.applications.overlayEditor.importDialog.appendButton',
-						),
-						callback: (html) => {
-							const form = (html as JQuery<HTMLElement>).find('form')[0];
-							if (!form.data.files.length) {
-								return ui?.notifications?.error(
-									(game as ReadyGame).i18n.localize(
-										'obs-utils.applications.overlayEditor.importDialog.fileError',
-									),
-								);
-							}
-							foundry.utils.readTextFromFile(form.data.files[0]).then(text =>
-								importFromFileText(text, 'append'),
-							);
-						},
-					},
-					no: {
-						icon: '<i class="fas fa-times"></i>',
-						label: (game as ReadyGame).i18n.localize(
-							'obs-utils.applications.overlayEditor.importDialog.cancelButton',
-						),
-					},
+		const g = game as ReadyGame;
+		const t = (key: string) => g.i18n.localize(key);
+		const content = await foundry.applications.handlebars.renderTemplate('templates/apps/import-data.hbs', {
+			hint1: t('obs-utils.applications.overlayEditor.importDialog.hint1'),
+			hint2: t('obs-utils.applications.overlayEditor.importDialog.hint2'),
+		});
+
+		const handleImport = (mode: 'replace' | 'append', dialog: foundry.applications.api.DialogV2.Any) => {
+			const form = dialog.element.querySelector('form');
+			const fileInput = form?.querySelector<HTMLInputElement>('input[type="file"][name="data"]');
+			const file = fileInput?.files?.[0];
+			if (!file) {
+				ui?.notifications?.error(t('obs-utils.applications.overlayEditor.importDialog.fileError'));
+				return;
+			}
+			foundry.utils.readTextFromFile(file).then(text => importFromFileText(text, mode));
+		};
+
+		await DialogV2.wait({
+			window: { title: t('obs-utils.applications.overlayEditor.importDialog.title') },
+			position: { width: 400 },
+			content,
+			buttons: [
+				{
+					action: 'replace',
+					icon: 'fas fa-file-import',
+					label: t('obs-utils.applications.overlayEditor.importDialog.replaceButton'),
+					default: true,
+					callback: (_event, _button, dialog) => handleImport('replace', dialog),
 				},
-				default: 'import',
-			},
-			{
-				width: 400,
-			},
-		).render(true);
+				{
+					action: 'append',
+					icon: 'fas fa-file-import',
+					label: t('obs-utils.applications.overlayEditor.importDialog.appendButton'),
+					callback: (_event, _button, dialog) => handleImport('append', dialog),
+				},
+				{
+					action: 'cancel',
+					icon: 'fas fa-times',
+					label: t('obs-utils.applications.overlayEditor.importDialog.cancelButton'),
+				},
+			],
+			rejectClose: false,
+		});
 	}
 
 	public static async exportCommand() {
 		const g = game as ReadyGame;
-		new foundry.appv1.api.Dialog({
-			title: g.i18n.localize('obs-utils.applications.overlayEditor.exportDialog.title'),
-			content: g.i18n.localize('obs-utils.applications.overlayEditor.exportDialog.content'),
-			buttons: {
-				json: {
-					label: g.i18n.localize('obs-utils.applications.overlayEditor.exportDialog.yesButton'),
+		const t = (key: string) => g.i18n.localize(key);
+		await DialogV2.wait({
+			window: { title: t('obs-utils.applications.overlayEditor.exportDialog.title') },
+			content: `<p>${t('obs-utils.applications.overlayEditor.exportDialog.content')}</p>`,
+			buttons: [
+				{
+					action: 'json',
+					label: t('obs-utils.applications.overlayEditor.exportDialog.yesButton'),
+					default: true,
 					callback: () => exportChatCommands(),
 				},
-				bundle: {
-					label: g.i18n.localize('obs-utils.applications.overlayEditor.exportDialog.bundleButton'),
+				{
+					action: 'bundle',
+					label: t('obs-utils.applications.overlayEditor.exportDialog.bundleButton'),
 					callback: () => openBundleManifestDialog(),
 				},
-				no: {
-					label: g.i18n.localize('obs-utils.applications.overlayEditor.exportDialog.noButton'),
+				{
+					action: 'cancel',
+					label: t('obs-utils.applications.overlayEditor.exportDialog.noButton'),
 				},
-			},
-		}).render(true);
+			],
+			rejectClose: false,
+		});
 	}
 }
 
@@ -166,43 +153,44 @@ function exportChatCommands() {
 	);
 }
 
-function openBundleManifestDialog() {
+async function openBundleManifestDialog() {
 	const g = game as ReadyGame;
 	const t = (key: string) => g.i18n.localize(key);
 	const content = `
-<form>
-  <h3>${t('obs-utils.applications.overlayEditor.exportDialog.bundleFormTitle')}</h3>
-  <div class="form-group">
-    <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleId')}</label>
-    <input type="text" name="id" value="${g.world?.id ?? ''}" />
-  </div>
-  <div class="form-group">
-    <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleName')}</label>
-    <input type="text" name="name" value="" />
-  </div>
-  <div class="form-group">
-    <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleAuthor')}</label>
-    <input type="text" name="author" value="${g.user?.name ?? ''}" />
-  </div>
-  <div class="form-group">
-    <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleLicense')}</label>
-    <input type="text" name="license" value="CC-BY-SA-4.0" />
-  </div>
-  <div class="form-group">
-    <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleUrl')}</label>
-    <input type="text" name="url" value="" />
-  </div>
-</form>`.trim();
+<h3>${t('obs-utils.applications.overlayEditor.exportDialog.bundleFormTitle')}</h3>
+<div class="form-group">
+  <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleId')}</label>
+  <input type="text" name="id" value="${g.world?.id ?? ''}" />
+</div>
+<div class="form-group">
+  <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleName')}</label>
+  <input type="text" name="name" value="" />
+</div>
+<div class="form-group">
+  <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleAuthor')}</label>
+  <input type="text" name="author" value="${g.user?.name ?? ''}" />
+</div>
+<div class="form-group">
+  <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleLicense')}</label>
+  <input type="text" name="license" value="CC-BY-SA-4.0" />
+</div>
+<div class="form-group">
+  <label>${t('obs-utils.applications.overlayEditor.exportDialog.bundleUrl')}</label>
+  <input type="text" name="url" value="" />
+</div>`.trim();
 
-	new foundry.appv1.api.Dialog({
-		title: t('obs-utils.applications.overlayEditor.exportDialog.bundleFormTitle'),
+	await DialogV2.wait({
+		window: { title: t('obs-utils.applications.overlayEditor.exportDialog.bundleFormTitle') },
 		content,
-		buttons: {
-			export: {
-				icon: '<i class="fas fa-file-archive"></i>',
+		buttons: [
+			{
+				action: 'export',
+				icon: 'fas fa-file-archive',
 				label: t('obs-utils.applications.overlayEditor.exportDialog.bundleButton'),
-				callback: (html) => {
-					const form = (html as JQuery<HTMLElement>).find('form')[0] as HTMLFormElement;
+				default: true,
+				callback: (_event, _button, dialog) => {
+					const form = dialog.element.querySelector('form');
+					if (!form) return;
 					const fd = new FormData(form);
 					const manifest = {
 						id: (fd.get('id') as string) || (g.world?.id ?? ''),
@@ -214,12 +202,13 @@ function openBundleManifestDialog() {
 					exportBundle(manifest);
 				},
 			},
-			cancel: {
+			{
+				action: 'cancel',
 				label: t('obs-utils.applications.overlayEditor.exportDialog.noButton'),
 			},
-		},
-		default: 'export',
-	}).render(true);
+		],
+		rejectClose: false,
+	});
 }
 
 async function exportBundle(manifest: { id: string; name: string; author: string; license: string; url?: string }) {
