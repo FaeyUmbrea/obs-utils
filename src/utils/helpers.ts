@@ -54,32 +54,91 @@ export function getActiveGM(): User | undefined {
 	return users?.find((user: User) => user.isGM && user.active) as User | undefined;
 }
 
-export type ActorValues = { value: string; label: string }[];
+export interface ActorValue {
+	value: string;
+	label: string;
+}
 
-let actorValues: ActorValues = [];
+export type ActorValues = ActorValue[];
 
-export function getActorValues() {
-	if (actorValues.length === 0) {
-		const type = Object.keys(CONFIG.Actor.sheetClasses).includes('character') ? 'character' : CONFIG.Actor.documentClass.TYPES[1];
-		actorValues = Object.keys(
-			flatten(
-				JSON.parse(
-					JSON.stringify(
-						// eslint-disable-next-line new-cap
-						new CONFIG.Actor.documentClass({
-							name: 'actor',
-							type,
-						}),
-					),
+/**
+ * Grouped variant — system modules can ship a richer hierarchical layout via
+ * `api.setAVDataGrouped`. Picker components consume the grouped form via
+ * `getActorValueGroups` and pass it straight to Svelecte. Flat data set via
+ * legacy `setAVData` is wrapped in a single anonymous group, so the picker only
+ * has one code path.
+ */
+export interface ActorValueGroup {
+	/** i18n key for the group label. Resolved at set time. */
+	label: string;
+	/** Lower numbers sort earlier in the picker. Defaults to 100. */
+	order?: number;
+	items: ActorValue[];
+}
+
+let actorValueGroups: ActorValueGroup[] = [];
+
+function lazyInitFromFoundryActor(): ActorValueGroup[] {
+	const type = Object.keys(CONFIG.Actor.sheetClasses).includes('character') ? 'character' : CONFIG.Actor.documentClass.TYPES[1];
+	const items = Object.keys(
+		flatten(
+			JSON.parse(
+				JSON.stringify(
+					// eslint-disable-next-line new-cap
+					new CONFIG.Actor.documentClass({ name: 'actor', type }),
 				),
 			),
-		).map((v) => { return { value: v, label: v }; });
-	}
-	return actorValues;
+		),
+	).map(v => ({ value: v, label: v }));
+	return [{ label: '', items }];
+}
+
+export function getActorValues(): ActorValues {
+	if (actorValueGroups.length === 0) actorValueGroups = lazyInitFromFoundryActor();
+	return actorValueGroups.flatMap(g => g.items);
+}
+
+/** Returns the grouped layout for picker UIs. Lazy-initializes the same way as `getActorValues`. */
+export function getActorValueGroups(): ActorValueGroup[] {
+	if (actorValueGroups.length === 0) actorValueGroups = lazyInitFromFoundryActor();
+	return actorValueGroups;
 }
 
 export function setActorValues(actorValueArray: ActorValues) {
-	actorValues = actorValueArray;
+	actorValueGroups = [{ label: '', items: actorValueArray }];
+}
+
+/**
+ * Return a new groups array that's guaranteed to include `path` as a selectable
+ * option. If `path` is already represented, returns the input unchanged.
+ * Otherwise appends a "Custom" group (or extends an existing one). Picker UIs
+ * use this so a user-typed actor path remains shown in the dropdown.
+ */
+export function ensureCustomValue(groups: ActorValueGroup[], path: string | null | undefined): ActorValueGroup[] {
+	if (!path) return groups;
+	const known = groups.flatMap(g => g.items).some(v => v.value === path);
+	if (known) return groups;
+	const customLabel = game.i18n?.localize('obs-utils.strings.customGroup') ?? 'Custom';
+	const existing = groups.find(g => g.label === customLabel);
+	if (existing) {
+		existing.items.push({ value: path, label: path });
+		return groups;
+	}
+	return [...groups, { label: customLabel, items: [{ value: path, label: path }] }];
+}
+
+/**
+ * Install a grouped AV layout. Group labels are localized once at set time.
+ * Last writer wins — same semantics as `setActorValues`.
+ */
+export function setActorValuesGrouped(groups: ActorValueGroup[]) {
+	actorValueGroups = [...groups]
+		.sort((a, b) => (a.order ?? 100) - (b.order ?? 100))
+		.map(g => ({
+			label: game.i18n?.localize(g.label) ?? g.label,
+			order: g.order,
+			items: g.items,
+		}));
 }
 
 export function getApi(): ObsUtilsApi {

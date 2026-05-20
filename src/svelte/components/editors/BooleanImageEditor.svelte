@@ -2,7 +2,7 @@
 <script lang='ts'>
 	import Svelecte from 'svelecte';
 	import { tick } from 'svelte';
-	import { getActorValues } from '../../../utils/helpers';
+	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
@@ -10,10 +10,8 @@
 	let img1 = $state(data?.split(';')[1] ?? '');
 	let img2 = $state(data?.split(';')[2] ?? '');
 
-	const values = getActorValues();
-	if (av1 !== null && !values.some(v => v.value === av1)) {
-		values.push({ value: av1, label: av1 });
-	}
+	const values = getActorValueGroups();
+	ensureCustomValue(values, av1);
 
 	function emit() {
 		data = `${av1 ?? ''};${img1 ?? ''};${img2 ?? ''}`;

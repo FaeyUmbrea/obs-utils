@@ -2,7 +2,7 @@
 <script lang='ts'>
 	import Svelecte from 'svelecte';
 	import { tick } from 'svelte';
-	import { getActorValues } from '../../../utils/helpers';
+	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';;;') } = $props<{ data: string }>();
 
@@ -11,13 +11,9 @@
 	let maxPath = $state(data?.split(';')[2] ?? '');
 	let emptyImg = $state(data?.split(';')[3] ?? '');
 
-	const values = getActorValues();
-	if (valuePath !== null && !values.some(v => v.value === valuePath)) {
-		values.push({ value: valuePath, label: valuePath });
-	}
-	if (maxPath !== null && !values.some(v => v.value === maxPath)) {
-		values.push({ value: maxPath, label: maxPath });
-	}
+	const values = getActorValueGroups();
+	ensureCustomValue(values, valuePath);
+	ensureCustomValue(values, maxPath);
 
 	function emit() {
 		data = `${valuePath ?? ''};${filledImg ?? ''};${maxPath ?? ''};${emptyImg ?? ''}`;

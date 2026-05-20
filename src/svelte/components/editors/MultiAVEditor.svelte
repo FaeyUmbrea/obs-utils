@@ -1,18 +1,14 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Svelecte from 'svelecte';
-	import { getActorValues } from '../../../utils/helpers';
+	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';') } = $props<{ data: string }>();
 	let valuePath = $state(data?.split(';')[0] ?? null);
 	let maxPath = $state(data?.split(';')[1] ?? null);
-	const values = getActorValues();
-	if (valuePath !== null && !values.some(v => v.value === valuePath)) {
-		values.push({ value: valuePath, label: valuePath });
-	}
-	if (maxPath !== null && !values.some(v => v.value === maxPath)) {
-		values.push({ value: maxPath, label: maxPath });
-	}
+	const values = getActorValueGroups();
+	ensureCustomValue(values, valuePath);
+	ensureCustomValue(values, maxPath);
 
 	function onChange() {
 		data = `${valuePath};${maxPath}`;

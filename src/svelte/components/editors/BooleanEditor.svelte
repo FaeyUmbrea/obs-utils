@@ -1,17 +1,15 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Svelecte from 'svelecte';
-	import { getActorValues } from '../../../utils/helpers';
+	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
 	let av1 = $state(data?.split(';')[0] ?? '');
 	let icon1 = $state(data?.split(';')[1] ?? '');
 	let icon2 = $state(data?.split(';')[2] ?? '');
-	const values = getActorValues();
-	if (av1 !== null && !values.some(v => v.value === av1)) {
-		values.push({ value: av1, label: av1 });
-	}
+	const values = getActorValueGroups();
+	ensureCustomValue(values, av1);
 
 	function onChange() {
 		data = `${av1 ?? ''};${icon1 ?? ''};${icon2 ?? ''}`;

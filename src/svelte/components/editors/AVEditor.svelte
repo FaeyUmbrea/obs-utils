@@ -1,13 +1,10 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Svelecte from 'svelecte';
-	import { getActorValues } from '../../../utils/helpers';
+	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
-	const values = getActorValues();
-	if (data !== null && !values.some(v => v.value === data)) {
-		values.push({ value: data, label: data, $created: true });
-	}
+	const values = ensureCustomValue(getActorValueGroups(), data);
 </script>
 
 <Svelecte

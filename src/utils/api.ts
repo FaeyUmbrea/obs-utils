@@ -2,7 +2,7 @@ import type { Component } from 'svelte';
 import type { CameraPreset } from './cameraPresets.ts';
 import type { SequenceController } from './cameraSequencePlayer.ts';
 import type { DirectorState } from './directorState.ts';
-import type { ActorValues } from './helpers.ts';
+import type { ActorValueGroup, ActorValues } from './helpers.ts';
 import type { CustomEventInstance, TriggerPayloadField } from './types.ts';
 import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
 import WYSIWYGOverlayEditor from '../svelte/components/editors/WYSIWYGOverlayEditor.svelte';
@@ -19,7 +19,8 @@ import WYSIWYGOverlay from '../svelte/streamoverlays/WYSIWYGOverlay.svelte';
 import { playSequence } from './cameraSequencePlayer.ts';
 import { MODULE_ID } from './const.ts';
 import { getDirectorState as readDirectorState } from './directorState.ts';
-import { getApi, isOBS, setActorValues } from './helpers.ts';
+import { getApi, isOBS, setActorValues, setActorValuesGrouped } from './helpers.ts';
+
 import { getWebsocket } from './obs.ts';
 
 import { getSetting, setSetting } from './settings.ts';
@@ -206,6 +207,16 @@ export class ObsUtilsApi {
 
 	setAVData(actorValueArray: ActorValues) {
 		setActorValues(actorValueArray);
+	}
+
+	/**
+	 * Public — system modules call this with a hierarchical layout. The picker
+	 * UI renders groups in the dropdown. Group labels are i18n keys, localized
+	 * at flatten time. Calling this replaces any previously-set AV data
+	 * (grouped or flat) — last writer wins, same as `setAVData`.
+	 */
+	setAVDataGrouped(groups: ActorValueGroup[]) {
+		setActorValuesGrouped(groups);
 	}
 
 	getOBSWebsocketClient() {
