@@ -3,7 +3,7 @@ import type { CameraPreset } from './cameraPresets.ts';
 import type { SequenceController } from './cameraSequencePlayer.ts';
 import type { DirectorState } from './directorState.ts';
 import type { ActorValueGroup, ActorValues } from './helpers.ts';
-import type { CustomEventInstance, TriggerPayloadField } from './types.ts';
+import type { CustomEventInstance, OverlayData, TriggerPayloadField } from './types.ts';
 import FallbackEditor from '../svelte/components/editors/FallbackEditor.svelte';
 import WYSIWYGOverlayEditor from '../svelte/components/editors/WYSIWYGOverlayEditor.svelte';
 import ActorValComponent from '../svelte/streamoverlays/overlaycomponents/ActorValComponent.svelte';
@@ -18,6 +18,7 @@ import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte
 import WYSIWYGOverlay from '../svelte/streamoverlays/WYSIWYGOverlay.svelte';
 import { playSequence } from './cameraSequencePlayer.ts';
 import { MODULE_ID } from './const.ts';
+import { registerStarter } from './defaultOverlays.ts';
 import { getDirectorState as readDirectorState } from './directorState.ts';
 import { getApi, isOBS, setActorValues, setActorValuesGrouped } from './helpers.ts';
 
@@ -217,6 +218,16 @@ export class ObsUtilsApi {
 	 */
 	setAVDataGrouped(groups: ActorValueGroup[]) {
 		setActorValuesGrouped(groups);
+	}
+
+	/**
+	 * Public — system modules call this in their init hook to register their
+	 * own starter overlay set. The burger menu in the overlay editor imports
+	 * whichever set is registered (or the generic default if none). Last writer
+	 * wins.
+	 */
+	registerStarterOverlays(overlays: OverlayData[]): void {
+		registerStarter(overlays);
 	}
 
 	getOBSWebsocketClient() {
