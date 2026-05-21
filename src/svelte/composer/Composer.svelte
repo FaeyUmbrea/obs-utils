@@ -7,6 +7,7 @@
 	import { getApi, preventUndefinedNullInArray } from '../../utils/helpers.ts';
 	import { settings } from '../../utils/settings.ts';
 	import { OverlayComponentData, OverlayData } from '../../utils/types.ts';
+	import AnimationWorkspace from './AnimationWorkspace.svelte';
 	import Canvas from './Canvas.svelte';
 	import LayersPanel from './LayersPanel.svelte';
 	import PropertiesPanel from './PropertiesPanel.svelte';
@@ -19,9 +20,23 @@
 
 	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();
 
-	let selectedLayerIndex = $state<number | null>(($overlays?.length ?? 0) > 0 ? 0 : null);
+	let selectedLayerIndex = $state<number | null>(null);
 	let selectedComponentIndex = $state<number | null>(null);
 	let previewActorID = $state<string | null>(null);
+
+	type WorkspaceMode = 'overview' | 'layout' | 'animation' | 'preview';
+	let mode = $state<WorkspaceMode>('overview');
+
+	function enterOverlay(index: number) {
+		selectedLayerIndex = index;
+		selectedComponentIndex = null;
+		mode = 'layout';
+	}
+
+	function goOverview() {
+		mode = 'overview';
+		selectedComponentIndex = null;
+	}
 
 	$effect(() => {
 		const list = $overlays ?? [];
@@ -178,6 +193,9 @@
 	);
 
 	const isEmpty = $derived(($overlays ?? []).length === 0);
+	const currentOverlay = $derived(
+		selectedLayerIndex !== null ? ($overlays ?? [])[selectedLayerIndex] : null,
+	);
 
 	async function openManageActors() {
 		const { default: OverlayActorSelect } = await import('../../applications/overlayactorselect.ts');
@@ -190,27 +208,105 @@
 	}
 </script>
 
-{#if isEmpty}
-	<div class='composer-empty'>
-		<div class='empty-card'>
-			<div class='empty-icon'>
-				<i class='fas fa-layer-group'></i>
+<header class='breadcrumb'>
+	<button
+		type='button'
+		class='crumb home'
+		class:active={mode === 'overview'}
+		onclick={goOverview}
+	>
+		<i class='fas fa-layer-group'></i>
+		<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.overviewCrumb')}</span>
+	</button>
+	{#if mode !== 'overview' && currentOverlay}
+		<span class='sep'>/</span>
+		<span class='current-overlay'>{currentOverlay.name ?? game.i18n?.localize('obs-utils.applications.overlayEditor.unnamedOverlay')}</span>
+		<span class='sep'>/</span>
+		<nav class='mode-tabs' role='tablist'>
+			<button type='button' role='tab' class:active={mode === 'layout'} onclick={() => (mode = 'layout')}>
+				{game.i18n?.localize('obs-utils.applications.overlayEditor.modeLayout')}
+			</button>
+			<button type='button' role='tab' class:active={mode === 'animation'} onclick={() => (mode = 'animation')}>
+				{game.i18n?.localize('obs-utils.applications.overlayEditor.modeAnimation')}
+			</button>
+			<button type='button' role='tab' class:active={mode === 'preview'} onclick={() => (mode = 'preview')}>
+				{game.i18n?.localize('obs-utils.applications.overlayEditor.modePreview')}
+			</button>
+		</nav>
+	{/if}
+</header>
+
+{#if mode === 'overview'}
+	<div class='overview'>
+		{#if isEmpty}
+			<div class='empty-card'>
+				<div class='empty-icon'>
+					<i class='fas fa-layer-group'></i>
+				</div>
+				<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyTitle')}</h2>
+				<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyDescription')}</p>
+				<div class='empty-actions'>
+					<button type='button' onclick={() => { addLayer('wysiwyg'); enterOverlay(($overlays ?? []).length - 1); }}>
+						<i class='fas fa-vector-square'></i>
+						<span>{game.i18n?.localize('obs-utils.overlays.wysiwygOverlay.name')}</span>
+					</button>
+					<button type='button' onclick={() => { addLayer('sl'); enterOverlay(($overlays ?? []).length - 1); }}>
+						<i class='fas fa-grip-lines'></i>
+						<span>{game.i18n?.localize('obs-utils.overlays.simpleOverlay.name')}</span>
+					</button>
+				</div>
 			</div>
-			<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyTitle')}</h2>
-			<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyDescription')}</p>
-			<div class='empty-actions'>
-				<button type='button' onclick={() => addLayer('wysiwyg')}>
-					<i class='fas fa-vector-square'></i>
-					<span>{game.i18n?.localize('obs-utils.overlays.wysiwygOverlay.name')}</span>
-				</button>
-				<button type='button' onclick={() => addLayer('sl')}>
-					<i class='fas fa-grip-lines'></i>
-					<span>{game.i18n?.localize('obs-utils.overlays.simpleOverlay.name')}</span>
-				</button>
+		{:else}
+			<div class='overview-list'>
+				<header class='overview-list-head'>
+					<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.overviewListTitle')}</h2>
+					<div class='create-actions'>
+						<button type='button' onclick={() => { addLayer('wysiwyg'); enterOverlay(($overlays ?? []).length - 1); }}>
+							<i class='fas fa-plus'></i>
+							<span>{game.i18n?.localize('obs-utils.overlays.wysiwygOverlay.name')}</span>
+						</button>
+						<button type='button' onclick={() => { addLayer('sl'); enterOverlay(($overlays ?? []).length - 1); }}>
+							<i class='fas fa-plus'></i>
+							<span>{game.i18n?.localize('obs-utils.overlays.simpleOverlay.name')}</span>
+						</button>
+					</div>
+				</header>
+				<ul class='overlay-rows'>
+					{#each ($overlays ?? []) as overlay, index (overlay.id ?? index)}
+						<li class='overlay-row' class:disabled={overlay.enabled === false}>
+							<button
+								type='button'
+								class='overlay-pick'
+								onclick={() => enterOverlay(index)}
+							>
+								<i class={overlay.type === 'wysiwyg' ? 'fas fa-vector-square type-icon' : 'fas fa-grip-lines type-icon'}></i>
+								<span class='overlay-name'>{overlay.name ?? game.i18n?.localize('obs-utils.applications.overlayEditor.unnamedOverlay')}</span>
+								<span class='overlay-type-tag'>{overlay.type === 'wysiwyg' ? 'WYSIWYG' : 'SL'}</span>
+								{#if overlay.animation}<i class='fas fa-film anim-tag' title='Has animation'></i>{/if}
+							</button>
+							<button
+								type='button'
+								class='row-btn'
+								title={game.i18n?.localize('obs-utils.applications.overlayEditor.toggleEnabled')}
+								onclick={() => toggleLayerEnabled(index)}
+							>
+								<i class={overlay.enabled === false ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
+							</button>
+							<button
+								type='button'
+								class='row-btn danger'
+								title={game.i18n?.localize('obs-utils.applications.overlayEditor.removeLayer')}
+								onclick={() => removeLayer(index)}
+							>
+								<i class='fas fa-trash'></i>
+							</button>
+						</li>
+					{/each}
+				</ul>
 			</div>
-		</div>
+		{/if}
 	</div>
-{:else}
+{:else if mode === 'layout' && currentOverlay}
 	<div class='composer'>
 		<aside class='pane layers-pane'>
 			<LayersPanel
@@ -274,6 +370,13 @@
 			/>
 		</aside>
 	</div>
+{:else if mode === 'animation' && currentOverlay}
+	<AnimationWorkspace layer={currentOverlay} {commit} />
+{:else if mode === 'preview' && currentOverlay}
+	<div class='workspace-stub'>
+		<i class='fas fa-eye'></i>
+		<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewStub')}</p>
+	</div>
 {/if}
 
 <footer class='composer-footer'>
@@ -292,6 +395,207 @@
 </footer>
 
 <style lang='stylus'>
+	// ── breadcrumb ──────────────────────────────────────────────────────────
+	.breadcrumb
+		display flex
+		align-items center
+		gap 6px
+		padding 0 10px
+		height 36px
+		flex 0 0 auto
+		background rgba(0, 0, 0, 0.18)
+		border-bottom 1px solid rgba(255, 255, 255, 0.08)
+
+	.crumb
+		display inline-flex
+		align-items center
+		gap 6px
+		height 26px
+		padding 0 10px
+		background transparent
+		border 1px solid rgba(255, 255, 255, 0.1)
+		border-radius 4px
+		font-size 12px
+		cursor pointer
+		opacity 0.75
+
+		&:hover, &.active
+			opacity 1
+			background rgba(255, 144, 0, 0.12)
+			border-color rgba(255, 144, 0, 0.4)
+
+	.sep
+		opacity 0.4
+		font-size 12px
+
+	.current-overlay
+		font-weight 600
+		font-size 12px
+
+	.mode-tabs
+		display inline-flex
+		gap 2px
+		margin-left auto
+
+		button
+			height 26px
+			padding 0 12px
+			background transparent
+			border 1px solid rgba(255, 255, 255, 0.1)
+			border-radius 4px
+			font-size 12px
+			cursor pointer
+			opacity 0.7
+
+			&:hover
+				opacity 1
+
+			&.active
+				opacity 1
+				background rgba(255, 144, 0, 0.18)
+				border-color rgba(255, 144, 0, 0.5)
+				color #ffce80
+
+	// ── overview ────────────────────────────────────────────────────────────
+	.overview
+		display flex
+		flex-direction column
+		min-height 0
+		height calc(100% - 36px - 44px)
+		padding 12px
+		overflow auto
+
+	.overview-list
+		display flex
+		flex-direction column
+		gap 10px
+
+	.overview-list-head
+		display flex
+		align-items center
+		justify-content space-between
+		gap 8px
+
+		h2
+			margin 0
+			font-size 16px
+			font-weight 600
+
+	.create-actions
+		display inline-flex
+		gap 6px
+
+		button
+			display inline-flex
+			align-items center
+			gap 6px
+			height 28px
+			padding 0 10px
+			font-size 12px
+			background rgba(255, 144, 0, 0.12)
+			border 1px solid rgba(255, 144, 0, 0.4)
+			border-radius 4px
+			cursor pointer
+
+			&:hover
+				background rgba(255, 144, 0, 0.22)
+
+	.overlay-rows
+		list-style none
+		padding 0
+		margin 0
+		display flex
+		flex-direction column
+		gap 4px
+
+	.overlay-row
+		display flex
+		align-items center
+		gap 4px
+		background rgba(255, 255, 255, 0.04)
+		border 1px solid rgba(255, 255, 255, 0.06)
+		border-radius 4px
+		padding 4px 6px
+
+		&.disabled .overlay-name
+			opacity 0.5
+			text-decoration line-through
+
+	.overlay-pick
+		flex 1 1 auto
+		display flex
+		align-items center
+		gap 8px
+		background transparent
+		border 0
+		color inherit
+		text-align left
+		padding 4px 4px
+		cursor pointer
+		font-size 13px
+		min-width 0
+
+		&:hover
+			background rgba(255, 255, 255, 0.06)
+			border-radius 3px
+
+		.type-icon
+			opacity 0.65
+			font-size 12px
+
+		.overlay-name
+			flex 1 1 auto
+			overflow hidden
+			text-overflow ellipsis
+			white-space nowrap
+
+		.overlay-type-tag
+			font-size 10px
+			padding 1px 5px
+			background rgba(255, 255, 255, 0.08)
+			border-radius 3px
+			opacity 0.7
+
+		.anim-tag
+			font-size 11px
+			opacity 0.6
+			color #ffce80
+
+	.row-btn
+		width 28px
+		height 24px
+		display inline-flex
+		align-items center
+		justify-content center
+		background transparent
+		border 1px solid rgba(255, 255, 255, 0.08)
+		border-radius 3px
+		cursor pointer
+		opacity 0.75
+		font-size 11px
+
+		&:hover
+			opacity 1
+
+		&.danger:hover
+			background rgba(220, 60, 60, 0.18)
+			border-color rgba(220, 60, 60, 0.45)
+
+	// ── workspace stubs ─────────────────────────────────────────────────────
+	.workspace-stub
+		display flex
+		flex-direction column
+		align-items center
+		justify-content center
+		gap 12px
+		height calc(100% - 36px - 44px)
+		opacity 0.55
+		font-size 13px
+
+		i
+			font-size 32px
+
+	// ── existing 3-pane layout (Layout mode) ────────────────────────────────
 	.composer
 		container-type inline-size
 		container-name composer
@@ -299,7 +603,7 @@
 		grid-template-columns minmax(160px, 220px) minmax(0, 1fr) minmax(260px, 340px)
 		grid-template-rows 1fr
 		gap 6px
-		height calc(100% - 44px)
+		height calc(100% - 36px - 44px)
 		min-height 0
 		padding 6px
 
@@ -376,15 +680,6 @@
 
 	.properties-pane
 		// editor panel scrolls internally
-
-	.composer-empty
-		display flex
-		align-items center
-		justify-content center
-		height calc(100% - 44px)
-		padding 24px
-		container-type inline-size
-		container-name composer
 
 	.empty-card
 		max-width 480px

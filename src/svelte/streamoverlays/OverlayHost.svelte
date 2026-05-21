@@ -1,9 +1,10 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { RenderedOverlay, RenderState } from '../../utils/render.ts';
+	import type { OverlayFrame, RenderedOverlay, RenderState } from '../../utils/render.ts';
 	import type { OverlayData } from '../../utils/types.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
+	import { PlaybackEngine } from '../../utils/playback.ts';
 	import { buildRenderTree } from '../../utils/render.ts';
 	import { TriggerRegistry } from '../../utils/triggers.ts';
 
@@ -22,6 +23,14 @@
 	const actors = $state(new Map<string, unknown>());
 	const users = $state(new Map<string, unknown>());
 	const triggerPayloads = $state(new Map<string, Record<string, unknown> | undefined>());
+	const frames = $state(new Map<string, OverlayFrame>());
+	let frameTick = $state(0);
+
+	const playback = new PlaybackEngine(registry, frames, () => {
+		// Bump a tick to invalidate the `$derived` tree; using a counter rather
+		// than mutating `frames` directly so Svelte reliably picks up the change.
+		frameTick = frameTick + 1;
+	});
 
 	const legacyHookIds: number[] = [];
 
@@ -78,6 +87,8 @@
 			registry.fire(key, payload);
 		});
 		legacyHookIds.push(legacyHookId);
+
+		playback.start();
 	});
 
 	function ensureTriggerRegistered(key: string) {
@@ -90,7 +101,41 @@
 
 	onDestroy(() => {
 		for (const id of legacyHookIds) Hooks.off('obs-utils.overlayTrigger' as never, id);
+		playback.stop();
 		registry.destroy();
+	});
+
+	// Mount tiles in the playback engine for each (overlay × context) pair that
+	// the tree currently produces. The engine's tile lifecycle mirrors the tree.
+	$effect(() => {
+		// Read frameTick to keep the effect linked to playback updates; the tree
+		// already depends on the underlying state maps.
+		void frameTick;
+		const wanted = new Set<string>();
+		for (const ov of overlays) {
+			if (!ov.animation) continue;
+			const ids = ov.tileBy === 'players'
+				? userIDs
+				: ov.tileBy === 'once'
+					? ['singleton']
+					: actorIDs;
+			for (const id of ids) {
+				const tileKey = ov.tileBy === 'players'
+					? `user:${id}`
+					: ov.tileBy === 'once'
+						? 'singleton'
+						: `actor:${id}`;
+				wanted.add(`${ov.id ?? ''}:${tileKey}`);
+				playback.mountTile(ov, tileKey);
+			}
+		}
+		// Drop tiles the engine still tracks but the tree no longer produces.
+		for (const key of [...frames.keys()]) {
+			if (!wanted.has(key)) {
+				const [overlayId, ...rest] = key.split(':');
+				playback.unmountTile(overlayId, rest.join(':'));
+			}
+		}
 	});
 
 	// Default user-tile set for `tileBy: 'players'`. Active non-GM users only.
@@ -99,11 +144,14 @@
 		return list.filter(u => u.active && !u.isGM).map(u => u.id);
 	});
 
-	const tree = $derived(buildRenderTree(
-		overlays,
-		{ actors, users, triggerPayloads } satisfies RenderState,
-		{ actorIds: actorIDs, userIds: userIDs },
-	));
+	const tree = $derived.by(() => {
+		void frameTick;
+		return buildRenderTree(
+			overlays,
+			{ actors, users, triggerPayloads, frames } satisfies RenderState,
+			{ actorIds: actorIDs, userIds: userIDs },
+		);
+	});
 
 	// Partition rendered overlays by tile context.
 	const actorTiles = $derived.by(() => {

@@ -38,7 +38,10 @@
 				"filledIcon": "Filled icon",
 				"emptyIcon": "Empty icon",
 				"filledImage": "Filled image",
-				"emptyImage": "Empty image"
+				"emptyImage": "Empty image",
+				"dataDriven": "Data-driven",
+				"staticPlaceholder": "Type a literal value",
+				"staticImagePlaceholder": "Image URL or path"
 			},
 			"director": {
 				"name": "Director",
@@ -256,6 +259,32 @@
 				"previewReadOnly": "Read-only preview",
 				"emptyTitle": "No overlays yet",
 				"emptyDescription": "Overlays are the building blocks of what shows up on your stream. Pick a type to get started — you can always add more.",
+				"overviewCrumb": "Overview",
+				"overviewListTitle": "Overlays",
+				"unnamedOverlay": "Unnamed overlay",
+				"modeLayout": "Layout",
+				"modeAnimation": "Animation",
+				"modePreview": "Preview",
+				"animationStub": "Animation editor coming soon.",
+				"previewStub": "Preview workspace coming soon.",
+				"animation.intro": "Animation is what makes overlays react. Add tracks and connect them with triggers to bring this overlay to life.",
+				"animation.start": "Set up animation",
+				"animation.tracks": "Tracks",
+				"animation.addTrack": "Add track",
+				"animation.removeTrack": "Remove track",
+				"animation.initialTrack": "Initial track (mounted by default)",
+				"animation.useAsInitial": "Use as initial track",
+				"animation.behavior": "Behavior",
+				"animation.behaviorStatic": "Static (no playback)",
+				"animation.behaviorLooping": "Loop",
+				"animation.behaviorTransitionOnEnd": "Transition to another track on end",
+				"animation.duration": "Duration (ms)",
+				"animation.endTarget": "Go to track",
+				"animation.endTargetTime": "At time (ms)",
+				"animation.timelineComingSoon": "Per-component timeline coming in next iteration.",
+				"animation.selectTrack": "Select a track to edit it.",
+				"toggleEnabled": "Toggle visibility",
+				"removeLayer": "Remove overlay",
 				"manageActors": "Manage Actors",
 				"confirmTypeChange": "Changing overlay type may discard position or rendering data for existing components. Continue?",
 				"importDialog": {
@@ -325,25 +354,25 @@
 		},
 		"overlays": {
 			"plainText": {
-				"name": "Plain Text"
+				"name": "Text"
 			},
 			"fontAwesomeIcon": {
-				"name": "Font Awesome Icon"
+				"name": "Icon"
 			},
 			"booleanAVIcon": {
-				"name": "Boolean AV Icon"
+				"name": "Conditional Icon"
 			},
 			"booleanAVImage": {
-				"name": "Boolean AV Image"
+				"name": "Conditional Image"
 			},
 			"image": {
 				"name": "Image"
 			},
 			"multiIconAV": {
-				"name": "Multi Icon AV"
+				"name": "Icon Counter"
 			},
 			"multiImageAV": {
-				"name": "Multi Image AV"
+				"name": "Image Counter"
 			},
 			"progressBar": {
 				"name": "Progress Bar"

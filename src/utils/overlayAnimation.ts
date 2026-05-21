@@ -204,3 +204,23 @@ function interpPair(
 		scaleY: lerp(a.scaleY, b.scaleY),
 	};
 }
+
+/**
+ * Compute the per-component frame snapshot of a track at the given playhead
+ * time. Pure: takes the track + playhead, returns one `ComponentFrame` per
+ * component-id mentioned by any lane. Components without a lane are absent
+ * from the returned map; the renderer treats them as identity (opacity 1, no
+ * transform).
+ */
+export function computeTrackFrame(
+	track: OverlayTrack,
+	playheadT: number,
+): Map<string, { opacity: number; x: number; y: number; rotation: number; scaleX: number; scaleY: number }> {
+	const out = new Map<string, { opacity: number; x: number; y: number; rotation: number; scaleX: number; scaleY: number }>();
+	// Static tracks render at their t=0 snapshot regardless of playhead.
+	const evalT = track.behavior.type === 'static' ? 0 : playheadT;
+	for (const lane of track.lanes) {
+		out.set(lane.componentId, interpKeyframes(lane.keyframes, evalT));
+	}
+	return out;
+}
