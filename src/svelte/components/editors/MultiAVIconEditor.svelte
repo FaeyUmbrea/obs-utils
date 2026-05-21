@@ -1,7 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
-	import { getActorValueGroups } from '../../../utils/helpers';
+	import { getDataPickerGroups } from '../../../utils/helpers';
+	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';;;') } = $props<{ data: string }>();
 	let valuePath = $state(data?.split(';')[0] ?? '');
@@ -9,7 +10,7 @@
 	let maxPath = $state(data?.split(';')[2] ?? '');
 	let emptyIcon = $state(data?.split(';')[3] ?? '');
 
-	const groups = getActorValueGroups();
+	const groups = getDataPickerGroups();
 
 	function onChange() {
 		data = `${valuePath ?? ''};${filledIcon ?? ''};${maxPath ?? ''};${emptyIcon ?? ''}`;
@@ -25,6 +26,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={valuePath} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
@@ -34,6 +36,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={maxPath} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.filledIcon')}</span>

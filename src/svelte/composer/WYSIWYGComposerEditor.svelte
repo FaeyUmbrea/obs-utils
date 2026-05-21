@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
+	import { setContext } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
 	import FallbackEditor from '../components/editors/FallbackEditor.svelte';
 	import ComponentList from './ComponentList.svelte';
@@ -28,6 +29,18 @@
 	let addMenuOpen = $state(false);
 	let addBtnEl: HTMLButtonElement | null = $state(null);
 	let addMenuStyle = $state('');
+
+	// Surface the overlay's active trigger keys to descendant data-field editors
+	// so they can warn when the user picks a `trigger.<key>.*` path for a
+	// trigger the overlay doesn't actually register.
+	const activeTriggerKeys = $state(new Set<string>());
+	setContext('obs-utils.activeTriggerKeys', activeTriggerKeys);
+	$effect(() => {
+		activeTriggerKeys.clear();
+		for (const tr of layer.animation?.transitions ?? []) {
+			activeTriggerKeys.add(tr.triggerKey);
+		}
+	});
 
 	// Portal action: relocate the node to document.body so position:fixed isn't
 	// affected by transformed ancestors (Foundry ApplicationV2 uses transforms).
@@ -147,7 +160,7 @@
 		</section>
 
 		<section>
-			<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy')}</h4>
+			<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileByLabel')}</h4>
 			<label class='field'>
 				<select
 					value={layer.tileBy ?? 'actors'}

@@ -21,6 +21,7 @@ import { MODULE_ID } from './const.ts';
 import { registerStarter } from './defaultOverlays.ts';
 import { getDirectorState as readDirectorState } from './directorState.ts';
 import { getApi, isOBS, setActorValues, setActorValuesGrouped } from './helpers.ts';
+import { orchestratePresetPlay } from './socket.ts';
 
 import { getWebsocket } from './obs.ts';
 
@@ -243,11 +244,23 @@ export class ObsUtilsApi {
 	}
 
 	/**
-	 * Public — play a camera preset. Single-waypoint presets apply immediately;
-	 * keyframed presets drive a GSAP timeline. Returns a controller for
-	 * pause/resume/scrub/stop.
+	 * Public — play a camera preset on the OBS client. The DM that calls this
+	 * claims active-GM control, swaps the current tracking mode to cloneDM,
+	 * pauses their outgoing viewport stream, and broadcasts the preset so it
+	 * runs locally on every OBS client. The DM's own view does not move.
+	 *
+	 * For previewing a preset in the editor (no broadcast, no state changes),
+	 * call `playSequence` directly from `cameraSequencePlayer`.
 	 */
-	playPreset(preset: CameraPreset): SequenceController {
+	playPreset(preset: CameraPreset): void {
+		void orchestratePresetPlay(preset);
+	}
+
+	/**
+	 * Local-only preview play. Use this from the preset editor when scrubbing
+	 * or auditioning — doesn't touch tracking state and doesn't broadcast.
+	 */
+	previewPreset(preset: CameraPreset): SequenceController {
 		return playSequence(preset);
 	}
 }

@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
+	import type { OverlayTemplate } from '../../utils/overlayTemplates.ts';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import { getApi } from '../../utils/helpers.ts';
 
@@ -12,6 +13,8 @@
 		removeLayer,
 		reorderLayers,
 		toggleLayerEnabled,
+		templates,
+		addFromTemplate,
 	} = $props<{
 		overlays: OverlayData[];
 		selectedLayerIndex: number | null;
@@ -20,6 +23,8 @@
 		removeLayer: (index: number) => void;
 		reorderLayers: (from: number, to: number) => void;
 		toggleLayerEnabled: (index: number) => void;
+		templates?: OverlayTemplate[];
+		addFromTemplate?: (key: string) => void;
 	}>();
 
 	let rerender = $state(0);
@@ -80,6 +85,7 @@
 			</button>
 			{#if addMenuOpen}
 				<div class='add-menu' role='menu'>
+					<div class='menu-section-label'>{game.i18n?.localize('obs-utils.applications.overlayEditor.menuBlank')}</div>
 					{#each overlayTypeOptions as opt (opt.key)}
 						<button
 							type='button'
@@ -90,6 +96,23 @@
 							}}
 						>{opt.label}</button>
 					{/each}
+					{#if templates && addFromTemplate && templates.length > 0}
+						<div class='menu-section-label'>{game.i18n?.localize('obs-utils.applications.overlayEditor.menuFromTemplate')}</div>
+						{#each templates as tpl (tpl.key)}
+							<button
+								type='button'
+								role='menuitem'
+								class='template-item'
+								onclick={() => {
+									addMenuOpen = false;
+									addFromTemplate(tpl.key);
+								}}
+							>
+								<i class={tpl.icon}></i>
+								<span>{game.i18n?.localize(tpl.label) ?? tpl.label}</span>
+							</button>
+						{/each}
+					{/if}
 				</div>
 			{/if}
 		</div>
@@ -193,7 +216,7 @@
 			position absolute
 			top calc(100% + 4px)
 			right 0
-			min-width 140px
+			min-width 180px
 			background #2a2a2a
 			border 1px solid rgba(255, 255, 255, 0.15)
 			border-radius 4px
@@ -203,12 +226,31 @@
 			padding 4px
 			gap 2px
 
+			.menu-section-label
+				padding 4px 10px
+				font-size 10px
+				text-transform uppercase
+				letter-spacing 0.5px
+				opacity 0.55
+				border-top 1px solid rgba(255, 255, 255, 0.05)
+
+				&:first-child
+					border-top 0
+
 			button
 				text-align left
 				background transparent
 				border none
 				padding 6px 10px
 				font-size 12px
+				display flex
+				align-items center
+				gap 8px
+
+				i
+					opacity 0.7
+					font-size 11px
+					min-width 12px
 
 				&:hover:not(:disabled)
 					background rgba(255, 255, 255, 0.08)
@@ -216,6 +258,9 @@
 				&:disabled
 					opacity 0.4
 					cursor not-allowed
+
+			.template-item i
+				color #ffce80
 
 	.layer-list
 		margin 0

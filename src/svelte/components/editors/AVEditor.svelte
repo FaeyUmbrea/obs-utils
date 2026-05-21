@@ -1,7 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
-	import { getActorValueGroups } from '../../../utils/helpers';
+	import { getDataPickerGroups } from '../../../utils/helpers';
+	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
@@ -18,7 +19,7 @@
 	}
 
 	let dataDriven = $state(looksLikePath(data ?? ''));
-	const groups = getActorValueGroups();
+	const groups = getDataPickerGroups();
 </script>
 
 <div class='av-editor'>
@@ -33,6 +34,7 @@
 			creatable={true}
 			placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={data} />
 	{:else}
 		<input
 			type='text'

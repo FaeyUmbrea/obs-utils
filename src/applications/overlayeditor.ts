@@ -1,11 +1,7 @@
-import type { OverlayData } from '../utils/types.ts';
 import Composer from '../svelte/composer/Composer.svelte';
 import { buildBundle } from '../utils/bundleExporter.ts';
 import { importBundle, validateBundle } from '../utils/bundleImporter.ts';
-import { readStarterOverlays } from '../utils/defaultOverlays.ts';
 import { getSetting, setSetting } from '../utils/settings.ts';
-import { generateId } from '../utils/types.ts';
-import GlobalCSSEditor from './globalcsseditor.ts';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 const DialogV2 = foundry.applications.api.DialogV2;
@@ -17,16 +13,14 @@ export default class OverlayEditor extends SvelteApplicationMixin(foundry.applic
 		title: (game as ReadyGame).i18n.localize('obs-utils.applications.overlayEditor.name'),
 		// tabs: [{ navSelector: '.tabs', contentSelector: '.content', initial: 'onLoad' }],
 		position: {
-			height: 600,
-			width: 1000,
+			height: 700,
+			width: 1300,
 		},
 		zIndex: 95,
 		focusAuto: false,
 		actions: {
 			import: OverlayEditor.importCommand,
 			export: OverlayEditor.exportCommand,
-			openGlobalCSS: OverlayEditor.openGlobalCSSCommand,
-			importStarter: OverlayEditor.importStarterCommand,
 		},
 		window: {
 			resizable: true,
@@ -41,50 +35,10 @@ export default class OverlayEditor extends SvelteApplicationMixin(foundry.applic
 					label: 'obs-utils.applications.overlayEditor.exportButton',
 					action: 'export',
 				},
-				{
-					icon: 'fab fa-css3-alt',
-					label: 'obs-utils.applications.globalCSSEditor.menuLabel',
-					action: 'openGlobalCSS',
-				},
-				{
-					icon: 'fas fa-bars',
-					label: 'obs-utils.applications.overlayEditor.importStarterButton',
-					action: 'importStarter',
-				},
 			],
 		},
 	};
 
-	public static async openGlobalCSSCommand() {
-		new GlobalCSSEditor({}).render({ force: true });
-	}
-
-	public static async importStarterCommand() {
-		const g = game as ReadyGame;
-		const t = (key: string) => g.i18n.localize(key);
-		const starter = readStarterOverlays();
-		if (starter.length === 0) {
-			ui?.notifications?.warn(t('obs-utils.applications.overlayEditor.starterEmpty'));
-			return;
-		}
-		const confirmed = await DialogV2.confirm({
-			window: { title: t('obs-utils.applications.overlayEditor.importStarterButton') },
-			content: `<p>${g.i18n.format('obs-utils.applications.overlayEditor.starterConfirm', { count: String(starter.length) })}</p>`,
-			rejectClose: false,
-		});
-		if (!confirmed) return;
-
-		// Deep-clone and stamp fresh IDs so we don't collide with existing overlays
-		// or contaminate the registered starter set across imports.
-		const fresh: OverlayData[] = JSON.parse(JSON.stringify(starter));
-		for (const o of fresh) {
-			o.id = generateId();
-			for (const c of o.components ?? []) c.id = generateId();
-		}
-		const current = (getSetting('streamOverlays') ?? []) as OverlayData[];
-		await setSetting('streamOverlays', [...current, ...fresh]);
-		ui?.notifications?.info(g.i18n.format('obs-utils.applications.overlayEditor.starterImported', { count: String(fresh.length) }));
-	}
 
 	protected override root = Composer;
 

@@ -86,6 +86,22 @@ export function playSequence(preset: CameraPreset): SequenceController {
 		prev = kf;
 	}
 
+	// Honor the composition duration: hold at the last keyframe's values until
+	// the configured end. This is what makes ping-pong bounce at the full
+	// duration instead of at the last keyframe's time, and it also keeps the
+	// total playback length predictable when the user authored a trailing pause.
+	if (preset.durationMs && preset.durationMs > prev.time) {
+		const tailSeconds = (preset.durationMs - prev.time) / 1000;
+		tl.to(proxy, {
+			x: prev.x,
+			y: prev.y,
+			scale: prev.scale,
+			duration: tailSeconds,
+			ease: 'none',
+			onUpdate: () => clampAndApplyExternal({ x: proxy.x, y: proxy.y, scale: proxy.scale }),
+		});
+	}
+
 	return {
 		stop: () => tl.kill(),
 		pause: () => { tl.pause(); },

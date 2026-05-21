@@ -105,6 +105,57 @@ export function getActorValueGroups(): ActorValueGroup[] {
 	return actorValueGroups;
 }
 
+/**
+ * Return data-picker groups that include both actor paths and trigger payload
+ * paths. Trigger paths are sourced from the public trigger registry; for the
+ * common payload shapes (`Actor`, `Roll`, `ChatMessage`) we surface the
+ * useful nested fields so users don't have to type them by hand. Custom
+ * nested paths can still be typed directly into the picker.
+ *
+ * Use in editors whose `data` field may legitimately reference event payloads
+ * (Text, Icon, Image — i.e. anywhere `trigger.*` makes sense).
+ */
+export function getDataPickerGroups(): ActorValueGroup[] {
+	const base = getActorValueGroups();
+	const triggerGroups = buildTriggerPayloadGroups();
+	return [...base, ...triggerGroups];
+}
+
+function buildTriggerPayloadGroups(): ActorValueGroup[] {
+	const api = (game as ReadyGame | undefined)?.modules?.get('obs-utils')?.api;
+	if (!api) return [];
+	const out: ActorValueGroup[] = [];
+	for (const [key, reg] of api.overlayTriggers) {
+		const items: ActorValue[] = [];
+		for (const field of reg.payloadSchema ?? []) {
+			if (field.display === false) continue;
+			const root = `trigger.${field.key}`;
+			const baseLabel = field.label ? (game.i18n?.localize(field.label) ?? field.label) : field.key;
+			items.push({ value: root, label: baseLabel });
+			// Surface common nested paths so users don't have to type them.
+			if (field.type === 'Actor') {
+				items.push({ value: `${root}.name`, label: `${baseLabel}.name` });
+				items.push({ value: `${root}.id`, label: `${baseLabel}.id` });
+				items.push({ value: `${root}.img`, label: `${baseLabel}.img` });
+			} else if (field.type === 'Roll') {
+				items.push({ value: `${root}.total`, label: `${baseLabel}.total` });
+				items.push({ value: `${root}.formula`, label: `${baseLabel}.formula` });
+			} else if (field.type === 'ChatMessage') {
+				items.push({ value: `${root}.content`, label: `${baseLabel}.content` });
+				items.push({ value: `${root}.speaker.alias`, label: `${baseLabel}.speaker.alias` });
+			}
+		}
+		if (items.length === 0) continue;
+		const triggerLabel = reg.name ? (game.i18n?.localize(reg.name) ?? reg.name) : key;
+		out.push({
+			label: `${game.i18n?.localize('obs-utils.strings.triggerGroup') ?? 'Trigger'}: ${triggerLabel}`,
+			order: 1000,
+			items,
+		});
+	}
+	return out;
+}
+
 export function setActorValues(actorValueArray: ActorValues) {
 	actorValueGroups = [{ label: '', items: actorValueArray }];
 }

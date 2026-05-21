@@ -2,7 +2,8 @@
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
 	import { tick } from 'svelte';
-	import { getActorValueGroups } from '../../../utils/helpers';
+	import { getDataPickerGroups } from '../../../utils/helpers';
+	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';;;') } = $props<{ data: string }>();
 
@@ -11,7 +12,7 @@
 	let maxPath = $state(data?.split(';')[2] ?? '');
 	let emptyImg = $state(data?.split(';')[3] ?? '');
 
-	const groups = getActorValueGroups();
+	const groups = getDataPickerGroups();
 
 	function emit() {
 		data = `${valuePath ?? ''};${filledImg ?? ''};${maxPath ?? ''};${emptyImg ?? ''}`;
@@ -67,6 +68,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={valuePath} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
@@ -76,6 +78,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={maxPath} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.filledImage')}</span>

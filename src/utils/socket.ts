@@ -1,6 +1,9 @@
+import type { CameraPreset } from './cameraPresets.ts';
+import type { SequenceController } from './cameraSequencePlayer.ts';
 import type { OBSWebsocketSettings } from './types.ts';
 import { clampAndApplyExternal, getCurrentUser, getLocalViewport, VIEWPORT_DATA, viewportChanged } from './canvas';
-import { debounce, isOBS } from './helpers.ts';
+import { playSequence } from './cameraSequencePlayer.ts';
+import { isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';
 
 type NotifyOptions = foundry.applications.ui.Notifications.NotifyOptions;
@@ -28,6 +31,10 @@ async function handleEvent({ eventType, targetUser, payload }: {
 		await handleGMHandoverRequest(payload);
 	} else if (eventType === 'gmHandoverGrant') {
 		await handleGMHandoverGrant(payload);
+	} else if (eventType === 'playPreset') {
+		handlePlayPreset(payload);
+	} else if (eventType === 'stopPreset') {
+		handleStopPreset();
 	}
 }
 
@@ -102,15 +109,82 @@ function socketCanvasInternal(position: Canvas.ViewPosition) {
 	});
 }
 
-const debouncedSocketCanvas = debounce(socketCanvasInternal, 100, {
-	maxWait: 500,
-});
+// ─── Camera tracking pipeline ─────────────────────────────────────────────
+// Three modes, all routed through a 30 Hz throttle so we never spam the socket
+// faster than the receiver can usefully apply:
+//
+//   raw         — emit the latest sample on each tick (just rate-limited)
+//   smooth      — moving-average over the most recent samples, then throttled
+//   dragRelease — buffer locally and emit one final position once the pan stops
+//
+// The previous debounce implementation produced jitter because each emit
+// restarted the receiver's animatePan tween mid-flight. Holding a steady ~30 Hz
+// stream lets the receiver chain tweens that finish just as the next one
+// arrives, so motion stays continuous.
+
+const EMIT_INTERVAL_MS = 33;
+const SMOOTH_WINDOW = 5;
+const DRAG_SETTLE_MS = 150;
+
+let lastEmitWall = 0;
+let pendingPosition: Canvas.ViewPosition | null = null;
+let throttleTimer: ReturnType<typeof setTimeout> | null = null;
+let dragSettleTimer: ReturnType<typeof setTimeout> | null = null;
+let smoothBuf: Canvas.ViewPosition[] = [];
+
+function avgPosition(buf: Canvas.ViewPosition[]): Canvas.ViewPosition {
+	// Average x/y across the window; pick the latest scale verbatim, since
+	// smoothing zoom feels laggy and zoom changes are usually low-frequency.
+	const n = buf.length;
+	let sx = 0; let sy = 0;
+	for (const p of buf) { sx += p.x; sy += p.y; }
+	return { x: sx / n, y: sy / n, scale: buf[n - 1].scale };
+}
+
+function flushNow(p: Canvas.ViewPosition) {
+	lastEmitWall = performance.now();
+	pendingPosition = null;
+	socketCanvasInternal(p);
+}
+
+function throttledEmit(p: Canvas.ViewPosition) {
+	const now = performance.now();
+	const elapsed = now - lastEmitWall;
+	if (elapsed >= EMIT_INTERVAL_MS) {
+		flushNow(p);
+		return;
+	}
+	pendingPosition = p;
+	if (throttleTimer === null) {
+		throttleTimer = setTimeout(() => {
+			throttleTimer = null;
+			if (pendingPosition) flushNow(pendingPosition);
+		}, EMIT_INTERVAL_MS - elapsed);
+	}
+}
+
+function smoothedEmit(p: Canvas.ViewPosition) {
+	smoothBuf.push(p);
+	if (smoothBuf.length > SMOOTH_WINDOW) smoothBuf.shift();
+	throttledEmit(avgPosition(smoothBuf));
+}
+
+function dragReleaseEmit(p: Canvas.ViewPosition) {
+	if (dragSettleTimer !== null) clearTimeout(dragSettleTimer);
+	dragSettleTimer = setTimeout(() => {
+		dragSettleTimer = null;
+		flushNow(p);
+	}, DRAG_SETTLE_MS);
+}
 
 export function socketCanvas(_canvas: Canvas, position: Canvas.ViewPosition) {
-	if (getSetting('smoothUserCamera')) {
-		debouncedSocketCanvas(position);
+	const mode = (getSetting('cameraTrackingMode') as 'raw' | 'smooth' | 'dragRelease') ?? 'smooth';
+	if (mode === 'dragRelease') {
+		dragReleaseEmit(position);
+	} else if (mode === 'raw') {
+		throttledEmit(position);
 	} else {
-		socketCanvasInternal(position);
+		smoothedEmit(position);
 	}
 }
 
@@ -150,4 +224,83 @@ async function handleGMHandoverGrant(payload: GMHandoverGrantPayload) {
 	if (!(game as ReadyGame).user?.isGM) return;
 	clampAndApplyExternal(payload.viewport);
 	await setSetting('activeGMUserId', me);
+}
+
+// ─── Preset playback broadcast ────────────────────────────────────────────
+// Presets and animations play *on the OBS client*, not on the DM's machine.
+// The DM that clicks the preset orchestrates state (claim control, switch
+// tracking mode, pause local broadcast), then ships the preset over the wire.
+// The OBS client receives it and runs the same GSAP timeline locally so the
+// camera moves smoothly without dragging the DM's view along.
+
+interface PlayPresetPayload { preset: CameraPreset }
+
+// Track the OBS-side active controller so a new play cancels the old, and so
+// the stop event has a target to kill.
+let activePresetController: SequenceController | null = null;
+
+export function broadcastPlayPreset(preset: CameraPreset) {
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'playPreset',
+		targetUser: undefined,
+		payload: { preset } satisfies PlayPresetPayload,
+	});
+}
+
+export function broadcastStopPreset() {
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'stopPreset',
+		targetUser: undefined,
+		payload: {},
+	});
+}
+
+function handlePlayPreset(payload: PlayPresetPayload) {
+	if (!isOBS()) return;
+	// Cancel any preset that's still running before starting the new one —
+	// otherwise looping presets would stack indefinitely.
+	if (activePresetController) {
+		activePresetController.stop();
+		activePresetController = null;
+	}
+	activePresetController = playSequence(payload.preset);
+}
+
+function handleStopPreset() {
+	if (!isOBS()) return;
+	if (activePresetController) {
+		activePresetController.stop();
+		activePresetController = null;
+	}
+}
+
+/**
+ * Orchestrate a preset play. Called by the DM that clicked. Side-effects, all
+ * sticky (never restored after the preset finishes):
+ *   1. Switches both `defaultInCombat` and `defaultOutOfCombat` to `cloneDM`,
+ *      since a preset is an explicit "follow me" gesture and the operator
+ *      shouldn't have to redo the choice when combat starts or ends.
+ *   2. Claims `activeGMUserId` so this DM owns the broadcast camera.
+ *   3. Pauses the DM's outgoing viewport stream. This stays on; the operator
+ *      flips it off manually once they want live tracking back.
+ *   4. Broadcasts the preset; OBS clients run it locally.
+ */
+export async function orchestratePresetPlay(preset: CameraPreset) {
+	const me = (game as ReadyGame).user?.id;
+	if (!me) return;
+
+	if (getSetting('defaultInCombat') !== 'cloneDM') {
+		await setSetting('defaultInCombat', 'cloneDM');
+	}
+	if (getSetting('defaultOutOfCombat') !== 'cloneDM') {
+		await setSetting('defaultOutOfCombat', 'cloneDM');
+	}
+	if (getSetting('activeGMUserId') !== me) {
+		await setSetting('activeGMUserId', me);
+	}
+	if (!getSetting('pauseCameraTracking')) {
+		await setSetting('pauseCameraTracking', true);
+	}
+
+	broadcastPlayPreset(preset);
 }

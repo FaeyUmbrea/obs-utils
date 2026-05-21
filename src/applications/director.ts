@@ -16,8 +16,8 @@ export default class DirectorApplication extends SvelteApplicationMixin(foundry.
 		classes: ['obs-director', 'themed'],
 		minimizable: true,
 		position: {
-			width: 540,
-			height: 340,
+			width: 585,
+			height: 385,
 		},
 		id: 'director-application',
 		title: 'obs-utils.applications.director.name',

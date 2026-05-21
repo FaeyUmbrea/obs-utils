@@ -1,12 +1,13 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
-	import { getActorValueGroups } from '../../../utils/helpers';
+	import { getDataPickerGroups } from '../../../utils/helpers';
+	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';') } = $props<{ data: string }>();
 	let valuePath = $state(data?.split(';')[0] ?? '');
 	let maxPath = $state(data?.split(';')[1] ?? '');
-	const groups = getActorValueGroups();
+	const groups = getDataPickerGroups();
 
 	function onChange() {
 		data = `${valuePath ?? ''};${maxPath ?? ''}`;
@@ -22,6 +23,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={valuePath} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
@@ -31,6 +33,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={maxPath} />
 	</label>
 </div>
 

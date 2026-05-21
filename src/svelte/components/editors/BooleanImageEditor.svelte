@@ -2,7 +2,8 @@
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
 	import { tick } from 'svelte';
-	import { getActorValueGroups } from '../../../utils/helpers';
+	import { getDataPickerGroups } from '../../../utils/helpers';
+	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
@@ -10,7 +11,7 @@
 	let img1 = $state(data?.split(';')[1] ?? '');
 	let img2 = $state(data?.split(';')[2] ?? '');
 
-	const groups = getActorValueGroups();
+	const groups = getDataPickerGroups();
 
 	function emit() {
 		data = `${av1 ?? ''};${img1 ?? ''};${img2 ?? ''}`;
@@ -67,6 +68,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={av1} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.imageWhenTrue')}</span>

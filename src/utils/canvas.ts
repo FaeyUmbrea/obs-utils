@@ -399,6 +399,14 @@ function clampAndApply(canvasPos: { x: number; y: number; scale: number }) {
 	if (getSetting('clampCanvas')) {
 		canvasPos = clamp(canvasPos);
 	}
+	// 'direct' = no perceived easing. The sender emits at ~30 Hz, so a 33 ms
+	// linear tween bridges each pair of samples without adding latency. A
+	// raw pan() would snap and re-introduce the per-sample jitter we're
+	// trying to avoid.
+	if (getSetting('cameraEasing') === 'direct') {
+		canvas!.animatePan({ ...canvasPos, duration: 33 }).then();
+		return;
+	}
 	const duration = Math.max(0, Math.min(2000, getSetting('cameraSmoothing') ?? 400));
 	const easing = getEasingFn();
 	const opts: any = { ...canvasPos, duration };

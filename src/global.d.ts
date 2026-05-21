@@ -74,7 +74,7 @@ declare global {
 		'obs-utils.obsModeUser': string;
 		'obs-utils.obsModeGlobalDisable': boolean;
 		'obs-utils.showKeybindingPopup': boolean;
-		'obs-utils.smoothUserCamera': boolean;
+		'obs-utils.cameraTrackingMode': 'raw' | 'smooth' | 'dragRelease';
 		'obs-utils.cameraSmoothing': number;
 		'obs-utils.cameraEasing': string;
 		'obs-utils.activeGMUserId': string;

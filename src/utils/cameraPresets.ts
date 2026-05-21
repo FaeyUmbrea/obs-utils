@@ -38,6 +38,13 @@ export interface CameraPreset {
 	/** When non-empty, this preset is a keyframed sequence; top-level x/y/scale are ignored at playback. */
 	keyframes?: CameraKeyframe[];
 	loop?: LoopMode;
+	/**
+	 * Composition duration in ms. Defines the playback window — the timeline
+	 * holds at the last keyframe's values until this time elapses, so loop
+	 * (especially ping-pong) bounces at the full duration rather than at the
+	 * last keyframe. Optional; absent presets default to the last keyframe time.
+	 */
+	durationMs?: number;
 }
 
 /** Map our EasingKind values to GSAP ease strings / functions. */

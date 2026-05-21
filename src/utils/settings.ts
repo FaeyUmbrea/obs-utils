@@ -465,11 +465,15 @@ export function	initSettings() {
 		config: true,
 	});
 
-	createSetting('smoothUserCamera', {
-		type: Boolean,
+	// Driven from the Director's Controls panel, not the Foundry settings UI:
+	//   - 'raw'         emit every viewport tick (lowest latency, jitter on receiver)
+	//   - 'smooth'      moving-average smoothing on sender (default)
+	//   - 'dragRelease' buffer locally; only emit once the GM stops panning
+	createSetting('cameraTrackingMode', {
+		type: String,
 		scope: 'world',
-		config: true,
-		default: true,
+		config: false,
+		default: 'smooth',
 	});
 
 	createSetting('cameraSmoothing', {

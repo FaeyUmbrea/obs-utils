@@ -13,13 +13,24 @@
 	const pauseCameraTracking = settings.getStore('pauseCameraTracking');
 	const cameraSmoothing = settings.getStore('cameraSmoothing');
 	const cameraEasing = settings.getStore('cameraEasing');
+	const cameraTrackingMode = settings.getStore('cameraTrackingMode');
 
 	const easingOptions = [
-		{ value: 'linear', labelKey: 'obs-utils.applications.director.easingLinear' },
-		{ value: 'easeOutCircle', labelKey: 'obs-utils.applications.director.easingEaseOut' },
-		{ value: 'easeInOutCircle', labelKey: 'obs-utils.applications.director.easingEaseInOut' },
-		{ value: 'easeOutCosine', labelKey: 'obs-utils.applications.director.easingEaseOutCosine' },
-		{ value: 'easeInOutCosine', labelKey: 'obs-utils.applications.director.easingEaseInOutCosine' },
+		{ value: 'direct', labelKey: 'obs-utils.applications.director.easingDirect', icon: 'fas fa-bolt' },
+		{ value: 'linear', labelKey: 'obs-utils.applications.director.easingLinear', icon: 'fas fa-minus' },
+		{ value: 'easeOutCircle', labelKey: 'obs-utils.applications.director.easingEaseOut', icon: 'fas fa-arrow-right-long' },
+		{ value: 'easeInOutCircle', labelKey: 'obs-utils.applications.director.easingEaseInOut', icon: 'fas fa-film' },
+		{ value: 'easeOutCosine', labelKey: 'obs-utils.applications.director.easingEaseOutCosine', icon: 'fas fa-wave-square' },
+		{ value: 'easeInOutCosine', labelKey: 'obs-utils.applications.director.easingEaseInOutCosine', icon: 'fas fa-water' },
+	];
+
+	const trackingModeOptions = [
+		{ value: 'raw', labelKey: 'obs-utils.applications.director.trackingModeRaw',
+			tipKey: 'obs-utils.applications.director.trackingModeRawTip', icon: 'fas fa-bolt' },
+		{ value: 'smooth', labelKey: 'obs-utils.applications.director.trackingModeSmooth',
+			tipKey: 'obs-utils.applications.director.trackingModeSmoothTip', icon: 'fas fa-wave-square' },
+		{ value: 'dragRelease', labelKey: 'obs-utils.applications.director.trackingModeDragRelease',
+			tipKey: 'obs-utils.applications.director.trackingModeDragReleaseTip', icon: 'fas fa-hand' },
 	];
 </script>
 
@@ -63,17 +74,63 @@
 		</div>
 		<div class='camera-section'>
 			<b>{game.i18n?.localize('obs-utils.applications.director.cameraSmoothingHeader')}</b>
-			<div class='smoothing-row'>
-				<label for='cameraEasing' class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.easing')}</label>
-				<select id='cameraEasing' bind:value={$cameraEasing} {disabled}>
-					{#each easingOptions as opt (opt.value)}
-						<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
+			<div class='tracking-mode-row'>
+				<label class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.trackingModeHeader')}</label>
+				<div class='radio-row'>
+					{#each trackingModeOptions as opt (opt.value)}
+						<input
+							type='radio'
+							bind:group={$cameraTrackingMode}
+							id='trackmode{opt.value}'
+							name='cameraTrackingMode'
+							value={opt.value}
+							{disabled}
+						/>
+						<label
+							class='button'
+							class:disabled
+							for='trackmode{opt.value}'
+							title={`${game.i18n?.localize(opt.labelKey)} — ${game.i18n?.localize(opt.tipKey)}`}
+						>
+							<i class={opt.icon}></i>
+						</label>
 					{/each}
-				</select>
+				</div>
 			</div>
-			<div class='smoothing-row'>
+			<div class='easing-row'>
+				<label class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.easing')}</label>
+				<div class='radio-row'>
+					{#each easingOptions as opt (opt.value)}
+						<input
+							type='radio'
+							bind:group={$cameraEasing}
+							id='easing{opt.value}'
+							name='cameraEasing'
+							value={opt.value}
+							{disabled}
+						/>
+						<label
+							class='button'
+							class:disabled
+							for='easing{opt.value}'
+							title={game.i18n?.localize(opt.labelKey)}
+						>
+							<i class={opt.icon}></i>
+						</label>
+					{/each}
+				</div>
+			</div>
+			<div class='smoothing-row' class:disabled-row={$cameraEasing === 'direct'}>
 				<label for='cameraSmoothing' class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.duration')}</label>
-				<input id='cameraSmoothing' type='range' min='0' max='1500' step='50' bind:value={$cameraSmoothing} {disabled} />
+				<input
+					id='cameraSmoothing'
+					type='range'
+					min='0'
+					max='1500'
+					step='50'
+					bind:value={$cameraSmoothing}
+					disabled={disabled || $cameraEasing === 'direct'}
+				/>
 				<span class='value-readout'>{$cameraSmoothing}ms</span>
 			</div>
 		</div>
@@ -143,6 +200,7 @@
 		pointer-events none
 
 	label.button
+		box-sizing border-box
 		width 40px
 		height 40px
 		display inline-flex
@@ -150,6 +208,7 @@
 		justify-content center
 		align-items center
 		border-radius 4px
+		flex 0 0 40px
 
 		i
 			display flex
@@ -185,6 +244,7 @@
 		.radio-row
 			display flex
 			gap 6px
+			justify-content flex-start
 
 		select
 			opacity 1
@@ -227,6 +287,37 @@
 				font-size 11px
 				opacity 0.7
 				text-align right
+
+			&.disabled-row
+				opacity 0.4
+
+		// Tracking-mode + easing share a compact 70-px-label grid, with
+		// half-height (20px) icon-only radios so they don't compete with the
+		// 40px IC/OOC mode picker above.
+		.tracking-mode-row,
+		.easing-row
+			display grid
+			grid-template-columns 70px 1fr
+			align-items center
+			gap 8px
+
+			.inline-label
+				font-size 12px
+				opacity 0.8
+
+			.radio-row label.button
+				width 32px
+				height 20px
+				border-width 1px
+				flex 0 0 32px
+
+				i
+					font-size 12px
+
+			.radio-row
+				display flex
+				gap 6px
+				justify-content flex-start
 
 	.controls-row
 		display flex

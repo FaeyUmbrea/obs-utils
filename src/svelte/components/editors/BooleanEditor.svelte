@@ -1,14 +1,15 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
-	import { getActorValueGroups } from '../../../utils/helpers';
+	import { getDataPickerGroups } from '../../../utils/helpers';
+	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
 	let av1 = $state(data?.split(';')[0] ?? '');
 	let icon1 = $state(data?.split(';')[1] ?? '');
 	let icon2 = $state(data?.split(';')[2] ?? '');
-	const groups = getActorValueGroups();
+	const groups = getDataPickerGroups();
 
 	function onChange() {
 		data = `${av1 ?? ''};${icon1 ?? ''};${icon2 ?? ''}`;
@@ -24,6 +25,7 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
+		<TriggerPathWarning value={av1} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.iconWhenTrue')}</span>

@@ -205,6 +205,51 @@ function interpPair(
 	};
 }
 
+// ─── lane / keyframe mutation helpers ────────────────────────────────────────
+
+/**
+ * Find or create the lane for a given component on a track. The lane reference
+ * is mutated into place if missing; caller is expected to commit afterwards.
+ */
+export function ensureLane(track: OverlayTrack, componentId: string): TrackComponentLane {
+	const existing = track.lanes.find(l => l.componentId === componentId);
+	if (existing) return existing;
+	const lane: TrackComponentLane = { componentId, keyframes: [] };
+	track.lanes.push(lane);
+	return lane;
+}
+
+/**
+ * Insert a keyframe sorted by time. Returns its post-insertion index so
+ * callers can re-select it after re-render.
+ */
+export function insertKeyframeOnLane(lane: TrackComponentLane, kf: TrackKeyframe): number {
+	lane.keyframes.push(kf);
+	lane.keyframes.sort((a, b) => a.t - b.t);
+	return lane.keyframes.findIndex(k => k === kf);
+}
+
+export function removeKeyframeOnLane(lane: TrackComponentLane, index: number): void {
+	if (index < 0 || index >= lane.keyframes.length) return;
+	lane.keyframes.splice(index, 1);
+}
+
+/**
+ * Apply a patch to a keyframe and re-sort if the time changed. Returns the new
+ * index after sorting.
+ */
+export function updateKeyframeOnLane(
+	lane: TrackComponentLane,
+	index: number,
+	patch: Partial<TrackKeyframe>,
+): number {
+	const kf = lane.keyframes[index];
+	if (!kf) return -1;
+	Object.assign(kf, patch);
+	lane.keyframes.sort((a, b) => a.t - b.t);
+	return lane.keyframes.findIndex(k => k === kf);
+}
+
 /**
  * Compute the per-component frame snapshot of a track at the given playhead
  * time. Pure: takes the track + playhead, returns one `ComponentFrame` per
