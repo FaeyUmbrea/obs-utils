@@ -57,6 +57,7 @@ export function getActiveGM(): User | undefined {
 export interface ActorValue {
 	value: string;
 	label: string;
+	$created?: boolean;
 }
 
 export type ActorValues = ActorValue[];
@@ -64,7 +65,7 @@ export type ActorValues = ActorValue[];
 /**
  * Grouped variant — system modules can ship a richer hierarchical layout via
  * `api.setAVDataGrouped`. Picker components consume the grouped form via
- * `getActorValueGroups` and pass it straight to Svelecte. Flat data set via
+ * `getActorValueGroups` and pass it straight to the picker. Flat data set via
  * legacy `setAVData` is wrapped in a single anonymous group, so the picker only
  * has one code path.
  */
@@ -121,10 +122,10 @@ export function ensureCustomValue(groups: ActorValueGroup[], path: string | null
 	const customLabel = game.i18n?.localize('obs-utils.strings.customGroup') ?? 'Custom';
 	const existing = groups.find(g => g.label === customLabel);
 	if (existing) {
-		existing.items.push({ value: path, label: path });
+		existing.items.push({ value: path, label: path, $created: true });
 		return groups;
 	}
-	return [...groups, { label: customLabel, items: [{ value: path, label: path }] }];
+	return [...groups, { label: customLabel, items: [{ value: path, label: path, $created: true }] }];
 }
 
 /**

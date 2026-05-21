@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from 'svelecte';
+	import Select from './components/select/Select.svelte';
 	import { onDestroy } from 'svelte';
 	import { getApi } from '../utils/helpers.ts';
 	import { generateDataBlockFromSetting, getSetting, setSetting, settings } from '../utils/settings.ts';
@@ -172,21 +172,9 @@
 		<div class='header'>
 			<Select
 				bind:value={selectedKey}
-				options={visibleRegistrations.map(r => ({ value: r.key, label: formatName(r), icon: r.icon }))}
-				valueField='value'
-				labelField='label'
+				options={visibleRegistrations.map(r => ({ value: r.key, label: formatName(r), icon: r.icon ?? 'fas fa-bolt' }))}
 				searchable={false}
-				clearable={false}
-				--sv-bg='var(--sidebar-background)'
-				--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-			>
-				{#snippet option(opt)}
-					<div><i class={opt.icon ?? 'fas fa-bolt'}></i> {opt.label}</div>
-				{/snippet}
-				{#snippet selection(selectedOptions)}
-					<div><i class={selectedOptions[0].icon ?? 'fas fa-bolt'}></i> {selectedOptions[0].label}</div>
-				{/snippet}
-			</Select>
+			/>
 			<button
 				aria-label={hasConditions
 					? game.i18n?.localize('obs-utils.applications.obsRemote.addInstance')

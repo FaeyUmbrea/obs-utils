@@ -1,43 +1,36 @@
 <svelte:options runes={true} />
-<script>
-	import { getApi } from '../../utils/helpers';
+<script lang='ts'>
+	import type { RenderedOverlay } from '../../utils/render.ts';
+	import { getApi } from '../../utils/helpers.ts';
 	import EmptyComponent from './overlaycomponents/EmptyComponent.svelte';
 
-	let { overlayData = $bindable(), actorID = $bindable(), overlayIndex = $bindable() } = $props();
+	const { overlay, overlayIndex }: {
+		overlay: RenderedOverlay;
+		overlayIndex: number;
+	} = $props();
 
-	const overlayTypes = getApi().overlayTypes.get('sl').overlayComponents;
+	const componentMap = getApi().overlayTypes.get('sl').overlayComponents;
 
-	function getComponentType(type) {
-		if (!type) {
-			console.warn('Your overlay could not be rendered.');
-			return;
-		}
-		const resolvedType = overlayTypes.get(type);
-		if (resolvedType !== undefined) {
-			return resolvedType;
-		} else {
-			return EmptyComponent;
-		}
+	function getComponentType(type: string) {
+		const resolved = componentMap.get(type);
+		return resolved ?? EmptyComponent;
 	}
 </script>
 
 <div
 	class='single-line-overlay'
 	id={`overlay${overlayIndex.toString()}`}
-	data-overlay-id={overlayData.id ?? ''}
-	style={overlayData.style}
+	data-overlay-id={overlay.overlayId}
+	style={overlay.style}
 >
-	{#each overlayData.components as component, index (overlayData.components.indexOf(component))}
-		{#if component !== null && component !== undefined}
-			{@const Component = getComponentType(component.type)}
-			<div data-component-id={component.id ?? ''} style:display='contents'>
-				<Component
-					data={component.data}
-					componentIndex={index}
-					actorID={actorID}
-					style={component.style}
-				/>
-			</div>
-		{/if}
+	{#each overlay.components as component (component.id)}
+		{@const Component = getComponentType(component.type)}
+		<div data-component-id={component.id} style:display='contents'>
+			<Component
+				values={component.values}
+				componentIndex={component.index}
+				style={component.style}
+			/>
+		</div>
 	{/each}
 </div>

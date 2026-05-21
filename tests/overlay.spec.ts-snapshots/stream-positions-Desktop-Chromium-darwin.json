@@ -1,0 +1,35 @@
+{
+	"actors": [
+		{
+			"name": "Test",
+			"box": {
+				"x": 340,
+				"y": 16,
+				"w": 1920,
+				"h": 1178
+			}
+		}
+	],
+	"overlays": [
+		{
+			"id": "tiRqO45r3ugkzmE3",
+			"actor": "Test",
+			"box": {
+				"x": 340,
+				"y": 36,
+				"w": 1920,
+				"h": 78
+			}
+		},
+		{
+			"id": "wysiwygOverlayAAA",
+			"actor": "Test",
+			"box": {
+				"x": 340,
+				"y": 114,
+				"w": 1920,
+				"h": 1080
+			}
+		}
+	]
+}

@@ -4,7 +4,7 @@
 	import { activateCSSInjection, deactivateCSSInjection } from '../utils/cssInjection.ts';
 	import { getApi } from '../utils/helpers.ts';
 	import { settings } from '../utils/settings.ts';
-	import PerActorOverlay from './streamoverlays/PerActorOverlay.svelte';
+	import OverlayHost from './streamoverlays/OverlayHost.svelte';
 	import ExternalComponent from './utilities/ExternalComponent.svelte';
 
 	onMount(() => activateCSSInjection());
@@ -70,7 +70,7 @@
 				class:show-bboxes={showBboxes}
 				style={`position: absolute; left: ${CHAT_DEADZONE_W}px; top: 0; width: ${REF_W - CHAT_DEADZONE_W}px; height: ${REF_H}px; overflow: hidden;`}
 			>
-				<PerActorOverlay actorIDs={$actors} overlays={$overlays} />
+				<OverlayHost actorIDs={$actors} overlays={$overlays} />
 				{#each [...singleInstanceSvelte5] as overlay (overlay)}
 					<ExternalComponent ExternalClass={overlay} />
 				{/each}

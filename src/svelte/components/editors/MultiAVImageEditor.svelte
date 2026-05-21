@@ -1,8 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Svelecte from 'svelecte';
+	import Select from '../select/Select.svelte';
 	import { tick } from 'svelte';
-	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
+	import { getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';;;') } = $props<{ data: string }>();
 
@@ -11,9 +11,7 @@
 	let maxPath = $state(data?.split(';')[2] ?? '');
 	let emptyImg = $state(data?.split(';')[3] ?? '');
 
-	const values = getActorValueGroups();
-	ensureCustomValue(values, valuePath);
-	ensureCustomValue(values, maxPath);
+	const groups = getActorValueGroups();
 
 	function emit() {
 		data = `${valuePath ?? ''};${filledImg ?? ''};${maxPath ?? ''};${emptyImg ?? ''}`;
@@ -63,49 +61,29 @@
 <div class='editor'>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
-		<Svelecte
-			--sv-bg='var(--sidebar-background)'
-			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-			--sv-min-height='32px'
-			floatingConfig={{ strategy: 'fixed' }}
+		<Select
+			options={groups}
+			bind:value={() => valuePath, v => { valuePath = (v as string) ?? ''; emit(); }}
 			creatable={true}
-			creatablePrefix=""
-			options={values}
-			bind:value={valuePath}
-			onChange={emit}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
-		<Svelecte
-			--sv-bg='var(--sidebar-background)'
-			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-			--sv-min-height='32px'
-			floatingConfig={{ strategy: 'fixed' }}
+		<Select
+			options={groups}
+			bind:value={() => maxPath, v => { maxPath = (v as string) ?? ''; emit(); }}
 			creatable={true}
-			creatablePrefix=""
-			options={values}
-			bind:value={maxPath}
-			onChange={emit}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.filledImage')}</span>
 		<div class='picker'>
-			<Svelecte
-				--sv-bg='var(--sidebar-background)'
-				--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-				--sv-min-height='32px'
-				floatingConfig={{ strategy: 'fixed' }}
+			<Select
 				options={filledOptions}
-				bind:value={filledImg}
-				labelField='label'
-				valueField='value'
+				bind:value={() => filledImg, v => { filledImg = (v as string) ?? ''; emit(); }}
 				creatable={true}
-				creatablePrefix=""
-				onChange={emit}
 			/>
 			<button
 				type='button'
@@ -119,18 +97,10 @@
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.emptyImage')}</span>
 		<div class='picker'>
-			<Svelecte
-				--sv-bg='var(--sidebar-background)'
-				--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-				--sv-min-height='32px'
-				floatingConfig={{ strategy: 'fixed' }}
+			<Select
 				options={emptyOptions}
-				bind:value={emptyImg}
-				labelField='label'
-				valueField='value'
+				bind:value={() => emptyImg, v => { emptyImg = (v as string) ?? ''; emit(); }}
 				creatable={true}
-				creatablePrefix=""
-				onChange={emit}
 			/>
 			<button
 				type='button'
@@ -164,7 +134,7 @@
 		gap 4px
 		align-items stretch
 
-		:global(.svelecte)
+		:global(.ouselect)
 			flex 1 1 auto
 			min-width 0
 

@@ -1,8 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Svelecte from 'svelecte';
+	import Select from '../select/Select.svelte';
 	import { tick } from 'svelte';
-	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
+	import { getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
@@ -10,8 +10,7 @@
 	let img1 = $state(data?.split(';')[1] ?? '');
 	let img2 = $state(data?.split(';')[2] ?? '');
 
-	const values = getActorValueGroups();
-	ensureCustomValue(values, av1);
+	const groups = getActorValueGroups();
 
 	function emit() {
 		data = `${av1 ?? ''};${img1 ?? ''};${img2 ?? ''}`;
@@ -62,34 +61,20 @@
 <div class='editor'>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
-		<Svelecte
-			--sv-bg='var(--sidebar-background)'
-			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-			--sv-min-height='32px'
-			floatingConfig={{ strategy: 'fixed' }}
+		<Select
+			options={groups}
+			bind:value={() => av1, v => { av1 = (v as string) ?? ''; emit(); }}
 			creatable={true}
-			creatablePrefix=""
-			options={values}
-			bind:value={av1}
-			onChange={emit}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.imageWhenTrue')}</span>
 		<div class='picker'>
-			<Svelecte
-				--sv-bg='var(--sidebar-background)'
-				--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-				--sv-min-height='32px'
-				floatingConfig={{ strategy: 'fixed' }}
+			<Select
 				options={img1Options}
-				bind:value={img1}
-				labelField='label'
-				valueField='value'
+				bind:value={() => img1, v => { img1 = (v as string) ?? ''; emit(); }}
 				creatable={true}
-				creatablePrefix=""
-				onChange={emit}
 			/>
 			<button
 				type='button'
@@ -103,18 +88,10 @@
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.imageWhenFalse')}</span>
 		<div class='picker'>
-			<Svelecte
-				--sv-bg='var(--sidebar-background)'
-				--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-				--sv-min-height='32px'
-				floatingConfig={{ strategy: 'fixed' }}
+			<Select
 				options={img2Options}
-				bind:value={img2}
-				labelField='label'
-				valueField='value'
+				bind:value={() => img2, v => { img2 = (v as string) ?? ''; emit(); }}
 				creatable={true}
-				creatablePrefix=""
-				onChange={emit}
 			/>
 			<button
 				type='button'
@@ -148,7 +125,7 @@
 		gap 4px
 		align-items stretch
 
-		:global(.svelecte)
+		:global(.ouselect)
 			flex 1 1 auto
 			min-width 0
 

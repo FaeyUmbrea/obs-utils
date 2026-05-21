@@ -1,55 +1,26 @@
 <svelte:options runes={true} />
-<script>
-	import { getContext, onDestroy } from 'svelte';
-	import { getByTriggerOrDataPath, removeQuotes } from '../../../utils/helpers.ts';
+<script lang='ts'>
+	import type { ResolvedValues } from '../../../utils/render.ts';
 
-	let { data = $bindable(''), actorID = $bindable(), style = $bindable(), componentIndex = $bindable() } = $props();
+	const { values, style, componentIndex }: {
+		values: ResolvedValues;
+		style: string;
+		componentIndex: number;
+	} = $props();
 
-	let actor = game.actors?.get(actorID);
-
-	const triggerCtx = getContext('obs-utils.triggerPayload');
-	let value1 = $state('');
-	let value2 = $state('');
-	const hook = Hooks.on('obs-utils.refreshActor', (changedactor) => {
-		if (changedactor.id !== actorID) return;
-		actor = changedactor;
-		getValue();
-	});
-
-	function getValue() {
-		const path1 = data.split(';')[0];
-		const r1 = getByTriggerOrDataPath(actor, triggerCtx?.current, path1);
-		if (r1 === '') {
-			value1 = path1 !== undefined && path1 !== null ? removeQuotes(path1) : '';
-		} else {
-			value1 = r1;
-		}
-		const path2 = data.split(';')[1];
-		const r2 = getByTriggerOrDataPath(actor, triggerCtx?.current, path2);
-		if (r2 === '') {
-			value2 = path2 !== undefined && path2 !== null ? removeQuotes(path2) : '';
-		} else {
-			value2 = r2;
-		}
-		return '';
-	}
-
-	$effect(() => getValue());
-
-	onDestroy(() => {
-		Hooks.off('obs-utils.refreshActor', hook);
-	});
+	const value = $derived(Number(values.value ?? 0));
+	const max = $derived(Number(values.max ?? 1));
 </script>
 
 <div
 	class='component actor-val-component progress-bar-component'
 	id={`component${componentIndex.toString()}`}
-	data-value='${value1}'
-	data-max='${value2}'
+	data-value={value.toString()}
+	data-max={max.toString()}
 	style={style}
 >
 	<progress
-		value={Number.isNaN(value1) || !Number.isFinite(value1) ? 0.5 : value1}
-		max={Number.isNaN(value2) || !Number.isFinite(value2) ? 1 : value2}
+		value={Number.isNaN(value) || !Number.isFinite(value) ? 0.5 : value}
+		max={Number.isNaN(max) || !Number.isFinite(max) ? 1 : max}
 	></progress>
 </div>

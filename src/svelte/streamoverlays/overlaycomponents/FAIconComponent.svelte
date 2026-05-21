@@ -1,13 +1,19 @@
 <svelte:options runes={true} />
-<script>
-	let { data = $bindable(''), style = $bindable(), componentIndex = $bindable() } = $props();
+<script lang='ts'>
+	import type { ResolvedValues } from '../../../utils/render.ts';
+
+	const { values, style, componentIndex }: {
+		values: ResolvedValues;
+		style: string;
+		componentIndex: number;
+	} = $props();
 </script>
 
 <div
 	class='component fa-icon-component'
 	id={`component${componentIndex.toString()}`}
-	data-value='${data}'
+	data-value={String(values.value ?? '')}
 	style={style}
 >
-	<i class={data}></i>
+	<i class={String(values.value ?? '')}></i>
 </div>

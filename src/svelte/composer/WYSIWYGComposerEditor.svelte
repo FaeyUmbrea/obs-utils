@@ -1,7 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { OverlayData, OverlayTriggerConfig } from '../../utils/types.ts';
-	import { untrack } from 'svelte';
+	import type { OverlayData } from '../../utils/types.ts';
 	import { getApi } from '../../utils/helpers.ts';
 	import FallbackEditor from '../components/editors/FallbackEditor.svelte';
 	import ComponentList from './ComponentList.svelte';
@@ -29,124 +28,6 @@
 	let addMenuOpen = $state(false);
 	let addBtnEl: HTMLButtonElement | null = $state(null);
 	let addMenuStyle = $state('');
-
-	const DEFAULT_TRIGGER_KEY = 'core.onPlayerRoll';
-	const DEFAULT_TRIGGER: OverlayTriggerConfig = {
-		eventKey: DEFAULT_TRIGGER_KEY,
-		conditions: {},
-		duration: 3000,
-		showMs: 200,
-		hideMs: 200,
-		transition: 'fade',
-	};
-
-	// Open the section by default when a trigger is already configured.
-	let triggerOpen = $state(untrack(() => !!layer.trigger));
-
-	const triggerRegistrations = $derived(Array.from(getApi().overlayTriggers.values()));
-	const selectedTriggerReg = $derived(
-		layer.trigger ? getApi().overlayTriggers.get(layer.trigger.eventKey) : undefined,
-	);
-	// Fields the editor exposes as condition inputs (filter !== false).
-	const filterableFields = $derived(
-		selectedTriggerReg?.payloadSchema?.filter(f => f.filter !== false) ?? [],
-	);
-
-	function enableTrigger() {
-		layer.trigger = { ...DEFAULT_TRIGGER };
-		commit?.();
-	}
-
-	function disableTrigger() {
-		layer.trigger = undefined;
-		commit?.();
-	}
-
-	function setTriggerField<K extends keyof OverlayTriggerConfig>(key: K, value: OverlayTriggerConfig[K]) {
-		if (!layer.trigger) return;
-		layer.trigger = { ...layer.trigger, [key]: value };
-		commit?.();
-	}
-
-	function setCondition(fieldKey: string, value: any) {
-		if (!layer.trigger) return;
-		layer.trigger = { ...layer.trigger, conditions: { ...layer.trigger.conditions, [fieldKey]: value } };
-		commit?.();
-	}
-
-	function clearCondition(fieldKey: string) {
-		if (!layer.trigger) return;
-		const next = { ...layer.trigger.conditions };
-		delete next[fieldKey];
-		layer.trigger = { ...layer.trigger, conditions: next };
-		commit?.();
-	}
-
-	function onEventKeyChange(key: string) {
-		if (!layer.trigger) return;
-		// Reset conditions when event changes — old keys no longer apply.
-		layer.trigger = { ...layer.trigger, eventKey: key, conditions: {} };
-		commit?.();
-	}
-
-	function testTrigger() {
-		if (!layer.trigger) return;
-		const reg = getApi().overlayTriggers.get(layer.trigger.eventKey);
-		if (!reg) return;
-		// Build a stub payload: use condition values for filterable fields,
-		// fill non-condition (filter:false / display-only) fields with empty defaults.
-		const stub: Record<string, any> = {};
-		for (const field of reg.payloadSchema ?? []) {
-			if (layer.trigger.conditions[field.key] !== undefined) {
-				stub[field.key] = layer.trigger.conditions[field.key];
-			} else if (field.type === 'number') {
-				stub[field.key] = 0;
-			} else if (field.type === 'boolean') {
-				stub[field.key] = false;
-			} else {
-				stub[field.key] = '';
-			}
-		}
-		getApi().fireOverlayTrigger(layer.trigger.eventKey, stub);
-	}
-
-	function onTriggerHeaderClick() {
-		triggerOpen = !triggerOpen;
-	}
-
-	function onTriggerHeaderKeydown(e: KeyboardEvent) {
-		if (e.key === 'Enter' || e.key === ' ') {
-			e.preventDefault();
-			triggerOpen = !triggerOpen;
-		}
-	}
-
-	function onEnableChange(e: Event) {
-		if ((e.currentTarget as HTMLInputElement).checked) {
-			enableTrigger();
-			triggerOpen = true;
-		} else {
-			disableTrigger();
-		}
-	}
-
-	function onNumberConditionChange(fieldKey: string, e: Event) {
-		const v = (e.currentTarget as HTMLInputElement).value;
-		if (v === '') clearCondition(fieldKey);
-		else setCondition(fieldKey, Number(v));
-	}
-
-	function onStringConditionChange(fieldKey: string, e: Event) {
-		const v = (e.currentTarget as HTMLInputElement).value;
-		if (v === '') clearCondition(fieldKey);
-		else setCondition(fieldKey, v);
-	}
-
-	function onBooleanConditionChange(fieldKey: string, e: Event) {
-		const v = (e.currentTarget as HTMLSelectElement).value;
-		if (v === '') clearCondition(fieldKey);
-		else setCondition(fieldKey, v === 'true');
-	}
 
 	// Portal action: relocate the node to document.body so position:fixed isn't
 	// affected by transformed ancestors (Foundry ApplicationV2 uses transforms).
@@ -265,155 +146,23 @@
 			<p class='size-hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.sizeHint')}</p>
 		</section>
 
-		<section class='trigger-section'>
-			<div
-				class='trigger-header'
-				role='button'
-				tabindex='0'
-				onclick={onTriggerHeaderClick}
-				onkeydown={onTriggerHeaderKeydown}
-				aria-expanded={triggerOpen}
-			>
-				<i class='fas fa-bolt'></i>
-				<span class='trigger-title'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.header')}</span>
-				<label class='trigger-enable'>
-					<input
-						type='checkbox'
-						checked={!!layer.trigger}
-						onchange={onEnableChange}
-					/>
-					<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.enable')}</span>
-				</label>
-				<i class={triggerOpen ? 'fas fa-caret-up trigger-caret' : 'fas fa-caret-down trigger-caret'}></i>
-			</div>
-
-			{#if triggerOpen && layer.trigger}
-				<div class='trigger-body'>
-					<div class='row'>
-						<label class='field'>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.event')}</span>
-							<select
-								value={layer.trigger.eventKey}
-								onchange={e => onEventKeyChange((e.currentTarget as HTMLSelectElement).value)}
-							>
-								{#each triggerRegistrations as reg (reg.key)}
-									<option value={reg.key}>{game.i18n?.localize(reg.name) ?? reg.name}</option>
-								{/each}
-							</select>
-						</label>
-					</div>
-
-					{#if filterableFields.length > 0}
-						<div class='conditions-header'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.conditions')}</div>
-						{#each filterableFields as field (field.key)}
-							<div class='row condition-row'>
-								{#if field.type === 'number'}
-									<label class='field'>
-										<span>{game.i18n?.localize(field.label) ?? field.label}</span>
-										<input
-											type='number'
-											value={layer.trigger.conditions[field.key] ?? ''}
-											placeholder={game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.conditionEmpty')}
-											onchange={e => onNumberConditionChange(field.key, e)}
-										/>
-									</label>
-								{:else if field.type === 'string'}
-									<label class='field'>
-										<span>{game.i18n?.localize(field.label) ?? field.label}</span>
-										<input
-											type='text'
-											value={layer.trigger.conditions[field.key] ?? ''}
-											placeholder={game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.conditionEmpty')}
-											onchange={e => onStringConditionChange(field.key, e)}
-										/>
-									</label>
-								{:else if field.type === 'boolean'}
-									<label class='field'>
-										<span>{game.i18n?.localize(field.label) ?? field.label}</span>
-										<select
-											value={layer.trigger.conditions[field.key] === true ? 'true' : layer.trigger.conditions[field.key] === false ? 'false' : ''}
-											onchange={e => onBooleanConditionChange(field.key, e)}
-										>
-											<option value=''>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.conditionEmpty')}</option>
-											<option value='true'>{game.i18n?.localize('obs-utils.strings.true')}</option>
-											<option value='false'>{game.i18n?.localize('obs-utils.strings.false')}</option>
-										</select>
-									</label>
-								{:else}
-									<label class='field'>
-										<span>{game.i18n?.localize(field.label) ?? field.label}</span>
-										<input type='text' disabled placeholder='(payload field — not filterable)' />
-									</label>
-								{/if}
-								<button
-									type='button'
-									class='clear-condition'
-									onclick={() => clearCondition(field.key)}
-									title={game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.clearCondition')}
-								>
-									<i class='fas fa-times'></i>
-								</button>
-							</div>
-						{/each}
-					{/if}
-
-					<div class='row'>
-						<label class='field'>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.duration')}</span>
-							<input
-								type='number'
-								value={layer.trigger.duration}
-								placeholder='3000 (ms); use -1 for sticky'
-								onchange={e => setTriggerField('duration', Number((e.currentTarget as HTMLInputElement).value))}
-							/>
-						</label>
-					</div>
-					<div class='row two-col'>
-						<label class='field'>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.showMs')}</span>
-							<input
-								type='number'
-								value={layer.trigger.showMs}
-								onchange={e => setTriggerField('showMs', Number((e.currentTarget as HTMLInputElement).value))}
-							/>
-						</label>
-						<label class='field'>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.hideMs')}</span>
-							<input
-								type='number'
-								value={layer.trigger.hideMs}
-								onchange={e => setTriggerField('hideMs', Number((e.currentTarget as HTMLInputElement).value))}
-							/>
-						</label>
-					</div>
-					<div class='row'>
-						<label class='field'>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.transition')}</span>
-							<select
-								value={layer.trigger.transition}
-								onchange={e => setTriggerField('transition', (e.currentTarget as HTMLSelectElement).value as OverlayTriggerConfig['transition'])}
-							>
-								<option value='fade'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.transitionFade')}</option>
-								<option value='slide-up'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.transitionSlideUp')}</option>
-								<option value='slide-down'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.transitionSlideDown')}</option>
-								<option value='scale'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.transitionScale')}</option>
-								<option value='flash'>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.transitionFlash')}</option>
-							</select>
-						</label>
-					</div>
-					<div class='row'>
-						<button
-							type='button'
-							class='test-trigger'
-							onclick={testTrigger}
-							title={game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.testHint')}
-						>
-							<i class='fas fa-play'></i>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.triggerSection.test')}</span>
-						</button>
-					</div>
-				</div>
-			{/if}
+		<section>
+			<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy')}</h4>
+			<label class='field'>
+				<select
+					value={layer.tileBy ?? 'actors'}
+					onchange={e => {
+						const v = (e.currentTarget as HTMLSelectElement).value as 'actors' | 'players' | 'once';
+						layer.tileBy = v === 'actors' ? undefined : v;
+						commit?.();
+					}}
+				>
+					<option value='actors'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy.actors')}</option>
+					<option value='players'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy.players')}</option>
+					<option value='once'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy.once')}</option>
+				</select>
+			</label>
+			<p class='size-hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileByHint')}</p>
 		</section>
 
 		<section class='add-component'>

@@ -8547,7 +8547,6 @@ __metadata:
     rollup-plugin-visualizer: "npm:^7.0.1"
     sass: "npm:^1.99.0"
     stylus: "npm:^0.64.0"
-    svelecte: "npm:^5.3.0"
     svelte: "npm:^5.55.7"
     svelte-preprocess: "npm:^6.0.3"
     svelte-tiny-virtual-list: "npm:^3.0.1"
@@ -11038,15 +11037,6 @@ __metadata:
   dependencies:
     has-flag: "npm:^4.0.0"
   checksum: 10/c8bb7afd564e3b26b50ca6ee47572c217526a1389fe018d00345856d4a9b08ffbd61fadaf283a87368d94c3dcdb8f5ffe2650a5a65863e21ad2730ca0f05210a
-  languageName: node
-  linkType: hard
-
-"svelecte@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "svelecte@npm:5.3.0"
-  peerDependencies:
-    svelte: ^5.2.7
-  checksum: 10/56b2d2bd5555bcc011382f51a306cfca7fe2aa69cb98d01a1938c55ed4e43394c419a1f5b0a292b2f12dada12b99c546ffc1686faf2d139bc98e832ae155e066
   languageName: node
   linkType: hard
 

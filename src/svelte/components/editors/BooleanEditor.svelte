@@ -1,15 +1,14 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Svelecte from 'svelecte';
-	import { ensureCustomValue, getActorValueGroups } from '../../../utils/helpers';
+	import Select from '../select/Select.svelte';
+	import { getActorValueGroups } from '../../../utils/helpers';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
 	let av1 = $state(data?.split(';')[0] ?? '');
 	let icon1 = $state(data?.split(';')[1] ?? '');
 	let icon2 = $state(data?.split(';')[2] ?? '');
-	const values = getActorValueGroups();
-	ensureCustomValue(values, av1);
+	const groups = getActorValueGroups();
 
 	function onChange() {
 		data = `${av1 ?? ''};${icon1 ?? ''};${icon2 ?? ''}`;
@@ -19,16 +18,10 @@
 <div class='editor'>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
-		<Svelecte
-			--sv-bg='var(--sidebar-background)'
-			--sv-dropdown-active-bg='var(--sidebar-entry-hover-bg)'
-			--sv-min-height='32px'
-			floatingConfig={{ strategy: 'fixed' }}
+		<Select
+			options={groups}
+			bind:value={() => av1, v => { av1 = (v as string) ?? ''; onChange(); }}
 			creatable={true}
-			creatablePrefix=""
-			options={values}
-			bind:value={av1}
-			onChange={onChange}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
 	</label>

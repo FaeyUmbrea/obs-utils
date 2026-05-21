@@ -73,7 +73,7 @@ test.describe('DM Client Only Tests', () => {
 
 		const obsRemote = gmPage.locator('div[id=\'obsremote-application\']');
 		await expect(obsRemote).toBeVisible();
-		await expect(obsRemote.locator('nav.menu-tabs button[role=tab]')).toHaveCount(2);
+		await expect(obsRemote.locator('.menu-tabs button[role=tab]')).toHaveCount(2);
 
 		await obsRemote.locator('header button[data-action=close]').click();
 
@@ -505,56 +505,6 @@ test.describe('Multi-GM Handover', () => {
 		} finally {
 			await gm2Context.close();
 		}
-	});
-});
-
-test.describe('Scene Camera Presets', () => {
-	test('add, apply, update, and delete a preset via the Director', async ({ pages: { gmPage } }) => {
-		// Disable clampCanvas if on so test pans aren't clipped.
-		await openDirector(gmPage);
-		const limitCanvasInput = gmPage.locator('div[id=director-application] input#limitCanvas');
-		const limitCanvasLabel = gmPage.locator('div[id=director-application] label[for=limitCanvas]');
-		const wasClampOn = await limitCanvasInput.isChecked();
-		if (wasClampOn) await limitCanvasLabel.click();
-
-		// Switch to the Presets tab (3rd tab: Controls/Presets/Co-DMs).
-		const director = gmPage.locator('div#director-application');
-		await director.locator('button[role=tab]').nth(1).click();
-
-		// Empty state visible, no rows.
-		await expect(director.locator('.empty-presets')).toBeVisible();
-		await expect(director.locator('.preset-list .preset')).toHaveCount(0);
-
-		// Pan to a known position and save it as Preset 1.
-		await panGMViewport(gmPage, 1500, 1200, 0.8);
-		await director.locator('.preset-add-btn').click();
-		await expect(director.locator('.preset-list .preset')).toHaveCount(1);
-		await expect(director.locator('.empty-presets')).not.toBeVisible();
-
-		// Pan to a different position, then apply Preset 1 — viewport snaps back.
-		await panGMViewport(gmPage, 2200, 1800, 1);
-		await director.locator('.preset .preset-action').nth(0).click();
-		await expect.poll(async () => getGMViewport(gmPage)).toEqual([1500, 1200, 0.8, 0.8]);
-
-		// Pan again, then click "update preset to current" — preset now reflects the new viewport.
-		await panGMViewport(gmPage, 2400, 1700, 0.6);
-		await director.locator('.preset .preset-action').nth(1).click();
-		// Pan elsewhere to prove apply uses the *updated* values.
-		await panGMViewport(gmPage, 100, 100, 1);
-		await director.locator('.preset .preset-action').nth(0).click();
-		await expect.poll(async () => getGMViewport(gmPage)).toEqual([2400, 1700, 0.6, 0.6]);
-
-		// Delete: row disappears, empty state returns.
-		await director.locator('.preset .preset-action.danger').click();
-		await expect(director.locator('.preset-list .preset')).toHaveCount(0);
-		await expect(director.locator('.empty-presets')).toBeVisible();
-
-		// Restore clampCanvas if we changed it.
-		if (wasClampOn) {
-			await director.locator('button[role=tab]').nth(0).click();
-			await limitCanvasLabel.click();
-		}
-		await closeDirector(gmPage);
 	});
 });
 

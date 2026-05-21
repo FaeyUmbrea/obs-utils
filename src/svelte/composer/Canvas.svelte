@@ -1,8 +1,9 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { OverlayData } from '../../utils/types.ts';
+	import type { OverlayData, OverlayComponentData } from '../../utils/types.ts';
 	import { tick } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
+	import { buildPreviewOverlay, resolveComponentValues } from '../../utils/render.ts';
 	import SingleLineOverlay from '../streamoverlays/SingleLineOverlay.svelte';
 
 	let {
@@ -48,6 +49,22 @@
 
 	function previewActorID(): string | null {
 		return actorIDs[0] ?? null;
+	}
+
+	function previewActor(): unknown {
+		const id = previewActorID();
+		if (!id) return undefined;
+		return (game as { actors?: { get?: (id: string) => unknown } }).actors?.get?.(id);
+	}
+
+	/**
+	 * Editor-only resolver. Reuses the runtime resolver so the canvas shows the
+	 * same values the live `/stream` view would. No registry, no reactivity —
+	 * this re-runs whenever Svelte re-renders the canvas, which is fine for the
+	 * editor's snapshot semantics.
+	 */
+	function previewValues(c: OverlayComponentData) {
+		return resolveComponentValues(c.type, c.data, previewActor(), undefined);
 	}
 
 	function onCanvasMouseDown(e: MouseEvent) {
@@ -291,9 +308,8 @@
 						>
 							{#if Renderer}
 								<Renderer
-									data={comp.data}
+									values={previewValues(comp)}
 									componentIndex={index}
-									actorID={previewActorID()}
 									style={comp.style}
 								/>
 							{/if}
@@ -335,9 +351,8 @@
 					<div class='preview-tag'>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewReadOnly')}</div>
 					<div class='simple-host'>
 						<SingleLineOverlay
-							overlayData={selectedLayer}
-							actorID={previewActorID()}
-							overlayIndex={selectedLayerIndex}
+							overlay={buildPreviewOverlay(selectedLayer, previewActor())}
+							overlayIndex={selectedLayerIndex ?? 0}
 						/>
 					</div>
 				</div>

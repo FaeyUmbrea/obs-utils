@@ -6,10 +6,8 @@ import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
 import { getExampleOverlay } from './defaultOverlays.ts';
 import { getGM, isOBS } from './helpers';
-import { convertRollToWysiwyg } from './rollMigration.ts';
 import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
 
-export { convertRollToWysiwyg } from './rollMigration.ts';
 
 export const OBSAction = {
 	SwitchScene: 'obs-utils.applications.obsRemote.switchScene',
@@ -18,7 +16,7 @@ export const OBSAction = {
 	DisableSource: 'obs-utils.applications.obsRemote.disableSource',
 };
 
-const SETTINGS_VERSION = 4;
+const SETTINGS_VERSION = 3;
 
 const OBS_MODIFIABLE_SETTINGS = new Set<ClientSettings.KeyFor<'obs-utils'>>([
 	'defaultOutOfCombat',
@@ -104,15 +102,6 @@ export function runMigrations() {
 				}
 				(obs as any).customEvents = customEvents;
 				setSetting('obsRemote', obs).then();
-			}
-		}
-		if (version < 4) {
-			console.warn('Migrations for Data-Model Version 4');
-			const overlays = (getSetting('streamOverlays') ?? []) as OverlayData[];
-			const hasRoll = overlays.some(o => o?.type === 'roll');
-			if (hasRoll) {
-				const converted = overlays.map(o => o?.type === 'roll' ? convertRollToWysiwyg(o) : o);
-				setSetting('streamOverlays', converted).then();
 			}
 		}
 		console.warn('OBS Utils Migrations Finished');

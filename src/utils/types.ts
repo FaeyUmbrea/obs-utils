@@ -1,14 +1,17 @@
-import type { ComponentAnimationConfig } from './componentAnimation.ts';
+import type { OverlayAnimationData } from './overlayAnimation.ts';
 import type { StringMap } from './const.ts';
 import { OBSAction } from './settings.ts';
 
 export type {
-	AnimationState,
-	AnimKeyframe,
-	AnimReEntryPolicy,
-	ComponentAnimationConfig,
-	KeyframeAnimation,
-} from './componentAnimation.ts';
+	OverlayAnimationData,
+	OverlayTrack,
+	TrackBehavior,
+	TrackComponentLane,
+	TrackKeyframe,
+	TrackTransition,
+	TransitionZone,
+	ZoneDestination,
+} from './overlayAnimation.ts';
 
 /**
  * One field in a trigger's payload schema. Drives both the editor's condition
@@ -27,22 +30,6 @@ export interface TriggerPayloadField {
 	display?: boolean;
 	/** If false, this field is not exposed to the editor condition inputs. Defaults to true. */
 	filter?: boolean;
-}
-
-/**
- * Per-overlay trigger configuration written into OverlayData.trigger when the
- * layer should be event-driven instead of always-on.
- */
-export interface OverlayTriggerConfig {
-	eventKey: string;
-	conditions: Record<string, any>;
-	/** Total visible time in ms after the trigger fires (including show/hide). -1 = sticky until next fire. */
-	duration: number;
-	/** Entrance animation duration in ms. */
-	showMs: number;
-	/** Exit animation duration in ms. */
-	hideMs: number;
-	transition: 'fade' | 'slide-up' | 'slide-down' | 'scale' | 'flash';
 }
 
 export class OBSEvent {
@@ -102,6 +89,14 @@ export function generateId(): string {
 	return `id-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
+/**
+ * How the renderer iterates an overlay across contexts.
+ *  - `'actors'` (default) — one tile per actor in the bound actor list. Ambient overlays like HP bars.
+ *  - `'players'` — one tile per user. Useful for roll-banner triggered overlays.
+ *  - `'once'` — singleton. The overlay mounts once regardless of context.
+ */
+export type OverlayTileMode = 'actors' | 'players' | 'once';
+
 export class OverlayData {
 	type: string;
 	components: OverlayComponentData[];
@@ -109,18 +104,22 @@ export class OverlayData {
 	config: Record<string, any>;
 	name?: string;
 	enabled?: boolean;
-	trigger?: OverlayTriggerConfig;
+	/**
+	 * Tracks + transitions + zones. Drives all reactive visibility and
+	 * transform behavior. Absent ⇒ overlay is fully ambient (no animation).
+	 */
+	animation?: OverlayAnimationData;
+	tileBy?: OverlayTileMode;
 	id?: string;
 	customCSS?: string;
 
-	constructor(type = 'sl', components = [], style = '', config: Record<string, any> = {}, name?: string, enabled?: boolean, trigger?: OverlayTriggerConfig) {
+	constructor(type = 'sl', components = [], style = '', config: Record<string, any> = {}, name?: string, enabled?: boolean) {
 		this.type = type;
 		this.components = components;
 		this.style = style;
 		this.config = config;
 		this.name = name;
 		this.enabled = enabled;
-		this.trigger = trigger;
 		this.id = generateId();
 	}
 }
@@ -137,7 +136,6 @@ export class OverlayComponentData {
 	locked?: boolean;
 	id?: string;
 	customCSS?: string;
-	animation?: ComponentAnimationConfig;
 
 	constructor(type = 'pt', data = '', style = '') {
 		this.type = type;

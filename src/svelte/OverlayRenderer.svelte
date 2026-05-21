@@ -4,7 +4,7 @@
 	import { activateCSSInjection, deactivateCSSInjection } from '../utils/cssInjection.ts';
 	import { getApi } from '../utils/helpers';
 	import { settings } from '../utils/settings.ts';
-	import PerActorOverlay from './streamoverlays/PerActorOverlay.svelte';
+	import OverlayHost from './streamoverlays/OverlayHost.svelte';
 	import ExternalComponent from './utilities/ExternalComponent.svelte';
 	import LegacyExternalComponent from './utilities/LegacyExternalComponent.svelte';
 
@@ -19,7 +19,7 @@
 </script>
 
 <div class='overlay-renderer'>
-	<PerActorOverlay actorIDs={$actors} overlays={$overlays} />
+	<OverlayHost actorIDs={$actors} overlays={$overlays} />
 	{#each [...singleTimeOverlaysLegacy] as overlay (overlay)}
 		<LegacyExternalComponent ExternalClass={overlay} />
 	{/each}
