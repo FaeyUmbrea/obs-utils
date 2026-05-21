@@ -65,14 +65,31 @@ export function getOverlayTemplates(): OverlayTemplate[] {
 	return [...BUILT_IN_TEMPLATES, ...starterTemplates];
 }
 
+// Custom blanks come first so "I want to start from nothing" is the
+// natural starting point of the gallery. Single-component templates use
+// inline (`sl`) since the canvas affordances would be wasted on one element.
 const BUILT_IN_TEMPLATES: OverlayTemplate[] = [
+	{
+		key: 'custom-inline',
+		label: 'obs-utils.applications.overlayEditor.templates.customInline.label',
+		description: 'obs-utils.applications.overlayEditor.templates.customInline.description',
+		icon: 'fas fa-grip-lines',
+		create: () => new OverlayDataClass('sl', [], '', {}, 'Untitled overlay'),
+	},
+	{
+		key: 'custom-canvas',
+		label: 'obs-utils.applications.overlayEditor.templates.customCanvas.label',
+		description: 'obs-utils.applications.overlayEditor.templates.customCanvas.description',
+		icon: 'fas fa-vector-square',
+		create: () => new OverlayDataClass('wysiwyg', [], '', { w: 300, h: 300 }, 'Untitled overlay'),
+	},
 	{
 		key: 'hp-bar',
 		label: 'obs-utils.applications.overlayEditor.templates.hpBar.label',
 		description: 'obs-utils.applications.overlayEditor.templates.hpBar.description',
 		icon: 'fas fa-heart',
 		create: () => {
-			const o = new OverlayDataClass('wysiwyg', [], '', { w: 200, h: 40 }, 'HP Bar');
+			const o = new OverlayDataClass('sl', [], '', {}, 'HP Bar');
 			o.components = [
 				makeProgressBar('system.attributes.hp.value;system.attributes.hp.max', 0, 0, 200, 40),
 			];
@@ -85,9 +102,9 @@ const BUILT_IN_TEMPLATES: OverlayTemplate[] = [
 		description: 'obs-utils.applications.overlayEditor.templates.namePlate.description',
 		icon: 'fas fa-id-card',
 		create: () => {
-			const o = new OverlayDataClass('wysiwyg', [], '', { w: 200, h: 40 }, 'Name Plate');
+			const o = new OverlayDataClass('sl', [], '', {}, 'Name Plate');
 			o.components = [
-				makeText('name', 0, 0, 200, 40, 'text-align:center;display:flex;align-items:center;justify-content:center;font-weight:600;'),
+				makeText('name', 0, 0, 200, 40, 'font-weight:600;'),
 			];
 			return o;
 		},
@@ -106,19 +123,5 @@ const BUILT_IN_TEMPLATES: OverlayTemplate[] = [
 			];
 			return o;
 		},
-	},
-	{
-		key: 'custom-canvas',
-		label: 'obs-utils.applications.overlayEditor.templates.customCanvas.label',
-		description: 'obs-utils.applications.overlayEditor.templates.customCanvas.description',
-		icon: 'fas fa-vector-square',
-		create: () => new OverlayDataClass('wysiwyg', [], '', { w: 300, h: 300 }, 'Untitled overlay'),
-	},
-	{
-		key: 'custom-inline',
-		label: 'obs-utils.applications.overlayEditor.templates.customInline.label',
-		description: 'obs-utils.applications.overlayEditor.templates.customInline.description',
-		icon: 'fas fa-grip-lines',
-		create: () => new OverlayDataClass('sl', [], '', {}, 'Untitled overlay'),
 	},
 ];

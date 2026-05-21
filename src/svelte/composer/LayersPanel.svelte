@@ -56,17 +56,6 @@
 		selectedComponentIndex = null;
 	}
 
-	const overlayTypeOptions = $derived.by(() => {
-		const types = getApi().overlayTypes;
-		if (!types) return [] as Array<{ key: string; label: string; disabled: boolean }>;
-		return Array.from(types.keys())
-			.filter(k => k === 'sl' || k === 'wysiwyg')
-			.map(k => ({
-				key: k,
-				label: typeLabel(k),
-				disabled: false,
-			}));
-	});
 </script>
 
 <div class='layers'>
@@ -85,19 +74,7 @@
 			</button>
 			{#if addMenuOpen}
 				<div class='add-menu' role='menu'>
-					<div class='menu-section-label'>{game.i18n?.localize('obs-utils.applications.overlayEditor.menuBlank')}</div>
-					{#each overlayTypeOptions as opt (opt.key)}
-						<button
-							type='button'
-							role='menuitem'
-							onclick={() => {
-								addMenuOpen = false;
-								addLayer(opt.key);
-							}}
-						>{opt.label}</button>
-					{/each}
 					{#if templates && addFromTemplate && templates.length > 0}
-						<div class='menu-section-label'>{game.i18n?.localize('obs-utils.applications.overlayEditor.menuFromTemplate')}</div>
 						{#each templates as tpl (tpl.key)}
 							<button
 								type='button'
@@ -226,16 +203,6 @@
 			padding 4px
 			gap 2px
 
-			.menu-section-label
-				padding 4px 10px
-				font-size 10px
-				text-transform uppercase
-				letter-spacing 0.5px
-				opacity 0.55
-				border-top 1px solid rgba(255, 255, 255, 0.05)
-
-				&:first-child
-					border-top 0
 
 			button
 				text-align left

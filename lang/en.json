@@ -476,10 +476,10 @@
 				"name": "Progress Bar"
 			},
 			"simpleOverlay": {
-				"name": "Simple Overlay"
+				"name": "Inline"
 			},
 			"wysiwygOverlay": {
-				"name": "WYSIWYG Overlay"
+				"name": "Canvas"
 			}
 		},
 		"triggers": {

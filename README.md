@@ -35,6 +35,7 @@ Check the [Wiki](https://docs.void.monster)!
 
 - Make /stream Background Transparent
 - /stream Information Overlays
+- Preset Animations: author keyframed camera paths or record live and play them smoothly on the OBS client without dragging the GM's view along
 
 - Foundry Core Multilevel Support (Out of combat token visibility and floor tracking might be limited)
 

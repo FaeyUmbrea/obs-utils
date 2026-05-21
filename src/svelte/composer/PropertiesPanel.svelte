@@ -132,98 +132,43 @@
 			<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.noLayerSelected')}</span>
 		</div>
 	{:else}
-		<header class='layer-summary'>
-			<input
-				class='layer-name'
-				type='text'
-				value={selectedLayer.name ?? ''}
-				placeholder={`#${selectedLayerIndex} ${selectedLayer.type}`}
-				onchange={onRename}
-				aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.layerName')}
-			/>
-			<select class='layer-type' value={selectedLayer.type} onchange={onTypeChange} aria-label={game.i18n?.localize('obs-utils.applications.overlayEditor.layerType')}>
-				{#each overlayTypeOptions as opt (opt.key)}
-					<option value={opt.key}>{opt.label}</option>
-				{/each}
-			</select>
-		</header>
+		<!-- Single combined inspector — components list at the top, the selected
+		     component's editor below, and a collapsed CSS section at the bottom.
+		     Overlay-level fields (name, type, tileBy, w/h, customCSS for the
+		     overlay) live in the Settings tab. -->
+		<section class='inspector-body'>
+			{#if selectedLayer.type === 'wysiwyg'}
+				<WYSIWYGComposerEditor
+					layer={selectedLayer}
+					layerIndex={selectedLayerIndex}
+					view='layer'
+					bind:selectedComponentIndex={selectedComponentIndex}
+					{addComponentToLayer}
+					{reorderComponents}
+					{removeComponent}
+					{commit}
+				/>
+			{:else if selectedLayer.type === 'sl'}
+				<SimpleComposerEditor
+					layer={selectedLayer}
+					layerIndex={selectedLayerIndex}
+					view='layer'
+					bind:selectedComponentIndex={selectedComponentIndex}
+					{addComponentToLayer}
+					{reorderComponents}
+					{removeComponent}
+					{commit}
+				/>
+			{:else}
+				<div class='empty'>
+					<i class='fas fa-question-circle'></i>
+					<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.unknownType')}</span>
+				</div>
+			{/if}
 
-		<div class='tabs' role='tablist'>
-			<button
-				type='button'
-				role='tab'
-				aria-selected={activeTab === 'layer'}
-				class:active={activeTab === 'layer'}
-				onclick={() => (activeTab = 'layer')}
-			>
-				<i class='fas fa-layer-group'></i>
-				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabLayer')}</span>
-				{#if componentCount > 0}
-					<span class='badge count'>{componentCount}</span>
-				{/if}
-			</button>
-			<button
-				type='button'
-				role='tab'
-				aria-selected={activeTab === 'component'}
-				class:active={activeTab === 'component'}
-				class:dim={selectedComponentIndex === null}
-				onclick={() => (activeTab = 'component')}
-			>
-				<i class='fas fa-vector-square'></i>
-				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabComponent')}</span>
-				{#if selectedComponentIndex !== null}
-					<span class='badge'>#{selectedComponentIndex}</span>
-				{/if}
-			</button>
-			<button
-				type='button'
-				role='tab'
-				aria-selected={activeTab === 'style'}
-				class:active={activeTab === 'style'}
-				onclick={() => (activeTab = 'style')}
-			>
-				<i class='fas fa-paint-brush'></i>
-				<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabStyle')}</span>
-				{#if styleHasCustomCSS}
-					<span class='dot' aria-label='custom CSS set' title='Custom CSS is set'></span>
-				{/if}
-			</button>
-		</div>
-
-		<section class='tab-body'>
-			{#key `${selectedLayerIndex}-${selectedLayer.type}-${activeTab}-${activeTab === 'component' ? selectedComponentIndex : ''}`}
-				{#if activeTab === 'layer'}
-					{#if selectedLayer.type === 'wysiwyg'}
-						<WYSIWYGComposerEditor
-							layer={selectedLayer}
-							layerIndex={selectedLayerIndex}
-							view='layer'
-							bind:selectedComponentIndex={selectedComponentIndex}
-							{addComponentToLayer}
-							{reorderComponents}
-							{removeComponent}
-							{commit}
-						/>
-					{:else if selectedLayer.type === 'sl'}
-						<SimpleComposerEditor
-							layer={selectedLayer}
-							layerIndex={selectedLayerIndex}
-							view='layer'
-							bind:selectedComponentIndex={selectedComponentIndex}
-							{addComponentToLayer}
-							{reorderComponents}
-							{removeComponent}
-							{commit}
-						/>
-					{:else}
-						<div class='empty'>
-							<i class='fas fa-question-circle'></i>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.unknownType')}</span>
-						</div>
-					{/if}
-				{:else if activeTab === 'component'}
-					{#if selectedComponentIndex !== null && (selectedLayer.components?.length ?? 0) > 1}
+			{#if selectedComponentIndex !== null && (selectedLayer.components?.length ?? 0) > 0}
+				<div class='component-section'>
+					{#if (selectedLayer.components?.length ?? 0) > 1}
 						<nav class='component-nav' aria-label='Cycle components'>
 							<button
 								type='button'
@@ -248,7 +193,7 @@
 							><i class='fas fa-chevron-right'></i></button>
 						</nav>
 					{/if}
-					{#if selectedLayer.type === 'wysiwyg' && selectedComponentIndex !== null}
+					{#if selectedLayer.type === 'wysiwyg'}
 						<WYSIWYGComposerEditor
 							layer={selectedLayer}
 							layerIndex={selectedLayerIndex}
@@ -259,7 +204,7 @@
 							{removeComponent}
 							{commit}
 						/>
-					{:else if selectedLayer.type === 'sl' && selectedComponentIndex !== null}
+					{:else if selectedLayer.type === 'sl'}
 						<SimpleComposerEditor
 							layer={selectedLayer}
 							layerIndex={selectedLayerIndex}
@@ -270,21 +215,23 @@
 							{removeComponent}
 							{commit}
 						/>
-					{:else}
-						<div class='empty'>
-							<i class='fas fa-hand-pointer'></i>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.selectComponentHint')}</span>
-						</div>
 					{/if}
-				{:else if activeTab === 'style'}
-					<StyleTab
-						target={styleTarget}
-						hasComponent={selectedComponent !== null}
-						bind:targetKind={styleTargetKind}
-						{commit}
-					/>
-				{/if}
-			{/key}
+
+					<details class='css-section' class:has-css={styleHasCustomCSS}>
+						<summary>
+							<i class='fas fa-paint-brush'></i>
+							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabStyle')}</span>
+							{#if styleHasCustomCSS}<span class='dot' title='Custom CSS is set'></span>{/if}
+						</summary>
+						<StyleTab
+							target={styleTarget}
+							hasComponent={selectedComponent !== null}
+							bind:targetKind={styleTargetKind}
+							{commit}
+						/>
+					</details>
+				</div>
+			{/if}
 		</section>
 	{/if}
 </div>
@@ -309,65 +256,43 @@
 		opacity 0.5
 		font-size 12px
 
-	.layer-summary
+	.inspector-body
+		flex 1 1 auto
+		min-height 0
+		overflow-y auto
 		display flex
-		gap 4px
+		flex-direction column
 		padding 6px 10px
-		border-bottom 1px solid rgba(255, 255, 255, 0.08)
-		flex 0 0 auto
+		gap 10px
 
-		.layer-name
-			flex 1 1 auto
-			min-width 0
-			height 26px
-			font-size 12px
-
-		.layer-type
-			flex 0 0 auto
-			width 140px
-			height 26px
-			font-size 12px
-
-	.tabs
+	.component-section
 		display flex
-		gap 2px
-		padding 4px 6px
-		border-bottom 1px solid rgba(255, 255, 255, 0.08)
-		flex 0 0 auto
+		flex-direction column
+		gap 8px
+		padding-top 8px
+		border-top 1px solid rgba(255, 255, 255, 0.08)
 
-		button
-			flex 1 1 auto
-			height 28px
+	.css-section
+		border 1px solid rgba(255, 255, 255, 0.08)
+		border-radius 4px
+		background rgba(255, 255, 255, 0.02)
+
+		summary
 			display flex
 			align-items center
-			justify-content center
-			gap 5px
-			background transparent
-			border 1px solid transparent
-			border-radius 4px
-			font-size 11px
+			gap 6px
+			padding 6px 8px
 			cursor pointer
-			color inherit
-			padding 0 8px
-			opacity 0.7
+			font-size 11px
+			text-transform uppercase
+			letter-spacing 0.4px
+			opacity 0.75
+
+			&:hover
+				opacity 1
 
 			i
 				font-size 10px
-				opacity 0.7
-
-			.badge
-				font-family monospace
-				font-size 9px
-				opacity 0.7
-				padding 0 5px
-				min-width 16px
-				text-align center
-				border-radius 8px
-				background rgba(255, 255, 255, 0.1)
-
-				&.count
-					background rgba(255, 144, 0, 0.25)
-					color #ffb95c
 
 			.dot
 				display inline-block
@@ -375,28 +300,10 @@
 				height 6px
 				border-radius 50%
 				background #ff9000
-				margin-left 2px
+				margin-left auto
 
-			&:hover
-				opacity 1
-				background rgba(255, 255, 255, 0.04)
-
-			&.active
-				opacity 1
-				background rgba(255, 144, 0, 0.18)
-				border-color rgba(255, 144, 0, 0.5)
-				font-weight 600
-
-			&.dim:not(.active)
-				opacity 0.4
-
-	.tab-body
-		flex 1 1 auto
-		min-height 0
-		overflow hidden
-		display flex
-		flex-direction column
-		padding 6px 10px
+		&[open] summary
+			border-bottom 1px solid rgba(255, 255, 255, 0.08)
 
 	.component-nav
 		display grid

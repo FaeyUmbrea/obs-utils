@@ -12,6 +12,7 @@
 	import Canvas from './Canvas.svelte';
 	import LayersPanel from './LayersPanel.svelte';
 	import PreviewWorkspace from './PreviewWorkspace.svelte';
+	import SettingsWorkspace from './SettingsWorkspace.svelte';
 	import PropertiesPanel from './PropertiesPanel.svelte';
 
 	onMount(() => activateCSSInjection());
@@ -26,7 +27,7 @@
 	let selectedComponentIndex = $state<number | null>(null);
 	let previewActorID = $state<string | null>(null);
 
-	type WorkspaceMode = 'layout' | 'animation' | 'preview';
+	type WorkspaceMode = 'settings' | 'layout' | 'animation' | 'preview';
 	let mode = $state<WorkspaceMode>('layout');
 
 	$effect(() => {
@@ -212,18 +213,22 @@
 
 {#if isEmpty}
 	<div class='empty-overlay-state'>
-		<header class='templates-head'>
-			<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyTitle')}</h2>
-			<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyDescription')}</p>
-		</header>
-		<div class='template-grid'>
-			{#each getOverlayTemplates() as tpl (tpl.key)}
-				<button type='button' class='template-card' onclick={() => addFromTemplate(tpl.key)}>
-					<i class={tpl.icon}></i>
-					<span class='template-label'>{game.i18n?.localize(tpl.label) ?? tpl.label}</span>
-					<span class='template-desc'>{game.i18n?.localize(tpl.description) ?? tpl.description}</span>
-				</button>
-			{/each}
+		<div class='empty-inner'>
+			<header class='templates-head'>
+				<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyTitle')}</h2>
+				<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyDescription')}</p>
+			</header>
+			<div class='template-grid'>
+				{#each getOverlayTemplates() as tpl (tpl.key)}
+					<button type='button' class='template-card' onclick={() => addFromTemplate(tpl.key)}>
+						<div class='card-icon'><i class={tpl.icon}></i></div>
+						<div class='card-text'>
+							<span class='template-label'>{game.i18n?.localize(tpl.label) ?? tpl.label}</span>
+							<span class='template-desc'>{game.i18n?.localize(tpl.description) ?? tpl.description}</span>
+						</div>
+					</button>
+				{/each}
+			</div>
 		</div>
 	</div>
 {:else}
@@ -246,6 +251,9 @@
 		<header class='breadcrumb'>
 			<span class='current-overlay'>{currentOverlay?.name ?? game.i18n?.localize('obs-utils.applications.overlayEditor.unnamedOverlay')}</span>
 			<nav class='mode-tabs' role='tablist'>
+				<button type='button' role='tab' class:active={mode === 'settings'} onclick={() => (mode = 'settings')}>
+					{game.i18n?.localize('obs-utils.applications.overlayEditor.modeSettings') ?? 'Settings'}
+				</button>
 				<button type='button' role='tab' class:active={mode === 'layout'} onclick={() => (mode = 'layout')}>
 					{game.i18n?.localize('obs-utils.applications.overlayEditor.modeLayout')}
 				</button>
@@ -258,7 +266,15 @@
 			</nav>
 		</header>
 
-		{#if mode === 'layout' && currentOverlay}
+		{#if mode === 'settings' && currentOverlay && selectedLayerIndex !== null}
+			<SettingsWorkspace
+				layer={currentOverlay}
+				layerIndex={selectedLayerIndex}
+				{renameLayer}
+				{changeLayerType}
+				{commit}
+			/>
+		{:else if mode === 'layout' && currentOverlay}
 			<div class='layout-body'>
 				<section class='canvas-pane'>
 					<header class='canvas-header'>
@@ -271,18 +287,6 @@
 								{/each}
 							</select>
 						</label>
-						<button
-							type='button'
-							class='full-preview'
-							title={game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}
-							onclick={async () => {
-								const { openOverlayPreview } = await import('../../utils/ui.ts');
-								await openOverlayPreview();
-							}}
-						>
-							<i class='fas fa-expand'></i>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.showFullPreview')}</span>
-						</button>
 					</header>
 					<div class='canvas-host'>
 						<Canvas
@@ -397,20 +401,30 @@
 				color #ffce80
 
 	// ── empty state (no overlays yet) ───────────────────────────────────────
+	// Centered splash. The outer fills the editor pane and centers the
+	// inner panel; the inner panel limits width so cards don't stretch
+	// the full editor width on wide monitors.
 	.empty-overlay-state
 		display flex
-		flex-direction column
-		gap 16px
-		padding 24px
+		align-items center
+		justify-content center
 		height calc(100% - 44px)
+		padding 24px
 		overflow auto
 
+	.empty-inner
+		width 100%
+		max-width 720px
+		display flex
+		flex-direction column
+		gap 18px
+
 	.templates-head
-		margin-bottom 12px
+		text-align center
 
 		h2
-			margin 0 0 4px 0
-			font-size 14px
+			margin 0 0 6px 0
+			font-size 18px
 			font-weight 600
 
 		p
@@ -421,29 +435,45 @@
 
 	.template-grid
 		display grid
-		grid-template-columns repeat(auto-fill, minmax(170px, 1fr))
-		gap 8px
+		grid-template-columns repeat(auto-fill, minmax(200px, 1fr))
+		gap 10px
 
 	.template-card
 		display flex
-		flex-direction column
-		align-items flex-start
-		gap 6px
-		padding 12px
+		align-items center
+		gap 10px
+		padding 12px 14px
+		min-height 64px
 		background rgba(255, 255, 255, 0.03)
 		border 1px solid rgba(255, 255, 255, 0.08)
-		border-radius 5px
+		border-radius 6px
 		cursor pointer
 		text-align left
+		transition background 120ms ease, border-color 120ms ease
 
 		&:hover
 			background rgba(255, 144, 0, 0.12)
 			border-color rgba(255, 144, 0, 0.4)
 
-		i
-			font-size 20px
-			opacity 0.75
-			color #ffce80
+		.card-icon
+			flex 0 0 36px
+			display flex
+			align-items center
+			justify-content center
+			width 36px
+			height 36px
+			background rgba(255, 144, 0, 0.12)
+			border-radius 4px
+
+			i
+				font-size 18px
+				color #ffce80
+
+		.card-text
+			display flex
+			flex-direction column
+			gap 2px
+			min-width 0
 
 		.template-label
 			font-size 13px
@@ -452,7 +482,7 @@
 		.template-desc
 			font-size 11px
 			opacity 0.65
-			line-height 1.4
+			line-height 1.35
 
 	// ── layout: persistent layers pane + mode-switched workspace ────────────
 	.composer
@@ -561,14 +591,6 @@
 		select
 			min-width 0
 			flex 1 1 auto
-
-	.full-preview
-		display flex
-		align-items center
-		gap 4px
-		flex 0 0 auto
-		height 28px
-		padding 0 10px
 
 	.canvas-host
 		flex 1 1 auto

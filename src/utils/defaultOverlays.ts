@@ -108,6 +108,12 @@ export function getExampleOverlay(): OverlayData {
 // currently registered (or the default if nothing is).
 
 let registeredStarter: OverlayData[] | undefined;
+// Cache the generated default set across calls. Without this, every
+// invocation of `readStarterOverlays()` (e.g. once for rendering the
+// template gallery and once for the create-on-click lookup) returned
+// freshly-generated OverlayData with new random IDs — the template key
+// would drift between render and click, so clicking did nothing.
+let defaultStarterCache: OverlayData[] | undefined;
 
 /** Public — system modules call this in their init hook. Last writer wins. */
 export function registerStarter(overlays: OverlayData[]): void {
@@ -116,5 +122,7 @@ export function registerStarter(overlays: OverlayData[]): void {
 
 /** Materialize the current starter set. */
 export function readStarterOverlays(): OverlayData[] {
-	return registeredStarter ?? [getExampleOverlay()];
+	if (registeredStarter) return registeredStarter;
+	if (!defaultStarterCache) defaultStarterCache = [getExampleOverlay()];
+	return defaultStarterCache;
 }

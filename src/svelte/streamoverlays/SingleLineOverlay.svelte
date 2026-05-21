@@ -34,3 +34,19 @@
 		</div>
 	{/each}
 </div>
+
+<style>
+	/* Production CSS in src/less/streamoverlay.styl scopes the flex layout to
+	   `.obs-utils.overlay .actor .single-line-overlay`. The composer preview
+	   doesn't render inside that path, so without a component-scoped default
+	   the children stack as plain block elements — making the preview look
+	   vertical while /stream renders horizontal. Anchor the row layout on the
+	   component itself so both surfaces agree. */
+	.single-line-overlay {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px;
+	}
+</style>

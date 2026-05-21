@@ -1,7 +1,6 @@
 import DirectorApplication from '../applications/director.ts';
 import OBSRemoteApplication from '../applications/obsremote.ts';
 import OverlayEditor from '../applications/overlayeditor.ts';
-import OverlayPreview from '../applications/overlaypreview.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
 import BooleanImageEditor from '../svelte/components/editors/BooleanImageEditor.svelte';
@@ -58,13 +57,3 @@ export function registerUI() {
 	}
 }
 
-let previewApp: OverlayPreview | undefined;
-
-export async function openOverlayPreview() {
-	if (!previewApp) previewApp = new OverlayPreview({});
-	if (!previewApp.rendered) {
-		previewApp.render(true);
-	} else {
-		previewApp.bringToFront();
-	}
-}
