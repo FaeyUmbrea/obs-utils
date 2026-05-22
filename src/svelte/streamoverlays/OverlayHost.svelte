@@ -8,9 +8,10 @@
 	import { buildRenderTree } from '../../utils/render.ts';
 	import { TriggerRegistry } from '../../utils/triggers.ts';
 
-	const { overlays, actorIDs }: {
+	const { overlays, actorIDs, previewMode = false }: {
 		overlays: OverlayData[];
 		actorIDs: string[];
+		previewMode?: boolean;
 	} = $props();
 
 	// One registry per host instance. `/stream` and the editor canvas each
@@ -25,6 +26,10 @@
 	const triggerPayloads = $state(new Map<string, Record<string, unknown> | undefined>());
 	const frames = $state(new Map<string, OverlayFrame>());
 	let frameTick = $state(0);
+	// Bumped whenever foreign-object Map entries (actors/users) mutate in-place;
+	// the entries themselves aren't reactive (they're raw Foundry docs), so we
+	// signal updates via this counter that the render derived reads.
+	let dataTick = $state(0);
 
 	const playback = new PlaybackEngine(registry, frames, () => {
 		// Bump a tick to invalidate the `$derived` tree; using a counter rather
@@ -50,6 +55,7 @@
 				if (user.id) users.set(user.id, u);
 			}
 		}
+		dataTick = dataTick + 1;
 
 		// Internal trigger: actor data refresh. One Foundry hook subscription
 		// regardless of how many AV components are mounted.
@@ -62,7 +68,10 @@
 			}],
 		});
 		registry.subscribe<{ actor: { id?: string } }>('core.actorData', ({ actor }) => {
-			if (actor?.id) actors.set(actor.id, actor);
+			if (actor?.id) {
+				actors.set(actor.id, actor);
+				dataTick = dataTick + 1;
+			}
 		});
 
 		// Internal trigger: user activity. Drives player-tiling overlay membership.
@@ -75,7 +84,10 @@
 			}],
 		});
 		registry.subscribe<{ user: { id?: string } }>('core.userActivity', ({ user }) => {
-			if (user?.id) users.set(user.id, user);
+			if (user?.id) {
+				users.set(user.id, user);
+				dataTick = dataTick + 1;
+			}
 		});
 
 		// Legacy public trigger relay. `api.fireOverlayTrigger(key, payload)`
@@ -84,6 +96,7 @@
 		const legacyHookId = Hooks.on('obs-utils.overlayTrigger' as never, (key: string, payload: Record<string, unknown>) => {
 			ensureTriggerRegistered(key);
 			triggerPayloads.set(key, payload);
+			dataTick = dataTick + 1;
 			registry.fire(key, payload);
 		});
 		legacyHookIds.push(legacyHookId);
@@ -112,15 +125,17 @@
 		// already depends on the underlying state maps.
 		void frameTick;
 		const wanted = new Set<string>();
-		for (const ov of overlays) {
-			if (!ov.animation) continue;
+		for (const ov of overlays ?? []) {
+			if (!ov?.animation) continue;
 			const ids = ov.tileBy === 'players'
 				? userIDs
-				: ov.tileBy === 'once'
-					? ['singleton']
-					: actorIDs;
+				: ov.tileBy === 'users'
+					? allUserIDs
+					: ov.tileBy === 'once'
+						? ['singleton']
+						: actorIDs;
 			for (const id of ids) {
-				const tileKey = ov.tileBy === 'players'
+				const tileKey = ov.tileBy === 'players' || ov.tileBy === 'users'
 					? `user:${id}`
 					: ov.tileBy === 'once'
 						? 'singleton'
@@ -138,43 +153,47 @@
 		}
 	});
 
-	// Default user-tile set for `tileBy: 'players'`. Active non-GM users only.
+	// Default user-tile set for `tileBy: 'players'`. All non-GM users.
 	const userIDs = $derived.by(() => {
-		const list = (game as { users?: { contents?: Array<{ id: string; active?: boolean; isGM?: boolean }> } }).users?.contents ?? [];
-		return list.filter(u => u.active && !u.isGM).map(u => u.id);
+		void dataTick;
+		const list = (game as { users?: { contents?: Array<{ id: string; isGM?: boolean }> } }).users?.contents ?? [];
+		return list.filter(u => !u.isGM).map(u => u.id);
+	});
+	// All users including GMs. Used by `tileBy: 'users'`.
+	const allUserIDs = $derived.by(() => {
+		void dataTick;
+		const list = (game as { users?: { contents?: Array<{ id: string }> } }).users?.contents ?? [];
+		return list.map(u => u.id);
 	});
 
 	const tree = $derived.by(() => {
 		void frameTick;
+		void dataTick;
+		// $state Maps need an explicit read to register the derived as a
+		// dependent. `.size` access goes through the proxy and bumps the
+		// version on any structural change (set/delete/clear).
+		void actors.size;
+		void users.size;
+		void triggerPayloads.size;
+		void frames.size;
 		return buildRenderTree(
-			overlays,
-			{ actors, users, triggerPayloads, frames } satisfies RenderState,
-			{ actorIds: actorIDs, userIds: userIDs },
+			overlays ?? [],
+			{ actors, users, triggerPayloads, frames, previewMode } satisfies RenderState,
+			{ actorIds: actorIDs ?? [], userIds: userIDs, allUserIds: allUserIDs },
 		);
 	});
 
-	// Partition rendered overlays by tile context.
-	const actorTiles = $derived.by(() => {
+	// Group rendered tiles by their source overlay so each overlay layer renders
+	// as its own row. Within a row, tile layout depends on the overlay's type
+	// ('sl' inline → column, others → row with wrap).
+	const tilesByOverlay = $derived.by(() => {
 		const out = new Map<string, RenderedOverlay[]>();
 		for (const o of tree.overlays) {
-			if (!o.context.actor?.id || o.context.user) continue;
-			const id = o.context.actor.id;
-			if (!out.has(id)) out.set(id, []);
-			out.get(id)!.push(o);
+			if (!out.has(o.overlayId)) out.set(o.overlayId, []);
+			out.get(o.overlayId)!.push(o);
 		}
 		return out;
 	});
-	const playerTiles = $derived.by(() => {
-		const out = new Map<string, RenderedOverlay[]>();
-		for (const o of tree.overlays) {
-			if (!o.context.user?.id) continue;
-			const id = o.context.user.id;
-			if (!out.has(id)) out.set(id, []);
-			out.get(id)!.push(o);
-		}
-		return out;
-	});
-	const singletonTiles = $derived(tree.overlays.filter(o => !o.context.actor && !o.context.user));
 
 	function getOverlayTypeComponent(type: string) {
 		const entry = getApi().overlayTypes.get(type);
@@ -194,28 +213,30 @@
 </script>
 
 <div class='obs-utils overlay'>
-	{#each actorIDs as actorID (actorID)}
-		{@const name = actorName(actorID)}
-		<div class='actor' id={`actor${actorID}`} data-actor-name={name}>
-			{#each actorTiles.get(actorID) ?? [] as rendered, index (rendered.id)}
-				{@const Component = getOverlayTypeComponent(rendered.type)}
-				{#if Component}
-					<div class='actor-layer' data-actor-name={name}>
-						<Component overlay={rendered} overlayIndex={index} />
-					</div>
-				{/if}
-			{/each}
-		</div>
-	{/each}
-	{#each userIDs as userID (userID)}
-		{@const name = userName(userID)}
-		{@const tiles = playerTiles.get(userID) ?? []}
+	{#each overlays ?? [] as overlay (overlay.id)}
+		{@const tiles = tilesByOverlay.get(overlay.id ?? '') ?? []}
 		{#if tiles.length > 0}
-			<div class='player' id={`player${userID}`} data-player-name={name}>
+			<div
+				class='overlay-row'
+				class:inline-row={overlay.type === 'sl'}
+				class:canvas-row={overlay.type !== 'sl'}
+				data-overlay-id={overlay.id}
+				data-overlay-type={overlay.type}
+			>
 				{#each tiles as rendered, index (rendered.id)}
 					{@const Component = getOverlayTypeComponent(rendered.type)}
 					{#if Component}
-						<div class='player-layer roll-instance' data-player-name={name}>
+						{@const ctxActorId = rendered.context.actor?.id}
+						{@const ctxUserId = rendered.context.user?.id}
+						{@const tileLabel = ctxUserId ? userName(ctxUserId) : ctxActorId ? actorName(ctxActorId) : ''}
+						<div
+							class='overlay-tile'
+							class:actor-layer={!!ctxActorId && !ctxUserId}
+							class:roll-instance={!!ctxUserId}
+							class:singleton-layer={!ctxActorId && !ctxUserId}
+							data-actor-name={ctxActorId && !ctxUserId ? tileLabel : undefined}
+							data-player-name={ctxUserId ? tileLabel : undefined}
+						>
 							<Component overlay={rendered} overlayIndex={index} />
 						</div>
 					{/if}
@@ -223,16 +244,4 @@
 			</div>
 		{/if}
 	{/each}
-	{#if singletonTiles.length > 0}
-		<div class='singleton'>
-			{#each singletonTiles as rendered, index (rendered.id)}
-				{@const Component = getOverlayTypeComponent(rendered.type)}
-				{#if Component}
-					<div class='singleton-layer'>
-						<Component overlay={rendered} overlayIndex={index} />
-					</div>
-				{/if}
-			{/each}
-		</div>
-	{/if}
 </div>

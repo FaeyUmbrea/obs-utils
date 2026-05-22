@@ -12,8 +12,47 @@
 		return out;
 	});
 
+	// Build a mock payload that exercises the most common fields a user would
+	// reference. For the built-in triggers we synthesise realistic-looking data
+	// (actor pulled from `overlayActors`, current user, a random 1d20 roll, etc.)
+	// so previews render with values instead of blanks.
+	function mockPayload(key: string): Record<string, unknown> {
+		const overlayActors = (game as { settings?: { get: (m: string, k: string) => unknown } }).settings?.get('obs-utils', 'overlayActors') as string[] | undefined;
+		const firstActorId = overlayActors?.[0];
+		const actor = firstActorId
+			? (game as { actors?: { get?: (id: string) => unknown } }).actors?.get?.(firstActorId)
+			: undefined;
+		const currentUser = (game as { user?: unknown }).user;
+		if (key === 'core.onPlayerRoll') {
+			const d20 = 1 + Math.floor(Math.random() * 20);
+			return {
+				actor,
+				user: currentUser,
+				roll: { total: d20, formula: '1d20' },
+				total: d20,
+				formula: '1d20',
+				isCritical: d20 === 20,
+				isFumble: d20 === 1,
+			};
+		}
+		if (key === 'core.onChatMessage') {
+			return {
+				message: {
+					content: 'Test chat message',
+					speaker: { actor: firstActorId, alias: (actor as { name?: string } | undefined)?.name ?? 'Test' },
+					user: currentUser,
+				},
+				actor,
+				user: currentUser,
+				content: 'Test chat message',
+				speakerAlias: (actor as { name?: string } | undefined)?.name ?? 'Test',
+			};
+		}
+		return {};
+	}
+
 	function fire(key: string) {
-		getApi().fireOverlayTrigger(key, {});
+		getApi().fireOverlayTrigger(key, mockPayload(key));
 	}
 </script>
 

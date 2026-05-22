@@ -31,6 +31,7 @@
 	const tileByOptions: Array<{ value: OverlayTileMode; labelKey: string }> = [
 		{ value: 'actors', labelKey: 'obs-utils.applications.overlayEditor.tileByActors' },
 		{ value: 'players', labelKey: 'obs-utils.applications.overlayEditor.tileByPlayers' },
+		{ value: 'users', labelKey: 'obs-utils.applications.overlayEditor.tileByUsers' },
 		{ value: 'once', labelKey: 'obs-utils.applications.overlayEditor.tileByOnce' },
 	];
 
@@ -71,10 +72,6 @@
 		commit();
 	}
 
-	function onCustomCSS(e: Event) {
-		layer.customCSS = (e.currentTarget as HTMLTextAreaElement).value;
-		commit();
-	}
 </script>
 
 <div class='settings-workspace'>
@@ -134,17 +131,6 @@
 		</section>
 	{/if}
 
-	<section class='field-row stack'>
-		<label class='field'>
-			<span class='label'>{game.i18n?.localize('obs-utils.applications.overlayEditor.customCSS') ?? 'Custom CSS for this overlay'}</span>
-			<textarea
-				rows='10'
-				value={layer.customCSS ?? ''}
-				oninput={onCustomCSS}
-				spellcheck='false'
-			></textarea>
-		</label>
-	</section>
 </div>
 
 <style lang='stylus'>
@@ -186,12 +172,25 @@
 			background rgba(0, 0, 0, 0.3)
 			border 1px solid rgba(255, 255, 255, 0.12)
 			border-radius 3px
-			color inherit
+			color #e4e4e4
 			font-size 12px
 
 			&:focus
 				outline none
 				border-color rgba(255, 144, 0, 0.5)
+
+		select
+			appearance none
+			-webkit-appearance none
+			padding-right 24px
+			background-image url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><path fill='%23bbb' d='M6 8L2 4h8z'/></svg>")
+			background-repeat no-repeat
+			background-position right 8px center
+			cursor pointer
+
+			option
+				background #1a1a1a
+				color #e4e4e4
 
 		textarea
 			height auto

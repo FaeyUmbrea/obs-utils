@@ -15,6 +15,9 @@ interface TileState {
 	currentTrackId: string;
 	/** Wall-clock ms when the current track started — playhead = now - startWall. */
 	startWall: number;
+	/** The trigger key that most recently transitioned this tile (if any).
+	 *  Used by the renderer to pick which payload `trigger.*` paths resolve against. */
+	lastTriggerKey?: string;
 }
 
 /**
@@ -128,13 +131,26 @@ export class PlaybackEngine {
 	private handleTriggerFire(key: string): void {
 		const now = performance.now();
 		for (const state of this.states.values()) {
+			const track = this.getTrack(state);
+			// Static tracks have no concept of an advancing playhead; their
+			// "playhead" is permanently 0. Use that so zone matching against
+			// `[0, x)` works the way the editor authored it. For non-static
+			// tracks, use real elapsed time so zones are positional.
+			const playheadT = track?.behavior.type === 'static'
+				? 0
+				: Math.max(0, now - state.startWall);
 			const transitions = state.overlay.animation?.transitions ?? [];
 			for (const tr of transitions) {
 				if (tr.triggerKey !== key) continue;
 				if (tr.fromTrackId !== state.currentTrackId) continue;
-				const playheadT = now - state.startWall;
-				const zone = findActiveZone(tr, playheadT);
+				let zone = findActiveZone(tr, playheadT);
+				// Static tracks with a transition usually mean "fire whenever
+				// the trigger fires" — there's no meaningful playhead range to
+				// gate on. Fall back to the first zone if explicit matching
+				// fails on a static track.
+				if (!zone && track?.behavior.type === 'static') zone = tr.zones[0];
 				if (!zone) continue;
+				state.lastTriggerKey = key;
 				this.applyDestination(state, zone.destination, now);
 			}
 		}
@@ -204,6 +220,7 @@ export class PlaybackEngine {
 			activeTrackId: state.currentTrackId,
 			playheadT,
 			components: componentFrames,
+			triggerKey: state.lastTriggerKey,
 		};
 		this.frames.set(stateKey(state.overlay.id ?? '', state.tileKey), frame);
 		return frame;

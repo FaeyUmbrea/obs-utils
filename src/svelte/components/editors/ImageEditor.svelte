@@ -2,7 +2,6 @@
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
 	import { getActorValues } from '../../../utils/helpers';
-	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
@@ -65,7 +64,6 @@
 				placeholder={game.i18n.localize('obs-utils.strings.avInputPlaceholder')}
 			/>
 		</div>
-		<TriggerPathWarning value={data} />
 	{:else}
 		<div class='picker'>
 			<input

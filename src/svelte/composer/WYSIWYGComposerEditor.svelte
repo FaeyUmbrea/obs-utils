@@ -1,8 +1,10 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
-	import { setContext } from 'svelte';
+	import { getContext, setContext } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
+	import { ensureComponentId } from '../../utils/types.ts';
+	import type { AnimatablePropertyKey } from '../../utils/overlayAnimation.ts';
 	import FallbackEditor from '../components/editors/FallbackEditor.svelte';
 	import ComponentList from './ComponentList.svelte';
 
@@ -25,6 +27,26 @@
 		removeComponent: (layerIndex: number, compIndex: number) => void;
 		commit: () => void;
 	}>();
+
+	// Animation workspace context — present when this editor is rendered under
+	// the Animation tab, absent (undefined) otherwise.
+	const animWorkspace = getContext<{
+		playheadT: number;
+		togglePropertyKeyframe: (componentId: string, prop: AnimatablePropertyKey, currentValue: number) => void;
+		chevronStateFor: (componentId: string, prop: AnimatablePropertyKey) => 'none' | 'between' | 'on';
+	} | undefined>('obs-utils.animWorkspace');
+
+	function chevronState(prop: AnimatablePropertyKey): 'none' | 'between' | 'on' {
+		if (!animWorkspace || !selectedComp) return 'none';
+		const id = ensureComponentId(selectedComp);
+		return animWorkspace.chevronStateFor(id, prop);
+	}
+
+	function onChevronClick(prop: AnimatablePropertyKey, currentValue: number) {
+		if (!animWorkspace || !selectedComp) return;
+		const id = ensureComponentId(selectedComp);
+		animWorkspace.togglePropertyKeyframe(id, prop, currentValue);
+	}
 
 	let addMenuOpen = $state(false);
 	let addBtnEl: HTMLButtonElement | null = $state(null);
@@ -134,50 +156,8 @@
 
 <div class='wysiwyg-pane'>
 	{#if view === 'layer'}
-		<section>
-			<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.overlaySize')}</h4>
-			<div class='row two-col'>
-				<label class='field'>
-					<span>W</span>
-					<input
-						type='number'
-						min='1'
-						value={layer.config?.w ?? 300}
-						onchange={e => setConfig('w', Number.parseInt((e.currentTarget as HTMLInputElement).value) || 300)}
-					/>
-				</label>
-				<label class='field'>
-					<span>H</span>
-					<input
-						type='number'
-						min='1'
-						value={layer.config?.h ?? 300}
-						onchange={e => setConfig('h', Number.parseInt((e.currentTarget as HTMLInputElement).value) || 300)}
-					/>
-				</label>
-			</div>
-			<p class='size-hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.sizeHint')}</p>
-		</section>
-
-		<section>
-			<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileByLabel')}</h4>
-			<label class='field'>
-				<select
-					value={layer.tileBy ?? 'actors'}
-					onchange={e => {
-						const v = (e.currentTarget as HTMLSelectElement).value as 'actors' | 'players' | 'once';
-						layer.tileBy = v === 'actors' ? undefined : v;
-						commit?.();
-					}}
-				>
-					<option value='actors'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy.actors')}</option>
-					<option value='players'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy.players')}</option>
-					<option value='once'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileBy.once')}</option>
-				</select>
-			</label>
-			<p class='size-hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.tileByHint')}</p>
-		</section>
-
+		<!-- Overlay-level fields (width/height/tileBy/customCSS) live in the
+		     Settings tab now. The Layout view is for managing components only. -->
 		<section class='add-component'>
 			<button
 				type='button'
@@ -240,22 +220,48 @@
 				</div>
 
 				<div class='row two-col'>
-					<label class='field'>
-						<span>X</span>
+					<div class='field anim-field'>
+						<div class='field-label-row'>
+							<span>X</span>
+							{#if animWorkspace}
+								<button
+									type='button'
+									class='kf-chevron'
+									class:kf-none={chevronState('x') === 'none'}
+									class:kf-between={chevronState('x') === 'between'}
+									class:kf-on={chevronState('x') === 'on'}
+									title={chevronState('x') === 'on' ? 'Remove keyframe' : 'Add keyframe at playhead'}
+									onclick={() => onChevronClick('x', selectedComp?.x ?? 0)}
+								><i class='fas fa-diamond'></i></button>
+							{/if}
+						</div>
 						<input
 							type='number'
 							value={selectedComp.x ?? 0}
 							onchange={e => updateComponent(selectedComponentIndex!, { x: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
 						/>
-					</label>
-					<label class='field'>
-						<span>Y</span>
+					</div>
+					<div class='field anim-field'>
+						<div class='field-label-row'>
+							<span>Y</span>
+							{#if animWorkspace}
+								<button
+									type='button'
+									class='kf-chevron'
+									class:kf-none={chevronState('y') === 'none'}
+									class:kf-between={chevronState('y') === 'between'}
+									class:kf-on={chevronState('y') === 'on'}
+									title={chevronState('y') === 'on' ? 'Remove keyframe' : 'Add keyframe at playhead'}
+									onclick={() => onChevronClick('y', selectedComp?.y ?? 0)}
+								><i class='fas fa-diamond'></i></button>
+							{/if}
+						</div>
 						<input
 							type='number'
 							value={selectedComp.y ?? 0}
 							onchange={e => updateComponent(selectedComponentIndex!, { y: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
 						/>
-					</label>
+					</div>
 				</div>
 				<div class='row two-col'>
 					<label class='field'>
@@ -278,14 +284,27 @@
 					</label>
 				</div>
 				<div class='row two-col'>
-					<label class='field'>
-						<span>Rotation</span>
+					<div class='field anim-field'>
+						<div class='field-label-row'>
+							<span>Rotation</span>
+							{#if animWorkspace}
+								<button
+									type='button'
+									class='kf-chevron'
+									class:kf-none={chevronState('rotation') === 'none'}
+									class:kf-between={chevronState('rotation') === 'between'}
+									class:kf-on={chevronState('rotation') === 'on'}
+									title={chevronState('rotation') === 'on' ? 'Remove keyframe' : 'Add keyframe at playhead'}
+									onclick={() => onChevronClick('rotation', selectedComp?.rotation ?? 0)}
+								><i class='fas fa-diamond'></i></button>
+							{/if}
+						</div>
 						<input
 							type='number'
 							value={selectedComp.rotation ?? 0}
 							onchange={e => updateComponent(selectedComponentIndex!, { rotation: Number.parseInt((e.currentTarget as HTMLInputElement).value) || 0 })}
 						/>
-					</label>
+					</div>
 					<label class='field locked'>
 						<input
 							type='checkbox'
@@ -295,6 +314,35 @@
 						<span>Locked</span>
 					</label>
 				</div>
+				{#if animWorkspace}
+					<div class='row anim-extras'>
+						{#each (['opacity', 'scaleX', 'scaleY'] as AnimatablePropertyKey[]) as prop}
+							<div class='field anim-field'>
+								<div class='field-label-row'>
+									<span>{prop}</span>
+									<button
+										type='button'
+										class='kf-chevron'
+										class:kf-none={chevronState(prop) === 'none'}
+										class:kf-between={chevronState(prop) === 'between'}
+										class:kf-on={chevronState(prop) === 'on'}
+										title={chevronState(prop) === 'on' ? 'Remove keyframe' : 'Add keyframe at playhead'}
+										onclick={() => onChevronClick(prop, prop === 'opacity' ? 1 : 1)}
+									><i class='fas fa-diamond'></i></button>
+								</div>
+								<input
+									type='number'
+									step={prop === 'opacity' ? '0.05' : '0.1'}
+									min={prop === 'opacity' ? '0' : undefined}
+									max={prop === 'opacity' ? '1' : undefined}
+									value={prop === 'opacity' ? 1 : 1}
+									disabled
+									title='Edit via animation keyframe'
+								/>
+							</div>
+						{/each}
+					</div>
+				{/if}
 
 				<header>
 					<h4>{game.i18n?.localize('obs-utils.applications.overlayEditor.componentData')}</h4>
@@ -510,6 +558,70 @@
 
 			.menu-name
 				flex 1 1 auto
+
+	// ── animation keyframe chevrons ──────────────────────────────────────────
+
+	.anim-field
+		position relative
+
+	.field-label-row
+		display flex
+		align-items center
+		justify-content space-between
+		gap 4px
+
+		span
+			font-size 10px
+			opacity 0.7
+
+	.kf-chevron
+		width 16px
+		height 14px
+		padding 0
+		background transparent
+		border none
+		cursor pointer
+		display flex
+		align-items center
+		justify-content center
+		flex 0 0 auto
+
+		i
+			font-size 8px
+
+		// outline = no track for this property
+		&.kf-none
+			opacity 0.3
+			i
+				color rgba(255, 255, 255, 0.6)
+
+		// filled = track exists, playhead between keyframes
+		&.kf-between
+			opacity 0.8
+			i
+				color rgba(255, 200, 30, 0.8)
+
+		// bright = playhead exactly on a keyframe
+		&.kf-on
+			opacity 1
+			i
+				color rgba(255, 144, 0, 1)
+				filter drop-shadow(0 0 3px rgba(255, 144, 0, 0.8))
+
+		&:hover
+			opacity 1 !important
+
+	.anim-extras
+		flex-wrap wrap
+		gap 4px
+
+		.anim-field
+			flex 1 1 80px
+			min-width 72px
+
+			input:disabled
+				opacity 0.4
+				cursor not-allowed
 
 	.no-selection
 		display flex

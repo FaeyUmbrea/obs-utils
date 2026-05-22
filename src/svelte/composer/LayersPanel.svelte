@@ -302,6 +302,8 @@
 			align-items center
 			justify-content center
 			opacity 0.7
+			cursor pointer
+			pointer-events auto
 
 			&:hover
 				opacity 1

@@ -2,7 +2,6 @@
 <script lang='ts'>
 	import Select from '../select/Select.svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
-	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';') } = $props<{ data: string }>();
 	let valuePath = $state(data?.split(';')[0] ?? '');
@@ -23,7 +22,6 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
-		<TriggerPathWarning value={valuePath} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
@@ -33,7 +31,6 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
-		<TriggerPathWarning value={maxPath} />
 	</label>
 </div>
 

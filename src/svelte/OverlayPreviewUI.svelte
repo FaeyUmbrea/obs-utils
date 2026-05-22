@@ -6,6 +6,7 @@
 	import { settings } from '../utils/settings.ts';
 	import OverlayHost from './streamoverlays/OverlayHost.svelte';
 	import ExternalComponent from './utilities/ExternalComponent.svelte';
+	import '../less/streamoverlay.styl';
 
 	onMount(() => activateCSSInjection());
 	onDestroy(() => deactivateCSSInjection());
@@ -70,7 +71,7 @@
 				class:show-bboxes={showBboxes}
 				style={`position: absolute; left: ${CHAT_DEADZONE_W}px; top: 0; width: ${REF_W - CHAT_DEADZONE_W}px; height: ${REF_H}px; overflow: hidden;`}
 			>
-				<OverlayHost actorIDs={$actors} overlays={$overlays} />
+				<OverlayHost actorIDs={$actors} overlays={$overlays} previewMode={true} />
 				{#each [...singleInstanceSvelte5] as overlay (overlay)}
 					<ExternalComponent ExternalClass={overlay} />
 				{/each}

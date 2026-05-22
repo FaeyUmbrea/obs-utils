@@ -123,6 +123,7 @@
 		!!(styleTarget && (styleTarget as any).customCSS && (styleTarget as any).customCSS.trim().length),
 	);
 
+	let styleDrawerOpen = $state(false);
 </script>
 
 <div class='properties'>
@@ -217,22 +218,43 @@
 						/>
 					{/if}
 
-					<details class='css-section' class:has-css={styleHasCustomCSS}>
-						<summary>
-							<i class='fas fa-paint-brush'></i>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabStyle')}</span>
-							{#if styleHasCustomCSS}<span class='dot' title='Custom CSS is set'></span>{/if}
-						</summary>
-						<StyleTab
-							target={styleTarget}
-							hasComponent={selectedComponent !== null}
-							bind:targetKind={styleTargetKind}
-							{commit}
-						/>
-					</details>
+					<button
+						type='button'
+						class='style-toggle'
+						class:has-css={styleHasCustomCSS}
+						class:active={styleDrawerOpen}
+						onclick={() => (styleDrawerOpen = !styleDrawerOpen)}
+					>
+						<i class='fas fa-paint-brush'></i>
+						<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.tabStyle')}</span>
+						{#if styleHasCustomCSS}<span class='dot' title='Custom CSS is set'></span>{/if}
+					</button>
 				</div>
 			{/if}
 		</section>
+
+		{#if styleDrawerOpen}
+			<div class='style-drawer-backdrop' onclick={() => (styleDrawerOpen = false)} role='presentation'></div>
+			<div class='style-drawer' role='dialog' aria-modal='true'>
+				<header class='style-drawer-head'>
+					<h3>
+						<i class='fas fa-paint-brush'></i>
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.tabStyle')}
+					</h3>
+					<button type='button' class='close-btn' onclick={() => (styleDrawerOpen = false)} title={game.i18n?.localize('obs-utils.strings.done')}>
+						<i class='fas fa-times'></i>
+					</button>
+				</header>
+				<div class='style-drawer-body'>
+					<StyleTab
+						target={styleTarget}
+						hasComponent={selectedComponent !== null}
+						bind:targetKind={styleTargetKind}
+						{commit}
+					/>
+				</div>
+			</div>
+		{/if}
 	{/if}
 </div>
 
@@ -243,6 +265,99 @@
 		display flex
 		flex-direction column
 		overflow hidden
+		position relative
+
+	.style-toggle
+		display flex
+		align-items center
+		gap 6px
+		padding 8px 10px
+		border 1px solid rgba(255, 255, 255, 0.12)
+		border-radius 4px
+		background rgba(255, 255, 255, 0.03)
+		cursor pointer
+		font-size 11px
+		text-transform uppercase
+		letter-spacing 0.4px
+		opacity 0.85
+		color inherit
+		width 100%
+
+		&:hover
+			opacity 1
+			background rgba(255, 255, 255, 0.06)
+
+		i
+			font-size 10px
+
+		.dot
+			display inline-block
+			width 6px
+			height 6px
+			border-radius 50%
+			background #ff9000
+			margin-left auto
+
+		&.active
+			background rgba(255, 144, 0, 0.18)
+			border-color rgba(255, 144, 0, 0.5)
+			color #ffce80
+			opacity 1
+
+	.style-drawer-backdrop
+		position absolute
+		inset 0
+		background rgba(0, 0, 0, 0.35)
+		z-index 5
+
+	.style-drawer
+		position absolute
+		top 8px
+		right 8px
+		bottom 8px
+		left 8px
+		background #1c1c1c
+		border 1px solid rgba(255, 255, 255, 0.15)
+		border-radius 6px
+		box-shadow 0 8px 24px rgba(0, 0, 0, 0.5)
+		display flex
+		flex-direction column
+		z-index 6
+
+	.style-drawer-head
+		display flex
+		align-items center
+		justify-content space-between
+		gap 8px
+		padding 8px 10px
+		border-bottom 1px solid rgba(255, 255, 255, 0.08)
+
+		h3
+			margin 0
+			font-size 13px
+			font-weight 600
+			display flex
+			align-items center
+			gap 8px
+
+		.close-btn
+			background transparent
+			border none
+			color inherit
+			cursor pointer
+			width 24px
+			height 24px
+			border-radius 3px
+			opacity 0.7
+
+			&:hover
+				opacity 1
+				background rgba(255, 255, 255, 0.08)
+
+	.style-drawer-body
+		flex 1 1 auto
+		padding 10px
+		overflow-y auto
 
 	.empty
 		flex 1 1 auto

@@ -5,7 +5,7 @@ import { getByTriggerOrDataPath } from './helpers.ts';
  * "How do we iterate this overlay?" Each overlay gets one entry in the tree
  * per context — actor, user, or singleton — depending on its `tileBy` config.
  */
-export type TileMode = 'actors' | 'players' | 'once';
+export type TileMode = 'actors' | 'players' | 'users' | 'once';
 
 /**
  * Context attached to one (overlay × tile) instance. The renderer uses it to
@@ -37,6 +37,12 @@ export interface RenderState {
 	 * applies them to each component on render.
 	 */
 	frames?: Map<string, OverlayFrame>;
+	/**
+	 * Editor-preview mode disables payload-context filtering so every tile
+	 * shows the trigger data regardless of actor/user match. /stream sets
+	 * this to false (the default).
+	 */
+	previewMode?: boolean;
 }
 
 /**
@@ -49,6 +55,9 @@ export interface OverlayFrame {
 	playheadT: number;
 	/** Per component id: opacity + transform values at the current playhead. */
 	components: Map<string, ComponentFrame>;
+	/** The trigger key that drove this tile into its current track (if any).
+	 *  Components resolve `trigger.*` paths against `state.triggerPayloads.get(triggerKey)`. */
+	triggerKey?: string;
 }
 
 export interface ComponentFrame {
@@ -114,6 +123,8 @@ export interface BuildRenderTreeOptions {
 	actorIds?: string[];
 	/** List of user ids the host wants to iterate when an overlay tiles by players. */
 	userIds?: string[];
+	/** List of user ids (including GMs) the host iterates when tileBy is 'users'. */
+	allUserIds?: string[];
 }
 
 /**
@@ -133,9 +144,10 @@ function buildOverlay(
 ): RenderedOverlay {
 	const actor = context.actor ? state.actors.get(context.actor.id) : undefined;
 	const frameSet = state.frames?.get(`${overlay.id ?? ''}:${context.key}`);
+	const triggerPayload = resolveTriggerPayload(overlay, context, frameSet, state);
 
 	const components: RenderedComponent[] = overlay.components.map((c, index) =>
-		buildComponent(c, index, actor, undefined, frameSet),
+		buildComponent(c, index, actor, triggerPayload, frameSet),
 	);
 
 	return {
@@ -269,6 +281,67 @@ export function resolveComponentValues(
 	return { value: data ?? '' };
 }
 
+/**
+ * Pick the payload that `trigger.*` paths on this overlay should resolve
+ * against. The tile's `tileBy` mode controls how the payload is filtered:
+ *  - `actors`: only payloads whose `actor.id` matches the tile's actor.
+ *  - `players` / `users`: only payloads whose `user.id` matches the tile's
+ *     user (or whose actor is the tile's user's character).
+ *  - `once` (singleton): any payload.
+ *
+ * Within the candidates, preference goes to:
+ *   1. The trigger that most recently transitioned this tile (`frame.triggerKey`).
+ *   2. The latest payload of any trigger this overlay has a transition for.
+ *   3. The latest payload of any registered trigger at all — lets ambient
+ *      `trigger.foo` paths still render without the user having to wire
+ *      every transition explicitly.
+ */
+function resolveTriggerPayload(
+	overlay: OverlayData,
+	context: RenderContext,
+	frame: OverlayFrame | undefined,
+	state: RenderState,
+): Record<string, unknown> | undefined {
+	const tileBy = overlay.tileBy ?? 'actors';
+
+	const matchesContext = (payload: Record<string, any> | undefined): boolean => {
+		if (!payload) return false;
+		// Editor preview disables filtering — every tile renders every payload.
+		if (state.previewMode) return true;
+		if (tileBy === 'once') return true;
+		if (tileBy === 'actors') {
+			const tileActorId = context.actor?.id;
+			if (!tileActorId) return true;
+			const payloadActorId
+				= payload.actor?.id
+				?? payload.message?.speaker?.actor
+				?? null;
+			return payloadActorId === tileActorId;
+		}
+		// players / users
+		const tileUserId = context.user?.id;
+		if (!tileUserId) return false;
+		const payloadUserId
+			= payload.user?.id
+			?? payload.message?.user?.id
+			?? null;
+		return payloadUserId === tileUserId;
+	};
+
+	if (frame?.triggerKey) {
+		const p = state.triggerPayloads.get(frame.triggerKey);
+		if (matchesContext(p as Record<string, any> | undefined)) return p;
+	}
+	for (const tr of overlay.animation?.transitions ?? []) {
+		const p = state.triggerPayloads.get(tr.triggerKey);
+		if (matchesContext(p as Record<string, any> | undefined)) return p;
+	}
+	for (const p of state.triggerPayloads.values()) {
+		if (matchesContext(p as Record<string, any> | undefined)) return p;
+	}
+	return undefined;
+}
+
 function buildComponent(
 	c: OverlayComponentData,
 	index: number,
@@ -300,14 +373,13 @@ function buildComponent(
  * `$derived` that depends on the registry's stores.
  */
 export function buildRenderTree(
-	config: OverlayData[],
+	config: OverlayData[] | null | undefined,
 	state: RenderState,
 	options: BuildRenderTreeOptions = {},
 ): RenderTree {
-	// Default tileBy reads the overlay's stored config; callers can override per
-	// renderer (e.g. the editor canvas forces `'actors'` for preview).
 	const tileBy = options.tileBy ?? ((o: OverlayData) => o.tileBy ?? 'actors');
 	const overlays: RenderedOverlay[] = [];
+	if (!Array.isArray(config)) return { overlays };
 
 	for (const overlay of config) {
 		if (overlay.enabled === false) continue;
@@ -327,6 +399,7 @@ export function buildRenderTree(
 export function buildPreviewOverlay(
 	overlay: OverlayData,
 	actor: unknown,
+	overrideFrame?: OverlayFrame,
 ): RenderedOverlay {
 	const actorRef = actor as { id?: string; name?: string } | undefined;
 	const context: RenderContext = actorRef?.id
@@ -337,6 +410,12 @@ export function buildPreviewOverlay(
 		users: new Map(),
 		triggerPayloads: new Map(),
 	};
+	// Inject an editor-supplied frame (animation scrub) so `buildOverlay`'s
+	// `state.frames` lookup finds it and applies opacity/transform values per
+	// component. The playback engine is bypassed entirely on this path.
+	if (overrideFrame) {
+		state.frames = new Map([[`${overlay.id ?? ''}:${context.key}`, overrideFrame]]);
+	}
 	return buildOverlay(overlay, context, state);
 }
 
@@ -347,8 +426,9 @@ function expandContexts(
 	options: BuildRenderTreeOptions,
 ): RenderContext[] {
 	if (mode === 'once') return [{ key: 'singleton' }];
-	if (mode === 'players') {
-		return (options.userIds ?? []).map((id) => {
+	if (mode === 'players' || mode === 'users') {
+		const idList = mode === 'users' ? (options.allUserIds ?? []) : (options.userIds ?? []);
+		return idList.map((id) => {
 			const u = state.users.get(id) as { name?: string; character?: { id: string; name?: string } } | undefined;
 			return {
 				key: `user:${id}`,

@@ -92,10 +92,11 @@ export function generateId(): string {
 /**
  * How the renderer iterates an overlay across contexts.
  *  - `'actors'` (default) — one tile per actor in the bound actor list. Ambient overlays like HP bars.
- *  - `'players'` — one tile per user. Useful for roll-banner triggered overlays.
+ *  - `'players'` — one tile per non-GM user. Useful for roll-banner triggered overlays.
+ *  - `'users'` — one tile per active user (includes GMs).
  *  - `'once'` — singleton. The overlay mounts once regardless of context.
  */
-export type OverlayTileMode = 'actors' | 'players' | 'once';
+export type OverlayTileMode = 'actors' | 'players' | 'users' | 'once';
 
 export class OverlayData {
 	type: string;

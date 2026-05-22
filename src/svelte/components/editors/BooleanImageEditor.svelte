@@ -3,7 +3,6 @@
 	import Select from '../select/Select.svelte';
 	import { tick } from 'svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
-	import TriggerPathWarning from './TriggerPathWarning.svelte';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
@@ -68,7 +67,6 @@
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
-		<TriggerPathWarning value={av1} />
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.imageWhenTrue')}</span>

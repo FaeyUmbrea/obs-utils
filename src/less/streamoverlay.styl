@@ -5,13 +5,27 @@
 .obs-utils.overlay {
   color: white;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-direction: column;
+  flex-wrap: nowrap;
   align-items: flex-start;
+  gap: 4px;
 
-  .actor {
+  .overlay-row {
+    display: flex;
+    align-items: flex-start;
     margin-left: 20px;
 
+    &.inline-row {
+      flex-direction: column;
+    }
+
+    &.canvas-row {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
+  .overlay-tile {
     .single-line-overlay {
       display: flex;
       margin-top: 20px;
@@ -19,7 +33,7 @@
       .component {
         padding: 5px;
       }
-      .multi-icon-component{
+      .multi-icon-component {
         display: flex;
       }
     }
