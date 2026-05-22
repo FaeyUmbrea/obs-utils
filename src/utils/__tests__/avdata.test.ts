@@ -129,7 +129,7 @@ describe('ensureCustomValue', () => {
 		];
 		const out = h.ensureCustomValue(groups, 'unknown.path');
 		expect(out.length).toBe(2);
-		expect(out[1].items).toEqual([{ value: 'unknown.path', label: 'unknown.path' }]);
+		expect(out[1].items).toEqual([{ value: 'unknown.path', label: 'unknown.path', $created: true }]);
 	});
 
 	it('reuses the same Custom group on a second call with a different unknown path', async () => {

@@ -16,13 +16,6 @@
 		return resolved ?? EmptyComponent;
 	}
 
-	/**
-	 * Apply the animation frame to the inline-overlay wrapper around each
-	 * component. WYSIWYG has its own variant in `WYSIWYGOverlay.svelte`; the
-	 * inline overlay used to render `display: contents` and so completely
-	 * dropped opacity/transform animations — that's why opacity tracks on
-	 * inline overlays appeared to do nothing.
-	 */
 	function frameStyle(c: RenderedComponent): string {
 		const fx = c.frame?.x ?? 0;
 		const fy = c.frame?.y ?? 0;
@@ -30,13 +23,11 @@
 		const sx = c.frame?.scaleX ?? 1;
 		const sy = c.frame?.scaleY ?? 1;
 		const opacity = c.frame?.opacity ?? 1;
-		const transform = `translate(${fx}px, ${fy}px) rotate(${rot}deg) scale(${sx}, ${sy})`;
+		// display:contents keeps the flex layout intact when no frame applies; switch
+		// to inline-block once anything non-identity needs to render.
 		const hasIdentity = fx === 0 && fy === 0 && rot === 0 && sx === 1 && sy === 1;
-		// Keep display:contents (which makes the wrapper transparent to the
-		// flex layout) for components with no animation frame, so inline
-		// layout stays exactly as it was. Once any animation kicks in, switch
-		// to inline-block so the transform / opacity actually apply.
 		if (hasIdentity && opacity === 1) return 'display: contents;';
+		const transform = `translate(${fx}px, ${fy}px) rotate(${rot}deg) scale(${sx}, ${sy})`;
 		return `display: inline-block; transform: ${transform}; opacity: ${opacity};`;
 	}
 </script>
@@ -60,12 +51,7 @@
 </div>
 
 <style>
-	/* Production CSS in src/less/streamoverlay.styl scopes the flex layout to
-	   `.obs-utils.overlay .actor .single-line-overlay`. The composer preview
-	   doesn't render inside that path, so without a component-scoped default
-	   the children stack as plain block elements — making the preview look
-	   vertical while /stream renders horizontal. Anchor the row layout on the
-	   component itself so both surfaces agree. */
+	/* Anchor the flex layout on the component so the composer preview matches /stream. */
 	.single-line-overlay {
 		display: flex;
 		flex-direction: row;

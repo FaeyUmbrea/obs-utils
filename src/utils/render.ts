@@ -1,62 +1,26 @@
 import type { OverlayComponentData, OverlayData } from './types.ts';
 import { getByTriggerOrDataPath } from './helpers.ts';
 
-/**
- * "How do we iterate this overlay?" Each overlay gets one entry in the tree
- * per context — actor, user, or singleton — depending on its `tileBy` config.
- */
 export type TileMode = 'actors' | 'players' | 'users' | 'once';
 
-/**
- * Context attached to one (overlay × tile) instance. The renderer uses it to
- * resolve actor-shaped paths and to label the resulting tile.
- */
 export interface RenderContext {
-	/** Stable per-tile key. Tree consumers use this for keyed-each iteration. */
 	key: string;
-	/** Actor for this tile, when known. Implicit AV subscriptions filter on this. */
 	actor?: { id: string; name?: string } | null;
-	/** User for this tile, when `tileBy: 'players'`. */
 	user?: { id: string; name?: string } | null;
 }
 
-/**
- * Snapshot of every reactive input the renderer reads. `buildRenderTree` is a
- * pure function of (config, state) — keep this serializable.
- */
 export interface RenderState {
-	/** Indexed by actor id. Pulled from the registry's `core.actorData` cache. */
 	actors: Map<string, unknown>;
-	/** Indexed by user id. Pulled from `core.userData` (or equivalent) once we add it. */
 	users: Map<string, unknown>;
-	/** Latest payload per overlay-level trigger key. Indexed by `trigger.eventKey`. */
 	triggerPayloads: Map<string, Record<string, unknown> | undefined>;
-	/**
-	 * Per (overlay-id × tile-key) frame snapshot from the active track. The
-	 * track playback engine computes these and writes them here; the renderer
-	 * applies them to each component on render.
-	 */
 	frames?: Map<string, OverlayFrame>;
-	/**
-	 * Editor-preview mode disables payload-context filtering so every tile
-	 * shows the trigger data regardless of actor/user match. /stream sets
-	 * this to false (the default).
-	 */
 	previewMode?: boolean;
 }
 
-/**
- * A single resolved frame of track playback for one (overlay × tile-key).
- * Holds per-component opacity and transform, plus which track is active and
- * the current playhead time within it.
- */
 export interface OverlayFrame {
 	activeTrackId: string;
 	playheadT: number;
-	/** Per component id: opacity + transform values at the current playhead. */
 	components: Map<string, ComponentFrame>;
-	/** The trigger key that drove this tile into its current track (if any).
-	 *  Components resolve `trigger.*` paths against `state.triggerPayloads.get(triggerKey)`. */
 	triggerKey?: string;
 }
 
@@ -74,7 +38,6 @@ export interface RenderTree {
 }
 
 export interface RenderedOverlay {
-	/** Stable id = `${overlay.id}:${context.key}`. */
 	id: string;
 	overlayId: string;
 	context: RenderContext;
@@ -88,18 +51,12 @@ export interface RenderedOverlay {
 	components: RenderedComponent[];
 }
 
-/**
- * Resolved values for a leaf component, keyed by field name. Each component
- * type declares the fields it consumes (`value`, `icon1`, `image2`, …). The
- * renderer fills them in `buildComponent`; leaves never resolve paths.
- */
 export type ResolvedValues = Record<string, unknown>;
 
 export interface RenderedComponent {
 	id: string;
 	index: number;
 	type: string;
-	/** Pre-resolved values for the leaf. Shape varies by component type. */
 	values: ResolvedValues;
 	style: string;
 	customCSS?: string;
@@ -108,35 +65,16 @@ export interface RenderedComponent {
 	w: number;
 	h: number;
 	rotation: number;
-	/** Per-frame opacity + transform from the active track. Defaults to identity (opacity 1, no transform) when no animation. */
 	frame?: ComponentFrame;
 }
 
 export interface BuildRenderTreeOptions {
-	/**
-	 * Override per-overlay tile mode. Future-proofs the renderer for the upcoming
-	 * `OverlayData.tileBy` config field without forcing every call site to read
-	 * it from the overlay directly. Defaults to `'actors'`.
-	 */
 	tileBy?: (overlay: OverlayData) => TileMode;
-	/** List of actor ids the host wants to iterate when an overlay tiles by actors. */
 	actorIds?: string[];
-	/** List of user ids the host wants to iterate when an overlay tiles by players. */
 	userIds?: string[];
-	/** List of user ids (including GMs) the host iterates when tileBy is 'users'. */
 	allUserIds?: string[];
 }
 
-/**
- * Resolve one overlay layer × one context into a `RenderedOverlay`. Pure;
- * given the same inputs always produces the same shape. Components inside are
- * resolved against the context's actor (for `actor.*` paths) and any
- * per-trigger payload state carried on `RenderState.triggerPayloads`.
- *
- * Visibility for triggered overlays is governed by the active track / frame,
- * not a separate `visible` flag — invisible content is just opacity 0 driven
- * by track keyframes, so the layout box stays reserved.
- */
 function buildOverlay(
 	overlay: OverlayData,
 	context: RenderContext,
@@ -165,12 +103,6 @@ function buildOverlay(
 	};
 }
 
-/**
- * Per-component-type resolver. Each takes the raw data string and produces
- * the `values` dict the leaf component will consume. New component types must
- * register here. Pure functions — given the same inputs, produce the same
- * output, so each resolver is trivially unit-testable.
- */
 type ResolveFn = (data: string, actor: unknown, triggerPayload: Record<string, unknown> | undefined) => ResolvedValues;
 
 function resolveSinglePath(data: string, actor: unknown, payload: Record<string, unknown> | undefined): unknown {
@@ -182,21 +114,13 @@ function asNonNegativeNumber(raw: unknown): number {
 	return Number.isNaN(n) || n < 0 ? 0 : n;
 }
 
-/**
- * Heuristic: does this `data` string look like a path the renderer should
- * resolve (trigger.* or dotted-identifier-only), as opposed to a literal value
- * the leaf should display verbatim? URLs contain dots but also slashes /
- * colons, so we restrict the dotted-identifier branch to strings that are
- * *only* word chars and dots.
- */
+// URLs contain dots and slashes — restrict path-detection to word chars + dots.
 function looksLikeDataPath(data: string): boolean {
 	if (data.startsWith('trigger.')) return true;
 	return data.includes('.') && /^[\w.]+$/.test(data);
 }
 
 const RESOLVERS: Record<string, ResolveFn> = {
-	// Plain text / simple actor-value display. The leaf is presentational only;
-	// the path/literal decision and the empty-fallback already happen here.
 	pt: (data, actor, payload) => {
 		const resolved = resolveSinglePath(data, actor, payload);
 		const value = resolved !== '' && resolved !== undefined
@@ -205,10 +129,8 @@ const RESOLVERS: Record<string, ResolveFn> = {
 		return { value };
 	},
 
-	// Font Awesome icon — `data` is the icon class string itself, no resolution.
 	fai: data => ({ value: data ?? '' }),
 
-	// Standalone image — `data` is a URL or actor path returning a URL.
 	img: (data, actor, payload) => {
 		const resolved = resolveSinglePath(data, actor, payload);
 		const value = resolved !== '' && resolved !== undefined
@@ -217,7 +139,7 @@ const RESOLVERS: Record<string, ResolveFn> = {
 		return { value };
 	},
 
-	// Boolean AV icon — data is "path;trueIcon;falseIcon".
+	// data: path;trueIcon;falseIcon
 	bav: (data, actor, payload) => {
 		const parts = (data ?? '').split(';');
 		return {
@@ -227,7 +149,7 @@ const RESOLVERS: Record<string, ResolveFn> = {
 		};
 	},
 
-	// Boolean AV image — data is "path;trueImage;falseImage".
+	// data: path;trueImage;falseImage
 	bavimg: (data, actor, payload) => {
 		const parts = (data ?? '').split(';');
 		return {
@@ -237,8 +159,7 @@ const RESOLVERS: Record<string, ResolveFn> = {
 		};
 	},
 
-	// Multi-icon AV — data is "valuePath;filledIcon;maxPath;emptyIcon".
-	// value1 = filled count, value2 = empty count (max - filled, clamped).
+	// data: valuePath;filledIcon;maxPath;emptyIcon
 	micoav: (data, actor, payload) => {
 		const parts = (data ?? '').split(';');
 		const value1 = asNonNegativeNumber(resolveSinglePath(parts[0] ?? '', actor, payload));
@@ -247,7 +168,7 @@ const RESOLVERS: Record<string, ResolveFn> = {
 		return { value1, value2, icon1: parts[1] ?? '', icon2: parts[3] ?? '' };
 	},
 
-	// Multi-image AV — same shape as micoav but with image paths.
+	// data: valuePath;filledImage;maxPath;emptyImage
 	mimgav: (data, actor, payload) => {
 		const parts = (data ?? '').split(';');
 		const value1 = asNonNegativeNumber(resolveSinglePath(parts[0] ?? '', actor, payload));
@@ -256,7 +177,7 @@ const RESOLVERS: Record<string, ResolveFn> = {
 		return { value1, value2, image1: parts[1] ?? '', image2: parts[3] ?? '' };
 	},
 
-	// Progress bar — data is "valuePath;maxPath".
+	// data: valuePath;maxPath
 	pb: (data, actor, payload) => {
 		const parts = (data ?? '').split(';');
 		const value = asNonNegativeNumber(resolveSinglePath(parts[0] ?? '', actor, payload));
@@ -265,11 +186,6 @@ const RESOLVERS: Record<string, ResolveFn> = {
 	},
 };
 
-/**
- * Public form of the per-type resolver dispatch. Editor canvases and any other
- * non-tree-driven renderer can call this directly to compute a leaf
- * component's `values` dict from raw inputs.
- */
 export function resolveComponentValues(
 	type: string,
 	data: string,
@@ -281,21 +197,6 @@ export function resolveComponentValues(
 	return { value: data ?? '' };
 }
 
-/**
- * Pick the payload that `trigger.*` paths on this overlay should resolve
- * against. The tile's `tileBy` mode controls how the payload is filtered:
- *  - `actors`: only payloads whose `actor.id` matches the tile's actor.
- *  - `players` / `users`: only payloads whose `user.id` matches the tile's
- *     user (or whose actor is the tile's user's character).
- *  - `once` (singleton): any payload.
- *
- * Within the candidates, preference goes to:
- *   1. The trigger that most recently transitioned this tile (`frame.triggerKey`).
- *   2. The latest payload of any trigger this overlay has a transition for.
- *   3. The latest payload of any registered trigger at all — lets ambient
- *      `trigger.foo` paths still render without the user having to wire
- *      every transition explicitly.
- */
 function resolveTriggerPayload(
 	overlay: OverlayData,
 	context: RenderContext,
@@ -306,7 +207,6 @@ function resolveTriggerPayload(
 
 	const matchesContext = (payload: Record<string, any> | undefined): boolean => {
 		if (!payload) return false;
-		// Editor preview disables filtering — every tile renders every payload.
 		if (state.previewMode) return true;
 		if (tileBy === 'once') return true;
 		if (tileBy === 'actors') {
@@ -314,17 +214,16 @@ function resolveTriggerPayload(
 			if (!tileActorId) return true;
 			const payloadActorId
 				= payload.actor?.id
-				?? payload.message?.speaker?.actor
-				?? null;
+					?? payload.message?.speaker?.actor
+					?? null;
 			return payloadActorId === tileActorId;
 		}
-		// players / users
 		const tileUserId = context.user?.id;
 		if (!tileUserId) return false;
 		const payloadUserId
 			= payload.user?.id
-			?? payload.message?.user?.id
-			?? null;
+				?? payload.message?.user?.id
+				?? null;
 		return payloadUserId === tileUserId;
 	};
 
@@ -365,13 +264,6 @@ function buildComponent(
 	};
 }
 
-/**
- * Top-level entry point. Given the static overlay catalog and the current
- * reactive state snapshot, produce a flat list of (overlay × context) tiles
- * ready for the renderer to iterate. The host is responsible for re-running
- * `buildRenderTree` whenever any input changes — typically via a Svelte
- * `$derived` that depends on the registry's stores.
- */
 export function buildRenderTree(
 	config: OverlayData[] | null | undefined,
 	state: RenderState,
@@ -391,11 +283,6 @@ export function buildRenderTree(
 	return { overlays };
 }
 
-/**
- * Editor convenience: build a single `RenderedOverlay` tile from raw config and
- * an optional preview actor. Used by Canvas to render the Simple Overlay
- * preview without standing up a full registry + state pipeline.
- */
 export function buildPreviewOverlay(
 	overlay: OverlayData,
 	actor: unknown,
@@ -410,9 +297,6 @@ export function buildPreviewOverlay(
 		users: new Map(),
 		triggerPayloads: new Map(),
 	};
-	// Inject an editor-supplied frame (animation scrub) so `buildOverlay`'s
-	// `state.frames` lookup finds it and applies opacity/transform values per
-	// component. The playback engine is bypassed entirely on this path.
 	if (overrideFrame) {
 		state.frames = new Map([[`${overlay.id ?? ''}:${context.key}`, overrideFrame]]);
 	}
@@ -437,7 +321,6 @@ function expandContexts(
 			};
 		});
 	}
-	// actors
 	const ids = options.actorIds ?? [];
 	return ids.map((id) => {
 		const a = state.actors.get(id) as { name?: string } | undefined;

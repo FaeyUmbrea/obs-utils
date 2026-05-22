@@ -21,17 +21,11 @@ import { MODULE_ID } from './const.ts';
 import { registerStarter } from './defaultOverlays.ts';
 import { getDirectorState as readDirectorState } from './directorState.ts';
 import { getApi, isOBS, setActorValues, setActorValuesGrouped } from './helpers.ts';
-import { orchestratePresetPlay } from './socket.ts';
-
 import { getWebsocket } from './obs.ts';
 
 import { getSetting, setSetting } from './settings.ts';
 
-// ─── OBS Remote event type registry ───────────────────────────────────────
-// A registration describes a single addressable event type that can be
-// triggered by either obs-utils itself (the built-in events: onLoad,
-// onCombatStart, etc.) or by a third-party system module that wants to
-// expose its own conditional triggers (e.g. HP threshold, crit, fumble).
+import { orchestratePresetPlay } from './socket.ts';
 
 export interface OBSRemoteConditionField {
 	/** Storage key on the configured instance's `conditions` object. */

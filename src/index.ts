@@ -91,9 +91,7 @@ async function start() {
 	Hooks.on('updateActor', actor =>
 		Hooks.call('obs-utils.refreshActor', actor));
 
-	// Fire built-in overlay triggers off Foundry chat. Public rolls fire
-	// core.onPlayerRoll with critical/fumble derived from the first d20 die;
-	// every public message fires core.onChatMessage.
+	// Public rolls fire core.onPlayerRoll (crit/fumble from the first d20); all public messages fire core.onChatMessage.
 	Hooks.on('createChatMessage', (message: any) => {
 		const api = (game as ReadyGame | undefined)?.modules?.get('obs-utils')?.api as ObsUtilsApi | undefined;
 		if (!api) return;

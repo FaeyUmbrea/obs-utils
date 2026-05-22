@@ -2,17 +2,9 @@ import type { OverlayData } from './types.ts';
 import { readStarterOverlays } from './defaultOverlays.ts';
 import { generateId, OverlayComponentData, OverlayData as OverlayDataClass } from './types.ts';
 
-/**
- * One semantic template the user can pick from the Overview's create dialog.
- * Templates are pure constructors — they produce a fresh `OverlayData` with
- * sensible defaults for the use case. The user then opens the overlay in
- * Layout / Animation and customizes from there.
- */
 export interface OverlayTemplate {
 	key: string;
-	/** i18n key for the template's display label. */
 	label: string;
-	/** i18n key for the one-line description shown next to the label. */
 	description: string;
 	icon: string;
 	create: () => OverlayData;
@@ -20,54 +12,31 @@ export interface OverlayTemplate {
 
 function makeText(data: string, x: number, y: number, w: number, h: number, style = ''): OverlayComponentData {
 	const c = new OverlayComponentData('pt', data, style);
-	c.x = x; c.y = y; c.w = w; c.h = h;
+	c.x = x;
+	c.y = y;
+	c.w = w;
+	c.h = h;
 	return c;
 }
 
 function makeProgressBar(data: string, x: number, y: number, w: number, h: number): OverlayComponentData {
 	const c = new OverlayComponentData('pb', data, '');
-	c.x = x; c.y = y; c.w = w; c.h = h;
+	c.x = x;
+	c.y = y;
+	c.w = w;
+	c.h = h;
 	return c;
 }
 
 function makeFAIcon(data: string, x: number, y: number, w: number, h: number): OverlayComponentData {
 	const c = new OverlayComponentData('fai', data, '');
-	c.x = x; c.y = y; c.w = w; c.h = h;
+	c.x = x;
+	c.y = y;
+	c.w = w;
+	c.h = h;
 	return c;
 }
 
-/**
- * Build the live template list. Combines:
- *  - Built-in semantic templates (HP bar, name plate, …).
- *  - Custom blanks (positioned canvas, inline).
- *  - Whatever the active system module registered via `registerStarter`
- *    (treated as additional templates, surfaced under their stored names).
- *
- * Called by editor UIs at render time so newly-registered starters appear
- * without a reload.
- */
-export function getOverlayTemplates(): OverlayTemplate[] {
-	const starter = readStarterOverlays();
-	const starterTemplates: OverlayTemplate[] = starter.map((ov, idx) => ({
-		key: `starter:${ov.id ?? idx}`,
-		label: ov.name?.trim() || `Starter ${idx + 1}`,
-		description: 'obs-utils.applications.overlayEditor.templates.starter.description',
-		icon: 'fas fa-bookmark',
-		create: () => {
-			// Deep-clone and stamp fresh IDs so the user's copy can be edited
-			// freely without contaminating the registered starter.
-			const fresh: OverlayData = JSON.parse(JSON.stringify(ov));
-			fresh.id = generateId();
-			for (const c of fresh.components ?? []) c.id = generateId();
-			return fresh;
-		},
-	}));
-	return [...BUILT_IN_TEMPLATES, ...starterTemplates];
-}
-
-// Custom blanks come first so "I want to start from nothing" is the
-// natural starting point of the gallery. Single-component templates use
-// inline (`sl`) since the canvas affordances would be wasted on one element.
 const BUILT_IN_TEMPLATES: OverlayTemplate[] = [
 	{
 		key: 'custom-inline',
@@ -125,3 +94,22 @@ const BUILT_IN_TEMPLATES: OverlayTemplate[] = [
 		},
 	},
 ];
+
+// Built-ins + custom blanks + whatever the active system module registered as starter overlays.
+export function getOverlayTemplates(): OverlayTemplate[] {
+	const starter = readStarterOverlays();
+	const starterTemplates: OverlayTemplate[] = starter.map((ov, idx) => ({
+		key: `starter:${ov.id ?? idx}`,
+		label: ov.name?.trim() || `Starter ${idx + 1}`,
+		description: 'obs-utils.applications.overlayEditor.templates.starter.description',
+		icon: 'fas fa-bookmark',
+		create: () => {
+			// Fresh ids so the user's copy is decoupled from the registered starter.
+			const fresh: OverlayData = JSON.parse(JSON.stringify(ov));
+			fresh.id = generateId();
+			for (const c of fresh.components ?? []) c.id = generateId();
+			return fresh;
+		},
+	}));
+	return [...BUILT_IN_TEMPLATES, ...starterTemplates];
+}

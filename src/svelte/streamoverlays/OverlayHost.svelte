@@ -14,26 +14,17 @@
 		previewMode?: boolean;
 	} = $props();
 
-	// One registry per host instance. `/stream` and the editor canvas each
-	// instantiate their own. `destroy()` removes every Foundry-side
-	// subscription this host installed.
 	const registry = new TriggerRegistry();
 
-	// Reactive state the renderer consumes. Populated in response to registry
-	// fires; the tree is a `$derived` from these.
 	const actors = $state(new Map<string, unknown>());
 	const users = $state(new Map<string, unknown>());
 	const triggerPayloads = $state(new Map<string, Record<string, unknown> | undefined>());
 	const frames = $state(new Map<string, OverlayFrame>());
 	let frameTick = $state(0);
-	// Bumped whenever foreign-object Map entries (actors/users) mutate in-place;
-	// the entries themselves aren't reactive (they're raw Foundry docs), so we
-	// signal updates via this counter that the render derived reads.
+	// Foundry docs aren't reactive — bump this when actors/users mutate.
 	let dataTick = $state(0);
 
 	const playback = new PlaybackEngine(registry, frames, () => {
-		// Bump a tick to invalidate the `$derived` tree; using a counter rather
-		// than mutating `frames` directly so Svelte reliably picks up the change.
 		frameTick = frameTick + 1;
 	});
 
@@ -57,8 +48,6 @@
 		}
 		dataTick = dataTick + 1;
 
-		// Internal trigger: actor data refresh. One Foundry hook subscription
-		// regardless of how many AV components are mounted.
 		registry.register({
 			key: 'core.actorData',
 			internal: true,
@@ -74,7 +63,6 @@
 			}
 		});
 
-		// Internal trigger: user activity. Drives player-tiling overlay membership.
 		registry.register({
 			key: 'core.userActivity',
 			internal: true,
@@ -90,9 +78,7 @@
 			}
 		});
 
-		// Legacy public trigger relay. `api.fireOverlayTrigger(key, payload)`
-		// still emits this hook for back-compat; bridge it into the registry
-		// so subscribers downstream see one source.
+		// Bridge the legacy public hook into the registry.
 		const legacyHookId = Hooks.on('obs-utils.overlayTrigger' as never, (key: string, payload: Record<string, unknown>) => {
 			ensureTriggerRegistered(key);
 			triggerPayloads.set(key, payload);
@@ -107,9 +93,7 @@
 	function ensureTriggerRegistered(key: string) {
 		try {
 			registry.register({ key });
-		} catch {
-			// Already registered.
-		}
+		} catch { /* already registered */ }
 	}
 
 	onDestroy(() => {
@@ -118,11 +102,18 @@
 		registry.destroy();
 	});
 
-	// Mount tiles in the playback engine for each (overlay × context) pair that
-	// the tree currently produces. The engine's tile lifecycle mirrors the tree.
+	const userIDs = $derived.by(() => {
+		void dataTick;
+		const list = (game as { users?: { contents?: Array<{ id: string; isGM?: boolean }> } }).users?.contents ?? [];
+		return list.filter(u => !u.isGM).map(u => u.id);
+	});
+	const allUserIDs = $derived.by(() => {
+		void dataTick;
+		const list = (game as { users?: { contents?: Array<{ id: string }> } }).users?.contents ?? [];
+		return list.map(u => u.id);
+	});
+
 	$effect(() => {
-		// Read frameTick to keep the effect linked to playback updates; the tree
-		// already depends on the underlying state maps.
 		void frameTick;
 		const wanted = new Set<string>();
 		for (const ov of overlays ?? []) {
@@ -130,21 +121,20 @@
 			const ids = ov.tileBy === 'players'
 				? userIDs
 				: ov.tileBy === 'users'
-					? allUserIDs
-					: ov.tileBy === 'once'
-						? ['singleton']
-						: actorIDs;
+				? allUserIDs
+				: ov.tileBy === 'once'
+				? ['singleton']
+				: actorIDs;
 			for (const id of ids) {
 				const tileKey = ov.tileBy === 'players' || ov.tileBy === 'users'
 					? `user:${id}`
 					: ov.tileBy === 'once'
-						? 'singleton'
-						: `actor:${id}`;
+					? 'singleton'
+					: `actor:${id}`;
 				wanted.add(`${ov.id ?? ''}:${tileKey}`);
 				playback.mountTile(ov, tileKey);
 			}
 		}
-		// Drop tiles the engine still tracks but the tree no longer produces.
 		for (const key of [...frames.keys()]) {
 			if (!wanted.has(key)) {
 				const [overlayId, ...rest] = key.split(':');
@@ -153,25 +143,10 @@
 		}
 	});
 
-	// Default user-tile set for `tileBy: 'players'`. All non-GM users.
-	const userIDs = $derived.by(() => {
-		void dataTick;
-		const list = (game as { users?: { contents?: Array<{ id: string; isGM?: boolean }> } }).users?.contents ?? [];
-		return list.filter(u => !u.isGM).map(u => u.id);
-	});
-	// All users including GMs. Used by `tileBy: 'users'`.
-	const allUserIDs = $derived.by(() => {
-		void dataTick;
-		const list = (game as { users?: { contents?: Array<{ id: string }> } }).users?.contents ?? [];
-		return list.map(u => u.id);
-	});
-
 	const tree = $derived.by(() => {
 		void frameTick;
 		void dataTick;
-		// $state Maps need an explicit read to register the derived as a
-		// dependent. `.size` access goes through the proxy and bumps the
-		// version on any structural change (set/delete/clear).
+		// `.size` reads through the $state proxy so the derived tracks structural changes.
 		void actors.size;
 		void users.size;
 		void triggerPayloads.size;
@@ -183,9 +158,6 @@
 		);
 	});
 
-	// Group rendered tiles by their source overlay so each overlay layer renders
-	// as its own row. Within a row, tile layout depends on the overlay's type
-	// ('sl' inline → column, others → row with wrap).
 	const tilesByOverlay = $derived.by(() => {
 		const out = new Map<string, RenderedOverlay[]>();
 		for (const o of tree.overlays) {

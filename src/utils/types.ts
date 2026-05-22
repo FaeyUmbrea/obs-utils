@@ -1,5 +1,5 @@
-import type { OverlayAnimationData } from './overlayAnimation.ts';
 import type { StringMap } from './const.ts';
+import type { OverlayAnimationData } from './overlayAnimation.ts';
 import { OBSAction } from './settings.ts';
 
 export type {

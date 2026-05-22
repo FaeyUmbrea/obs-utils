@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { portal } from './portal';
 	import type { SelectGroup, SelectItem } from './types';
+	import { portal } from './portal';
 
 	let {
 		groups,

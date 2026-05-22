@@ -44,36 +44,7 @@ describe('runMigrations orchestration', () => {
 		vi.unstubAllGlobals();
 	});
 
-	it('v3 world with a roll overlay → converts to wysiwyg+trigger and bumps to v4', async () => {
-		const store = makeFoundryWorld({
-			settingsVersion: 3,
-			streamOverlays: [
-				{
-					id: 'old-roll',
-					type: 'roll',
-					name: 'Old Roll',
-					enabled: true,
-					components: [],
-					style: '',
-					config: { rollStay: 4000, preRollStay: 0, postRollStay: 0 },
-				},
-			],
-		});
-
-		const m = await loadSettings();
-		m.runMigrations();
-		// Drain microtasks (migration uses .then() for fire-and-forget writes)
-		await Promise.resolve();
-		await Promise.resolve();
-
-		const overlays = store.streamOverlays;
-		expect(overlays).toHaveLength(1);
-		expect(overlays[0].type).toBe('wysiwyg');
-		expect(overlays[0].trigger?.eventKey).toBe('core.onPlayerRoll');
-		expect(store.settingsVersion).toBe(4);
-	});
-
-	it('v3 world with no roll overlay → settingsVersion bumps to 4, overlays untouched', async () => {
+	it('v3 world with no roll overlay → settingsVersion stays at 3, overlays untouched', async () => {
 		const store = makeFoundryWorld({
 			settingsVersion: 3,
 			streamOverlays: [
@@ -89,17 +60,16 @@ describe('runMigrations orchestration', () => {
 		expect(store.streamOverlays).toHaveLength(1);
 		expect(store.streamOverlays[0].type).toBe('wysiwyg');
 		expect(store.streamOverlays[0].id).toBe('a');
-		expect(store.settingsVersion).toBe(4);
+		expect(store.settingsVersion).toBe(3);
 	});
 
-	it('v4 world → runMigrations is a no-op (no settings writes)', async () => {
+	it('v3 world → runMigrations is a no-op (no settings writes)', async () => {
 		const store = makeFoundryWorld({
-			settingsVersion: 4,
+			settingsVersion: 3,
 			streamOverlays: [
 				{ id: 'roll-shaped', type: 'roll', name: 'X', components: [], style: '', config: {} },
 			],
 		});
-		// We expect no writes — capture the set spy to count calls.
 		const setSpy = vi.spyOn(game.settings, 'set');
 
 		const m = await loadSettings();
@@ -107,12 +77,11 @@ describe('runMigrations orchestration', () => {
 		await Promise.resolve();
 
 		expect(setSpy).not.toHaveBeenCalled();
-		// And the stale 'roll' overlay is left as-is because we never ran the migration.
 		expect(store.streamOverlays[0].type).toBe('roll');
-		expect(store.settingsVersion).toBe(4);
+		expect(store.settingsVersion).toBe(3);
 	});
 
-	it('fresh world (no settingsVersion = undefined → treated as 0) → seeds example overlay + bumps to v4', async () => {
+	it('fresh world (no settingsVersion = undefined → treated as 0) → seeds example overlay + bumps to v3', async () => {
 		const store = makeFoundryWorld({
 			settingsVersion: undefined,
 			streamOverlays: [],
@@ -124,8 +93,7 @@ describe('runMigrations orchestration', () => {
 		await Promise.resolve();
 		await Promise.resolve();
 
-		// v3 seeds the example overlay into empty streamOverlays.
 		expect(store.streamOverlays.length).toBeGreaterThan(0);
-		expect(store.settingsVersion).toBe(4);
+		expect(store.settingsVersion).toBe(3);
 	});
 });

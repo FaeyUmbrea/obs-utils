@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from '../select/Select.svelte';
 	import { getActorValues } from '../../../utils/helpers';
+	import Select from '../select/Select.svelte';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 

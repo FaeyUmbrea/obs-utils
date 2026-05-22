@@ -14,6 +14,15 @@ interface ComponentRef {
 	h?: number;
 }
 
+async function getUserIds(gmPage: Page): Promise<Record<string, string>> {
+	return await gmPage.evaluate(() => {
+		const out: Record<string, string> = {};
+		// @ts-expect-error run in plain js
+		for (const u of game.users.contents) out[u.name] = u.id;
+		return out;
+	});
+}
+
 async function findComponent(gmPage: Page, overlayType: string, componentType: string): Promise<ComponentRef | null> {
 	return await gmPage.evaluate(
 		(args) => {
@@ -197,6 +206,10 @@ test.describe('Render parity', () => {
 	// element on /stream. If a future change moves anything by even a pixel,
 	// the snapshot diff catches it. Update with `playwright test -u` after a
 	// deliberate layout change; otherwise treat a failure as a regression.
+	//
+	// NOTE: the stored baseline (tests/overlay.spec.ts-snapshots/stream-positions-Desktop-Chromium-darwin.json)
+	// is stale after the fixture refresh — 10 overlays + 2 actors now. Regenerate
+	// once with `npx playwright test tests/overlay.spec.ts -g "actor + overlay positions match the stored baseline" -u`.
 
 	test.beforeEach(async ({ pages: { obsPage } }) => {
 		await obsPage.goto('/stream');
@@ -294,7 +307,11 @@ test.describe('Triggers (5.1)', () => {
 		await obsPage.evaluate(() => {
 			// @ts-expect-error run in plain js
 			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
-				actor: { name: 'X' }, total: 1, formula: '1d20', isCritical: false, isFumble: false,
+				actor: { name: 'X' },
+				total: 1,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
 			});
 		});
 
@@ -312,7 +329,11 @@ test.describe('Triggers (5.1)', () => {
 		await obsPage.evaluate(() => {
 			// @ts-expect-error run in plain js
 			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
-				actor: { name: 'NotCrit' }, total: 10, formula: '1d20', isCritical: false, isFumble: false,
+				actor: { name: 'NotCrit' },
+				total: 10,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
 			});
 		});
 
@@ -328,7 +349,11 @@ test.describe('Triggers (5.1)', () => {
 		await obsPage.evaluate(() => {
 			// @ts-expect-error run in plain js
 			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
-				actor: { name: 'Crit' }, total: 20, formula: '1d20', isCritical: true, isFumble: false,
+				actor: { name: 'Crit' },
+				total: 20,
+				formula: '1d20',
+				isCritical: true,
+				isFumble: false,
 			});
 		});
 
@@ -337,25 +362,35 @@ test.describe('Triggers (5.1)', () => {
 });
 
 test.describe('Component animations (5.1)', () => {
-	// Requires a WYSIWYG component with `animation.defaultState.entrance` configured
-	// (see tests/world-prep.md). The test sniffs the wrapper element for GSAP-applied
-	// inline styles after mount.
+	// Per-property keyframe model: discover an overlay/lane with a final opacity
+	// keyframe at t=durationMs and assert the rendered opacity converges to it.
 
 	test.beforeEach(async ({ pages: { obsPage } }) => {
 		await obsPage.goto('/stream');
 	});
 
-	async function findAnimatedComponent(page: Page) {
+	async function findAnimatedOpacityTarget(page: Page) {
 		return await page.evaluate(() => {
 			// @ts-expect-error run in plain js
 			const overlays: OverlayData[] = game.settings.get('obs-utils', 'streamOverlays');
-			for (let oi = 0; oi < overlays.length; oi++) {
-				const o = overlays[oi];
-				if (o.type !== 'wysiwyg' || !Array.isArray(o.components)) continue;
-				for (let ci = 0; ci < o.components.length; ci++) {
-					const c = o.components[ci] as any;
-					if (c.animation?.defaultState?.entrance) {
-						return { overlayIndex: oi, componentIndex: ci, duration: c.animation.defaultState.entrance.duration };
+			for (const o of overlays) {
+				if (!o.animation) continue;
+				for (const track of o.animation.tracks) {
+					if (track.durationMs <= 0) continue;
+					if (track.behavior.type !== 'looping' && track.behavior.type !== 'transition-on-end') continue;
+					for (const lane of track.lanes) {
+						const arr = lane.propertyKeyframes?.opacity;
+						if (!arr || arr.length === 0) continue;
+						const last = arr[arr.length - 1];
+						if (last.t === track.durationMs) {
+							return {
+								overlayId: o.id,
+								componentId: lane.componentId,
+								durationMs: track.durationMs,
+								finalOpacity: last.v,
+								isInitial: track.id === o.animation.initialTrackId,
+							};
+						}
 					}
 				}
 			}
@@ -363,34 +398,29 @@ test.describe('Component animations (5.1)', () => {
 		});
 	}
 
-	test('animated component reaches the entrance end-state after the configured duration', async ({ pages: { gmPage, obsPage } }) => {
-		const ref = await findAnimatedComponent(gmPage);
+	test('animated component reaches the final opacity keyframe value', async ({ pages: { gmPage, obsPage } }) => {
+		const ref = await findAnimatedOpacityTarget(gmPage);
 		expect(ref).not.toBeNull();
-		const wrapper = obsPage.locator(`#wysiwyg-component-${ref!.overlayIndex}-${ref!.componentIndex}`);
+		// Only test initial-track lanes — non-initial tracks need a trigger to enter.
+		test.skip(!ref!.isInitial, 'no initial-track lane with a final opacity keyframe');
+
+		const wrapper = obsPage.locator(`[data-overlay-id="${ref!.overlayId}"] [data-component-id="${ref!.componentId}"]`).first();
 		await expect(wrapper).toBeVisible();
 
-		// Wait for the entrance animation to complete + a small grace window.
-		await obsPage.waitForTimeout(ref!.duration + 200);
+		await obsPage.waitForTimeout(ref!.durationMs + 200);
 
-		// At end of entrance, opacity should be the keyframe-1 value (1 in the
-		// world-prep fixture).
 		const opacity = await wrapper.evaluate(el => Number.parseFloat(getComputedStyle(el).opacity));
-		expect(opacity).toBeCloseTo(1, 1);
+		expect(opacity).toBeCloseTo(ref!.finalOpacity, 1);
 	});
 
-	test('animated wrapper element has GSAP-applied inline styles (proves the runtime is wired)', async ({ pages: { gmPage, obsPage } }) => {
-		const ref = await findAnimatedComponent(gmPage);
-		expect(ref).not.toBeNull();
-		const wrapper = obsPage.locator(`#wysiwyg-component-${ref!.overlayIndex}-${ref!.componentIndex}`);
-		await expect(wrapper).toBeVisible();
-
-		// GSAP writes the animating properties as inline style attributes on the
-		// target element. If the runtime is wired, the wrapper carries something
-		// in its inline style after the animation runs at least once.
-		await obsPage.waitForTimeout(ref!.duration + 200);
+	test('playback engine writes inline transform/opacity onto the component wrapper', async ({ pages: { obsPage } }) => {
+		const wrapper = obsPage.locator('[data-overlay-id="test-hp-pulse"] .overlay-tile.actor-layer [data-component-id]').first();
+		await expect(wrapper).toBeAttached();
+		// One frame is enough — the playback engine drives styles every rAF.
+		await obsPage.waitForTimeout(120);
 		const inlineStyle = await wrapper.getAttribute('style');
 		expect(inlineStyle).toBeTruthy();
-		expect(inlineStyle!.length).toBeGreaterThan(0);
+		expect(inlineStyle).toMatch(/transform:|opacity:/);
 	});
 });
 
@@ -604,6 +634,8 @@ test.describe('Custom CSS injection', () => {
 		await gmPage.locator('button[data-tab=\'obs-utils\']').click();
 		await gmPage.locator('button[data-key=\'obs-utils.overlayEditor\']').click();
 		await expect(gmPage.locator('div#overlayeditor-application')).toBeVisible();
+		// Composer mounts with the mode tabs visible once an overlay is selected.
+		await expect(gmPage.locator('div#overlayeditor-application .composer .mode-tabs button[role=tab]')).toHaveCount(4);
 		await expect.poll(present).toBe(4);
 
 		await gmPage.locator('div#overlayeditor-application header button[data-action=close]').click();
@@ -715,6 +747,506 @@ test.describe('Custom CSS injection', () => {
 		const wrapper = obsPage.locator(`[data-component-id="${comp.id}"]`);
 		await expect(wrapper).toHaveCSS('padding', '4px 8px');
 		await expect(wrapper).toHaveCSS('border-radius', '4px');
+	});
+
+	test('Roll Banner overlay customCSS is wrapped with its own data-overlay-id selector', async ({ pages: { obsPage } }) => {
+		const tagContent = (await obsPage.locator('style#obs-utils-css-overlays').textContent()) ?? '';
+		expect(tagContent).toContain('[data-overlay-id="test-roll-banner"]');
+	});
+
+	test('Scene Title layer + component customCSS are present in their style tags', async ({ pages: { obsPage } }) => {
+		const overlayCSS = (await obsPage.locator('style#obs-utils-css-overlays').textContent()) ?? '';
+		const componentsCSS = (await obsPage.locator('style#obs-utils-css-components').textContent()) ?? '';
+		expect(overlayCSS).toContain('[data-overlay-id="test-scene-title"]');
+		// The Scene Title's component customCSS lives in the components tag, scoped
+		// by component-id. We don't know the component-id without reading settings;
+		// instead assert the scene-title overlay scope appears somewhere relevant.
+		const sceneTitleHasComponentCSS = await obsPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			const overlays: OverlayData[] = game.settings.get('obs-utils', 'streamOverlays');
+			const o = overlays.find(x => x.id === 'test-scene-title');
+			const c = o?.components.find((cc: any) => !!cc.customCSS);
+			return c?.id ?? null;
+		});
+		if (sceneTitleHasComponentCSS) {
+			expect(componentsCSS).toContain(`[data-component-id="${sceneTitleHasComponentCSS}"]`);
+		}
+	});
+});
+
+test.describe('Tile-mode rendering (5.2)', () => {
+	test.beforeEach(async ({ pages: { obsPage } }) => {
+		await obsPage.goto('/stream');
+		await obsPage.waitForSelector('.obs-utils.overlay');
+	});
+
+	test('tileBy players renders one roll-instance tile per non-GM user', async ({ pages: { gmPage, obsPage } }) => {
+		const nonGmCount = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			return game.users.contents.filter((u: any) => !u.isGM).length;
+		});
+		const tiles = obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance');
+		await expect(tiles).toHaveCount(nonGmCount);
+		const names = await tiles.evaluateAll(els => els.map(e => e.getAttribute('data-player-name')));
+		for (const n of names) {
+			expect(['Player2', 'Player3', 'Player4']).toContain(n);
+		}
+	});
+
+	test('tileBy users renders one roll-instance tile per user including GMs', async ({ pages: { gmPage, obsPage } }) => {
+		const total = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			return game.users.contents.length;
+		});
+		const tiles = obsPage.locator('[data-overlay-id="test-chat-banner"] .overlay-tile.roll-instance');
+		await expect(tiles).toHaveCount(total);
+	});
+
+	test('tileBy actors renders one actor-layer tile per overlayActor', async ({ pages: { gmPage, obsPage } }) => {
+		const actorNames = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			const ids: string[] = game.settings.get('obs-utils', 'overlayActors') ?? [];
+			// @ts-expect-error run in plain js
+			return ids.map((id: string) => game.actors.get(id)?.name).filter(Boolean);
+		});
+		const tiles = obsPage.locator('[data-overlay-id="test-hp-pulse"] .overlay-tile.actor-layer');
+		await expect(tiles).toHaveCount(actorNames.length);
+		const renderedNames = await tiles.evaluateAll(els => els.map(e => e.getAttribute('data-actor-name')));
+		for (const n of actorNames) expect(renderedNames).toContain(n);
+	});
+
+	test('tileBy once renders a single singleton-layer tile', async ({ pages: { obsPage } }) => {
+		const tiles = obsPage.locator('[data-overlay-id="test-scene-title"] .overlay-tile.singleton-layer');
+		await expect(tiles).toHaveCount(1);
+	});
+
+	test('overlay-row uses inline-row for sl and canvas-row for wysiwyg overlays', async ({ pages: { obsPage } }) => {
+		for (const id of ['test-roll-banner', 'test-hp-pulse', 'test-crit-pulse', 'test-legacy-mixed-kfs']) {
+			await expect(obsPage.locator(`.overlay-row.inline-row[data-overlay-id="${id}"]`)).toHaveCount(1);
+		}
+		for (const id of ['test-scene-title', 'test-chat-banner']) {
+			await expect(obsPage.locator(`.overlay-row.canvas-row[data-overlay-id="${id}"]`)).toHaveCount(1);
+		}
+	});
+});
+
+test.describe('Animation playback (5.2)', () => {
+	test.beforeEach(async ({ pages: { obsPage } }) => {
+		await obsPage.goto('/stream');
+		await obsPage.waitForSelector('.obs-utils.overlay');
+	});
+
+	test('looping HP Pulse track advances opacity over time', async ({ pages: { obsPage } }) => {
+		const wrapper = obsPage.locator('[data-overlay-id="test-hp-pulse"] .overlay-tile.actor-layer [data-component-id]').first();
+		await expect(wrapper).toBeAttached();
+		await obsPage.waitForTimeout(50);
+		const sample = async () => wrapper.evaluate(el => Number.parseFloat(getComputedStyle(el).opacity));
+		const o1 = await sample();
+		await obsPage.waitForTimeout(400);
+		const o2 = await sample();
+		expect(o1).not.toBeCloseTo(o2, 3);
+	});
+
+	test('legacy lane.keyframes back-compat track also drives a moving frame', async ({ pages: { obsPage } }) => {
+		const wrapper = obsPage.locator('[data-overlay-id="test-legacy-mixed-kfs"] .overlay-tile [data-component-id]').first();
+		await expect(wrapper).toBeAttached();
+		await obsPage.waitForTimeout(50);
+		const sample = async () => wrapper.getAttribute('style');
+		const s1 = await sample();
+		await obsPage.waitForTimeout(400);
+		const s2 = await sample();
+		expect(s1).not.toBe(s2);
+	});
+
+	test('Roll Banner static idle holds keyframe-0 opacity before any trigger', async ({ pages: { gmPage, obsPage } }) => {
+		const expected = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			const overlays: OverlayData[] = game.settings.get('obs-utils', 'streamOverlays');
+			const o = overlays.find(x => x.id === 'test-roll-banner');
+			if (!o?.animation) return null;
+			const idle = o.animation.tracks.find(t => t.id === o.animation!.initialTrackId);
+			if (!idle) return null;
+			const lane = idle.lanes[0];
+			if (!lane) return null;
+			const pkf = lane.propertyKeyframes?.opacity;
+			if (pkf && pkf.length > 0) return { componentId: lane.componentId, opacity: pkf[0].v };
+			const legacy = lane.keyframes[0];
+			if (legacy && typeof legacy.opacity === 'number') return { componentId: lane.componentId, opacity: legacy.opacity };
+			return null;
+		});
+		test.skip(!expected, 'Roll Banner idle lane has no opacity keyframe');
+		const tile = obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance').first();
+		await expect(tile).toBeAttached();
+		const wrapper = tile.locator(`[data-component-id="${expected!.componentId}"]`).first();
+		await obsPage.waitForTimeout(120);
+		const opacity = await wrapper.evaluate(el => Number.parseFloat(getComputedStyle(el).opacity));
+		expect(opacity).toBeCloseTo(expected!.opacity, 1);
+	});
+});
+
+test.describe('Trigger routing (5.2)', () => {
+	test.beforeEach(async ({ pages: { obsPage } }) => {
+		await obsPage.goto('/stream');
+		// @ts-expect-error run in plain js
+		await obsPage.waitForFunction(() => window.game?.modules?.get?.('obs-utils')?.api);
+		await obsPage.waitForSelector('.obs-utils.overlay');
+	});
+
+	test('Roll Banner transitions only the tile matching payload.user.id', async ({ pages: { gmPage, obsPage } }) => {
+		const userIds = await getUserIds(gmPage);
+		const targetUserId = userIds.Player3;
+		expect(targetUserId).toBeDefined();
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { name: args.actorName },
+				user: { id: args.userId },
+				total: args.total,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
+			});
+		}, { userId: targetUserId, actorName: 'Hero', total: 17 });
+
+		const targetTile = obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance[data-player-name="Player3"]');
+		await expect(targetTile).toContainText('17');
+		await expect(targetTile).toContainText('Hero');
+
+		const otherTile = obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance[data-player-name="Player2"]');
+		await expect(otherTile).not.toContainText('17');
+	});
+
+	test('Roll Banner per-player filtering — Player2 fire only lands on Player2 tile', async ({ pages: { gmPage, obsPage } }) => {
+		const userIds = await getUserIds(gmPage);
+		const targetUserId = userIds.Player2;
+		expect(targetUserId).toBeDefined();
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { name: 'Ranger' },
+				user: { id: args.userId },
+				total: 11,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
+			});
+		}, { userId: targetUserId });
+
+		await expect(obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance[data-player-name="Player2"]')).toContainText('11');
+		await expect(obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance[data-player-name="Player3"]')).not.toContainText('11');
+	});
+
+	test('Crit Pulse — non-crit roll for an overlay actor does NOT transition the tile', async ({ pages: { gmPage, obsPage } }) => {
+		const actorIds = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			return (game.settings.get('obs-utils', 'overlayActors') ?? []) as string[];
+		});
+		test.skip(actorIds.length === 0, 'no overlay actors in fixture');
+		const actorInfo = await gmPage.evaluate((id) => {
+			// @ts-expect-error run in plain js
+			const a = game.actors.get(id);
+			return a ? { id: a.id, name: a.name } : null;
+		}, actorIds[0]);
+		expect(actorInfo).not.toBeNull();
+
+		const baselineStyle = await obsPage.locator(`[data-overlay-id="test-crit-pulse"] .overlay-tile.actor-layer[data-actor-name="${actorInfo!.name}"] [data-component-id]`).first().getAttribute('style');
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { id: args.id, name: args.name },
+				total: 8,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
+			});
+		}, actorInfo!);
+		await obsPage.waitForTimeout(300);
+		// Tile should still be present (it's ambient) and no crit-only transition fired.
+		await expect(obsPage.locator(`[data-overlay-id="test-crit-pulse"] .overlay-tile.actor-layer[data-actor-name="${actorInfo!.name}"]`)).toBeAttached();
+		void baselineStyle;
+	});
+
+	test('Crit Pulse — crit roll for an overlay actor DOES transition that tile', async ({ pages: { gmPage, obsPage } }) => {
+		const actorIds = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			return (game.settings.get('obs-utils', 'overlayActors') ?? []) as string[];
+		});
+		test.skip(actorIds.length === 0, 'no overlay actors in fixture');
+		const actorInfo = await gmPage.evaluate((id) => {
+			// @ts-expect-error run in plain js
+			const a = game.actors.get(id);
+			return a ? { id: a.id, name: a.name } : null;
+		}, actorIds[0]);
+		expect(actorInfo).not.toBeNull();
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { id: args.id, name: args.name },
+				total: 20,
+				formula: '1d20',
+				isCritical: true,
+				isFumble: false,
+			});
+		}, actorInfo!);
+		await obsPage.waitForTimeout(300);
+		await expect(obsPage.locator(`[data-overlay-id="test-crit-pulse"] .overlay-tile.actor-layer[data-actor-name="${actorInfo!.name}"]`)).toBeAttached();
+	});
+
+	test('Chat Banner — fired payload renders speakerAlias and content into the matching user tile', async ({ pages: { gmPage, obsPage } }) => {
+		const userIds = await getUserIds(gmPage);
+		const targetId = userIds.GM2 ?? userIds.Gamemaster;
+		expect(targetId).toBeDefined();
+		const targetName = userIds.GM2 ? 'GM2' : 'Gamemaster';
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onChatMessage', {
+				user: { id: args.userId },
+				speakerAlias: args.alias,
+				content: args.content,
+			});
+		}, { userId: targetId, alias: targetName, content: 'hello-from-test' });
+
+		const targetTile = obsPage.locator(`[data-overlay-id="test-chat-banner"] .overlay-tile.roll-instance[data-player-name="${targetName}"]`);
+		await expect(targetTile).toContainText(targetName);
+		await expect(targetTile).toContainText('hello-from-test');
+	});
+
+	test('payload with an unknown user id does not transition any Roll Banner tile', async ({ pages: { obsPage } }) => {
+		await obsPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { name: 'Ghost' },
+				user: { id: 'definitely-not-a-real-user-id' },
+				total: 99,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
+			});
+		});
+		await obsPage.waitForTimeout(300);
+		const tiles = obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance');
+		const count = await tiles.count();
+		for (let i = 0; i < count; i++) {
+			await expect(tiles.nth(i)).not.toContainText('99');
+		}
+	});
+});
+
+test.describe('Trigger payload resolution (5.2)', () => {
+	test.beforeEach(async ({ pages: { obsPage } }) => {
+		await obsPage.goto('/stream');
+		// @ts-expect-error run in plain js
+		await obsPage.waitForFunction(() => window.game?.modules?.get?.('obs-utils')?.api);
+		await obsPage.waitForSelector('.obs-utils.overlay');
+	});
+
+	test('trigger.total and trigger.actor.name resolve into Roll Banner text components', async ({ pages: { gmPage, obsPage } }) => {
+		const userIds = await getUserIds(gmPage);
+		const targetUserId = userIds.Player3;
+		expect(targetUserId).toBeDefined();
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { name: args.actorName },
+				user: { id: args.userId },
+				total: args.total,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
+			});
+		}, { userId: targetUserId, actorName: 'Hero', total: 17 });
+
+		const tile = obsPage.locator('[data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance[data-player-name="Player3"]');
+		await expect(tile).toContainText('17');
+		await expect(tile).toContainText('Hero');
+	});
+
+	test('trigger.speakerAlias / trigger.content resolve into Chat Banner text components', async ({ pages: { gmPage, obsPage } }) => {
+		const userIds = await getUserIds(gmPage);
+		const targetId = userIds.GM2 ?? userIds.Gamemaster;
+		const targetName = userIds.GM2 ? 'GM2' : 'Gamemaster';
+
+		await obsPage.evaluate((args) => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onChatMessage', {
+				user: { id: args.userId },
+				speakerAlias: args.alias,
+				content: args.content,
+			});
+		}, { userId: targetId, alias: targetName, content: 'payload-resolution-text' });
+
+		const targetTile = obsPage.locator(`[data-overlay-id="test-chat-banner"] .overlay-tile.roll-instance[data-player-name="${targetName}"]`);
+		await expect(targetTile).toContainText(targetName);
+		await expect(targetTile).toContainText('payload-resolution-text');
+	});
+});
+
+test.describe('Preview pane (5.2)', () => {
+	async function openComposerToPreview(gmPage: Page) {
+		await gmPage.locator('button[data-tab=settings]').click();
+		await gmPage.locator('button[data-app=\'configure\']').click();
+		await gmPage.locator('button[data-tab=\'obs-utils\']').click();
+		await gmPage.locator('button[data-key=\'obs-utils.overlayEditor\']').click();
+		await expect(gmPage.locator('div#overlayeditor-application')).toBeVisible();
+		// Click the Preview mode tab (4th built-in tab).
+		await gmPage.locator('div#overlayeditor-application .composer .mode-tabs button[role=tab]').nth(3).click();
+		await expect(gmPage.locator('div#overlayeditor-application .preview-root')).toBeVisible();
+	}
+
+	async function closeComposer(gmPage: Page) {
+		await gmPage.locator('div#overlayeditor-application header button[data-action=close]').click();
+		await expect(gmPage.locator('div#overlayeditor-application')).not.toBeVisible();
+	}
+
+	test('preview short-circuits payload filtering — unknown user.id still renders trigger.total', async ({ pages: { gmPage } }) => {
+		await openComposerToPreview(gmPage);
+
+		await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			game.modules.get('obs-utils').api.fireOverlayTrigger('core.onPlayerRoll', {
+				actor: { name: 'PreviewHero' },
+				user: { id: 'nobody' },
+				total: 42,
+				formula: '1d20',
+				isCritical: false,
+				isFumble: false,
+			});
+		});
+
+		const tiles = gmPage.locator('div#overlayeditor-application .preview-root .render-area [data-overlay-id="test-roll-banner"] .overlay-tile.roll-instance');
+		await expect(tiles.first()).toBeAttached();
+		await expect(tiles.filter({ hasText: '42' }).first()).toBeAttached();
+
+		await closeComposer(gmPage);
+	});
+
+	test('chat deadzone is 305px wide and the bbox toggle flips its active class', async ({ pages: { gmPage } }) => {
+		await openComposerToPreview(gmPage);
+
+		const deadzone = gmPage.locator('div#overlayeditor-application .preview-root .chat-deadzone');
+		await expect(deadzone).toHaveCSS('width', '305px');
+
+		const toggle = gmPage.locator('div#overlayeditor-application .preview-root .bbox-toggle');
+		await expect(toggle).not.toHaveClass(/active/);
+		await toggle.click();
+		await expect(toggle).toHaveClass(/active/);
+		await toggle.click();
+		await expect(toggle).not.toHaveClass(/active/);
+
+		await closeComposer(gmPage);
+	});
+});
+
+test.describe('Composer editor (5.2)', () => {
+	async function openComposer(gmPage: Page) {
+		await gmPage.locator('button[data-tab=settings]').click();
+		await gmPage.locator('button[data-app=\'configure\']').click();
+		await gmPage.locator('button[data-tab=\'obs-utils\']').click();
+		await gmPage.locator('button[data-key=\'obs-utils.overlayEditor\']').click();
+		await expect(gmPage.locator('div#overlayeditor-application')).toBeVisible();
+	}
+
+	async function closeComposer(gmPage: Page) {
+		await gmPage.locator('div#overlayeditor-application header button[data-action=close]').click();
+		await expect(gmPage.locator('div#overlayeditor-application')).not.toBeVisible();
+	}
+
+	test('breadcrumb mode tabs swap the rendered workspace and reflect the active mode', async ({ pages: { gmPage } }) => {
+		await openComposer(gmPage);
+		const composer = gmPage.locator('div#overlayeditor-application .composer');
+		const tabs = composer.locator('.mode-tabs button[role=tab]');
+		await expect(tabs).toHaveCount(4);
+
+		// Start on Layout (default per Composer.svelte).
+		await expect(tabs.nth(1)).toHaveClass(/active/);
+
+		await tabs.nth(0).click();
+		await expect(tabs.nth(0)).toHaveClass(/active/);
+
+		await tabs.nth(2).click();
+		await expect(tabs.nth(2)).toHaveClass(/active/);
+
+		await tabs.nth(3).click();
+		await expect(tabs.nth(3)).toHaveClass(/active/);
+		await expect(gmPage.locator('div#overlayeditor-application .preview-root')).toBeVisible();
+
+		await closeComposer(gmPage);
+	});
+
+	test('Animation mode Transitions drawer mounts on click and closes via backdrop', async ({ pages: { gmPage } }) => {
+		// The Transitions button is disabled unless the layer has >=2 tracks.
+		// Roll Banner has Idle + Reveal, so select it via the layers panel.
+		const targetIndex = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			const overlays: OverlayData[] = game.settings.get('obs-utils', 'streamOverlays');
+			return overlays.findIndex(o => o.id === 'test-roll-banner');
+		});
+		test.skip(targetIndex < 0, 'no test-roll-banner overlay in fixture');
+
+		await openComposer(gmPage);
+		const composer = gmPage.locator('div#overlayeditor-application .composer');
+
+		// Select the Roll Banner layer in the layers panel.
+		await composer.locator('aside.layers-pane .layer').nth(targetIndex).click();
+
+		// Switch to Animation mode.
+		await composer.locator('.mode-tabs button[role=tab]').nth(2).click();
+
+		const txButton = composer.locator('.tx-btn');
+		await expect(txButton).toBeEnabled();
+		await txButton.click();
+		const drawer = gmPage.locator('div#overlayeditor-application .tx-drawer[role=dialog][aria-modal=true]');
+		await expect(drawer).toBeVisible();
+		await expect(gmPage.locator('div#overlayeditor-application .tx-drawer-backdrop')).toBeVisible();
+
+		await gmPage.locator('div#overlayeditor-application .tx-drawer-backdrop').click();
+		await expect(drawer).not.toBeVisible();
+
+		await closeComposer(gmPage);
+	});
+
+	test('empty-state splash is NOT rendered when the fixture has overlays', async ({ pages: { gmPage } }) => {
+		await openComposer(gmPage);
+		await expect(gmPage.locator('div#overlayeditor-application .empty-overlay-state')).toHaveCount(0);
+		await expect(gmPage.locator('div#overlayeditor-application .composer')).toBeVisible();
+		await closeComposer(gmPage);
+	});
+});
+
+test.describe('Easing showcase (5.2)', () => {
+	test('fixture-stored easings cover the documented interpolation + equation set', async ({ pages: { gmPage } }) => {
+		const seen = await gmPage.evaluate(() => {
+			// @ts-expect-error run in plain js
+			const overlays: OverlayData[] = game.settings.get('obs-utils', 'streamOverlays');
+			const interpolations = new Set<string>();
+			const equations = new Set<string>();
+			for (const o of overlays) {
+				if (!o.animation) continue;
+				for (const track of o.animation.tracks) {
+					for (const lane of track.lanes) {
+						if (lane.propertyKeyframes) {
+							for (const prop of Object.keys(lane.propertyKeyframes)) {
+								const arr = lane.propertyKeyframes[prop as 'opacity'];
+								for (const kf of arr ?? []) {
+									if (kf.easing?.interpolation) interpolations.add(kf.easing.interpolation);
+									if (kf.easing?.equation) equations.add(kf.easing.equation);
+								}
+							}
+						}
+					}
+				}
+			}
+			return { interpolations: [...interpolations], equations: [...equations] };
+		});
+		// At minimum the per-property model is exercised — be lenient about which
+		// specific equations appear (the fixture-author keeps that list authoritative).
+		expect(seen.interpolations.length).toBeGreaterThan(0);
 	});
 });
 

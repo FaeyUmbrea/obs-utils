@@ -1,11 +1,11 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from './components/select/Select.svelte';
 	import { onDestroy } from 'svelte';
 	import { getApi } from '../utils/helpers.ts';
 	import { generateDataBlockFromSetting, getSetting, setSetting, settings } from '../utils/settings.ts';
 	import { sendOBSSetting } from '../utils/socket.ts';
 	import ObsTab from './components/OBSTab.svelte';
+	import Select from './components/select/Select.svelte';
 
 	const useWebSocket = settings.getReadableStore('enableOBSWebsocket');
 	const obsSettings = settings.getStore('obsRemote');

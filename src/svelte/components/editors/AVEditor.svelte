@@ -1,16 +1,11 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from '../select/Select.svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
+	import Select from '../select/Select.svelte';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
-	/**
-	 * Heuristic guess at the user's intent: paths look like `actor.system.hp`
-	 * or `trigger.actor.name`. Everything else is treated as static text.
-	 * The user can override this with the toggle without losing their input —
-	 * `data` is the same string either way.
-	 */
+	// `actor.system.hp` / `trigger.actor.name` look like paths; anything else stays static.
 	function looksLikePath(v: string): boolean {
 		if (!v) return false;
 		if (v.startsWith('trigger.')) return true;

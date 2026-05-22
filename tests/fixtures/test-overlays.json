@@ -50,8 +50,16 @@
 			"style": "",
 			"config": { "w": 1920, "h": 1080 },
 			"components": [
-				{ "id": "ap-name", "type": "pt", "data": "name", "x": 760, "y": 480, "w": 400, "h": 80,
-					"style": "font-weight:800;font-size:48px;color:#fff;text-align:center;text-shadow:0 4px 12px rgba(0,0,0,0.7);" }
+				{
+					"id": "ap-name",
+					"type": "pt",
+					"data": "name",
+					"x": 760,
+					"y": 480,
+					"w": 400,
+					"h": 80,
+					"style": "font-weight:800;font-size:48px;color:#fff;text-align:center;text-shadow:0 4px 12px rgba(0,0,0,0.7);"
+				}
 			],
 			"animation": {
 				"initialTrackId": "pulse",
@@ -85,16 +93,56 @@
 			"style": "",
 			"config": { "w": 1920, "h": 1080 },
 			"components": [
-				{ "id": "rr-card", "type": "pt", "data": "", "x": 720, "y": 860, "w": 480, "h": 140,
-					"style": "background:linear-gradient(140deg,#1c1330 0%,#2a1f4f 50%,#3a1d2e 100%);border-radius:18px;border:1px solid rgba(255,209,102,0.35);box-shadow:0 12px 32px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.05);" },
-				{ "id": "rr-die", "type": "fai", "data": "fas fa-dice-d20", "x": 738, "y": 878, "w": 64, "h": 64,
-					"style": "color:#ffd166;font-size:64px;filter:drop-shadow(0 2px 6px rgba(255,209,102,0.45));" },
-				{ "id": "rr-actor", "type": "pt", "data": "trigger.actor.name", "x": 820, "y": 880, "w": 364, "h": 28,
-					"style": "font-weight:700;font-size:20px;color:#f6f1e7;text-shadow:0 1px 3px rgba(0,0,0,0.7);letter-spacing:0.3px;" },
-				{ "id": "rr-formula", "type": "pt", "data": "trigger.formula", "x": 820, "y": 910, "w": 240, "h": 22,
-					"style": "font-size:14px;color:#bcb1a4;font-family:monospace;" },
-				{ "id": "rr-total", "type": "pt", "data": "trigger.total", "x": 1060, "y": 912, "w": 124, "h": 72,
-					"style": "font-weight:800;font-size:56px;color:#ffd166;text-align:right;line-height:1;text-shadow:0 2px 8px rgba(255,209,102,0.45);font-feature-settings:'tnum';" }
+				{
+					"id": "rr-card",
+					"type": "pt",
+					"data": "",
+					"x": 720,
+					"y": 860,
+					"w": 480,
+					"h": 140,
+					"style": "background:linear-gradient(140deg,#1c1330 0%,#2a1f4f 50%,#3a1d2e 100%);border-radius:18px;border:1px solid rgba(255,209,102,0.35);box-shadow:0 12px 32px rgba(0,0,0,0.55),inset 0 1px 0 rgba(255,255,255,0.05);"
+				},
+				{
+					"id": "rr-die",
+					"type": "fai",
+					"data": "fas fa-dice-d20",
+					"x": 738,
+					"y": 878,
+					"w": 64,
+					"h": 64,
+					"style": "color:#ffd166;font-size:64px;filter:drop-shadow(0 2px 6px rgba(255,209,102,0.45));"
+				},
+				{
+					"id": "rr-actor",
+					"type": "pt",
+					"data": "trigger.actor.name",
+					"x": 820,
+					"y": 880,
+					"w": 364,
+					"h": 28,
+					"style": "font-weight:700;font-size:20px;color:#f6f1e7;text-shadow:0 1px 3px rgba(0,0,0,0.7);letter-spacing:0.3px;"
+				},
+				{
+					"id": "rr-formula",
+					"type": "pt",
+					"data": "trigger.formula",
+					"x": 820,
+					"y": 910,
+					"w": 240,
+					"h": 22,
+					"style": "font-size:14px;color:#bcb1a4;font-family:monospace;"
+				},
+				{
+					"id": "rr-total",
+					"type": "pt",
+					"data": "trigger.total",
+					"x": 1060,
+					"y": 912,
+					"w": 124,
+					"h": 72,
+					"style": "font-weight:800;font-size:56px;color:#ffd166;text-align:right;line-height:1;text-shadow:0 2px 8px rgba(255,209,102,0.45);font-feature-settings:'tnum';"
+				}
 			],
 			"animation": {
 				"initialTrackId": "idle",
@@ -184,8 +232,16 @@
 			"style": "",
 			"config": { "w": 1920, "h": 1080 },
 			"components": [
-				{ "id": "cs-bg", "type": "pt", "data": "", "x": 1530, "y": 24, "w": 366, "h": 56,
-					"style": "background:linear-gradient(135deg,#1a1f2b,#2c3344);border-radius:28px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 6px 18px rgba(0,0,0,0.45);" },
+				{
+					"id": "cs-bg",
+					"type": "pt",
+					"data": "",
+					"x": 1530,
+					"y": 24,
+					"w": 366,
+					"h": 56,
+					"style": "background:linear-gradient(135deg,#1a1f2b,#2c3344);border-radius:28px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 6px 18px rgba(0,0,0,0.45);"
+				},
 				{ "id": "cs-icon", "type": "fai", "data": "fas fa-comment", "x": 1548, "y": 38, "w": 28, "h": 28, "style": "color:#ffd166;font-size:24px;" },
 				{ "id": "cs-name", "type": "pt", "data": "trigger.speakerAlias", "x": 1588, "y": 34, "w": 290, "h": 36, "style": "font-weight:600;font-size:18px;color:#f6f1e7;" }
 			],

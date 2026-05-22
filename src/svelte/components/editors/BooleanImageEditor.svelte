@@ -1,8 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from '../select/Select.svelte';
 	import { tick } from 'svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
+	import Select from '../select/Select.svelte';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
@@ -63,7 +63,7 @@
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
 		<Select
 			options={groups}
-			bind:value={() => av1, v => { av1 = (v as string) ?? ''; emit(); }}
+			bind:value={() => av1, (v) => { av1 = (v as string) ?? ''; emit(); }}
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
@@ -73,7 +73,7 @@
 		<div class='picker'>
 			<Select
 				options={img1Options}
-				bind:value={() => img1, v => { img1 = (v as string) ?? ''; emit(); }}
+				bind:value={() => img1, (v) => { img1 = (v as string) ?? ''; emit(); }}
 				creatable={true}
 			/>
 			<button
@@ -90,7 +90,7 @@
 		<div class='picker'>
 			<Select
 				options={img2Options}
-				bind:value={() => img2, v => { img2 = (v as string) ?? ''; emit(); }}
+				bind:value={() => img2, (v) => { img2 = (v as string) ?? ''; emit(); }}
 				creatable={true}
 			/>
 			<button

@@ -1,43 +1,12 @@
 <svelte:options runes={true} />
 <script lang='ts'>
+	import type { Block } from '../../utils/cssEasyEdit.ts';
+	import { parseAndSplit, serialize } from '../../utils/cssEasyEdit.ts';
+
 	let { value = $bindable(), showImage = false } = $props<{
 		value: string;
 		showImage?: boolean;
 	}>();
-
-	// A CSS string is split into two kinds of top-level blocks: declarations
-	// (`prop: value;`) and rule blocks (`selector { ... }`). Declarations whose
-	// prop is in KNOWN_PROPS map to UI fields; everything else (unknown decls,
-	// nested rules, pseudo-element blocks) is preserved verbatim through the
-	// `preserved` array so switching between Simple and Advanced never drops it.
-	type Block = { kind: 'decl'; prop: string; value: string } | { kind: 'rule'; raw: string };
-
-	const KNOWN_PROPS: readonly string[] = [
-		// Typography
-		'font-family',
-		'font-size',
-		'font-weight',
-		'text-align',
-		'line-height',
-		'letter-spacing',
-		// Color
-		'color',
-		'background-color',
-		// Layout & spacing
-		'width',
-		'height',
-		'display',
-		'padding',
-		'margin',
-		'align-items',
-		'justify-content',
-		// Border
-		'border',
-		'border-radius',
-		// Image
-		'object-fit',
-		'object-position',
-	] as const;
 
 	let fields = $state<Record<string, string>>({});
 	let preserved = $state<Block[]>([]);
@@ -52,81 +21,10 @@
 		lastSerialized = v;
 	});
 
-	function parseCSS(input: string): Block[] {
-		const out: Block[] = [];
-		const src = input ?? '';
-		let i = 0;
-		const n = src.length;
-		while (i < n) {
-			while (i < n && /\s/.test(src[i])) i++;
-			if (i >= n) break;
-			const start = i;
-			while (i < n && src[i] !== ';' && src[i] !== '{' && src[i] !== '}') i++;
-			if (i >= n) {
-				const tail = src.slice(start).trim();
-				if (tail) tryDecl(tail, out);
-				break;
-			}
-			if (src[i] === ';') {
-				const decl = src.slice(start, i).trim();
-				if (decl) tryDecl(decl, out);
-				i++;
-			} else if (src[i] === '}') {
-				i++;
-			} else if (src[i] === '{') {
-				let depth = 1;
-				i++;
-				while (i < n && depth > 0) {
-					if (src[i] === '{') depth++;
-					else if (src[i] === '}') depth--;
-					i++;
-				}
-				out.push({ kind: 'rule', raw: src.slice(start, i).trim() });
-			}
-		}
-		return out;
-	}
-
-	function tryDecl(s: string, into: Block[]) {
-		const colon = s.indexOf(':');
-		if (colon === -1) return;
-		const prop = s.slice(0, colon).trim().toLowerCase();
-		const val = s.slice(colon + 1).trim();
-		if (!prop) return;
-		into.push({ kind: 'decl', prop, value: val });
-	}
-
-	function parseAndSplit(input: string): { fields: Record<string, string>; preserved: Block[] } {
-		const blocks = parseCSS(input);
-		const nextFields: Record<string, string> = {};
-		const pres: Block[] = [];
-		for (const b of blocks) {
-			if (b.kind === 'decl' && KNOWN_PROPS.includes(b.prop)) {
-				nextFields[b.prop] = b.value;
-			} else {
-				pres.push(b);
-			}
-		}
-		return { fields: nextFields, preserved: pres };
-	}
-
-	function serialize(): string {
-		const parts: string[] = [];
-		for (const prop of KNOWN_PROPS) {
-			const v = fields[prop];
-			if (v && v.trim()) parts.push(`${prop}: ${v.trim()};`);
-		}
-		for (const b of preserved) {
-			if (b.kind === 'decl') parts.push(`${b.prop}: ${b.value};`);
-			else parts.push(b.raw);
-		}
-		return parts.join('\n');
-	}
-
 	function set(prop: string, v: string) {
 		if (v && v.trim()) fields[prop] = v;
 		else delete fields[prop];
-		lastSerialized = serialize();
+		lastSerialized = serialize(fields, preserved);
 		value = lastSerialized;
 	}
 
@@ -140,7 +38,7 @@
 			else if (fields['text-align'] === 'right') fields['justify-content'] = 'flex-end';
 			else if (fields['text-align'] === 'left') fields['justify-content'] = 'flex-start';
 		}
-		lastSerialized = serialize();
+		lastSerialized = serialize(fields, preserved);
 		value = lastSerialized;
 	}
 

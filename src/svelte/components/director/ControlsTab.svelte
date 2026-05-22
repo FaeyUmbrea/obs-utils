@@ -25,12 +25,9 @@
 	];
 
 	const trackingModeOptions = [
-		{ value: 'raw', labelKey: 'obs-utils.applications.director.trackingModeRaw',
-			tipKey: 'obs-utils.applications.director.trackingModeRawTip', icon: 'fas fa-bolt' },
-		{ value: 'smooth', labelKey: 'obs-utils.applications.director.trackingModeSmooth',
-			tipKey: 'obs-utils.applications.director.trackingModeSmoothTip', icon: 'fas fa-wave-square' },
-		{ value: 'dragRelease', labelKey: 'obs-utils.applications.director.trackingModeDragRelease',
-			tipKey: 'obs-utils.applications.director.trackingModeDragReleaseTip', icon: 'fas fa-hand' },
+		{ value: 'raw', labelKey: 'obs-utils.applications.director.trackingModeRaw', tipKey: 'obs-utils.applications.director.trackingModeRawTip', icon: 'fas fa-bolt' },
+		{ value: 'smooth', labelKey: 'obs-utils.applications.director.trackingModeSmooth', tipKey: 'obs-utils.applications.director.trackingModeSmoothTip', icon: 'fas fa-wave-square' },
+		{ value: 'dragRelease', labelKey: 'obs-utils.applications.director.trackingModeDragRelease', tipKey: 'obs-utils.applications.director.trackingModeDragReleaseTip', icon: 'fas fa-hand' },
 	];
 </script>
 

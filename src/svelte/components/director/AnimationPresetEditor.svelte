@@ -236,7 +236,7 @@
 		const confirmed = await DialogV2?.confirm?.({
 			window: { title: LOC('shortenTitle') ?? 'Shorten duration' },
 			content: `<p>${LOC('shortenWarning')
-				?? `This will delete ${lostKfs.length} keyframe${lostKfs.length === 1 ? '' : 's'} past the new duration. Continue?`}</p>`,
+			?? `This will delete ${lostKfs.length} keyframe${lostKfs.length === 1 ? '' : 's'} past the new duration. Continue?`}</p>`,
 		});
 		if (!confirmed) {
 			// Trigger a Svelte update so the input snaps back to the old value.
@@ -333,11 +333,11 @@
 
 	// ─── interaction ─────────────────────────────────────────────────────────
 
-	type DragKind =
-		| { kind: 'playhead'; startX: number; startMs: number }
-		| { kind: 'keyframe'; index: number; startX: number; startMs: number }
-		| { kind: 'keyframes-multi'; startX: number; snapshot: CameraKeyframe[]; selectedSet: Set<number> }
-		| { kind: 'lasso'; startX: number; startMs: number; endMs: number };
+	type DragKind
+		= | { kind: 'playhead'; startX: number; startMs: number }
+			| { kind: 'keyframe'; index: number; startX: number; startMs: number }
+			| { kind: 'keyframes-multi'; startX: number; snapshot: CameraKeyframe[]; selectedSet: Set<number> }
+			| { kind: 'lasso'; startX: number; startMs: number; endMs: number };
 	let dragState = $state<DragKind | null>(null);
 
 	function onStripMouseDown(e: MouseEvent) {
@@ -479,7 +479,9 @@
 		const target = e.target as HTMLElement | null;
 		const tag = target?.tagName;
 		if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT'
-			|| target?.isContentEditable) return;
+			|| target?.isContentEditable) {
+			return;
+		}
 		if (selectedIndices.length === 0) return;
 		e.preventDefault();
 		e.stopImmediatePropagation();
@@ -696,7 +698,7 @@
 		const half = Math.floor(windowSize / 2);
 		const out: CameraKeyframe[] = [];
 		for (let i = 0; i < buf.length; i++) {
-			let sx = 0, sy = 0, ss = 0, n = 0;
+			let sx = 0; let sy = 0; let ss = 0; let n = 0;
 			for (let j = Math.max(0, i - half); j <= Math.min(buf.length - 1, i + half); j++) {
 				sx += buf[j].x; sy += buf[j].y; ss += buf[j].scale; n++;
 			}
@@ -770,10 +772,19 @@
 	];
 
 	const NAMED_EASINGS: EasingKind[] = [
-		'linear', 'easeIn', 'easeOut', 'easeInOut',
-		'power2.in', 'power2.out', 'power2.inOut',
-		'sine.in', 'sine.out', 'sine.inOut',
-		'back.in', 'back.out', 'back.inOut',
+		'linear',
+		'easeIn',
+		'easeOut',
+		'easeInOut',
+		'power2.in',
+		'power2.out',
+		'power2.inOut',
+		'sine.in',
+		'sine.out',
+		'sine.inOut',
+		'back.in',
+		'back.out',
+		'back.inOut',
 	];
 </script>
 
@@ -782,14 +793,14 @@
 <div class='ape' bind:this={rootEl} tabindex='0' role='application'>
 	<header class='ape-toolbar'>
 		<div class='group'>
-			<button type='button' class='btn' onclick={(e) => jumpKeyframe(-1, e.ctrlKey || e.metaKey)} title={LOC('prevKeyframe')}>
+			<button type='button' class='btn' onclick={e => jumpKeyframe(-1, e.ctrlKey || e.metaKey)} title={LOC('prevKeyframe')}>
 				<i class='fas fa-backward-step'></i>
 			</button>
 			<button type='button' class='btn' onclick={() => stepFrame(-1)} title={LOC('prevFrame')}>
 				<i class='fas fa-caret-left'></i>
 			</button>
 			{#if !isPlaying}
-				<button type='button' class='btn primary' onclick={(e) => play(e.ctrlKey || e.metaKey)} disabled={keyframes.length < 2} title={LOC('play')}>
+				<button type='button' class='btn primary' onclick={e => play(e.ctrlKey || e.metaKey)} disabled={keyframes.length < 2} title={LOC('play')}>
 					<i class='fas fa-play'></i>
 				</button>
 			{:else}
@@ -800,7 +811,7 @@
 			<button type='button' class='btn' onclick={() => stepFrame(1)} title={LOC('nextFrame')}>
 				<i class='fas fa-caret-right'></i>
 			</button>
-			<button type='button' class='btn' onclick={(e) => jumpKeyframe(1, e.ctrlKey || e.metaKey)} title={LOC('nextKeyframe')}>
+			<button type='button' class='btn' onclick={e => jumpKeyframe(1, e.ctrlKey || e.metaKey)} title={LOC('nextKeyframe')}>
 				<i class='fas fa-forward-step'></i>
 			</button>
 		</div>
@@ -843,7 +854,7 @@
 						min={MIN_DURATION_MS}
 						step='100'
 						value={totalMs}
-						onchange={e => {
+						onchange={(e) => {
 							const v = Number((e.currentTarget as HTMLInputElement).value) || 0;
 							void tryUpdateDuration(v);
 						}}
@@ -887,7 +898,7 @@
 					min='1'
 					max='15'
 					value={smoothingWindow}
-					onchange={e => { smoothingWindow = Math.max(1, Math.min(15, Number((e.currentTarget as HTMLInputElement).value) || 1)); }}
+					onchange={(e) => { smoothingWindow = Math.max(1, Math.min(15, Number((e.currentTarget as HTMLInputElement).value) || 1)); }}
 				/>
 			</label>
 		</div>
@@ -933,7 +944,7 @@
 							tabindex='0'
 							aria-label='Keyframe at {kf.time}ms'
 							onmousedown={e => startKfDrag(e, g.indices[0])}
-							onclick={e => {
+							onclick={(e) => {
 								e.stopPropagation();
 								selectOnly(g.indices[0]);
 								// Ctrl/Meta+click on the timeline yanks the playhead to the
@@ -948,8 +959,8 @@
 							role='button'
 							tabindex='0'
 							aria-label='{g.indices.length} keyframes'
-							onmousedown={e => { e.stopPropagation(); e.preventDefault(); }}
-							onclick={e => {
+							onmousedown={(e) => { e.stopPropagation(); e.preventDefault(); }}
+							onclick={(e) => {
 								e.stopPropagation();
 								// Cycle through stacked keyframes on plain click.
 								const cur = selectedIndex !== null ? g.indices.indexOf(selectedIndex) : -1;
@@ -1015,7 +1026,7 @@
 							class='list-row'
 							class:selected={isSelected(idx)}
 							data-kf-idx={idx}
-							onclick={(e) => selectClick(idx, e.ctrlKey || e.metaKey)}
+							onclick={e => selectClick(idx, e.ctrlKey || e.metaKey)}
 						>
 							<span class='kf-t'>{formatSeconds(kf.time)}</span>
 							<span class='kf-pos'>{kf.x}, {kf.y}</span>

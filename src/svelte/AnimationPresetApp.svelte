@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { CameraPreset } from '../utils/cameraPresets.ts';
 	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
+	import type { CameraPreset } from '../utils/cameraPresets.ts';
 	import { onMount } from 'svelte';
 	import { readPresets, writePresets } from '../utils/cameraPresets.ts';
 	import AnimationPresetEditor from './components/director/AnimationPresetEditor.svelte';

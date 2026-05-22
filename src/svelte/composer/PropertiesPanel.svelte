@@ -30,12 +30,7 @@
 		commit: () => void;
 	}>();
 
-	// Style tab can target either the layer or the selected component.
-	// Default: component when one is selected, layer otherwise.
 	let styleTargetKind = $state<'layer' | 'component'>('component');
-
-	type TabKey = 'layer' | 'component' | 'style';
-	let activeTab = $state<TabKey>('layer');
 
 	const selectedLayer = $derived(
 		selectedLayerIndex !== null ? overlays[selectedLayerIndex] : null,
@@ -45,29 +40,22 @@
 			? selectedLayer.components?.[selectedComponentIndex] ?? null
 			: null,
 	);
-	// The Style tab respects the user's explicit kind choice, falling back to
-	// whichever target actually exists (component if selected, otherwise layer).
 	const styleTarget = $derived(
 		styleTargetKind === 'component'
 			? (selectedComponent ?? selectedLayer)
 			: selectedLayer,
 	);
 
-	// Auto-switch to Component tab only on the null → non-null transition
-	// (don't read activeTab here, so the user can freely click back to Overlay)
+	// Snap the style target onto the freshly-selected component, reset to layer when selection clears.
 	let prevSelectedComponentIndex: number | null = null;
 	$effect(() => {
 		const current = selectedComponentIndex;
-		if (current !== null && prevSelectedComponentIndex === null) {
-			activeTab = 'component';
-			styleTargetKind = 'component';
-		}
+		if (current !== null && prevSelectedComponentIndex === null) styleTargetKind = 'component';
 		if (current === null) styleTargetKind = 'layer';
 		prevSelectedComponentIndex = current;
 	});
 
-	// When Composer signals a freshly-added component, force the Component tab
-	// regardless of any prior selection state.
+	// Composer bumps `addedComponentTick` after a fresh add — re-target the style drawer.
 	let prevAddedTick: number | undefined;
 	$effect(() => {
 		const tick = addedComponentTick;
@@ -77,7 +65,6 @@
 		}
 		if (tick !== prevAddedTick) {
 			prevAddedTick = tick;
-			activeTab = 'component';
 			styleTargetKind = 'component';
 		}
 	});
@@ -102,8 +89,7 @@
 		const newType = (e.currentTarget as HTMLSelectElement).value;
 		const current = overlays[selectedLayerIndex]?.type;
 		if (newType === current) return;
-		// Changing type can drop positioning data (sl <-> wysiwyg) or render config (roll).
-		// Only confirm when there are components to lose meaning from.
+		// Type change can drop positioning data — confirm only when there's something to lose.
 		const hasComponents = (overlays[selectedLayerIndex]?.components?.length ?? 0) > 0;
 		if (hasComponents) {
 			const proceed = await foundry.applications.api.DialogV2.confirm({

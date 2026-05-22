@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { OverlayData } from '../../utils/types.ts';
 	import type { OverlayTemplate } from '../../utils/overlayTemplates.ts';
+	import type { OverlayData } from '../../utils/types.ts';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import { getApi } from '../../utils/helpers.ts';
 
@@ -202,7 +202,6 @@
 			flex-direction column
 			padding 4px
 			gap 2px
-
 
 			button
 				text-align left

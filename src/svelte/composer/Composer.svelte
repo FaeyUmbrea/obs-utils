@@ -5,15 +5,16 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { activateCSSInjection, deactivateCSSInjection } from '../../utils/cssInjection.ts';
 	import { getApi, preventUndefinedNullInArray } from '../../utils/helpers.ts';
+	import { getOverlayTemplates } from '../../utils/overlayTemplates.ts';
 	import { settings } from '../../utils/settings.ts';
 	import { OverlayComponentData, OverlayData } from '../../utils/types.ts';
-	import { getOverlayTemplates } from '../../utils/overlayTemplates.ts';
 	import AnimationWorkspace from './AnimationWorkspace.svelte';
 	import Canvas from './Canvas.svelte';
 	import LayersPanel from './LayersPanel.svelte';
+	import OverlayTemplatesSplash from './OverlayTemplatesSplash.svelte';
 	import PreviewWorkspace from './PreviewWorkspace.svelte';
-	import SettingsWorkspace from './SettingsWorkspace.svelte';
 	import PropertiesPanel from './PropertiesPanel.svelte';
+	import SettingsWorkspace from './SettingsWorkspace.svelte';
 
 	onMount(() => activateCSSInjection());
 	onDestroy(() => deactivateCSSInjection());
@@ -212,115 +213,97 @@
 </script>
 
 {#if isEmpty}
-	<div class='empty-overlay-state'>
-		<div class='empty-inner'>
-			<header class='templates-head'>
-				<h2>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyTitle')}</h2>
-				<p>{game.i18n?.localize('obs-utils.applications.overlayEditor.emptyDescription')}</p>
-			</header>
-			<div class='template-grid'>
-				{#each getOverlayTemplates() as tpl (tpl.key)}
-					<button type='button' class='template-card' onclick={() => addFromTemplate(tpl.key)}>
-						<div class='card-icon'><i class={tpl.icon}></i></div>
-						<div class='card-text'>
-							<span class='template-label'>{game.i18n?.localize(tpl.label) ?? tpl.label}</span>
-							<span class='template-desc'>{game.i18n?.localize(tpl.description) ?? tpl.description}</span>
-						</div>
-					</button>
-				{/each}
-			</div>
-		</div>
-	</div>
+	<OverlayTemplatesSplash templates={getOverlayTemplates()} onPick={addFromTemplate} />
 {:else}
-<div class='composer'>
-	<aside class='pane layers-pane'>
-		<LayersPanel
-			overlays={$overlays ?? []}
-			bind:selectedLayerIndex={selectedLayerIndex}
-			bind:selectedComponentIndex={selectedComponentIndex}
-			{addLayer}
-			{removeLayer}
-			{reorderLayers}
-			{toggleLayerEnabled}
-			templates={getOverlayTemplates()}
-			{addFromTemplate}
-		/>
-	</aside>
-
-	<section class='pane workspace-pane'>
-		<header class='breadcrumb'>
-			<span class='current-overlay'>{currentOverlay?.name ?? game.i18n?.localize('obs-utils.applications.overlayEditor.unnamedOverlay')}</span>
-			<nav class='mode-tabs' role='tablist'>
-				<button type='button' role='tab' class:active={mode === 'settings'} onclick={() => (mode = 'settings')}>
-					{game.i18n?.localize('obs-utils.applications.overlayEditor.modeSettings') ?? 'Settings'}
-				</button>
-				<button type='button' role='tab' class:active={mode === 'layout'} onclick={() => (mode = 'layout')}>
-					{game.i18n?.localize('obs-utils.applications.overlayEditor.modeLayout')}
-				</button>
-				<button type='button' role='tab' class:active={mode === 'animation'} onclick={() => (mode = 'animation')}>
-					{game.i18n?.localize('obs-utils.applications.overlayEditor.modeAnimation')}
-				</button>
-				<button type='button' role='tab' class:active={mode === 'preview'} onclick={() => (mode = 'preview')}>
-					{game.i18n?.localize('obs-utils.applications.overlayEditor.modePreview')}
-				</button>
-			</nav>
-		</header>
-
-		{#if mode === 'settings' && currentOverlay && selectedLayerIndex !== null}
-			<SettingsWorkspace
-				layer={currentOverlay}
-				layerIndex={selectedLayerIndex}
-				{renameLayer}
-				{changeLayerType}
-				{commit}
+	<div class='composer'>
+		<aside class='pane layers-pane'>
+			<LayersPanel
+				overlays={$overlays ?? []}
+				bind:selectedLayerIndex={selectedLayerIndex}
+				bind:selectedComponentIndex={selectedComponentIndex}
+				{addLayer}
+				{removeLayer}
+				{reorderLayers}
+				{toggleLayerEnabled}
+				templates={getOverlayTemplates()}
+				{addFromTemplate}
 			/>
-		{:else if mode === 'layout' && currentOverlay}
-			<div class='layout-body'>
-				<section class='canvas-pane'>
-					<header class='canvas-header'>
-						<label class='preview-actor'>
-							<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorLabel')}</span>
-							<select bind:value={previewActorID}>
-								<option value={null}>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorAll')}</option>
-								{#each previewActors as actor (actor.id)}
-									<option value={actor.id}>{actor.name}</option>
-								{/each}
-							</select>
-						</label>
-					</header>
-					<div class='canvas-host'>
-						<Canvas
+		</aside>
+
+		<section class='pane workspace-pane'>
+			<header class='breadcrumb'>
+				<span class='current-overlay'>{currentOverlay?.name ?? game.i18n?.localize('obs-utils.applications.overlayEditor.unnamedOverlay')}</span>
+				<nav class='mode-tabs' role='tablist'>
+					<button type='button' role='tab' class:active={mode === 'settings'} onclick={() => (mode = 'settings')}>
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.modeSettings') ?? 'Settings'}
+					</button>
+					<button type='button' role='tab' class:active={mode === 'layout'} onclick={() => (mode = 'layout')}>
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.modeLayout')}
+					</button>
+					<button type='button' role='tab' class:active={mode === 'animation'} onclick={() => (mode = 'animation')}>
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.modeAnimation')}
+					</button>
+					<button type='button' role='tab' class:active={mode === 'preview'} onclick={() => (mode = 'preview')}>
+						{game.i18n?.localize('obs-utils.applications.overlayEditor.modePreview')}
+					</button>
+				</nav>
+			</header>
+
+			{#if mode === 'settings' && currentOverlay && selectedLayerIndex !== null}
+				<SettingsWorkspace
+					layer={currentOverlay}
+					layerIndex={selectedLayerIndex}
+					{renameLayer}
+					{changeLayerType}
+					{commit}
+				/>
+			{:else if mode === 'layout' && currentOverlay}
+				<div class='layout-body'>
+					<section class='canvas-pane'>
+						<header class='canvas-header'>
+							<label class='preview-actor'>
+								<span>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorLabel')}</span>
+								<select bind:value={previewActorID}>
+									<option value={null}>{game.i18n?.localize('obs-utils.applications.overlayEditor.previewActorAll')}</option>
+									{#each previewActors as actor (actor.id)}
+										<option value={actor.id}>{actor.name}</option>
+									{/each}
+								</select>
+							</label>
+						</header>
+						<div class='canvas-host'>
+							<Canvas
+								overlays={$overlays ?? []}
+								actorIDs={previewIDs}
+								bind:selectedLayerIndex={selectedLayerIndex}
+								bind:selectedComponentIndex={selectedComponentIndex}
+								{commit}
+							/>
+						</div>
+					</section>
+
+					<aside class='properties-pane'>
+						<PropertiesPanel
 							overlays={$overlays ?? []}
-							actorIDs={previewIDs}
-							bind:selectedLayerIndex={selectedLayerIndex}
+							selectedLayerIndex={selectedLayerIndex}
 							bind:selectedComponentIndex={selectedComponentIndex}
+							{addedComponentTick}
+							{renameLayer}
+							{changeLayerType}
+							{addComponentToLayer}
+							{reorderComponents}
+							{removeComponent}
 							{commit}
 						/>
-					</div>
-				</section>
-
-				<aside class='properties-pane'>
-					<PropertiesPanel
-						overlays={$overlays ?? []}
-						selectedLayerIndex={selectedLayerIndex}
-						bind:selectedComponentIndex={selectedComponentIndex}
-						{addedComponentTick}
-						{renameLayer}
-						{changeLayerType}
-						{addComponentToLayer}
-						{reorderComponents}
-						{removeComponent}
-						{commit}
-					/>
-				</aside>
-			</div>
-		{:else if mode === 'animation' && currentOverlay}
-			<AnimationWorkspace layer={currentOverlay} {commit} />
-		{:else if mode === 'preview' && currentOverlay}
-			<PreviewWorkspace />
-		{/if}
-	</section>
-</div>
+					</aside>
+				</div>
+			{:else if mode === 'animation' && currentOverlay}
+				<AnimationWorkspace layer={currentOverlay} {commit} />
+			{:else if mode === 'preview' && currentOverlay}
+				<PreviewWorkspace />
+			{/if}
+		</section>
+	</div>
 {/if}
 
 <footer class='composer-footer'>
@@ -400,91 +383,6 @@
 				border-color rgba(255, 144, 0, 0.5)
 				color #ffce80
 
-	// ── empty state (no overlays yet) ───────────────────────────────────────
-	// Centered splash. The outer fills the editor pane and centers the
-	// inner panel; the inner panel limits width so cards don't stretch
-	// the full editor width on wide monitors.
-	.empty-overlay-state
-		display flex
-		align-items center
-		justify-content center
-		height calc(100% - 44px)
-		padding 24px
-		overflow auto
-
-	.empty-inner
-		width 100%
-		max-width 720px
-		display flex
-		flex-direction column
-		gap 18px
-
-	.templates-head
-		text-align center
-
-		h2
-			margin 0 0 6px 0
-			font-size 18px
-			font-weight 600
-
-		p
-			margin 0
-			font-size 12px
-			opacity 0.65
-			line-height 1.5
-
-	.template-grid
-		display grid
-		grid-template-columns repeat(auto-fill, minmax(200px, 1fr))
-		gap 10px
-
-	.template-card
-		display flex
-		align-items center
-		gap 10px
-		padding 12px 14px
-		min-height 64px
-		background rgba(255, 255, 255, 0.03)
-		border 1px solid rgba(255, 255, 255, 0.08)
-		border-radius 6px
-		cursor pointer
-		text-align left
-		transition background 120ms ease, border-color 120ms ease
-
-		&:hover
-			background rgba(255, 144, 0, 0.12)
-			border-color rgba(255, 144, 0, 0.4)
-
-		.card-icon
-			flex 0 0 36px
-			display flex
-			align-items center
-			justify-content center
-			width 36px
-			height 36px
-			background rgba(255, 144, 0, 0.12)
-			border-radius 4px
-
-			i
-				font-size 18px
-				color #ffce80
-
-		.card-text
-			display flex
-			flex-direction column
-			gap 2px
-			min-width 0
-
-		.template-label
-			font-size 13px
-			font-weight 600
-
-		.template-desc
-			font-size 11px
-			opacity 0.65
-			line-height 1.35
-
-	// ── layout: persistent layers pane + mode-switched workspace ────────────
 	.composer
 		container-type inline-size
 		container-name composer

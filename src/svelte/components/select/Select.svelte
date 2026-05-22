@@ -1,7 +1,8 @@
 <svelte:options runes={true} />
 <script lang='ts'>
+	import type { SelectGroup, SelectItem } from './types';
 	import SelectDropdown from './SelectDropdown.svelte';
-	import { normalizeGroups, type SelectGroup, type SelectItem } from './types';
+	import { normalizeGroups } from './types';
 
 	type SingleValue = string | null;
 	type MultiValue = string[];
@@ -78,7 +79,7 @@
 		if (!multiple) return [] as SelectItem[];
 		const arr = Array.isArray(value) ? (value as MultiValue) : [];
 		const all = baseGroups.flatMap(g => g.items);
-		return arr.map(v => {
+		return arr.map((v) => {
 			const found = all.find(it => it.value === v);
 			return found ?? { value: v, label: v };
 		});
@@ -215,7 +216,7 @@
 						<button
 							type='button'
 							class='ouselect-chip-x'
-							onclick={e => {
+							onclick={(e) => {
 								e.stopPropagation();
 								removeChip(chip.value);
 							}}

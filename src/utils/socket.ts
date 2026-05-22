@@ -1,8 +1,8 @@
 import type { CameraPreset } from './cameraPresets.ts';
 import type { SequenceController } from './cameraSequencePlayer.ts';
 import type { OBSWebsocketSettings } from './types.ts';
-import { clampAndApplyExternal, getCurrentUser, getLocalViewport, VIEWPORT_DATA, viewportChanged } from './canvas';
 import { playSequence } from './cameraSequencePlayer.ts';
+import { clampAndApplyExternal, getCurrentUser, getLocalViewport, VIEWPORT_DATA, viewportChanged } from './canvas';
 import { isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';
 
@@ -130,14 +130,17 @@ let lastEmitWall = 0;
 let pendingPosition: Canvas.ViewPosition | null = null;
 let throttleTimer: ReturnType<typeof setTimeout> | null = null;
 let dragSettleTimer: ReturnType<typeof setTimeout> | null = null;
-let smoothBuf: Canvas.ViewPosition[] = [];
+const smoothBuf: Canvas.ViewPosition[] = [];
 
 function avgPosition(buf: Canvas.ViewPosition[]): Canvas.ViewPosition {
-	// Average x/y across the window; pick the latest scale verbatim, since
-	// smoothing zoom feels laggy and zoom changes are usually low-frequency.
+	// Pick the latest scale verbatim — smoothing zoom feels laggy.
 	const n = buf.length;
-	let sx = 0; let sy = 0;
-	for (const p of buf) { sx += p.x; sy += p.y; }
+	let sx = 0;
+	let sy = 0;
+	for (const p of buf) {
+		sx += p.x;
+		sy += p.y;
+	}
 	return { x: sx / n, y: sy / n, scale: buf[n - 1].scale };
 }
 

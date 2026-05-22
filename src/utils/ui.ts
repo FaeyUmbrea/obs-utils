@@ -56,4 +56,3 @@ export function registerUI() {
 		t.registerComponentEditor('pb', MultiAVEditor, true);
 	}
 }
-

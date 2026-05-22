@@ -8,7 +8,6 @@ import { getExampleOverlay } from './defaultOverlays.ts';
 import { getGM, isOBS } from './helpers';
 import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
 
-
 export const OBSAction = {
 	SwitchScene: 'obs-utils.applications.obsRemote.switchScene',
 	ToggleSource: 'obs-utils.applications.obsRemote.toggleSource',

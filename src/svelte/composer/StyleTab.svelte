@@ -17,9 +17,7 @@
 
 	let mode = $state<'easy' | 'advanced'>('easy');
 
-	// One-shot migration when the editor focuses on a new target: anything
-	// still sitting in the legacy inline `style` field gets folded into
-	// `customCSS` so Simple/Advanced never disagree about what's there.
+	// Fold any legacy inline `style` into `customCSS` so easy/advanced stay in sync.
 	$effect(() => {
 		const t = target as any;
 		if (!t || !t.style || !String(t.style).trim()) return;
@@ -40,8 +38,6 @@
 		commit?.();
 	}
 
-	// `target` is either a layer (OverlayData) or a component (OverlayComponentData).
-	// Image-related fields only make sense on image-rendering component types.
 	const IMAGE_COMPONENT_TYPES = new Set(['img', 'bavimg', 'mimgav']);
 	const showImage = $derived(
 		targetKind === 'component' && target && IMAGE_COMPONENT_TYPES.has((target as any).type),

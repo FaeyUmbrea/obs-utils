@@ -1,7 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
-	import { setContext } from 'svelte';
 	import { getApi } from '../../utils/helpers.ts';
 	import FallbackEditor from '../components/editors/FallbackEditor.svelte';
 	import ComponentList from './ComponentList.svelte';
@@ -29,15 +28,6 @@
 	let addMenuOpen = $state(false);
 	let addBtnEl: HTMLButtonElement | null = $state(null);
 	let addMenuStyle = $state('');
-
-	const activeTriggerKeys = $state(new Set<string>());
-	setContext('obs-utils.activeTriggerKeys', activeTriggerKeys);
-	$effect(() => {
-		activeTriggerKeys.clear();
-		for (const tr of layer.animation?.transitions ?? []) {
-			activeTriggerKeys.add(tr.triggerKey);
-		}
-	});
 
 	function portalToBody(node: HTMLElement) {
 		document.body.appendChild(node);

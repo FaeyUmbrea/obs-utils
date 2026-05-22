@@ -12,10 +12,7 @@
 		return out;
 	});
 
-	// Build a mock payload that exercises the most common fields a user would
-	// reference. For the built-in triggers we synthesise realistic-looking data
-	// (actor pulled from `overlayActors`, current user, a random 1d20 roll, etc.)
-	// so previews render with values instead of blanks.
+	// Mock payloads for the built-in triggers so previews render with values.
 	function mockPayload(key: string): Record<string, unknown> {
 		const overlayActors = (game as { settings?: { get: (m: string, k: string) => unknown } }).settings?.get('obs-utils', 'overlayActors') as string[] | undefined;
 		const firstActorId = overlayActors?.[0];

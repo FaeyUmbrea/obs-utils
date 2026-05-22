@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import Select from '../select/Select.svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
+	import Select from '../select/Select.svelte';
 
 	let { data = $bindable(';') } = $props<{ data: string }>();
 	let valuePath = $state(data?.split(';')[0] ?? '');
@@ -18,7 +18,7 @@
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
 		<Select
 			options={groups}
-			bind:value={() => valuePath, v => { valuePath = (v as string) ?? ''; onChange(); }}
+			bind:value={() => valuePath, (v) => { valuePath = (v as string) ?? ''; onChange(); }}
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
@@ -27,7 +27,7 @@
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
 		<Select
 			options={groups}
-			bind:value={() => maxPath, v => { maxPath = (v as string) ?? ''; onChange(); }}
+			bind:value={() => maxPath, (v) => { maxPath = (v as string) ?? ''; onChange(); }}
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>

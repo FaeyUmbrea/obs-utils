@@ -39,7 +39,6 @@ export default class OverlayEditor extends SvelteApplicationMixin(foundry.applic
 		},
 	};
 
-
 	protected override root = Composer;
 
 	public static async importCommand() {
