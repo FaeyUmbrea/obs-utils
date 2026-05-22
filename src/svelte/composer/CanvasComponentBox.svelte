@@ -195,11 +195,11 @@
 <div
 	class='comp-wrapper'
 	data-component-wrapper={index}
-	data-component-id={comp.id ?? ''}
 	style={`left: ${x}px; top: ${y}px; width: ${w}px; height: ${h}px; transform: rotate(${rot}deg);`}
 >
 	{#if Renderer}
 		<Renderer
+			componentId={comp.id ?? ''}
 			values={previewValues(comp)}
 			componentIndex={index}
 			style={comp.style}

@@ -2,10 +2,11 @@
 <script lang='ts'>
 	import type { ResolvedValues } from '../../../utils/render.ts';
 
-	const { values, style, componentIndex }: {
+	const { values, style, componentIndex, componentId }: {
 		values: ResolvedValues;
 		style: string;
 		componentIndex: number;
+		componentId?: string;
 	} = $props();
 
 	const value = $derived(Number(values.value ?? 0));
@@ -15,6 +16,7 @@
 <div
 	class='component actor-val-component progress-bar-component'
 	id={`component${componentIndex.toString()}`}
+	data-component-id={componentId}
 	data-value={value.toString()}
 	data-max={max.toString()}
 	style={style}

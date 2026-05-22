@@ -2,10 +2,11 @@
 <script lang='ts'>
 	import type { ResolvedValues } from '../../../utils/render.ts';
 
-	const { values, style, componentIndex }: {
+	const { values, style, componentIndex, componentId }: {
 		values: ResolvedValues;
 		style: string;
 		componentIndex: number;
+		componentId?: string;
 	} = $props();
 
 	const truthy = $derived(!!values.value);
@@ -16,6 +17,7 @@
 <div
 	class='component actor-val-component bool-component bool-{truthy.toString()} image-component'
 	id={`component${componentIndex.toString()}`}
+	data-component-id={componentId}
 	data-value={truthy.toString()}
 	style={style}
 >

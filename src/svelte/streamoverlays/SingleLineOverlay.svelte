@@ -16,19 +16,19 @@
 		return resolved ?? EmptyComponent;
 	}
 
-	function frameStyle(c: RenderedComponent): string {
+	function mergedStyle(c: RenderedComponent): string {
 		const fx = c.frame?.x ?? 0;
 		const fy = c.frame?.y ?? 0;
 		const rot = (c.rotation ?? 0) + (c.frame?.rotation ?? 0);
 		const sx = c.frame?.scaleX ?? 1;
 		const sy = c.frame?.scaleY ?? 1;
 		const opacity = c.frame?.opacity ?? 1;
-		// display:contents keeps the flex layout intact when no frame applies; switch
-		// to inline-block once anything non-identity needs to render.
 		const hasIdentity = fx === 0 && fy === 0 && rot === 0 && sx === 1 && sy === 1;
-		if (hasIdentity && opacity === 1) return 'display: contents;';
+		const base = c.style ?? '';
+		if (hasIdentity && opacity === 1) return base;
 		const transform = `translate(${fx}px, ${fy}px) rotate(${rot}deg) scale(${sx}, ${sy})`;
-		return `display: inline-block; transform: ${transform}; opacity: ${opacity};`;
+		const prefix = `transform: ${transform}; opacity: ${opacity};`;
+		return base ? `${prefix} ${base}` : prefix;
 	}
 </script>
 
@@ -40,13 +40,12 @@
 >
 	{#each overlay.components as component (component.id)}
 		{@const Component = getComponentType(component.type)}
-		<div data-component-id={component.id} style={frameStyle(component)}>
-			<Component
-				values={component.values}
-				componentIndex={component.index}
-				style={component.style}
-			/>
-		</div>
+		<Component
+			componentId={component.id}
+			values={component.values}
+			componentIndex={component.index}
+			style={mergedStyle(component)}
+		/>
 	{/each}
 </div>
 

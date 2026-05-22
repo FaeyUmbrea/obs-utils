@@ -17,11 +17,11 @@
 	}
 
 	/**
-	 * Apply a component frame as inline CSS. Layout slot is always reserved —
-	 * triggered overlays toggle visibility via opacity, not mount/unmount, so
-	 * sibling layout doesn't shift when triggers fire.
+	 * Merge frame placement onto the component's own style. Layout slot is always
+	 * reserved — triggered overlays toggle visibility via opacity, not mount/unmount,
+	 * so sibling layout doesn't shift when triggers fire.
 	 */
-	function frameStyle(c: import('../../utils/render.ts').RenderedComponent): string {
+	function mergedStyle(c: import('../../utils/render.ts').RenderedComponent): string {
 		const fx = c.frame?.x ?? 0;
 		const fy = c.frame?.y ?? 0;
 		const rot = (c.rotation ?? 0) + (c.frame?.rotation ?? 0);
@@ -29,7 +29,9 @@
 		const sy = c.frame?.scaleY ?? 1;
 		const opacity = c.frame?.opacity ?? 1;
 		const transform = `translate(${fx}px, ${fy}px) rotate(${rot}deg) scale(${sx}, ${sy})`;
-		return `position: absolute; left: ${c.x}px; top: ${c.y}px; width: ${c.w}px; height: ${c.h}px; transform: ${transform}; opacity: ${opacity};`;
+		const prefix = `position: absolute; left: ${c.x}px; top: ${c.y}px; width: ${c.w}px; height: ${c.h}px; transform: ${transform}; opacity: ${opacity};`;
+		const base = c.style ?? '';
+		return base ? `${prefix} ${base}` : prefix;
 	}
 </script>
 
@@ -41,17 +43,12 @@
 >
 	{#each overlay.components as component (component.id)}
 		{@const Component = getComponentClass(component.type)}
-		<div
-			id={`wysiwyg-component-${overlayIndex}-${component.index}`}
-			data-component-id={component.id}
-			style={frameStyle(component)}
-		>
-			<Component
-				values={component.values}
-				componentIndex={component.index}
-				style={component.style}
-			/>
-		</div>
+		<Component
+			componentId={component.id}
+			values={component.values}
+			componentIndex={component.index}
+			style={mergedStyle(component)}
+		/>
 	{/each}
 </div>
 

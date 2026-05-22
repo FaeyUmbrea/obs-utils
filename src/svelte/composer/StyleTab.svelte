@@ -18,15 +18,28 @@
 	let mode = $state<'easy' | 'advanced'>('easy');
 
 	// Fold any legacy inline `style` into `customCSS` so easy/advanced stay in sync.
+	// Inline style had (1,0,0,0) specificity; the new system injects `[data-…-id]`
+	// rules at (0,0,1,0), which lose to several project class rules (eg
+	// `.multi-icon-component { display: flex }`). Append !important to every legacy
+	// declaration so the migrated rule wins the same fights the inline style did.
 	$effect(() => {
 		const t = target as any;
 		if (!t || !t.style || !String(t.style).trim()) return;
-		const legacy = String(t.style).trim();
+		const legacy = legacyToCustomCSS(String(t.style));
 		const existing = String(t.customCSS ?? '').trim();
 		t.customCSS = existing ? `${legacy}\n${existing}` : legacy;
 		t.style = '';
 		commit?.();
 	});
+
+	function legacyToCustomCSS(raw: string): string {
+		return raw
+			.split(';')
+			.map(decl => decl.trim())
+			.filter(decl => decl.length > 0)
+			.map(decl => /!important\s*$/.test(decl) ? `${decl};` : `${decl} !important;`)
+			.join('\n');
+	}
 
 	function getCSS(): string {
 		if (!target) return '';

@@ -1,3 +1,10 @@
+## Version 5.1.1
+
+### Fixed
+
+- Custom CSS on a component targets the component's own element again. The frame wrapper that 5.1.0 introduced was intercepting `[data-component-id]` rules, so properties like `display`, `color`, and `background` landed on the wrong node.
+- Legacy inline `style` values are folded into `customCSS` with `!important` so the migrated rules retain inline-style priority against the built-in stylesheet.
+
 ## Version 5.1.0
 
 ### Added
