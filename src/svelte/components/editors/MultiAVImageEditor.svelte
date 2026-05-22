@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
 	import Select from '../select/Select.svelte';
 
@@ -17,8 +17,8 @@
 		data = `${valuePath ?? ''};${filledImg ?? ''};${maxPath ?? ''};${emptyImg ?? ''}`;
 	}
 
-	let filledOptions = $state<{ value: string; label: string }[]>(filledImg ? [{ value: filledImg, label: filledImg }] : []);
-	let emptyOptions = $state<{ value: string; label: string }[]>(emptyImg ? [{ value: emptyImg, label: emptyImg }] : []);
+	let filledOptions = $state<{ value: string; label: string }[]>(untrack(() => filledImg ? [{ value: filledImg, label: filledImg }] : []));
+	let emptyOptions = $state<{ value: string; label: string }[]>(untrack(() => emptyImg ? [{ value: emptyImg, label: emptyImg }] : []));
 
 	async function setFilled(path: string) {
 		if (!filledOptions.some(v => v.value === path)) {
@@ -63,7 +63,10 @@
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
 		<Select
 			options={groups}
-			bind:value={() => valuePath, (v) => { valuePath = (v as string) ?? ''; emit(); }}
+			bind:value={() => valuePath, (v) => {
+			valuePath = (v as string) ?? '';
+			emit();
+		}}
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
@@ -72,7 +75,10 @@
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.maxPath')}</span>
 		<Select
 			options={groups}
-			bind:value={() => maxPath, (v) => { maxPath = (v as string) ?? ''; emit(); }}
+			bind:value={() => maxPath, (v) => {
+			maxPath = (v as string) ?? '';
+			emit();
+		}}
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
@@ -82,7 +88,10 @@
 		<div class='picker'>
 			<Select
 				options={filledOptions}
-				bind:value={() => filledImg, (v) => { filledImg = (v as string) ?? ''; emit(); }}
+				bind:value={() => filledImg, (v) => {
+				filledImg = (v as string) ?? '';
+				emit();
+			}}
 				creatable={true}
 			/>
 			<button
@@ -99,7 +108,10 @@
 		<div class='picker'>
 			<Select
 				options={emptyOptions}
-				bind:value={() => emptyImg, (v) => { emptyImg = (v as string) ?? ''; emit(); }}
+				bind:value={() => emptyImg, (v) => {
+				emptyImg = (v as string) ?? '';
+				emit();
+			}}
 				creatable={true}
 			/>
 			<button

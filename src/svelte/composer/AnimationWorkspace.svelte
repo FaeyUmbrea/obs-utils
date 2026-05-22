@@ -7,7 +7,7 @@
 		TrackKeyframe,
 	} from '../../utils/overlayAnimation.ts';
 	import type { OverlayComponentData, OverlayData, OverlayTrack, TrackBehavior, TrackComponentLane } from '../../utils/types.ts';
-	import { setContext } from 'svelte';
+	import { setContext, untrack } from 'svelte';
 	import {
 		DEFAULT_EASING_V2,
 		ensureLane,
@@ -41,7 +41,7 @@
 			| { kind: 'legacy-kf'; componentId: string; index: number }
 			| { kind: 'prop-kf'; componentId: string; prop: AnimatablePropertyKey; index: number };
 
-	let selectedTrackId = $state<string | null>(layer.animation?.initialTrackId ?? null);
+	let selectedTrackId = $state<string | null>(untrack(() => layer.animation?.initialTrackId ?? null));
 	let playheadT = $state(0);
 	let selection = $state<Selection | null>(null);
 	let transitionsOpen = $state(false);
@@ -147,7 +147,10 @@
 		playStartWall = performance.now();
 		isPlaying = true;
 		const tick = () => {
-			if (!isPlaying || !selectedTrack) { playRafId = null; return; }
+			if (!isPlaying || !selectedTrack) {
+				playRafId = null;
+				return;
+			}
 			const elapsed = performance.now() - playStartWall;
 			const dur = selectedTrack.durationMs;
 			const raw = playStartT + elapsed;
@@ -168,7 +171,10 @@
 
 	function stopPlayback() {
 		isPlaying = false;
-		if (playRafId !== null) { cancelAnimationFrame(playRafId); playRafId = null; }
+		if (playRafId !== null) {
+			cancelAnimationFrame(playRafId);
+			playRafId = null;
+		}
 	}
 
 	function clampPlayhead() {
@@ -372,7 +378,10 @@
 					transitionsCount={transitionsForCurrentTrackCount}
 					canTransition={layer.animation.tracks.length >= 2}
 					{transitionsOpen}
-					onRename={(name) => { selectedTrack.name = name; commit(); }}
+					onRename={(name) => {
+						selectedTrack.name = name;
+						commit();
+					}}
 					onBehavior={t => setBehavior(selectedTrack, t)}
 					onDuration={ms => setDuration(selectedTrack, ms)}
 					onInitial={() => setInitialTrack(selectedTrack.id)}

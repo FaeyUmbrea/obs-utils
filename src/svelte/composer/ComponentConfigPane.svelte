@@ -7,7 +7,7 @@
 	import { ensureComponentId } from '../../utils/types.ts';
 	import FallbackEditor from '../components/editors/FallbackEditor.svelte';
 
-	let {
+	const {
 		component,
 		componentIndex,
 		layer,
@@ -197,7 +197,7 @@
 	</div>
 	{#if animWorkspace}
 		<div class='row anim-extras'>
-			{#each (['opacity', 'scaleX', 'scaleY'] as AnimatablePropertyKey[]) as prop}
+			{#each (['opacity', 'scaleX', 'scaleY'] as AnimatablePropertyKey[]) as prop (prop)}
 				<div class='field anim-field'>
 					<div class='field-label-row'>
 						<span>{prop}</span>

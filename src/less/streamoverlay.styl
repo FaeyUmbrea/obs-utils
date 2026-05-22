@@ -2,33 +2,41 @@
   background-color: transparent!important;
 }
 
+// Spacing matches 4.x: 20px above the first overlay, 20px between overlays,
+// 20px between tiles inside an inline overlay. Using padding-top + gap instead
+// of `.single-line-overlay { margin-top: 20px }` so the flex container doesn't
+// double-apply the margin like 5.0.0 did.
 .obs-utils.overlay {
   color: white;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
   align-items: flex-start;
-  gap: 4px;
+  padding-top: 20px;
+  gap: 20px;
 
   .overlay-row {
-    display: flex;
-    align-items: flex-start;
     margin-left: 20px;
+    width: max-content;
 
     &.inline-row {
+      display: flex;
       flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
     }
 
     &.canvas-row {
+      display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 20px;
     }
   }
 
   .overlay-tile {
     .single-line-overlay {
       display: flex;
-      margin-top: 20px;
 
       .component {
         padding: 5px;

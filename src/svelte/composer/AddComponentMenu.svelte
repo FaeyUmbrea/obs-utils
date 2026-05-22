@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	let { types, onPick } = $props<{
+	const { types, onPick } = $props<{
 		types: Array<{ key: string; label: string }>;
 		onPick: (key: string) => void;
 	}>();

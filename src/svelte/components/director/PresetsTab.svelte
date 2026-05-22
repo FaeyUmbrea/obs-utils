@@ -343,11 +343,6 @@
 				opacity 1
 				background rgba(255, 255, 255, 0.06)
 
-			&.active
-				opacity 1
-				background rgba(255, 144, 0, 0.15)
-				border-color rgba(255, 144, 0, 0.45)
-
 			&.danger:hover
 				background rgba(220, 60, 60, 0.15)
 				border-color rgba(220, 60, 60, 0.4)

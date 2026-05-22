@@ -1,6 +1,7 @@
 import type { Component } from 'svelte';
 import type { CameraPreset } from './cameraPresets.ts';
 import type { SequenceController } from './cameraSequencePlayer.ts';
+import type { LegacyRollOverlayConfig } from './defaultOverlays.ts';
 import type { DirectorState } from './directorState.ts';
 import type { ActorValueGroup, ActorValues } from './helpers.ts';
 import type { CustomEventInstance, OverlayData, TriggerPayloadField } from './types.ts';
@@ -18,7 +19,7 @@ import SingleLineOverlay from '../svelte/streamoverlays/SingleLineOverlay.svelte
 import WYSIWYGOverlay from '../svelte/streamoverlays/WYSIWYGOverlay.svelte';
 import { playSequence } from './cameraSequencePlayer.ts';
 import { MODULE_ID } from './const.ts';
-import { registerStarter } from './defaultOverlays.ts';
+import { makeRollOverlayFromLegacyConfig, registerStarter } from './defaultOverlays.ts';
 import { getDirectorState as readDirectorState } from './directorState.ts';
 import { getApi, isOBS, setActorValues, setActorValuesGrouped } from './helpers.ts';
 import { getWebsocket } from './obs.ts';
@@ -181,6 +182,22 @@ export class ObsUtilsApi {
 	registerOverlayType(key: string, readableName: string, type: OverlayType) {
 		this.overlayTypes.set(key, type);
 		this.overlayTypeNames.set(key, readableName);
+	}
+
+	/**
+	 * Build a `wysiwyg` (canvas) overlay that emulates the 4.x roll overlay.
+	 * Shared by the v4 migration (5.0 `type: 'roll'` entries) and the docs
+	 * snippet that pulls the user's legacy flat settings out of the world.
+	 *
+	 * The returned overlay is a 250×250 layer with `tileBy: 'players'`, a
+	 * `core.onPlayerRoll` transition out of the idle track, and the pre /
+	 * roll / post phases chained through `transition-on-end`.
+	 *
+	 * Push the result into `streamOverlays` (or import it through the
+	 * composer) — this helper is data-only and does not touch settings.
+	 */
+	buildLegacyRollOverlayCanvas(config: LegacyRollOverlayConfig): OverlayData {
+		return makeRollOverlayFromLegacyConfig(config);
 	}
 
 	// Legacy external component workflow (pre-Svelte 5)

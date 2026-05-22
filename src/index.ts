@@ -56,7 +56,7 @@ async function start() {
 		if (isGM()) {
 			// @ts-expect-error Typed incorrectly
 			Hooks.on('renderTokenHUD', expandTokenHud);
-			runMigrations();
+			await runMigrations();
 			// Stamp any pre-existing overlays/components with stable IDs (one-time, idempotent).
 			const overlays = getSetting('streamOverlays');
 			if (backfillIds(overlays)) {

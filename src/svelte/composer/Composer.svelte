@@ -4,7 +4,7 @@
 	import type { SvelteApplication } from '../../applications/mixin.svelte.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { activateCSSInjection, deactivateCSSInjection } from '../../utils/cssInjection.ts';
-	import { getApi, preventUndefinedNullInArray } from '../../utils/helpers.ts';
+	import { preventUndefinedNullInArray } from '../../utils/helpers.ts';
 	import { getOverlayTemplates } from '../../utils/overlayTemplates.ts';
 	import { settings } from '../../utils/settings.ts';
 	import { OverlayComponentData, OverlayData } from '../../utils/types.ts';
@@ -233,7 +233,7 @@
 		<section class='pane workspace-pane'>
 			<header class='breadcrumb'>
 				<span class='current-overlay'>{currentOverlay?.name ?? game.i18n?.localize('obs-utils.applications.overlayEditor.unnamedOverlay')}</span>
-				<nav class='mode-tabs' role='tablist'>
+				<div class='mode-tabs' role='tablist'>
 					<button type='button' role='tab' class:active={mode === 'settings'} onclick={() => (mode = 'settings')}>
 						{game.i18n?.localize('obs-utils.applications.overlayEditor.modeSettings') ?? 'Settings'}
 					</button>
@@ -246,7 +246,7 @@
 					<button type='button' role='tab' class:active={mode === 'preview'} onclick={() => (mode = 'preview')}>
 						{game.i18n?.localize('obs-utils.applications.overlayEditor.modePreview')}
 					</button>
-				</nav>
+				</div>
 			</header>
 
 			{#if mode === 'settings' && currentOverlay && selectedLayerIndex !== null}
@@ -332,28 +332,6 @@
 		flex 0 0 auto
 		background rgba(0, 0, 0, 0.18)
 		border-bottom 1px solid rgba(255, 255, 255, 0.08)
-
-	.crumb
-		display inline-flex
-		align-items center
-		gap 6px
-		height 26px
-		padding 0 10px
-		background transparent
-		border 1px solid rgba(255, 255, 255, 0.1)
-		border-radius 4px
-		font-size 12px
-		cursor pointer
-		opacity 0.75
-
-		&:hover, &.active
-			opacity 1
-			background rgba(255, 144, 0, 0.12)
-			border-color rgba(255, 144, 0, 0.4)
-
-	.sep
-		opacity 0.4
-		font-size 12px
 
 	.current-overlay
 		font-weight 600
@@ -495,56 +473,6 @@
 		min-height 0
 		position relative
 		overflow hidden
-
-	.empty-card
-		max-width 480px
-		text-align center
-		padding 32px
-		background rgba(0, 0, 0, 0.18)
-		border 1px solid rgba(255, 255, 255, 0.08)
-		border-radius 8px
-
-		.empty-icon
-			font-size 36px
-			opacity 0.4
-			margin-bottom 16px
-
-		h2
-			margin 0 0 8px 0
-			font-size 18px
-			font-weight 600
-
-		p
-			margin 0 0 20px 0
-			font-size 13px
-			line-height 1.5
-			opacity 0.7
-
-		.empty-actions
-			display grid
-			grid-template-columns repeat(2, minmax(0, 1fr))
-			gap 10px
-
-			button
-				display flex
-				flex-direction column
-				align-items center
-				gap 8px
-				padding 14px 8px
-				height auto
-				background rgba(255, 144, 0, 0.1)
-				border 1px solid rgba(255, 144, 0, 0.4)
-				border-radius 6px
-				cursor pointer
-				font-size 12px
-
-				i
-					font-size 18px
-					opacity 0.8
-
-				&:hover
-					background rgba(255, 144, 0, 0.2)
-					border-color rgba(255, 144, 0, 0.7)
 
 	.composer-footer
 		position absolute

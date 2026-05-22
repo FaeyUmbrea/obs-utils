@@ -2,7 +2,7 @@
 <script lang='ts'>
 	import type { CameraKeyframe, CameraPreset, EasingKind, LoopMode } from '../../../utils/cameraPresets.ts';
 	import type { SequenceController } from '../../../utils/cameraSequencePlayer.ts';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, untrack } from 'svelte';
 	import {
 		insertKeyframe,
 		makeKeyframe,
@@ -23,7 +23,7 @@
 		onPresetsChange: (next: CameraPreset[]) => void;
 	}
 
-	const { preset, presets, scene, onClose, onPresetsChange }: Props = $props();
+	const { preset, presets, scene, onPresetsChange }: Props = $props();
 
 	const LOC = (key: string) => game.i18n?.localize(`obs-utils.applications.director.keyframeEditor.${key}`) ?? key;
 
@@ -41,8 +41,8 @@
 	// only changed by the Duration input or by recording (which appends
 	// keyframes past the existing end). Dragging or editing a keyframe must
 	// never inflate the canvas.
-	let totalMs = $state(preset.durationMs
-		?? Math.max(MIN_DURATION_MS, maxKeyframeTime(preset.keyframes ?? []) + TIMELINE_PADDING_MS));
+	let totalMs = $state(untrack(() => preset.durationMs
+		?? Math.max(MIN_DURATION_MS, maxKeyframeTime(preset.keyframes ?? []) + TIMELINE_PADDING_MS)));
 
 	/** Persist the composition duration onto the preset so the play path bounces / holds against it. */
 	function setTotalMs(v: number) {
@@ -52,7 +52,9 @@
 	}
 
 	let zoom = $state(1);
-	function setZoom(z: number) { zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z)); }
+	function setZoom(z: number) {
+		zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+	}
 
 	let playheadMs = $state(0);
 	// Multi-select model — `selectedIndices` is the source of truth (sorted,
@@ -62,8 +64,12 @@
 	const selectedIndex = $derived<number | null>(selectedIndices.length > 0 ? selectedIndices[0] : null);
 	const selectedKf = $derived<CameraKeyframe | null>(selectedIndex !== null ? keyframes[selectedIndex] ?? null : null);
 
-	function isSelected(idx: number): boolean { return selectedIndices.includes(idx); }
-	function selectOnly(idx: number) { selectedIndices = [idx]; }
+	function isSelected(idx: number): boolean {
+		return selectedIndices.includes(idx);
+	}
+	function selectOnly(idx: number) {
+		selectedIndices = [idx];
+	}
 	function selectToggle(idx: number) {
 		selectedIndices = isSelected(idx)
 			? selectedIndices.filter(i => i !== idx)
@@ -73,6 +79,10 @@
 		if (additive) selectToggle(idx);
 		else selectOnly(idx);
 	}
+
+	// rootEl is bound for the selection auto-scroll effect (querySelector
+	// scope). Kept even though the editor no longer registers any keybindings.
+	let rootEl = $state<HTMLDivElement | null>(null);
 
 	// Empty inspector with a lone keyframe is a dead-end — auto-select so the
 	// user lands on something editable.
@@ -106,7 +116,8 @@
 		const lastKf = kfs[kfs.length - 1];
 		if (t >= lastKf.time) return { x: lastKf.x, y: lastKf.y, scale: lastKf.scale };
 		for (let i = 0; i < kfs.length - 1; i++) {
-			const a = kfs[i]; const b = kfs[i + 1];
+			const a = kfs[i];
+			const b = kfs[i + 1];
 			if (t >= a.time && t <= b.time) {
 				const span = b.time - a.time;
 				const u = span <= 0 ? 0 : (t - a.time) / span;
@@ -119,6 +130,9 @@
 		}
 		return null;
 	}
+
+	let isPlaying = $state(false);
+	let recording = $state(false);
 
 	// Snap the editor user's local viewport to the interpolated position at the
 	// current playhead so scrubbing/stepping/jumping previews what the
@@ -135,12 +149,15 @@
 	// ─── playback ─────────────────────────────────────────────────────────────
 
 	let controller = $state<SequenceController | null>(null);
-	let isPlaying = $state(false);
 	let rafId: number | null = null;
 	let playStartWall = 0;
 
 	function tickPlay() {
-		if (!controller) { isPlaying = false; rafId = null; return; }
+		if (!controller) {
+			isPlaying = false;
+			rafId = null;
+			return;
+		}
 		const elapsed = performance.now() - playStartWall;
 		const dur = controller.duration();
 		if (dur > 0) {
@@ -171,7 +188,10 @@
 	}
 
 	function play(fromStart = false) {
-		if (controller) { controller.stop(); controller = null; }
+		if (controller) {
+			controller.stop();
+			controller = null;
+		}
 		controller = playSequence(preset);
 		// Default: pick up from the current playhead so scrubbing then pressing
 		// play feels natural. Ctrl/meta-click overrides and starts at t=0.
@@ -185,8 +205,14 @@
 	}
 
 	function stop() {
-		if (controller) { controller.stop(); controller = null; }
-		if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+		if (controller) {
+			controller.stop();
+			controller = null;
+		}
+		if (rafId !== null) {
+			cancelAnimationFrame(rafId);
+			rafId = null;
+		}
 		isPlaying = false;
 	}
 
@@ -233,10 +259,10 @@
 			return;
 		}
 		const DialogV2 = (foundry as any)?.applications?.api?.DialogV2;
+		const shortenMsg = LOC('shortenWarning') ?? `This will delete ${lostKfs.length} keyframe${lostKfs.length === 1 ? '' : 's'} past the new duration. Continue?`;
 		const confirmed = await DialogV2?.confirm?.({
 			window: { title: LOC('shortenTitle') ?? 'Shorten duration' },
-			content: `<p>${LOC('shortenWarning')
-			?? `This will delete ${lostKfs.length} keyframe${lostKfs.length === 1 ? '' : 's'} past the new duration. Continue?`}</p>`,
+			content: `<p>${shortenMsg}</p>`,
 		});
 		if (!confirmed) {
 			// Trigger a Svelte update so the input snaps back to the old value.
@@ -298,7 +324,9 @@
 	let timelineWrapEl = $state<HTMLDivElement | null>(null);
 	let timelineEl = $state<HTMLDivElement | null>(null);
 
-	function stripWidth(): number { return timelineEl?.clientWidth ?? 600; }
+	function stripWidth(): number {
+		return timelineEl?.clientWidth ?? 600;
+	}
 	function tToX(ms: number): number {
 		if (totalMs <= 0) return 0;
 		return (ms / totalMs) * stripWidth();
@@ -319,12 +347,19 @@
 		let groupT = 0;
 		for (let i = 0; i < keyframes.length; i++) {
 			const px = Math.round(tToX(keyframes[i].time));
-			if (group.length === 0) { group = [i]; groupPx = px; groupT = keyframes[i].time; continue; }
+			if (group.length === 0) {
+				group = [i];
+				groupPx = px;
+				groupT = keyframes[i].time;
+				continue;
+			}
 			if (px === groupPx) {
 				group.push(i);
 			} else {
 				out.push({ key: `${groupT}-${group.length}`, indices: group, t: groupT });
-				group = [i]; groupPx = px; groupT = keyframes[i].time;
+				group = [i];
+				groupPx = px;
+				groupT = keyframes[i].time;
 			}
 		}
 		if (group.length) out.push({ key: `${groupT}-${group.length}`, indices: group, t: groupT });
@@ -500,17 +535,15 @@
 		window.removeEventListener('keydown', onWindowDeleteCapture, { capture: true });
 	});
 
-	// rootEl is bound for the selection auto-scroll effect (querySelector
-	// scope). Kept even though the editor no longer registers any keybindings.
-	let rootEl = $state<HTMLDivElement | null>(null);
-
 	function onWheel(e: WheelEvent) {
 		if (!(e.ctrlKey || e.metaKey)) return;
 		e.preventDefault();
 		setZoom(zoom * (e.deltaY < 0 ? 1.25 : 0.8));
 	}
 
-	function formatSeconds(ms: number): string { return `${(ms / 1000).toFixed(2)}s`; }
+	function formatSeconds(ms: number): string {
+		return `${(ms / 1000).toFixed(2)}s`;
+	}
 
 	// ─── navigation buttons ──────────────────────────────────────────────────
 	// Keyframe times are stored as integer ms, so a "step" is one ms — the
@@ -568,7 +601,6 @@
 	// deduplicated, and simplified into a sparse keyframe set that replaces
 	// any pre-existing keyframes inside the recorded time window.
 
-	let recording = $state(false);
 	let countdown = $state<number | null>(null); // 3, 2, 1, then 0 ("GO") then null
 	let smoothingWindow = $state(3);
 	// Duration lock: when on, recording auto-stops at the duration mark and
@@ -579,7 +611,7 @@
 	let countdownTimerId: ReturnType<typeof setTimeout> | null = null;
 	let recordRafId: number | null = null;
 	let recordStartWall = 0;
-	let recordStartTimelineMs = 0;
+	let recordStartTimelineMs = $state(0);
 	let recordElapsedMs = $state(0);
 	let recordBuffer: CameraKeyframe[] = [];
 	const RECORD_INTERVAL_MS = 33;
@@ -630,7 +662,10 @@
 		// rAF loop drives playhead + progress fill at display refresh rate so
 		// the UI feels smooth even though sampling runs at ~30 Hz.
 		const loop = () => {
-			if (!recording) { recordRafId = null; return; }
+			if (!recording) {
+				recordRafId = null;
+				return;
+			}
 			recordElapsedMs = performance.now() - recordStartWall;
 			playheadMs = Math.min(totalMs, recordStartTimelineMs + recordElapsedMs);
 			// Locked recording stops automatically when the playhead reaches
@@ -646,9 +681,18 @@
 	}
 
 	function stopRecord() {
-		if (countdownTimerId !== null) { clearTimeout(countdownTimerId); countdownTimerId = null; }
-		if (recordSampleTimerId !== null) { clearInterval(recordSampleTimerId); recordSampleTimerId = null; }
-		if (recordRafId !== null) { cancelAnimationFrame(recordRafId); recordRafId = null; }
+		if (countdownTimerId !== null) {
+			clearTimeout(countdownTimerId);
+			countdownTimerId = null;
+		}
+		if (recordSampleTimerId !== null) {
+			clearInterval(recordSampleTimerId);
+			recordSampleTimerId = null;
+		}
+		if (recordRafId !== null) {
+			cancelAnimationFrame(recordRafId);
+			recordRafId = null;
+		}
 		const wasRecording = recording;
 		recording = false;
 		countdown = null;
@@ -698,9 +742,15 @@
 		const half = Math.floor(windowSize / 2);
 		const out: CameraKeyframe[] = [];
 		for (let i = 0; i < buf.length; i++) {
-			let sx = 0; let sy = 0; let ss = 0; let n = 0;
+			let sx = 0;
+			let sy = 0;
+			let ss = 0;
+			let n = 0;
 			for (let j = Math.max(0, i - half); j <= Math.min(buf.length - 1, i + half); j++) {
-				sx += buf[j].x; sy += buf[j].y; ss += buf[j].scale; n++;
+				sx += buf[j].x;
+				sy += buf[j].y;
+				ss += buf[j].scale;
+				n++;
 			}
 			out.push({ ...buf[i], x: Math.round(sx / n), y: Math.round(sy / n), scale: ss / n });
 		}
@@ -744,7 +794,10 @@
 		const last = buf[buf.length - 1];
 		for (let i = 1; i < buf.length - 1; i++) {
 			const d = perpDistance(buf[i], first, last);
-			if (d > maxDist) { maxDist = d; maxIdx = i; }
+			if (d > maxDist) {
+				maxDist = d;
+				maxIdx = i;
+			}
 		}
 		if (maxDist > epsilon) {
 			const left = rdpSimplify(buf.slice(0, maxIdx + 1), epsilon);
@@ -790,7 +843,7 @@
 
 <svelte:window onmousemove={onWinMouseMove} onmouseup={onWinMouseUp} />
 
-<div class='ape' bind:this={rootEl} tabindex='0' role='application'>
+<div class='ape' bind:this={rootEl} role='application'>
 	<header class='ape-toolbar'>
 		<div class='group'>
 			<button type='button' class='btn' onclick={e => jumpKeyframe(-1, e.ctrlKey || e.metaKey)} title={LOC('prevKeyframe')}>
@@ -922,7 +975,7 @@
 	>
 		<div class='ape-timeline' bind:this={timelineEl} onmousedown={onStripMouseDown} role='presentation' style={`width: ${100 * zoom}%`}>
 			<!-- tick grid: 6 labelled ticks keeps labels readable at narrow widths,
-				 with minor unlabeled ticks between them for visual rhythm. -->
+				with minor unlabeled ticks between them for visual rhythm. -->
 			<div class='ticks'>
 				{#each Array.from({ length: 11 }, (_, i) => i) as i (i)}
 					<div class='tick' class:major={i % 2 === 0} class:tick-last={i === 10} style={`left: ${(i / 10) * 100}%`}>
@@ -951,6 +1004,12 @@
 								// keyframe — convenient when scrubbing to "go here, then play".
 								if (e.ctrlKey || e.metaKey) playheadMs = keyframes[g.indices[0]].time;
 							}}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									selectOnly(g.indices[0]);
+								}
+							}}
 						></div>
 					{:else}
 						<div
@@ -959,7 +1018,10 @@
 							role='button'
 							tabindex='0'
 							aria-label='{g.indices.length} keyframes'
-							onmousedown={(e) => { e.stopPropagation(); e.preventDefault(); }}
+							onmousedown={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+							}}
 							onclick={(e) => {
 								e.stopPropagation();
 								// Cycle through stacked keyframes on plain click.
@@ -967,6 +1029,14 @@
 								const nextIdx = g.indices[(cur + 1) % g.indices.length];
 								selectOnly(nextIdx);
 								if (e.ctrlKey || e.metaKey) playheadMs = keyframes[nextIdx].time;
+							}}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									const cur = selectedIndex !== null ? g.indices.indexOf(selectedIndex) : -1;
+									const nextIdx = g.indices[(cur + 1) % g.indices.length];
+									selectOnly(nextIdx);
+								}
 							}}
 						>{g.indices.length}</div>
 					{/if}

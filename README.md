@@ -36,6 +36,7 @@ Check the [Wiki](https://docs.void.monster)!
 - Make /stream Background Transparent
 - /stream Information Overlays
 - Overlay Animations: per-component opacity / transform tracks with looping or trigger-driven transitions, four tile modes (per actor / per player / per user / singleton), payload-aware `trigger.X` paths
+- Animation Composer: live preview, per-trigger test-fire, slide-in style and transitions drawers
 - Preset Animations: author keyframed camera paths or record live and play them smoothly on the OBS client without dragging the GM's view along
 
 - Foundry Core Multilevel Support (Out of combat token visibility and floor tracking might be limited)
@@ -62,9 +63,9 @@ This repository uses xc for task definitions! As such only nodejs, yarn and xc a
 
 | Project     | Version  |
 | ----------- | -------- |
-| nodejs.org  | ^18.12.1 |
+| nodejs.org  | ^20.0.0  |
 | xcfile.dev  | ^0.0.159 |
-| yarnpkg.com | ^3.5.1   |
+| yarnpkg.com | ^4.5.0   |
 
 ## Tasks
 

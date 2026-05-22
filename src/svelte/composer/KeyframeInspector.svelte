@@ -89,7 +89,7 @@
 				<span>{componentLabel(comp)}</span>
 			</header>
 			<div class='prop-chevron-list'>
-				{#each USER_ANIMATABLE_PROPERTIES as prop}
+				{#each USER_ANIMATABLE_PROPERTIES as prop (prop)}
 					{@const pkf = lane ? (lanePropertyKeyframes(lane)[prop] ?? []) : []}
 					{@const onKf = pkf.some(k => k.t === Math.round(playheadT))}
 					{@const hasTrack = pkf.length > 0}
@@ -105,6 +105,12 @@
 						onclick={(e) => {
 							if ((e.target as HTMLElement).closest('input, button')) return;
 							onSelectProperty({ kind: 'property', componentId: compId, prop });
+						}}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								onSelectProperty({ kind: 'property', componentId: compId, prop });
+							}
 						}}
 						role='button'
 						tabindex='0'
@@ -155,7 +161,7 @@
 								<span class='kf-row-unit'>ms</span>
 							</div>
 							<div class='prop-kf-row interp-row'>
-								{#each (['constant', 'linear', 'bezier'] as EasingInterpolation[]) as mode}
+								{#each (['constant', 'linear', 'bezier'] as EasingInterpolation[]) as mode (mode)}
 									<button
 										type='button'
 										class='interp-chip'
@@ -171,13 +177,13 @@
 										value={easing.equation ?? 'sinusoidal'}
 										onchange={e => patchPropKfEasing({ equation: (e.currentTarget as HTMLSelectElement).value as EasingEquation })}
 									>
-										{#each EQUATIONS as eq}
+										{#each EQUATIONS as eq (eq)}
 											<option value={eq}>{EQUATION_LABELS[eq]}</option>
 										{/each}
 									</select>
 								</div>
 								<div class='prop-kf-row dir-row'>
-									{#each (['in', 'out', 'inout', 'auto'] as EasingDirection[]) as dir}
+									{#each (['in', 'out', 'inout', 'auto'] as EasingDirection[]) as dir (dir)}
 										<button
 											type='button'
 											class='dir-chip'

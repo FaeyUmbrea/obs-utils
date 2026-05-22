@@ -2,44 +2,22 @@
 
 ### Added
 
-- Overlay animation system. Each overlay can carry a set of tracks with per-component, per-property keyframes; transitions move between tracks when a trigger fires inside a configured time-range zone.
-  - Track behaviors: static (hold at t=0), looping, and transition-on-end.
-  - Per-property keyframes for opacity, x, y, rotation, scaleX, scaleY. Easing per keyframe: constant / linear / bezier, with sinusoidal/quadratic/cubic/quartic/quintic/exponential/circular/back/bounce/elastic equations and in/out/inout/auto directions.
-  - Legacy mixed-property keyframes still load and play; new authoring writes per-property arrays.
-- Overlay tiling modes. Pick how the renderer expands an overlay across contexts.
-  - `actors` — one tile per overlay actor (the existing behavior).
-  - `players` — one tile per non-GM user.
-  - `users` — one tile per user, including GMs.
-  - `once` — singleton, regardless of actors/users.
-- Trigger payloads now route into components. Reference `trigger.<field>` in any component data path (e.g. `trigger.total`, `trigger.actor.name`, `trigger.speakerAlias`). The renderer picks the payload that matches the tile's actor/user; preview mode in the editor disables that filter so every tile shows the data.
-- Built-in triggers `core.onPlayerRoll` and `core.onChatMessage` now include `actor` and `user` fields on their payloads.
-- Animation editor.
-  - Per-track timeline with one lane per component, expandable into per-property rows. Keyframe markers shape-coded by interpolation (constant=square, linear=triangle, bezier=diamond) and color-coded by easing equation.
-  - Ctrl+drag on the timeline draws a 2D lasso. Selects every marker its rect intersects across all lanes; the selection can be dragged together and deleted as a batch.
-  - Ctrl+click on the prev/next-keyframe nav buttons jumps to the very first / last keyframe.
-  - Arrow keys nudge the selected keyframe by 1ms (10ms with Ctrl, 100ms with Shift). Backspace/Delete removes it.
-  - Transitions drawer slides over the workspace instead of expanding inline.
-- Layout tab style editor opens in a slide-in drawer instead of a collapsed inline section.
-- Live preview pane on the editor's Animation tab follows the playhead and reflects the scrubbed state in real time. Drag the playhead, use the nav buttons, or step frame-by-frame.
-- Preview tab in the composer shows every overlay × every tile with payload-filtering disabled. Test-fire buttons synthesise realistic payloads (random `1d20`, current user, first overlay actor) so animations actually play.
+- Overlay animation system. Per-component, per-property keyframes on named tracks with bezier easing; trigger-driven transitions move between tracks.
+- Overlay tiling modes selected per-overlay.
+- Trigger payloads route into component data paths. Reference `trigger.<field>` anywhere an actor path works.
+- Animation editor with per-track timeline, lasso selection, keyboard nudging, and a slide-in transitions drawer.
+- Live preview that follows the playhead, plus a composer Preview tab with per-trigger test-fire buttons.
 
 ### Changed
 
-- Overlays group by layer when rendering. Different overlays stack vertically; inline (`sl`) overlays tile within a column, canvas (`wysiwyg`) overlays wrap horizontally based on the canvas width.
-- Every overlay row gets a 20px left margin so it clears the chat sidebar on `/stream` even without the per-actor margin from 5.0.
-- Settings tab covers overlay name, type, tile mode, and canvas size. Custom CSS edits now live in the style drawer (single source of truth — no more two-fields-same-data confusion).
-- Renamed Single Line overlays to "Inline" and WYSIWYG overlays to "Canvas" in the UI (the `type` string is unchanged on disk).
+- Overlays group by layer when rendering. Inline overlays stack in a column; canvas overlays wrap based on canvas width.
+- Single Line → Inline, WYSIWYG → Canvas in the UI (the `type` string is unchanged on disk).
+- Style editor lives in a slide-in drawer instead of an inline section.
 
 ### Removed
 
-- The trigger-path warning that flagged any `trigger.X` reference when the overlay had no transitions. It compared the path field against trigger keys, which never matched, so it was a permanent false positive.
-- The standalone Roll Overlay Editor menu (already removed in 5.0; the entry is now confirmed gone). Users coming from 4.x can rebuild a roll banner as a `players`-tiled overlay with a `core.onPlayerRoll` transition; a manual migration snippet lives in the docs.
-
-### Data model
-
-- `OverlayData` gained `animation?: OverlayAnimationData` and `tileBy?: OverlayTileMode`. Both are optional — old worlds keep loading as ambient actors-tiled overlays.
-- `OverlayFrame` gained `triggerKey?` so the renderer knows which payload to resolve `trigger.X` against.
-- No migration needed for the new shape. The migration version stays at 3.
+- The `roll` overlay type, in favor of trigger-driven canvas overlays.
+- The trigger-path warning that flagged any `trigger.X` reference when the overlay had no transitions.
 
 ## Version 5.0.0
 

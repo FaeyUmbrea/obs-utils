@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { tick } from 'svelte';
+	import { tick, untrack } from 'svelte';
 	import { getDataPickerGroups } from '../../../utils/helpers';
 	import Select from '../select/Select.svelte';
 
@@ -17,8 +17,8 @@
 	}
 
 	// Two parallel image picker states — one per image slot.
-	let img1Options = $state<{ value: string; label: string }[]>(img1 ? [{ value: img1, label: img1 }] : []);
-	let img2Options = $state<{ value: string; label: string }[]>(img2 ? [{ value: img2, label: img2 }] : []);
+	let img1Options = $state<{ value: string; label: string }[]>(untrack(() => img1 ? [{ value: img1, label: img1 }] : []));
+	let img2Options = $state<{ value: string; label: string }[]>(untrack(() => img2 ? [{ value: img2, label: img2 }] : []));
 
 	async function setImg1(path: string) {
 		if (!img1Options.some(v => v.value === path)) {
@@ -63,7 +63,10 @@
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.valuePath')}</span>
 		<Select
 			options={groups}
-			bind:value={() => av1, (v) => { av1 = (v as string) ?? ''; emit(); }}
+			bind:value={() => av1, (v) => {
+			av1 = (v as string) ?? '';
+			emit();
+		}}
 			creatable={true}
 			placeholder={game.i18n?.localize('obs-utils.strings.avInputPlaceholder')}
 		/>
@@ -73,7 +76,10 @@
 		<div class='picker'>
 			<Select
 				options={img1Options}
-				bind:value={() => img1, (v) => { img1 = (v as string) ?? ''; emit(); }}
+				bind:value={() => img1, (v) => {
+				img1 = (v as string) ?? '';
+				emit();
+			}}
 				creatable={true}
 			/>
 			<button
@@ -90,7 +96,10 @@
 		<div class='picker'>
 			<Select
 				options={img2Options}
-				bind:value={() => img2, (v) => { img2 = (v as string) ?? ''; emit(); }}
+				bind:value={() => img2, (v) => {
+				img2 = (v as string) ?? '';
+				emit();
+			}}
 				creatable={true}
 			/>
 			<button

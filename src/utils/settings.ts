@@ -1,10 +1,8 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import type { Readable, Writable } from 'svelte/store';
-import type { OverlayData } from './types.ts';
 import { writable } from 'svelte/store';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
 import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
-import { getExampleOverlay } from './defaultOverlays.ts';
 import { getGM, isOBS } from './helpers';
 import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
 
@@ -15,7 +13,7 @@ export const OBSAction = {
 	DisableSource: 'obs-utils.applications.obsRemote.disableSource',
 };
 
-const SETTINGS_VERSION = 3;
+export const SETTINGS_VERSION = 4;
 
 const OBS_MODIFIABLE_SETTINGS = new Set<ClientSettings.KeyFor<'obs-utils'>>([
 	'defaultOutOfCombat',
@@ -35,77 +33,13 @@ async function changeMode() {
 	if (firstGM) viewportChanged(firstGM);
 }
 
-export function runMigrations() {
-	const version = getSetting('settingsVersion') ?? 0;
-	if (version < SETTINGS_VERSION) {
-		console.warn('Running OBS Utils Migrations');
-		if (version < 1) {
-			console.warn('Migrations for Data-Model Version 1');
-			let obssettings = getSetting('websocketSettings');
-			// Code for Migration Setting Models
-			obssettings = foundry.utils.mergeObject(
-				new OBSWebsocketSettings(),
-				obssettings,
-			);
-			// @ts-expect-error should not exist, which is why its deleted
-			delete obssettings.onCloseObs;
-			setSetting('websocketSettings', obssettings).then();
-		}
-		if (version < 2) {
-			console.warn('Migrations for Data-Model Version 2');
-			let obssettings = getSetting('obsRemote');
-			// Code for Migration Setting Models
-			obssettings = foundry.utils.mergeObject(
-				new OBSRemoteSettings(),
-				obssettings,
-			);
-			setSetting('obsRemote', obssettings).then();
-		}
-		if (version < 3) {
-			console.warn('Migrations for Data-Model Version 3');
-
-			// set overlayActorsModified based on existing state
-			const actors = getSetting('overlayActors') ?? [];
-			setSetting('overlayActorsModified', (actors as string[]).length > 0).then();
-
-			const currentOverlays = (getSetting('streamOverlays') ?? []) as OverlayData[];
-			if (currentOverlays.length === 0) {
-				currentOverlays.push(getExampleOverlay());
-				setSetting('streamOverlays', currentOverlays).then();
-			}
-
-			// Fold the legacy named event arrays into the registry-keyed customEvents map.
-			// All built-in event types are namespaced under 'core.*'.
-			const obs = getSetting('obsRemote');
-			if (obs) {
-				const customEvents: Record<string, any[]> = (obs as any).customEvents ?? {};
-				const fold = (legacyKey: string, registryKey: string) => {
-					const arr = (obs as any)[legacyKey];
-					if (Array.isArray(arr) && arr.length > 0 && !customEvents[registryKey]?.length) {
-						customEvents[registryKey] = [{ conditions: {}, actions: arr }];
-					}
-				};
-				fold('onLoad', 'core.onLoad');
-				fold('onCombatStart', 'core.onCombatStart');
-				fold('onCombatEnd', 'core.onCombatEnd');
-				fold('onPause', 'core.onPause');
-				fold('onUnpause', 'core.onUnpause');
-				fold('onStopStreaming', 'core.onStopStreaming');
-				// onSceneLoad is per-scene — each legacy entry becomes its own instance.
-				const sceneLegacy = (obs as any).onSceneLoad;
-				if (Array.isArray(sceneLegacy) && sceneLegacy.length > 0 && !customEvents['core.onSceneLoad']?.length) {
-					customEvents['core.onSceneLoad'] = sceneLegacy.map((sle: any) => ({
-						conditions: { sceneName: sle?.sceneName ?? '' },
-						actions: sle?.obsActions ?? [],
-					}));
-				}
-				(obs as any).customEvents = customEvents;
-				setSetting('obsRemote', obs).then();
-			}
-		}
-		console.warn('OBS Utils Migrations Finished');
-		setSetting('settingsVersion', SETTINGS_VERSION).then();
-	}
+export async function runMigrations(): Promise<void> {
+	const version = (getSetting('settingsVersion') ?? 0) as number;
+	if (version >= SETTINGS_VERSION) return;
+	// Per-version migration code is in a separate chunk — only worlds that
+	// actually need to migrate pay the bundle cost.
+	const { runMigrationsImpl } = await import('./migrations.ts');
+	await runMigrationsImpl(version);
 }
 
 export function getSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(settingName: K): ClientSettings.SettingInitializedType<'obs-utils', K> | undefined {

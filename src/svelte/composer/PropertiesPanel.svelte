@@ -1,7 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { OverlayData } from '../../utils/types.ts';
-	import { getApi } from '../../utils/helpers.ts';
 	import SimpleComposerEditor from './SimpleComposerEditor.svelte';
 	import StyleTab from './StyleTab.svelte';
 	import WYSIWYGComposerEditor from './WYSIWYGComposerEditor.svelte';
@@ -11,8 +10,6 @@
 		selectedLayerIndex,
 		selectedComponentIndex = $bindable(),
 		addedComponentTick = 0,
-		renameLayer,
-		changeLayerType,
 		addComponentToLayer,
 		reorderComponents,
 		removeComponent,
@@ -69,42 +66,6 @@
 		}
 	});
 
-	const overlayTypeOptions = $derived.by(() => {
-		const types = getApi().overlayTypes;
-		if (!types) return [] as Array<{ key: string; label: string }>;
-		return Array.from(types.keys())
-			.filter(k => k === 'sl' || k === 'wysiwyg')
-			.map((k) => {
-				const nameKey = getApi().overlayTypeNames?.get(k);
-				return { key: k, label: nameKey ? game.i18n.localize(nameKey) : k };
-			});
-	});
-
-	function onRename(e: Event) {
-		if (selectedLayerIndex === null) return;
-		renameLayer(selectedLayerIndex, (e.currentTarget as HTMLInputElement).value);
-	}
-	async function onTypeChange(e: Event) {
-		if (selectedLayerIndex === null) return;
-		const newType = (e.currentTarget as HTMLSelectElement).value;
-		const current = overlays[selectedLayerIndex]?.type;
-		if (newType === current) return;
-		// Type change can drop positioning data — confirm only when there's something to lose.
-		const hasComponents = (overlays[selectedLayerIndex]?.components?.length ?? 0) > 0;
-		if (hasComponents) {
-			const proceed = await foundry.applications.api.DialogV2.confirm({
-				content: game.i18n.localize('obs-utils.applications.overlayEditor.confirmTypeChange'),
-			});
-			if (!proceed) {
-				// Revert the visual selection
-				(e.currentTarget as HTMLSelectElement).value = current;
-				return;
-			}
-		}
-		changeLayerType(selectedLayerIndex, newType);
-	}
-
-	const componentCount = $derived(selectedLayer?.components?.length ?? 0);
 	const styleHasCustomCSS = $derived(
 		!!(styleTarget && (styleTarget as any).customCSS && (styleTarget as any).customCSS.trim().length),
 	);
@@ -120,9 +81,9 @@
 		</div>
 	{:else}
 		<!-- Single combined inspector — components list at the top, the selected
-		     component's editor below, and a collapsed CSS section at the bottom.
-		     Overlay-level fields (name, type, tileBy, w/h, customCSS for the
-		     overlay) live in the Settings tab. -->
+			component's editor below, and a collapsed CSS section at the bottom.
+			Overlay-level fields (name, type, tileBy, w/h, customCSS for the
+			overlay) live in the Settings tab. -->
 		<section class='inspector-body'>
 			{#if selectedLayer.type === 'wysiwyg'}
 				<WYSIWYGComposerEditor
@@ -372,39 +333,6 @@
 		gap 8px
 		padding-top 8px
 		border-top 1px solid rgba(255, 255, 255, 0.08)
-
-	.css-section
-		border 1px solid rgba(255, 255, 255, 0.08)
-		border-radius 4px
-		background rgba(255, 255, 255, 0.02)
-
-		summary
-			display flex
-			align-items center
-			gap 6px
-			padding 6px 8px
-			cursor pointer
-			font-size 11px
-			text-transform uppercase
-			letter-spacing 0.4px
-			opacity 0.75
-
-			&:hover
-				opacity 1
-
-			i
-				font-size 10px
-
-			.dot
-				display inline-block
-				width 6px
-				height 6px
-				border-radius 50%
-				background #ff9000
-				margin-left auto
-
-		&[open] summary
-			border-bottom 1px solid rgba(255, 255, 255, 0.08)
 
 	.component-nav
 		display grid

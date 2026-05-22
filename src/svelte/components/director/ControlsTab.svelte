@@ -72,7 +72,7 @@
 		<div class='camera-section'>
 			<b>{game.i18n?.localize('obs-utils.applications.director.cameraSmoothingHeader')}</b>
 			<div class='tracking-mode-row'>
-				<label class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.trackingModeHeader')}</label>
+				<span class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.trackingModeHeader')}</span>
 				<div class='radio-row'>
 					{#each trackingModeOptions as opt (opt.value)}
 						<input
@@ -95,7 +95,7 @@
 				</div>
 			</div>
 			<div class='easing-row'>
-				<label class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.easing')}</label>
+				<span class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.easing')}</span>
 				<div class='radio-row'>
 					{#each easingOptions as opt (opt.value)}
 						<input
@@ -270,7 +270,7 @@
 				font-size 12px
 				opacity 0.8
 
-			select, input[type=range]
+			input[type=range]
 				opacity 1
 				position relative
 				width 100%

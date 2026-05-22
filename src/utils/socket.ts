@@ -125,6 +125,11 @@ function socketCanvasInternal(position: Canvas.ViewPosition) {
 const EMIT_INTERVAL_MS = 33;
 const SMOOTH_WINDOW = 5;
 const DRAG_SETTLE_MS = 150;
+// A real drag moves a handful of pixels per tick at most. Anything bigger is a
+// new motion (e.g. a programmatic `canvas.pan()` or the end of an animation
+// followed by a fresh pan) and must not get averaged with the prior sequence.
+const SMOOTH_JUMP_PX = 100;
+const SMOOTH_JUMP_SCALE = 0.1;
 
 let lastEmitWall = 0;
 let pendingPosition: Canvas.ViewPosition | null = null;
@@ -167,6 +172,12 @@ function throttledEmit(p: Canvas.ViewPosition) {
 }
 
 function smoothedEmit(p: Canvas.ViewPosition) {
+	if (smoothBuf.length > 0) {
+		const last = smoothBuf[smoothBuf.length - 1];
+		const jumped = Math.hypot(p.x - last.x, p.y - last.y) > SMOOTH_JUMP_PX
+			|| Math.abs(p.scale - last.scale) > SMOOTH_JUMP_SCALE;
+		if (jumped) smoothBuf.length = 0;
+	}
 	smoothBuf.push(p);
 	if (smoothBuf.length > SMOOTH_WINDOW) smoothBuf.shift();
 	throttledEmit(avgPosition(smoothBuf));

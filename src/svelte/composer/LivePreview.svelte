@@ -72,7 +72,8 @@
 	<div class='live-preview-frame' style={`width: ${PREVIEW_FRAME_W}px; height: ${PREVIEW_FRAME_H}px;`}>
 		<div class='live-preview-stage' style={`transform: scale(${previewScale}); transform-origin: top left;`}>
 			{#if previewOverlayComponent}
-				<svelte:component this={previewOverlayComponent} overlay={previewRendered} overlayIndex={0} />
+				{@const OverlayComp = previewOverlayComponent}
+				<OverlayComp overlay={previewRendered} overlayIndex={0} />
 			{/if}
 		</div>
 	</div>

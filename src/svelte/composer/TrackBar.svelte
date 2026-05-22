@@ -181,7 +181,7 @@
 		span
 			opacity 0.7
 
-		input, select
+		input
 			height 26px
 			padding 0 6px
 			font-size 11px

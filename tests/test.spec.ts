@@ -508,19 +508,6 @@ test.describe('Multi-GM Handover', () => {
 	});
 });
 
-async function getGMViewport(gmPage: Page) {
-	return await gmPage.evaluate(() => [
-		// @ts-expect-error run in plain js
-		window.canvas.stage.position.scope.pivot.x,
-		// @ts-expect-error run in plain js
-		window.canvas.stage.position.scope.pivot.y,
-		// @ts-expect-error run in plain js
-		window.canvas.stage.position.scope.scale.x,
-		// @ts-expect-error run in plain js
-		window.canvas.stage.position.scope.scale.y,
-	]);
-}
-
 async function startCombatWithAllTokens(gmPage: Page) {
 	if (!await gmPage.locator('section#combat.active').isVisible()) {
 		await gmPage.locator('button[data-tab=combat]').click();

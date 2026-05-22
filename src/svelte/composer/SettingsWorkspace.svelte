@@ -3,7 +3,7 @@
 	import type { OverlayData, OverlayTileMode } from '../../utils/types.ts';
 	import { getApi } from '../../utils/helpers.ts';
 
-	let {
+	const {
 		layer,
 		layerIndex,
 		renameLayer,
@@ -148,9 +148,6 @@
 		grid-template-columns 1fr 1fr
 		gap 12px
 
-		&.stack
-			grid-template-columns 1fr
-
 	.field
 		display flex
 		flex-direction column
@@ -164,7 +161,7 @@
 			opacity 0.7
 			font-weight 500
 
-		input, select, textarea
+		input, select
 			width 100%
 			min-width 0
 			height 30px
@@ -192,9 +189,4 @@
 				background #1a1a1a
 				color #e4e4e4
 
-		textarea
-			height auto
-			padding 8px
-			font-family monospace
-			resize vertical
 </style>

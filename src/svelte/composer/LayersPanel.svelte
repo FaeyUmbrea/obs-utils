@@ -9,7 +9,6 @@
 		overlays,
 		selectedLayerIndex = $bindable(),
 		selectedComponentIndex = $bindable(),
-		addLayer,
 		removeLayer,
 		reorderLayers,
 		toggleLayerEnabled,

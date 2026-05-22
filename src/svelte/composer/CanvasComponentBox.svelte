@@ -7,7 +7,7 @@
 
 	type HandleDir = 'nw' | 'ne' | 'sw' | 'se';
 
-	let {
+	const {
 		comp,
 		index,
 		layerIndex,

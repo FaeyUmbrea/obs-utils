@@ -199,14 +199,15 @@
 <svelte:window onclick={onWindowClick} onresize={onScrollOrResize} onscroll={onScrollOrResize} />
 
 <div class='ouselect' class:open class:disabled bind:this={triggerEl}>
-	<button
-		type='button'
+	<div
 		class='ouselect-trigger'
+		role='button'
+		tabindex={disabled ? -1 : 0}
 		onclick={toggleDropdown}
 		onkeydown={onTriggerKeyDown}
-		{disabled}
 		aria-expanded={open}
 		aria-haspopup='listbox'
+		aria-disabled={disabled || undefined}
 	>
 		{#if multiple}
 			<span class='ouselect-chips'>
@@ -235,7 +236,7 @@
 			</span>
 		{/if}
 		<i class='fas fa-caret-down ouselect-caret' class:open></i>
-	</button>
+	</div>
 </div>
 
 {#if open}
@@ -277,10 +278,10 @@
 		font: inherit
 		text-align: left
 
-		&:hover:not(:disabled)
+		&:hover:not([aria-disabled])
 			border-color: var(--color-border-highlight, rgba(255, 255, 255, 0.3))
 
-		&:disabled
+		&[aria-disabled]
 			opacity: 0.5
 			cursor: not-allowed
 

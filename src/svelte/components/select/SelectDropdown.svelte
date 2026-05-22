@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { SelectGroup, SelectItem } from './types';
+	import { onMount } from 'svelte';
 	import { portal } from './portal';
 
 	let {
@@ -50,6 +51,11 @@
 	function onListMouseDown(e: MouseEvent) {
 		e.preventDefault();
 	}
+
+	let searchInputEl = $state<HTMLInputElement | null>(null);
+	onMount(() => {
+		if (searchable) searchInputEl?.focus();
+	});
 </script>
 
 <div use:portal class='ouselect-dropdown' style={positionStyle} role='listbox'>
@@ -57,11 +63,11 @@
 		<input
 			type='text'
 			class='ouselect-search'
+			bind:this={searchInputEl}
 			bind:value={searchText}
 			onkeydown={onKeyDown}
 			onblur={onBlur}
 			placeholder=''
-			autofocus
 		/>
 	{/if}
 	<div class='ouselect-list' role='presentation' onmousedown={onListMouseDown}>
@@ -74,6 +80,12 @@
 					class:highlighted={idx === highlightedIdx}
 					class:selected={isSelected(item)}
 					onclick={() => onSelect(item)}
+					onkeydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							onSelect(item);
+						}
+					}}
 					onmouseenter={() => onHover(idx)}
 					role='option'
 					aria-selected={isSelected(item)}
@@ -89,8 +101,15 @@
 				class='ouselect-item ouselect-create'
 				class:highlighted={createIdx === highlightedIdx}
 				onclick={() => onSelect({ value: createValue, label: createValue, $created: true })}
+				onkeydown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						e.preventDefault();
+						onSelect({ value: createValue, label: createValue, $created: true });
+					}
+				}}
 				onmouseenter={() => onHover(createIdx)}
 				role='option'
+				aria-selected={false}
 				tabindex='-1'
 			>
 				<i class='fas fa-plus'></i>

@@ -2,7 +2,7 @@
 <script lang='ts'>
 	import type { OverlayTemplate } from '../../utils/overlayTemplates.ts';
 
-	let { templates, onPick } = $props<{
+	const { templates, onPick } = $props<{
 		templates: OverlayTemplate[];
 		onPick: (key: string) => void;
 	}>();

@@ -28,6 +28,8 @@
 		return out;
 	});
 
+	const showNoTriggerHint = $derived(((layer.animation?.tracks.length ?? 0) < 2 || transitionsForCurrentTrack.length === 0) && selectedTrack.behavior.type !== 'transition-on-end');
+
 	function setEndTransitionTarget(toTrackId: string) {
 		if (selectedTrack.behavior.type !== 'transition-on-end') return;
 		selectedTrack.behavior = { ...selectedTrack.behavior, toTrackId };
@@ -160,9 +162,9 @@
 			{#if selectedTrack.behavior.type === 'transition-on-end'}
 				<div class='transition-card end-of-track'>
 					<div class='transition-head'>
-						<label class='field inline'>
+						<div class='field inline'>
 							<span><i class='fas fa-flag-checkered' style:opacity='0.6' style:margin-right='4px'></i>{game.i18n?.localize('obs-utils.applications.overlayEditor.animation.endOfTrack') ?? 'On end of track'}</span>
-						</label>
+						</div>
 					</div>
 					<div class='zone-row'>
 						<label class='field inline'>
@@ -189,8 +191,7 @@
 				</div>
 			{/if}
 
-			{#if (layer.animation.tracks.length < 2 || transitionsForCurrentTrack.length === 0)
-			&& selectedTrack.behavior.type !== 'transition-on-end'}
+			{#if showNoTriggerHint}
 				<p class='hint'>{game.i18n?.localize('obs-utils.applications.overlayEditor.animation.noTriggersHint')}</p>
 			{/if}
 

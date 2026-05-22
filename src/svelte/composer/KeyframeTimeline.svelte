@@ -3,6 +3,7 @@
 	import type { AnimatablePropertyKey, EasingV2 } from '../../utils/overlayAnimation.ts';
 	import type { OverlayComponentData, OverlayData, OverlayTrack } from '../../utils/types.ts';
 	import { onDestroy, onMount } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import { getApi } from '../../utils/helpers.ts';
 	import {
 		ANIMATABLE_PROPERTIES,
@@ -51,7 +52,7 @@
 	} = $props();
 
 	let timelineEl = $state<HTMLDivElement | null>(null);
-	let expandedComponents = $state<Set<string>>(new Set());
+	const expandedComponents = new SvelteSet<string>();
 	let multiSelection = $state<KfRef[]>([]);
 
 	let scrubbing = $state(false);
@@ -89,10 +90,11 @@
 	}
 
 	function toggleExpanded(componentId: string) {
-		const next = new Set(expandedComponents);
-		if (next.has(componentId)) next.delete(componentId);
-		else next.add(componentId);
-		expandedComponents = next;
+		if (expandedComponents.has(componentId)) {
+			expandedComponents.delete(componentId);
+		} else {
+			expandedComponents.add(componentId);
+		}
 	}
 
 	function componentLabel(c: OverlayComponentData): string {
@@ -456,7 +458,7 @@
 	}
 
 	const uniqueKfTimes = $derived.by(() => {
-		const set = new Set<number>();
+		const set = new SvelteSet<number>();
 		for (const lane of track.lanes) {
 			for (const kf of lane.keyframes) set.add(kf.t);
 			if (lane.propertyKeyframes) {
@@ -505,13 +507,22 @@
 				class:selected={selection?.kind === 'component' && selection.componentId === componentId}
 				role='button'
 				tabindex='0'
-				onclick={() => { selection = { kind: 'component', componentId }; }}
-				onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { selection = { kind: 'component', componentId }; } }}
+				onclick={() => {
+					selection = { kind: 'component', componentId };
+				}}
+				onkeydown={(e) => {
+					if (e.key === 'Enter' || e.key === ' ') {
+						selection = { kind: 'component', componentId };
+					}
+				}}
 			>
 				<button
 					type='button'
 					class='expand-btn'
-					onclick={(e) => { e.stopPropagation(); toggleExpanded(componentId); }}
+					onclick={(e) => {
+						e.stopPropagation();
+						toggleExpanded(componentId);
+					}}
 					title={isExpanded ? 'Collapse' : 'Expand properties'}
 					aria-expanded={isExpanded}
 				>
@@ -522,20 +533,29 @@
 					type='button'
 					class='lane-add'
 					title={game.i18n?.localize('obs-utils.applications.overlayEditor.animation.addKeyframe')}
-					onclick={(e) => { e.stopPropagation(); addKeyframeAtPlayhead(comp); }}
+					onclick={(e) => {
+						e.stopPropagation();
+						addKeyframeAtPlayhead(comp);
+					}}
 				><i class='fas fa-plus'></i></button>
 			</div>
 
 			{#if isExpanded}
-				{#each USER_ANIMATABLE_PROPERTIES as prop}
+				{#each USER_ANIMATABLE_PROPERTIES as prop (prop)}
 					{@const pkf = lane ? lanePropertyKeyframes(lane)[prop] : []}
 					<div
 						class='lane-head prop-row'
 						class:selected={selection?.kind === 'property' && selection.componentId === componentId && selection.prop === prop}
 						role='button'
 						tabindex='0'
-						onclick={() => { selection = { kind: 'property', componentId, prop }; }}
-						onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { selection = { kind: 'property', componentId, prop }; } }}
+						onclick={() => {
+							selection = { kind: 'property', componentId, prop };
+						}}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								selection = { kind: 'property', componentId, prop };
+							}
+						}}
 					>
 						<span class='prop-indent'></span>
 						<span class='lane-name prop-name'>{prop}</span>
@@ -564,7 +584,16 @@
 						class='kf-marker kf-bezier kf-aggregate'
 						style={`left: ${tToX(t, track.durationMs)}px;`}
 						onmousedown={e => startAggregateDrag(e, componentId, t)}
-						onclick={(e) => { e.stopPropagation(); selection = { kind: 'component', componentId }; }}
+						onclick={(e) => {
+							e.stopPropagation();
+							selection = { kind: 'component', componentId };
+						}}
+						onkeydown={(e) => {
+							if (e.key === 'Enter' || e.key === ' ') {
+								e.preventDefault();
+								selection = { kind: 'component', componentId };
+							}
+						}}
 						role='button'
 						tabindex='0'
 						aria-label={`Aggregate keyframe at ${t}ms`}
@@ -580,7 +609,21 @@
 							style={`left: ${tToX(kf.t, track.durationMs)}px;`}
 							data-kf-ref={`legacy:${componentId}:${idx}`}
 							onmousedown={e => startLegacyKfDrag(e, componentId, idx)}
-							onclick={(e) => { e.stopPropagation(); playheadT = kf.t; if (!isInMultiSelection({ kind: 'legacy', componentId, index: idx })) multiSelection = []; selection = { kind: 'legacy-kf', componentId, index: idx }; }}
+							onclick={(e) => {
+								e.stopPropagation();
+								playheadT = kf.t;
+								if (!isInMultiSelection({ kind: 'legacy', componentId, index: idx })) {
+									multiSelection = [];
+								}
+								selection = { kind: 'legacy-kf', componentId, index: idx };
+							}}
+							onkeydown={(e) => {
+								if (e.key === 'Enter' || e.key === ' ') {
+									e.preventDefault();
+									playheadT = kf.t;
+									selection = { kind: 'legacy-kf', componentId, index: idx };
+								}
+							}}
 							role='button'
 							tabindex='0'
 							aria-label={`Keyframe at ${kf.t}ms`}
@@ -590,7 +633,7 @@
 			</div>
 
 			{#if isExpanded}
-				{#each USER_ANIMATABLE_PROPERTIES as prop}
+				{#each USER_ANIMATABLE_PROPERTIES as prop (prop)}
 					{@const pkf = lane ? (lanePropertyKeyframes(lane)[prop] ?? []) : []}
 					<div class='lane-strip prop-strip'>
 						{#each pkf as kf, idx (`${idx}-${kf.t}`)}
@@ -601,7 +644,21 @@
 								style={`left: ${tToX(kf.t, track.durationMs)}px;`}
 								data-kf-ref={`prop:${componentId}:${prop}:${idx}`}
 								onmousedown={e => startPropKfDrag(e, componentId, prop, idx)}
-								onclick={(e) => { e.stopPropagation(); playheadT = kf.t; if (!isInMultiSelection({ kind: 'prop', componentId, prop, index: idx })) multiSelection = []; selection = { kind: 'prop-kf', componentId, prop, index: idx }; }}
+								onclick={(e) => {
+									e.stopPropagation();
+									playheadT = kf.t;
+									if (!isInMultiSelection({ kind: 'prop', componentId, prop, index: idx })) {
+										multiSelection = [];
+									}
+									selection = { kind: 'prop-kf', componentId, prop, index: idx };
+								}}
+								onkeydown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.preventDefault();
+										playheadT = kf.t;
+										selection = { kind: 'prop-kf', componentId, prop, index: idx };
+									}
+								}}
 								role='button'
 								tabindex='0'
 								aria-label={`${prop} keyframe at ${kf.t}ms`}

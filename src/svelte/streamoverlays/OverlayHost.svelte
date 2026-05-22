@@ -3,6 +3,7 @@
 	import type { OverlayFrame, RenderedOverlay, RenderState } from '../../utils/render.ts';
 	import type { OverlayData } from '../../utils/types.ts';
 	import { onDestroy, onMount } from 'svelte';
+	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
 	import { getApi } from '../../utils/helpers.ts';
 	import { PlaybackEngine } from '../../utils/playback.ts';
 	import { buildRenderTree } from '../../utils/render.ts';
@@ -115,7 +116,7 @@
 
 	$effect(() => {
 		void frameTick;
-		const wanted = new Set<string>();
+		const wanted = new SvelteSet<string>();
 		for (const ov of overlays ?? []) {
 			if (!ov?.animation) continue;
 			const ids = ov.tileBy === 'players'
@@ -159,7 +160,7 @@
 	});
 
 	const tilesByOverlay = $derived.by(() => {
-		const out = new Map<string, RenderedOverlay[]>();
+		const out = new SvelteMap<string, RenderedOverlay[]>();
 		for (const o of tree.overlays) {
 			if (!out.has(o.overlayId)) out.set(o.overlayId, []);
 			out.get(o.overlayId)!.push(o);
@@ -173,43 +174,36 @@
 		return entry.overlayClass;
 	}
 
-	function actorName(id: string): string {
-		const a = actors.get(id) as { name?: string } | undefined;
-		return a?.name ?? id;
-	}
-
-	function userName(id: string): string {
-		const u = users.get(id) as { name?: string } | undefined;
-		return u?.name ?? id;
-	}
 </script>
 
 <div class='obs-utils overlay'>
-	{#each overlays ?? [] as overlay (overlay.id)}
+	{#each overlays ?? [] as overlay, overlayIdx (overlay.id)}
 		{@const tiles = tilesByOverlay.get(overlay.id ?? '') ?? []}
 		{#if tiles.length > 0}
 			<div
 				class='overlay-row'
 				class:inline-row={overlay.type === 'sl'}
 				class:canvas-row={overlay.type !== 'sl'}
-				data-overlay-id={overlay.id}
+				data-overlay-row-id={overlay.id}
 				data-overlay-type={overlay.type}
 			>
-				{#each tiles as rendered, index (rendered.id)}
+				{#each tiles as rendered (rendered.id)}
 					{@const Component = getOverlayTypeComponent(rendered.type)}
 					{#if Component}
-						{@const ctxActorId = rendered.context.actor?.id}
-						{@const ctxUserId = rendered.context.user?.id}
-						{@const tileLabel = ctxUserId ? userName(ctxUserId) : ctxActorId ? actorName(ctxActorId) : ''}
+						{@const ctxActor = rendered.context.actor}
+						{@const ctxUser = rendered.context.user}
 						<div
 							class='overlay-tile'
-							class:actor-layer={!!ctxActorId && !ctxUserId}
-							class:roll-instance={!!ctxUserId}
-							class:singleton-layer={!ctxActorId && !ctxUserId}
-							data-actor-name={ctxActorId && !ctxUserId ? tileLabel : undefined}
-							data-player-name={ctxUserId ? tileLabel : undefined}
+							class:actor={!!ctxActor?.id && !ctxUser?.id}
+							class:actor-layer={!!ctxActor?.id && !ctxUser?.id}
+							class:player={!!ctxUser?.id}
+							class:roll-instance={!!ctxUser?.id}
+							class:singleton-layer={!ctxActor?.id && !ctxUser?.id}
+							id={ctxUser?.id ? `player${ctxUser.id}` : ctxActor?.id ? `actor${ctxActor.id}` : undefined}
+							data-actor-name={ctxActor?.id && !ctxUser?.id ? (ctxActor.name ?? ctxActor.id) : undefined}
+							data-player-name={ctxUser?.id ? (ctxUser.name ?? ctxUser.id) : undefined}
 						>
-							<Component overlay={rendered} overlayIndex={index} />
+							<Component overlay={rendered} overlayIndex={overlayIdx} />
 						</div>
 					{/if}
 				{/each}
