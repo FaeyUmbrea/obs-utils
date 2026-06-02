@@ -36,7 +36,11 @@ vi.mock('../streamoverlays/OverlayHost.svelte', () => ({
 		const div = document.createElement('div');
 		div.className = 'overlay-host-stub';
 		opts?.target?.appendChild(div);
-		return { destroy() { div.remove(); } };
+		return {
+			destroy() {
+				div.remove();
+			},
+		};
 	},
 }));
 
@@ -45,7 +49,11 @@ vi.mock('../utilities/ExternalComponent.svelte', () => ({
 		const div = document.createElement('div');
 		div.className = 'external-stub';
 		opts?.target?.appendChild(div);
-		return { destroy() { div.remove(); } };
+		return {
+			destroy() {
+				div.remove();
+			},
+		};
 	},
 }));
 
@@ -54,7 +62,11 @@ vi.mock('../utilities/LegacyExternalComponent.svelte', () => ({
 		const div = document.createElement('div');
 		div.className = 'legacy-stub';
 		opts?.target?.appendChild(div);
-		return { destroy() { div.remove(); } };
+		return {
+			destroy() {
+				div.remove();
+			},
+		};
 	},
 }));
 

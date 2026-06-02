@@ -1,5 +1,5 @@
 import type { DeepPartial } from 'fvtt-types/utils';
-import DirectorApp from '../svelte/DirectorApp.svelte';
+import DirectorApp from '../svelte/apps/DirectorApp.svelte';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 export default class DirectorApplication extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {

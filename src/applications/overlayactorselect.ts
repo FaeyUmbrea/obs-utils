@@ -1,4 +1,4 @@
-import OverlayActorSelectUi from '../svelte/OverlayActorSelectUI.svelte';
+import OverlayActorSelectUi from '../svelte/apps/OverlayActorSelectUI.svelte';
 import { settings } from '../utils/settings.ts';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 

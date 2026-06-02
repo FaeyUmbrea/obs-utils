@@ -1,5 +1,5 @@
 import type { DeepPartial } from 'fvtt-types/utils';
-import StyleEditorUi from '../svelte/StyleEditorUi.svelte';
+import StyleEditorUi from '../svelte/apps/StyleEditorUi.svelte';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 export default class StyleEditor extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {

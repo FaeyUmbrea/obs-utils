@@ -1,12 +1,12 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import { onDestroy, onMount } from 'svelte';
-	import { activateCSSInjection, deactivateCSSInjection } from '../utils/cssInjection.ts';
-	import { getApi } from '../utils/helpers.ts';
-	import { settings } from '../utils/settings.ts';
-	import OverlayHost from './streamoverlays/OverlayHost.svelte';
-	import ExternalComponent from './utilities/ExternalComponent.svelte';
-	import '../less/streamoverlay.styl';
+	import { activateCSSInjection, deactivateCSSInjection } from '../../utils/cssInjection.ts';
+	import { getApi } from '../../utils/helpers.ts';
+	import { settings } from '../../utils/settings.ts';
+	import OverlayHost from '../streamoverlays/OverlayHost.svelte';
+	import ExternalComponent from '../utilities/ExternalComponent.svelte';
+	import '../../less/streamoverlay.styl';
 
 	onMount(() => activateCSSInjection());
 	onDestroy(() => deactivateCSSInjection());

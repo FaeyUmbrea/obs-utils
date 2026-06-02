@@ -6,7 +6,8 @@ import { initDirectorStateBridge } from './utils/directorState.ts';
 import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
 import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
-import { getSetting, initOverlayDefaultsHooks, initSettings, runMigrations, setSetting } from './utils/settings.ts';
+import { getSetting, runMigrations, setSetting } from './utils/settings.ts';
+import { initOverlayDefaultsHooks, initSettings } from './utils/settingsSetup.ts';
 import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
 
 // Conditionally load the polyfill module only when the host browser is missing

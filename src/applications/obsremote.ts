@@ -1,4 +1,4 @@
-import OBSRemote from '../svelte/OBSRemote.svelte';
+import OBSRemote from '../svelte/apps/OBSRemote.svelte';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 export default class OBSRemoteApplication extends SvelteApplicationMixin(foundry.applications.api.ApplicationV2) {

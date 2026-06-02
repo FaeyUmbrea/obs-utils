@@ -1,5 +1,5 @@
 import type { DeepPartial } from 'fvtt-types/utils';
-import AnimationPresetApp from '../svelte/AnimationPresetApp.svelte';
+import AnimationPresetApp from '../svelte/apps/AnimationPresetApp.svelte';
 import { SvelteApplicationMixin } from './mixin.svelte.ts';
 
 interface AnimationPresetOptions {

@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import { getApi } from '../../utils/helpers.ts';
-	import OverlayPreviewUI from '../OverlayPreviewUI.svelte';
+	import OverlayPreviewUI from '../apps/OverlayPreviewUI.svelte';
 
 	const triggers = $derived.by(() => {
 		const out: Array<{ key: string; name: string; icon?: string }> = [];

@@ -1,7 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import ConnectionTab from './components/obsRemote/ConnectionTab.svelte';
-	import EventsTab from './components/obsRemote/EventsTab.svelte';
+	import ConnectionTab from '../components/obsRemote/ConnectionTab.svelte';
+	import EventsTab from '../components/obsRemote/EventsTab.svelte';
 
 	type MenuTab = 'connection' | 'events';
 	let activeTab = $state<MenuTab>('connection');

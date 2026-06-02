@@ -2,18 +2,6 @@ import { mount, unmount } from 'svelte';
 import { describe, expect, it } from 'vitest';
 import ExternalComponent from '../ExternalComponent.svelte';
 
-// A minimal Svelte 5 component used as the ExternalClass.
-// We can't import .svelte inline, so we simulate the compiled mount target.
-function makeSvelteStub(renderFn: (target: HTMLElement) => void) {
-	return {
-		// mount() is called by ExternalComponent via svelte's mount()
-		// To make this work we return a plain object; svelte mount() will call
-		// the function as if it's a component constructor.
-		__esModule: true,
-		default: renderFn,
-	};
-}
-
 describe('externalComponent.svelte', () => {
 	it('mounts the wrapper div', () => {
 		document.body.innerHTML = '<div id="target"></div>';

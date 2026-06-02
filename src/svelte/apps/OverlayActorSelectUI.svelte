@@ -1,9 +1,9 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import type { ReadyGame } from 'fvtt-types/configuration';
-	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
+	import type { SvelteApplication } from '../../applications/mixin.svelte.ts';
 	import VirtualList from 'svelte-tiny-virtual-list';
-	import { setSetting, settings } from '../utils/settings.ts';
+	import { setSetting, settings } from '../../utils/settings.ts';
 
 	// props via rune
 	const { foundryApp } = $props<{ foundryApp: SvelteApplication }>();

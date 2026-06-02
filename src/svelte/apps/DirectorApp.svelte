@@ -1,6 +1,6 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { getApi, getGM } from '../utils/helpers.ts';
+	import { getApi, getGM } from '../../utils/helpers.ts';
 
 	const isDisabled = getGM()?.active !== true;
 

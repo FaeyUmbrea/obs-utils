@@ -1,10 +1,10 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import type { SvelteApplication } from '../applications/mixin.svelte.ts';
-	import type { CameraPreset } from '../utils/cameraPresets.ts';
+	import type { SvelteApplication } from '../../applications/mixin.svelte.ts';
+	import type { CameraPreset } from '../../utils/cameraPresets.ts';
 	import { onMount } from 'svelte';
-	import { readPresets, writePresets } from '../utils/cameraPresets.ts';
-	import AnimationPresetEditor from './components/director/AnimationPresetEditor.svelte';
+	import { readPresets, writePresets } from '../../utils/cameraPresets.ts';
+	import AnimationPresetEditor from '../components/director/AnimationPresetEditor.svelte';
 
 	// Note: the prop is intentionally renamed away from `state` — the mixin
 	// passes the app state under `state`, but Svelte 5 treats anything that

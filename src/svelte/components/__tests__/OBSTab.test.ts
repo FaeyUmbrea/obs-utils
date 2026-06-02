@@ -28,7 +28,11 @@ vi.mock('../OBSSetting.svelte', () => ({
 			li.appendChild(btn);
 		}
 		opts?.target?.appendChild(li);
-		return { destroy() { li.remove(); } };
+		return {
+			destroy() {
+				li.remove();
+			},
+		};
 	},
 }));
 
