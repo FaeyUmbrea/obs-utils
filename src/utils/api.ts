@@ -335,46 +335,19 @@ export class OverlayType {
 
 export function registerDefaultTypes() {
 	const singleLineOverlay = new OverlayType(SingleLineOverlay);
-	singleLineOverlay.registerComponent(
-		'pt',
-		'obs-utils.overlays.plainText.name',
-		ActorValComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'fai',
-		'obs-utils.overlays.fontAwesomeIcon.name',
-		FAIconComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'bav',
-		'obs-utils.overlays.booleanAVIcon.name',
-		AVBoolIconComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'bavimg',
-		'obs-utils.overlays.booleanAVImage.name',
-		AVBoolImageComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'img',
-		'obs-utils.overlays.image.name',
-		AVImageDisplayComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'micoav',
-		'obs-utils.overlays.multiIconAV.name',
-		AVMultiIconComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'mimgav',
-		'obs-utils.overlays.multiImageAV.name',
-		AVMultiImageComponent,
-	);
-	singleLineOverlay.registerComponent(
-		'pb',
-		'obs-utils.overlays.progressBar.name',
-		ProgressBarComponent,
-	);
+	const builtinComponents: Array<[key: string, nameKey: string, component: Component<any>]> = [
+		['pt', 'obs-utils.overlays.plainText.name', ActorValComponent],
+		['fai', 'obs-utils.overlays.fontAwesomeIcon.name', FAIconComponent],
+		['bav', 'obs-utils.overlays.booleanAVIcon.name', AVBoolIconComponent],
+		['bavimg', 'obs-utils.overlays.booleanAVImage.name', AVBoolImageComponent],
+		['img', 'obs-utils.overlays.image.name', AVImageDisplayComponent],
+		['micoav', 'obs-utils.overlays.multiIconAV.name', AVMultiIconComponent],
+		['mimgav', 'obs-utils.overlays.multiImageAV.name', AVMultiImageComponent],
+		['pb', 'obs-utils.overlays.progressBar.name', ProgressBarComponent],
+	];
+	for (const [key, nameKey, component] of builtinComponents) {
+		singleLineOverlay.registerComponent(key, nameKey, component);
+	}
 
 	// img: data IS the path
 	singleLineOverlay.registerComponentImageSlots('img', {
@@ -411,15 +384,15 @@ export function registerDefaultTypes() {
 	});
 
 	// Register Legacy Names
-	singleLineOverlay.overlayComponents.set('Plain Text', ActorValComponent);
-	singleLineOverlay.overlayComponents.set('Font Awesome Icon', FAIconComponent);
-	singleLineOverlay.overlayComponents.set('Actor Value', ActorValComponent);
-	singleLineOverlay.overlayComponents.set(
-		'Boolean Actor Value',
-		AVBoolIconComponent,
-	);
-	singleLineOverlay.overlayComponents.set('iav', AVImageDisplayComponent);
-	singleLineOverlay.overlayComponents.set('av', ActorValComponent);
+	const legacyNames: Array<[name: string, component: Component<any>]> = [
+		['Plain Text', ActorValComponent],
+		['Font Awesome Icon', FAIconComponent],
+		['Actor Value', ActorValComponent],
+		['Boolean Actor Value', AVBoolIconComponent],
+		['iav', AVImageDisplayComponent],
+		['av', ActorValComponent],
+	];
+	for (const [name, component] of legacyNames) singleLineOverlay.overlayComponents.set(name, component);
 
 	getApi().registerOverlayType('sl', 'obs-utils.overlays.simpleOverlay.name', singleLineOverlay);
 	getApi().overlayTypes.set('Single Line', singleLineOverlay);
@@ -445,28 +418,13 @@ async function registerBuiltinDirectorTabs() {
 		import('../svelte/components/director/PresetsTab.svelte'),
 		import('../svelte/components/director/CoDMsTab.svelte'),
 	]);
+	const builtinTabs: DirectorTabRegistration[] = [
+		{ key: 'core.controls', label: 'obs-utils.applications.director.tabControls', icon: 'fas fa-video', component: ControlsTab, order: 10 },
+		{ key: 'core.presets', label: 'obs-utils.applications.director.tabPresets', icon: 'fas fa-bookmark', component: PresetsTab, order: 20 },
+		{ key: 'core.codms', label: 'obs-utils.applications.director.tabCoDMs', icon: 'fas fa-users', component: CoDMsTab, order: 30 },
+	];
 	const api = getApi();
-	api.registerDirectorTab({
-		key: 'core.controls',
-		label: 'obs-utils.applications.director.tabControls',
-		icon: 'fas fa-video',
-		component: ControlsTab,
-		order: 10,
-	});
-	api.registerDirectorTab({
-		key: 'core.presets',
-		label: 'obs-utils.applications.director.tabPresets',
-		icon: 'fas fa-bookmark',
-		component: PresetsTab,
-		order: 20,
-	});
-	api.registerDirectorTab({
-		key: 'core.codms',
-		label: 'obs-utils.applications.director.tabCoDMs',
-		icon: 'fas fa-users',
-		component: CoDMsTab,
-		order: 30,
-	});
+	for (const tab of builtinTabs) api.registerDirectorTab(tab);
 }
 
 function registerBuiltinOverlayTriggers() {
