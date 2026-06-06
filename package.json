@@ -72,8 +72,8 @@
 		"vitest": "^4.1.6"
 	},
 	"resolutions": {
+		"ip-address": "^10",
 		"tar": "^7",
-		"uuid": "^11",
-		"ip-address": "^10"
+		"uuid": "^11"
 	}
 }

@@ -84,7 +84,8 @@ console.warn('Generating coverage reports...');
 // Capture text report output to a file
 const textReportPath = join(mergedCoverageDir, 'text-report.txt');
 runCommand('npx', [
-	'nyc', 'report',
+	'nyc',
+	'report',
 	'--reporter=text',
 	'--reporter=html',
 	`--input-file=${mergedCoverageFile}`,
