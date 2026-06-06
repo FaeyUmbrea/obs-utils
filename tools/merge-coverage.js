@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -25,13 +25,17 @@ const nycOutputDir = join(projectRoot, '.nyc_output');
 });
 
 // Function to run a command and log output
-function runCommand(command) {
-	console.warn(`Running: ${command}`);
+function runCommand(file, args, { captureTo } = {}) {
+	console.warn(`Running: ${file} ${args.join(' ')}`);
 	try {
-		const output = execSync(command, { cwd: projectRoot, stdio: 'inherit' });
-		return output;
+		const stdout = execFileSync(file, args, {
+			cwd: projectRoot,
+			stdio: captureTo ? ['inherit', 'pipe', 'inherit'] : 'inherit',
+		});
+		if (captureTo) writeFileSync(captureTo, stdout);
+		return stdout;
 	} catch (error) {
-		console.error(`Error executing command: ${command}`);
+		console.error(`Error executing command: ${file} ${args.join(' ')}`);
 		console.error(error);
 		process.exit(1);
 	}
@@ -79,7 +83,13 @@ console.warn(`Merged coverage written to ${mergedCoverageFile}`);
 console.warn('Generating coverage reports...');
 // Capture text report output to a file
 const textReportPath = join(mergedCoverageDir, 'text-report.txt');
-runCommand(`nyc report --reporter=text --reporter=html --input-file=${mergedCoverageFile} --report-dir=${mergedCoverageDir} > ${textReportPath}`);
+runCommand('npx', [
+	'nyc', 'report',
+	'--reporter=text',
+	'--reporter=html',
+	`--input-file=${mergedCoverageFile}`,
+	`--report-dir=${mergedCoverageDir}`,
+], { captureTo: textReportPath });
 
 console.warn('Coverage reports generated successfully!');
 console.warn(`- HTML report: ${join(mergedCoverageDir, 'index.html')}`);

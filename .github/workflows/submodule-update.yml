@@ -5,6 +5,9 @@ on:
     branches:
       - main # or master, depending on your default branch
 
+permissions:
+  contents: read
+
 jobs:
   notify:
     runs-on: ubuntu-latest
