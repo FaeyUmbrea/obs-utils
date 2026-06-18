@@ -5,7 +5,7 @@
 	import { getApi } from '../../utils/helpers.ts';
 	import { settings } from '../../utils/settings.ts';
 	import OverlayHost from '../streamoverlays/OverlayHost.svelte';
-	import ExternalComponent from '../utilities/ExternalComponent.svelte';
+	import MountedExternal from '../utilities/MountedExternal.svelte';
 	import '../../less/streamoverlay.styl';
 
 	onMount(() => activateCSSInjection());
@@ -73,7 +73,7 @@
 			>
 				<OverlayHost actorIDs={$actors} overlays={$overlays} previewMode={true} />
 				{#each [...singleInstanceSvelte5] as overlay (overlay)}
-					<ExternalComponent ExternalClass={overlay} />
+					<MountedExternal mountFn={overlay} />
 				{/each}
 			</div>
 			<div

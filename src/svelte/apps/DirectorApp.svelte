@@ -1,6 +1,7 @@
 <svelte:options runes={true} />
 <script lang='ts'>
 	import { getApi, getGM } from '../../utils/helpers.ts';
+	import MountedExternal from '../utilities/MountedExternal.svelte';
 
 	const isDisabled = getGM()?.active !== true;
 
@@ -47,8 +48,14 @@
 	<section class='tab-body'>
 		{#each tabs as tab (tab.key)}
 			{#if activeTabKey === tab.key}
-				{@const Tab = tab.component}
-				<Tab disabled={isDisabled} />
+				{#if 'mount' in tab}
+					<!-- The owning module mounts its own UI with its own Svelte runtime (cross-bundle-safe). -->
+					<MountedExternal mountFn={tab.mount} disabled={isDisabled} />
+				{:else}
+					<!-- Same-bundle component (OBS Utils' own built-in tabs). -->
+					{@const Tab = tab.component}
+					<Tab disabled={isDisabled} />
+				{/if}
 			{/if}
 		{/each}
 	</section>

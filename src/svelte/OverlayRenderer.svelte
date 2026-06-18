@@ -5,8 +5,8 @@
 	import { getApi } from '../utils/helpers';
 	import { settings } from '../utils/settings.ts';
 	import OverlayHost from './streamoverlays/OverlayHost.svelte';
-	import ExternalComponent from './utilities/ExternalComponent.svelte';
 	import LegacyExternalComponent from './utilities/LegacyExternalComponent.svelte';
+	import MountedExternal from './utilities/MountedExternal.svelte';
 
 	const overlays = settings.getReadableStore('streamOverlays');
 	const actors = settings.getReadableStore('overlayActors');
@@ -24,6 +24,6 @@
 		<LegacyExternalComponent ExternalClass={overlay} />
 	{/each}
 	{#each [...singleTimeOverlaysSvelte5] as overlay (overlay)}
-		<ExternalComponent ExternalClass={overlay} />
+		<MountedExternal mountFn={overlay} />
 	{/each}
 </div>

@@ -92,14 +92,33 @@ export interface DirectorTabRegistration {
 	order?: number;
 }
 
+/**
+ * Cross-bundle-safe Director tab. Instead of a component, you pass a `mount` callback that mounts the tab
+ * with *your own* module's Svelte `mount()`. A Svelte 5 component from another bundle cannot be mounted by
+ * OBS Utils' runtime — its runes resolve against your bundle's effect context, so OBS Utils mounting it
+ * throws `effect_orphan`. Letting your module mount it fixes that. (A Svelte 4 module can `new Component()`
+ * inside the same callback.)
+ */
+export interface DirectorTabSvelte5Registration {
+	key: string;
+	label: string;
+	icon?: string;
+	/**
+	 * Mount the tab UI into `target` (e.g. `mount(MyTab, { target, props })`) and return a cleanup
+	 *  function that tears it down (e.g. `() => unmount(app)`).
+	 */
+	mount: (target: HTMLElement, props: { disabled: boolean }) => (() => void);
+	order?: number;
+}
+
 export class ObsUtilsApi {
 	overlayTypes: Map<string, OverlayType>;
 	overlayTypeNames: Map<string, string>;
 	singleInstanceOverlays: Set<Component>;
-	singleInstanceOverlaysSvelte5: Set<Component>;
+	singleInstanceOverlaysSvelte5: Set<(target: HTMLElement) => (() => void)>;
 	obsRemoteEventTypes: Map<string, OBSRemoteEventTypeRegistration>;
 	overlayTriggers: Map<string, OverlayTriggerRegistration>;
-	directorTabs: Map<string, DirectorTabRegistration>;
+	directorTabs: Map<string, DirectorTabRegistration | DirectorTabSvelte5Registration>;
 
 	constructor() {
 		this.overlayTypes = new Map();
@@ -121,8 +140,18 @@ export class ObsUtilsApi {
 		this.overlayTriggers.set(reg.key, reg);
 	}
 
-	/** Public — modules call this to register a tab in the Director window. */
+	/**
+	 * Public — register a tab in the Director window.
+	 * @deprecated A Svelte 5 component from another module fails to mount here (`effect_orphan`). Use
+	 *   {@link registerDirectorTabSvelte5}, which lets your module mount its own UI. Still fine for
+	 *   OBS Utils' own (same-bundle) tabs.
+	 */
 	registerDirectorTab(reg: DirectorTabRegistration) {
+		this.directorTabs.set(reg.key, reg);
+	}
+
+	/** Public — register a Director tab whose UI your module mounts itself (cross-bundle-safe). */
+	registerDirectorTabSvelte5(reg: DirectorTabSvelte5Registration) {
 		this.directorTabs.set(reg.key, reg);
 	}
 
@@ -205,9 +234,13 @@ export class ObsUtilsApi {
 		this.singleInstanceOverlays.add(overlay);
 	}
 
-	// New Svelte 5 external component workflow
-	registerUniqueOverlaySvelte5(overlay: Component) {
-		this.singleInstanceOverlaysSvelte5.add(overlay);
+	/**
+	 * Register a unique overlay rendered once on the stream, for Svelte 5 modules. Pass a `mount` callback
+	 * that mounts your overlay into the given element with your own module's Svelte `mount()` and returns a
+	 * cleanup function — OBS Utils can't mount a Svelte 5 component from another bundle itself (effect_orphan).
+	 */
+	registerUniqueOverlaySvelte5(mount: (target: HTMLElement) => (() => void)) {
+		this.singleInstanceOverlaysSvelte5.add(mount);
 	}
 
 	getSelectedActors() {

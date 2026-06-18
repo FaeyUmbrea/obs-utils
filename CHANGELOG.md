@@ -1,3 +1,18 @@
+## Version 5.2.0
+
+### Added
+
+- `registerDirectorTabSvelte5` — register a Director tab whose UI your module mounts itself. Svelte 5 modules can finally add Director tabs: the old component-based registration mounted them inside OBS Utils' own Svelte runtime, where their runes resolved against the wrong bundle and threw `effect_orphan`, leaving the tab blank.
+
+### Changed
+
+- `registerUniqueOverlaySvelte5` now takes a `mount(target) => cleanup` callback instead of a component. The registering module mounts its overlay with its own Svelte `mount()`, the only way a Svelte 5 component from another bundle runs correctly.
+- `registerDirectorTab` (component form) is deprecated for external modules in favour of `registerDirectorTabSvelte5`. It still works for OBS Utils' own same-bundle tabs.
+
+### Fixed
+
+- External Svelte 5 components — Director tabs and unique stream overlays — no longer throw `effect_orphan` or render blank. OBS Utils now hands the module a DOM node and lets it mount with its own runtime instead of mounting it from OBS Utils' runtime.
+
 ## Version 5.1.1
 
 ### Fixed
