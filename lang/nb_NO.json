@@ -52,19 +52,15 @@
 				"removeComponentButton": "Fjern komponent",
 				"name": "Overlay Editor",
 				"removeButton": "Remove Overlay",
-				"addButton": "Legg til ny komponent",
-				"editStyleButton": "Rediger stil",
 				"addOverlayButton": "Add New Overlay",
 				"componentType": "Component type",
 				"exportButton": "Eksporter"
 			},
 			"director": {
 				"oocTypeHeader": "Out of Combat Type",
-				"canvasOptionsHeader": "Canvas Options",
 				"trackedPlayerHeader": "Spiller under oppsyn",
 				"name": "Regissør",
 				"icTypeHeader": "In Combat Type",
-				"obsUserCommands": "OBS User Commands",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
 				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
@@ -81,7 +77,6 @@
 			},
 			"obsWebsocket": {
 				"portLabel": "Port",
-				"name": "OBS Websocket Settings",
 				"passwordLabel": "Passord",
 				"syncButton": "Synkroniser",
 				"saveButton": "Lagre",
@@ -99,7 +94,6 @@
 				"onLoad": "Last inn",
 				"onCombatStart": "Kampstart",
 				"sceneName": "Scenenavn",
-				"vttScenePlaceholder": "Skriv inn navn eller slipp en scene her",
 				"onPause": "Pause",
 				"onUnpause": "Fortsett",
 				"onStopStreaming": "Stopp strømming",
@@ -152,11 +146,6 @@
 				"Hint": "Antall pikslers bredde for elementet",
 				"Name": "Dice so Nice Overlay Width"
 			},
-			"obsWebsocketMenu": {
-				"Hint": "Sett opp OBS-websocket",
-				"Label": "Åpne meny",
-				"Name": "Innstillinger for OBS-websocket"
-			},
 			"obsModeUser": {
 				"Name": "OBS Mode User (Username)",
 				"Hint": "Sets this User to always be in OBS Mode, regardless of browser"
@@ -189,11 +178,6 @@
 				"Name": "Overlay Editor",
 				"Hint": "Edit the Overlays",
 				"Label": "Open Editor"
-			},
-			"overlayActorSelect": {
-				"Label": "Åpne meny",
-				"Name": "Overlay Actors",
-				"Hint": "Select the Actors for the Overlay"
 			},
 			"diceSoNice": {
 				"Hint": "If checked, a Dice so Nice section will be rendered alongside the other overlays",
@@ -251,10 +235,6 @@
 			"proxyOBSMessages": {
 				"Name": "Send OBS Mode Notifications to GM",
 				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
-			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
 			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
