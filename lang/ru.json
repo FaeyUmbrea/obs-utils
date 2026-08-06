@@ -26,19 +26,15 @@
 				"name": "Overlay Editor",
 				"removeComponentButton": "Remove Component",
 				"removeButton": "Удалить слой",
-				"addButton": "Добавить новый компонент",
-				"editStyleButton": "Изменить стиль",
 				"addOverlayButton": "Добавить новый слой",
 				"componentType": "Component type",
 				"exportButton": "Экспорт"
 			},
 			"director": {
 				"oocTypeHeader": "Out of Combat Type",
-				"canvasOptionsHeader": "Canvas Options",
 				"trackedPlayerHeader": "Tracked Player",
 				"name": "Director",
 				"icTypeHeader": "In Combat Type",
-				"obsUserCommands": "OBS User Commands",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
 				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
@@ -55,7 +51,6 @@
 			},
 			"obsWebsocket": {
 				"portLabel": "Порт",
-				"name": "Настройки OBS Websocket",
 				"passwordLabel": "Пароль",
 				"syncButton": "Синхронизировать",
 				"saveButton": "Сохранить",
@@ -73,7 +68,6 @@
 				"onLoad": "Load",
 				"onCombatStart": "Combat Start",
 				"sceneName": "Scene Name",
-				"vttScenePlaceholder": "Input name or drop a scene here",
 				"onPause": "Pause",
 				"onUnpause": "Unpause",
 				"onStopStreaming": "Stop Streaming",
@@ -113,11 +107,6 @@
 			"obsMode": {
 				"Name": "Режим OBS",
 				"Hint": "Устанавливает этот браузер в качестве браузера OBS. Включайте эту опцию только в том случае, если вы не можете использовать браузер-источник"
-			},
-			"obsWebsocketMenu": {
-				"Hint": "Configure OBS Websocket",
-				"Label": "Открыть меню",
-				"Name": "OBS Websocket Settings"
 			},
 			"popupCloseDelay": {
 				"Name": "Pop-Up Close Delay",
@@ -159,11 +148,6 @@
 				"Name": "Overlay Editor",
 				"Hint": "Edit the Overlays",
 				"Label": "Открыть редактор"
-			},
-			"overlayActorSelect": {
-				"Label": "Открыть меню",
-				"Name": "Overlay Actors",
-				"Hint": "Select the Actors for the Overlay"
 			},
 			"maxScale": {
 				"Name": "Максимальный масштаб",
@@ -225,10 +209,6 @@
 			"proxyOBSMessages": {
 				"Name": "Send OBS Mode Notifications to GM",
 				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
-			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
 			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
