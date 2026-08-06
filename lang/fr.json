@@ -31,9 +31,7 @@
 				"name": "Directeur",
 				"icTypeHeader": "Type en Combat",
 				"oocTypeHeader": "Type Hors Combat",
-				"canvasOptionsHeader": "Options de la Carte",
 				"trackedPlayerHeader": "Joueur Suivi",
-				"obsUserCommands": "OBS User Commands",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
 				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
@@ -46,7 +44,6 @@
 				"enableSource": "Activer la Source",
 				"disableSource": "Désactiver la Source",
 				"vttSceneLabel": "Nom de la Scène VTT",
-				"vttScenePlaceholder": "Entrer un nom ou glisser une scène ici",
 				"onLoad": "Chargement",
 				"onCombatStart": "Début du Combat",
 				"onCombatEnd": "Fin du Combat",
@@ -56,7 +53,6 @@
 				"onStopStreaming": "Arrêter le Streaming"
 			},
 			"obsWebsocket": {
-				"name": "Paramètres OBS Websocket",
 				"urlLabel": "URL",
 				"portLabel": "Port",
 				"passwordLabel": "Mot de Passe",
@@ -79,8 +75,6 @@
 				"name": "Éditeur de Superposition",
 				"previewActorLabel": "Preview as",
 				"showFullPreview": "Full Preview",
-				"addButton": "Ajouter un Nouveau Composant",
-				"editStyleButton": "Modifier le Style",
 				"removeButton": "Supprimer la Superposition",
 				"removeComponentButton": "Supprimer le Composant",
 				"importButton": "Importer",
@@ -205,16 +199,6 @@
 				"Name": "Paramètres OBS Remote",
 				"Hint": "Configurer OBS Remote"
 			},
-			"obsWebsocketMenu": {
-				"Label": "Ouvrir le Menu",
-				"Name": "Paramètres OBS Websocket",
-				"Hint": "Configurer OBS Websocket"
-			},
-			"overlayActorSelect": {
-				"Label": "Ouvrir le Menu",
-				"Name": "Acteurs de Superposition",
-				"Hint": "Sélectionner les acteurs pour la superposition"
-			},
 			"overlayEditor": {
 				"Label": "Ouvrir l'Éditeur",
 				"Name": "Éditeur de Superposition",
@@ -283,10 +267,6 @@
 			"proxyOBSMessages": {
 				"Name": "Send OBS Mode Notifications to GM",
 				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
-			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
 			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
