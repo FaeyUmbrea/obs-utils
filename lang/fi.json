@@ -39,11 +39,6 @@
 				"Hint": "Width of the element in pixels",
 				"Name": "Dice so Nice Overlay Width"
 			},
-			"obsWebsocketMenu": {
-				"Hint": "Configure OBS Websocket",
-				"Label": "Open Menu",
-				"Name": "OBS Websocket Settings"
-			},
 			"forceStreamPageOBSMode": {
 				"Name": "Force OBS Mode on Stream Page",
 				"Hint": "Forces the /stream output to be in OBS mode at all times"
@@ -92,11 +87,6 @@
 				"Name": "Overlay Editor",
 				"Hint": "Edit the Overlays",
 				"Label": "Open Editor"
-			},
-			"overlayActorSelect": {
-				"Label": "Open Menu",
-				"Name": "Overlay Actors",
-				"Hint": "Select the Actors for the Overlay"
 			},
 			"maxScale": {
 				"Name": "Maximum Scale",
@@ -147,10 +137,6 @@
 				"Name": "Allow User-Config to Render?",
 				"Hint": "If enabled, the user config dialog will not be suppressed"
 			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
-			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
 				"Name": "Display Chat Notifications in Game"
@@ -194,16 +180,12 @@
 				"name": "Overlay Editor",
 				"removeComponentButton": "Poista komponentti",
 				"removeButton": "Remove Overlay",
-				"addButton": "Lisää uusi komponentti",
-				"editStyleButton": "Muokkaa tyyliä",
 				"addOverlayButton": "Add New Overlay",
 				"componentType": "Component type",
 				"exportButton": "Vie"
 			},
 			"director": {
 				"oocTypeHeader": "Out of Combat Type",
-				"canvasOptionsHeader": "Canvas Options",
-				"obsUserCommands": "OBS User Commands",
 				"trackedPlayerHeader": "Tracked Player",
 				"name": "Ohjaaja",
 				"icTypeHeader": "In Combat Type",
@@ -223,7 +205,6 @@
 			},
 			"obsWebsocket": {
 				"portLabel": "Portti",
-				"name": "OBS Websocket asetukset",
 				"passwordLabel": "Salasana",
 				"syncButton": "Synkronoi",
 				"saveButton": "Tallenna",
@@ -241,7 +222,6 @@
 				"onLoad": "Lataa",
 				"onCombatStart": "Combat Start",
 				"sceneName": "Scene Name",
-				"vttScenePlaceholder": "Input name or drop a scene here",
 				"onPause": "Pysäytä",
 				"onUnpause": "Jatka",
 				"onStopStreaming": "Lopeta suoratoisto",
