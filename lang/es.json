@@ -29,8 +29,6 @@
 		"applications": {
 			"director": {
 				"oocTypeHeader": "Tipo Fuera del Combate",
-				"obsUserCommands": "Comandos de Usuario OBS",
-				"canvasOptionsHeader": "Opciones del Lienzo",
 				"trackedPlayerHeader": "Jugador Rastreado",
 				"name": "Director",
 				"icTypeHeader": "Tipo dentro del Combate",
@@ -48,7 +46,6 @@
 				"onLoad": "Cargar",
 				"onCombatStart": "Inicio del Combate",
 				"sceneName": "Nombre de Escena",
-				"vttScenePlaceholder": "Introduce un nombre o suelta una escena aquí",
 				"onPause": "Pausar",
 				"onUnpause": "Quitar pausa",
 				"onStopStreaming": "Parar la Retransmisión",
@@ -68,7 +65,6 @@
 			},
 			"obsWebsocket": {
 				"portLabel": "Puerto",
-				"name": "Opciones Websocket de OBS",
 				"passwordLabel": "Contraseña",
 				"syncButton": "Sincronizar",
 				"saveButton": "Guardar",
@@ -100,8 +96,6 @@
 				"name": "Editor de Capa",
 				"removeComponentButton": "Eliminar Componente",
 				"removeButton": "Eliminar Capa",
-				"addButton": "Agregar Componente Nuevo",
-				"editStyleButton": "Editar Estilo",
 				"addOverlayButton": "Agregar Nueva Capa",
 				"componentType": "Component type",
 				"exportButton": "Exportar"
@@ -180,11 +174,6 @@
 				"Hint": "Width of the element in pixels",
 				"Name": "Dice so Nice Overlay Width"
 			},
-			"obsWebsocketMenu": {
-				"Hint": "Configure OBS Websocket",
-				"Label": "Open Menu",
-				"Name": "OBS Websocket Settings"
-			},
 			"forceStreamPageOBSMode": {
 				"Name": "Forzar Modo OBS en la Página de Stream",
 				"Hint": "Fuerza la salida a /stream a estar en Modo OBS siempre"
@@ -229,11 +218,6 @@
 				"Name": "Overlay Editor",
 				"Hint": "Edit the Overlays",
 				"Label": "Open Editor"
-			},
-			"overlayActorSelect": {
-				"Label": "Open Menu",
-				"Name": "Overlay Actors",
-				"Hint": "Select the Actors for the Overlay"
 			},
 			"maxScale": {
 				"Name": "Escala Máxima",
@@ -283,10 +267,6 @@
 			"showUserConfig": {
 				"Name": "Allow User-Config to Render?",
 				"Hint": "If enabled, the user config dialog will not be suppressed"
-			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
 			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
