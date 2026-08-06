@@ -31,9 +31,7 @@
 				"name": "Diretor",
 				"icTypeHeader": "Tipo Em Combate",
 				"oocTypeHeader": "Tipo Fora de Combate",
-				"canvasOptionsHeader": "Opções de Tela",
 				"trackedPlayerHeader": "Jogador Rastreado",
-				"obsUserCommands": "OBS User Commands",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
 				"noGMWarning": "No GM is currently logged in, director settings cannot be changed"
 			},
@@ -46,7 +44,6 @@
 				"enableSource": "Habilitar Fonte",
 				"disableSource": "Desabilitar Fonte",
 				"vttSceneLabel": "Nome da Cena no VTT",
-				"vttScenePlaceholder": "Insira o nome ou solte uma cena aqui",
 				"onLoad": "Carregar",
 				"onCombatStart": "Início do Combate",
 				"onCombatEnd": "Fim do Combate",
@@ -56,7 +53,6 @@
 				"onStopStreaming": "Parar Streaming"
 			},
 			"obsWebsocket": {
-				"name": "Configurações OBS Websocket",
 				"urlLabel": "URL",
 				"portLabel": "Porta",
 				"passwordLabel": "Senha",
@@ -79,8 +75,6 @@
 				"name": "Editor de Sobreposição",
 				"previewActorLabel": "Preview as",
 				"showFullPreview": "Full Preview",
-				"addButton": "Adicionar Novo Componente",
-				"editStyleButton": "Estilar Estilo",
 				"removeButton": "Remover Sobreposição",
 				"removeComponentButton": "Remover Componente",
 				"importButton": "Importar",
@@ -205,16 +199,6 @@
 				"Name": "Configurações OBS Remoto",
 				"Hint": "Configure o OBS Remoto."
 			},
-			"obsWebsocketMenu": {
-				"Label": "Abrir Menu",
-				"Name": "Configurações OBS Websocket",
-				"Hint": "Configure o OBS Websocket."
-			},
-			"overlayActorSelect": {
-				"Label": "Abrir Menu",
-				"Name": "Atores de Sobreposição",
-				"Hint": "Selecione os Atores para a Sobreposição."
-			},
 			"overlayEditor": {
 				"Label": "Abrir Editor",
 				"Name": "Editor de Sobreposição",
@@ -283,10 +267,6 @@
 			"proxyOBSMessages": {
 				"Name": "Send OBS Mode Notifications to GM",
 				"Hint": "If enabled, notifications hidden in OBS view will be displayed in all connected GM clients"
-			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
 			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
