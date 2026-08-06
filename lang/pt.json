@@ -39,11 +39,6 @@
 				"Hint": "Width of the element in pixels",
 				"Name": "Largura Sobreposição Dice so Nice"
 			},
-			"obsWebsocketMenu": {
-				"Hint": "Configure OBS Websocket",
-				"Label": "Abrir Menu",
-				"Name": "Configurações OBS Websocket"
-			},
 			"forceStreamPageOBSMode": {
 				"Name": "Force OBS Mode on Stream Page",
 				"Hint": "Forces the /stream output to be in OBS mode at all times"
@@ -92,11 +87,6 @@
 				"Name": "Editor de Sobreposição",
 				"Hint": "Edit the Overlays",
 				"Label": "Abrir Editor"
-			},
-			"overlayActorSelect": {
-				"Label": "Abrir Menu",
-				"Name": "Atores de Sobreposição",
-				"Hint": "Select the Actors for the Overlay"
 			},
 			"maxScale": {
 				"Name": "Escala Máxima",
@@ -147,10 +137,6 @@
 				"Name": "Permitir Renderização de Configuração de Utilizador?",
 				"Hint": "If enabled, the user config dialog will not be suppressed"
 			},
-			"streamChatPopupStyle": {
-				"Hint": "If enabled, the chat on /stream will be displayed like the Notifications in the Game View",
-				"Name": "Notification-Style Chat Overlay"
-			},
 			"showChatNotificationsOnCanvas": {
 				"Hint": "If enabled, chat message popups will be not be hidden from the in-game UI",
 				"Name": "Display Chat Notifications in Game"
@@ -194,16 +180,12 @@
 				"name": "Editor de Sobreposição",
 				"removeComponentButton": "Remover Componente",
 				"removeButton": "Remover Sobreposição",
-				"addButton": "Adicionar Novo Componente",
-				"editStyleButton": "Estilar Estilo",
 				"addOverlayButton": "Adicionar Nova Sobreposição",
 				"componentType": "Component type",
 				"exportButton": "Exportar"
 			},
 			"director": {
 				"oocTypeHeader": "Tipo Fora de Combate",
-				"canvasOptionsHeader": "Opções de Tela",
-				"obsUserCommands": "OBS User Commands",
 				"trackedPlayerHeader": "Jogador Rastreado",
 				"name": "Diretor",
 				"icTypeHeader": "Tipo Em Combate",
@@ -223,7 +205,6 @@
 			},
 			"obsWebsocket": {
 				"portLabel": "Porta",
-				"name": "Configurações OBS Websocket",
 				"passwordLabel": "Palavra-passe",
 				"syncButton": "Sincronizar",
 				"saveButton": "Gravar",
@@ -241,7 +222,6 @@
 				"onLoad": "Carregar",
 				"onCombatStart": "Início do Combate",
 				"sceneName": "Nome da Cena",
-				"vttScenePlaceholder": "Insira o nome ou solte uma cena aqui",
 				"onPause": "Pausar",
 				"onUnpause": "Retomar",
 				"onStopStreaming": "Parar Streaming",
