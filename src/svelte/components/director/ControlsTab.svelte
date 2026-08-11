@@ -147,7 +147,8 @@
 				{/each}
 			</select>
 		</div>
-		<div class='mode-row'>
+		<div class='mode-row actions-row'>
+			<b>{game.i18n?.localize('obs-utils.applications.director.actionsHeader')}</b>
 			<div class='controls-row'>
 				<input name='limitCanvas' id='limitCanvas' type='checkbox' bind:checked={$clampCanvas} {disabled} />
 				<label
@@ -325,6 +326,18 @@
 				display flex
 				gap 6px
 				justify-content flex-start
+
+	// Same compact treatment as the tracking-mode and easing rows: these are
+	// secondary actions, not the primary mode picker, and the reclaimed height
+	// is what lets the Scene Levels block sit in the column without scrolling.
+	.actions-row .controls-row label.button
+		width 32px
+		height 20px
+		border-width 1px
+		flex 0 0 32px
+
+		i
+			font-size 12px
 
 	.controls-row
 		display flex

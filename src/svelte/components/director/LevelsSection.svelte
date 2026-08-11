@@ -113,7 +113,7 @@
 		<b>{game.i18n?.localize('obs-utils.applications.director.levelsHeader')}</b>
 
 		<div class='row'>
-			<span class='inline-label'>{game.i18n?.localize('obs-utils.settings.levelPolicy.Name')}</span>
+			<span class='inline-label' title={game.i18n?.localize('obs-utils.settings.levelPolicy.Name')}>{game.i18n?.localize('obs-utils.applications.director.levelChoiceShort')}</span>
 			<select bind:value={$levelPolicy} {disabled}>
 				{#each policyOptions as opt (opt.value)}
 					<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
@@ -123,7 +123,7 @@
 
 		{#if $levelPolicy === 'relative'}
 			<div class='row'>
-				<span class='inline-label'>{game.i18n?.localize('obs-utils.settings.levelRelativeRule.Name')}</span>
+				<span class='inline-label' title={game.i18n?.localize('obs-utils.settings.levelRelativeRule.Name')}>{game.i18n?.localize('obs-utils.applications.director.levelSplitShort')}</span>
 				<select bind:value={$levelRelativeRule} {disabled}>
 					{#each ruleOptions as opt (opt.value)}
 						<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
@@ -132,7 +132,7 @@
 			</div>
 		{:else if $levelPolicy === 'token'}
 			<div class='row'>
-				<span class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.levelFollowToken')}</span>
+				<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.levelFollowToken')}>{game.i18n?.localize('obs-utils.applications.director.levelFollowTokenShort')}</span>
 				<select
 					value={pins.levelToken ?? ''}
 					onchange={e => setScenePin({ levelToken: (e.currentTarget as HTMLSelectElement).value || undefined })}
@@ -146,7 +146,7 @@
 			</div>
 		{:else}
 			<div class='row'>
-				<span class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.levelPinned')}</span>
+				<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.levelPinned')}>{game.i18n?.localize('obs-utils.applications.director.levelPinnedShort')}</span>
 				<select
 					value={pins.level ?? ''}
 					onchange={e => setScenePin({ level: (e.currentTarget as HTMLSelectElement).value || undefined })}
@@ -162,7 +162,7 @@
 
 		{#if $currentOOC === 'trackToken'}
 			<div class='row'>
-				<span class='inline-label'>{game.i18n?.localize('obs-utils.applications.director.trackedToken')}</span>
+				<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.trackedToken')}>{game.i18n?.localize('obs-utils.applications.director.trackedTokenShort')}</span>
 				<select
 					value={pins.trackedToken ?? ''}
 					onchange={e => setScenePin({ trackedToken: (e.currentTarget as HTMLSelectElement).value || undefined })}
@@ -177,9 +177,15 @@
 		{/if}
 
 		{#if blocked}
-			<div class='blocked' role='status'>
+			<!-- One line, full text on hover. A wrapped paragraph here costs more
+				height than the column has once several pickers are showing. -->
+			<div
+				class='blocked'
+				role='status'
+				title={game.i18n?.format('obs-utils.applications.director.levelBlocked', { level: blocked })}
+			>
 				<i class='fas fa-triangle-exclamation'></i>
-				<span>{game.i18n?.format('obs-utils.applications.director.levelBlocked', { level: blocked })}</span>
+				<span>{game.i18n?.format('obs-utils.applications.director.levelBlockedShort', { level: blocked })}</span>
 			</div>
 		{/if}
 	</div>
@@ -191,29 +197,39 @@
 		flex-direction column
 		gap 8px
 
-	// Stacked, not side by side: this panel lives in the Director's narrow
-	// right-hand column and a label beside a select overflows it.
+	// Same 70px-label grid as the tracking-mode and easing rows. Stacking the
+	// label above the select costs ~15px a row, which the column cannot spare
+	// once a pinned floor and a tracked token are both configured.
 	.row
-		display flex
-		flex-direction column
-		align-items stretch
-		gap 2px
+		display grid
+		grid-template-columns 70px 1fr
+		align-items center
+		gap 8px
 
 		select
 			width 100%
 			min-width 0
+			height 24px
 
 	.inline-label
 		font-size 12px
 		opacity 0.8
+		overflow hidden
+		text-overflow ellipsis
+		white-space nowrap
 
 	.blocked
 		display flex
 		align-items center
 		gap 6px
-		padding 6px 8px
+		padding 3px 6px
 		border-radius 4px
-		font-size 12px
+		font-size 11px
 		background rgba(255, 144, 0, 0.12)
 		border 1px solid rgba(255, 144, 0, 0.4)
+
+		span
+			overflow hidden
+			text-overflow ellipsis
+			white-space nowrap
 </style>
