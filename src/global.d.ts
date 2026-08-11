@@ -40,8 +40,12 @@ declare global {
 	}
 
 	interface SettingConfig {
-		'obs-utils.minScale': number;
-		'obs-utils.maxScale': number;
+		'obs-utils.frameMargin': number;
+		'obs-utils.closestView': number;
+		'obs-utils.widestView': number;
+		'obs-utils.levelPolicy': string;
+		'obs-utils.levelRelativeRule': string;
+		'obs-utils.levelPins': Record<string, { level?: string; levelToken?: string; trackedToken?: string }>;
 		'obs-utils.clampCanvas': boolean;
 		'obs-utils.defaultOutOfCombat': string;
 		'obs-utils.defaultInCombat': string;

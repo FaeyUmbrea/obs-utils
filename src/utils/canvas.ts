@@ -1,8 +1,20 @@
 import { getCurrentCombatants } from './combat.ts';
 import { getActiveGM, isOBS, sleep } from './helpers.ts';
+import { applyLevel, getCurrentLevelId, getScenePins, resolveLevelForTokens, tokensOnLevel } from './levels.ts';
 import { getSetting } from './settings.ts';
 
-export const VIEWPORT_DATA: Map<string, { x: number; y: number; scale: number }> = new Map();
+/**
+ * A tracked user's camera position, plus the floor they were standing on.
+ *
+ * `level` rides the same payload as the position rather than travelling on its
+ * own event so a floor change and the camera position that belongs to it are
+ * applied as one decision. Split across two messages they race the receiver's
+ * redraw and produce a visibly wrong frame. It is `undefined` on v13, where
+ * Scene Levels does not exist.
+ */
+export interface ViewportPayload { x: number; y: number; scale: number; level?: string }
+
+export const VIEWPORT_DATA: Map<string, ViewportPayload> = new Map();
 
 export function hideApplication(_: unknown, html: JQuery | HTMLElement) {
 	try {
@@ -101,9 +113,11 @@ function getManualToken() {
 	return (game as ReadyGame).canvas?.scene?.tokens?.filter(token => !!token.getFlag('obs-utils', 'tracked')).map(token => token.object as Token);
 }
 
-function toggleToken(tokenDocument: TokenDocument) {
+/** Flip a token's manual tracking flag. Returns the new state so callers can report it. */
+export function toggleToken(tokenDocument: TokenDocument) {
 	const value = !tokenDocument.getFlag('obs-utils', 'tracked');
 	tokenDocument.setFlag('obs-utils', 'tracked', value);
+	return value;
 }
 
 export function getCurrentUser() {
@@ -115,9 +129,15 @@ function trackAll() {
 }
 
 function trackTokenList(tokens: Token[]) {
+	// A group has no inherent floor, so a policy picks one and the framing is
+	// then restricted to it. Left unrestricted, a party split across two floors
+	// produces a bounding box centred between them — a shot of neither.
+	const levelId = resolveLevelForTokens(tokens);
+	const framed = tokensOnLevel(tokens, levelId);
+
 	const coordinates: { x: number; y: number; width: number; height: number }[] = [];
 
-	tokens?.forEach((token) => {
+	framed?.forEach((token) => {
 		const object = {
 			x: token?.document._source.x,
 			y: token?.document._source.y,
@@ -132,15 +152,59 @@ function trackTokenList(tokens: Token[]) {
 	if (!bounds) return;
 
 	const screenDimensions = canvas!.screenDimensions;
+	// Read per call: this is what makes a tile count behave the same on a
+	// 50px-grid map and a 200px-grid one.
+	const gridSize = canvas!.scene!.dimensions.size;
 
-	const scaleX = screenDimensions[0] / (bounds.maxX - bounds.minX + 300);
-	const scaleY = screenDimensions[1] / (bounds.maxY - bounds.minY + 300);
+	// Frame Margin is expressed per side, so it counts twice across the span.
+	const margin = getSetting('frameMargin')! * gridSize * 2;
+
+	const scaleX = screenDimensions[0] / (bounds.maxX - bounds.minX + margin);
+	const scaleY = screenDimensions[1] / (bounds.maxY - bounds.minY + margin);
+
+	const closest = getSetting('closestView')!;
+	// A pair set the wrong way round degrades to a fixed zoom rather than
+	// fighting itself.
+	const widest = Math.max(getSetting('widestView')!, closest);
 
 	let scale = Math.min(scaleX, scaleY);
-	scale = Math.min(scale, getSetting('maxScale')!);
-	scale = Math.max(scale, getSetting('minScale')!);
+	scale = Math.min(scale, tilesToScale(closest, screenDimensions[0], gridSize));
+	scale = Math.max(scale, tilesToScale(widest, screenDimensions[0], gridSize));
 
-	clampAndApply({ x: bounds.center.x, y: bounds.center.y, scale });
+	applyThenPan(levelId, { x: bounds.center.x, y: bounds.center.y, scale });
+}
+
+/**
+ * Pan, changing floor first if the policy asked for a different one.
+ *
+ * Deliberately synchronous when no floor change is needed, which is almost
+ * every frame — a redraw is rare and shouldn't cost the 30 Hz path a microtask.
+ * When a change is needed the pan waits for the draw, because
+ * `initializeCanvasPosition()` re-seeds from the scene's cached `_viewPosition`
+ * on the way back and would discard a pan issued first.
+ */
+function applyThenPan(levelId: string | undefined, position: { x: number; y: number; scale: number }) {
+	if (!levelId || levelId === getCurrentLevelId()) {
+		clampAndApply(position);
+		return;
+	}
+	applyLevel(levelId).then((reached) => {
+		// Unreachable floor holds the last good frame rather than panning to a
+		// correct coordinate on a floor the stream isn't showing.
+		if (reached) clampAndApply(position);
+	});
+}
+
+/**
+ * Convert a horizontal tile count into a canvas scale.
+ *
+ * More tiles visible is a *smaller* scale. This function is the only place that
+ * inversion has to be reasoned about — every caller and every setting reads in
+ * tiles, so `Closest View` being a `Math.min` on scale is correct even though it
+ * looks backwards at the call site.
+ */
+export function tilesToScale(tiles: number, screenWidth: number, gridSize: number) {
+	return screenWidth / (tiles * gridSize);
 }
 
 export function tokenMoved() {
@@ -168,6 +232,15 @@ export function tokenMoved() {
 			case 'trackmanual':
 				trackTokenList(getManualToken() ?? []);
 				break;
+			case 'trackToken': {
+				// Out-of-combat counterpart to `trackone`. The nominated token is
+				// stored by id per scene; the placeable is looked up fresh because
+				// objects are destroyed and rebuilt across redraws.
+				const pinned = getScenePins().trackedToken;
+				const token = pinned ? ((game as ReadyGame).canvas?.tokens?.get(pinned) as Token | undefined) : undefined;
+				if (token) trackTokenList([token]);
+				break;
+			}
 			case 'trackPlayerOwned':
 				trackTokenList(getPlayerTokens() ?? []);
 				break;
@@ -203,7 +276,24 @@ function calculateBoundsOfCoodinates(coordSet: { x: number; y: number; width: nu
 	};
 }
 
+/**
+ * Apply a tracked user's viewport, floor first.
+ *
+ * Order is load-bearing. `scene.view()` runs a full redraw, and
+ * `initializeCanvasPosition()` re-seeds the view from the scene's cached
+ * `_viewPosition` when it returns — so a pan issued before the draw settles is
+ * silently thrown away. It also has to be the position that arrived alongside
+ * this level, never a buffered one, which is pre-change by definition.
+ */
+async function applyTrackedViewport(data: ViewportPayload) {
+	if (!(await applyLevel(data.level))) return;
+	clampAndApply(data);
+}
+
 export function viewportChanged(userId: string) {
+	// Pause suppresses application only. Recording happens on receipt in
+	// socket.ts so the list stays warm through a pause.
+	if (getSetting('pauseCameraTracking')) return;
 	const user = (game as ReadyGame).users?.get(userId) as User | undefined;
 	if (user?.viewedScene !== (game as ReadyGame | undefined)?.user?.viewedScene) {
 		return;
@@ -215,7 +305,7 @@ export function viewportChanged(userId: string) {
 				if (active && user?.id === active.id) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
-						clampAndApply(viewportData);
+						applyTrackedViewport(viewportData).then();
 				}
 				break;
 			}
@@ -223,14 +313,14 @@ export function viewportChanged(userId: string) {
 				if (getCurrentCombatants()?.some(e => e.id === userId)) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
-						clampAndApply(viewportData);
+						applyTrackedViewport(viewportData).then();
 				}
 				break;
 			case 'clonePlayer':
 				if (userId === getSetting('trackedUser')) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
-						clampAndApply(viewportData);
+						applyTrackedViewport(viewportData).then();
 				}
 				break;
 			default:
@@ -243,7 +333,7 @@ export function viewportChanged(userId: string) {
 				if (active && user?.id === active.id) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
-						clampAndApply(viewportData);
+						applyTrackedViewport(viewportData).then();
 				}
 				break;
 			}
@@ -251,7 +341,7 @@ export function viewportChanged(userId: string) {
 				if (userId === getSetting('trackedUser')) {
 					const viewportData = VIEWPORT_DATA.get(userId);
 					if (viewportData !== undefined)
-						clampAndApply(viewportData);
+						applyTrackedViewport(viewportData).then();
 				}
 				break;
 			default:
@@ -305,7 +395,10 @@ export function scaleToFit() {
 		screenDimensions[1] / sceneDimensions.height,
 	);
 
-	clampAndApply({ ...center, scale });
+	// Framing is identical on every floor — canvas dimensions come from the
+	// Scene, with no Level input — so birdseye only needs the floor choice. It
+	// has no token set of its own, so it borrows the same one `trackAll` uses.
+	applyThenPan(resolveLevelForTokens(getAutoTokens() ?? []), { ...center, scale });
 }
 
 export async function closePopupWithDelay(popout: { close: () => void }) {

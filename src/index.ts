@@ -8,7 +8,7 @@ import { registerKeybindings } from './utils/keybinds.ts';
 import { initOBS } from './utils/obs.ts';
 import { getSetting, runMigrations, setSetting } from './utils/settings.ts';
 import { initOverlayDefaultsHooks, initSettings } from './utils/settingsSetup.ts';
-import { activateViewportTracking, deactivateViewportTracking, socketCanvas } from './utils/socket.js';
+import { activateViewportTracking, deactivateViewportTracking, onCanvasReadyEmit, socketCanvas } from './utils/socket.js';
 
 // Conditionally load the polyfill module only when the host browser is missing
 // one or more of the features it polyfills (e.g., Chromium 127 in OBS, where
@@ -87,6 +87,10 @@ async function start() {
 	Hooks.on('canvasTearDown', deactivateViewportTracking);
 	Hooks.on('canvasPan', socketCanvas);
 	Hooks.on('canvasReady', activateViewportTracking);
+	// Must run after activateViewportTracking — the emit is gated on it. A
+	// redraw is the only thing that changes our level, so this is also where a
+	// floor change becomes visible to the OBS client.
+	Hooks.on('canvasReady', onCanvasReadyEmit);
 
 	// Register updateActor for System agnostic default. This allows for custom and system-specific actor refresh triggers.
 	Hooks.on('updateActor', actor =>

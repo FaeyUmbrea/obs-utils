@@ -1,6 +1,6 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
-import { ICCHOICES, MODULE_ID, OOCCHOICES } from './const';
+import { ICCHOICES, LEVEL_POLICY_CHOICES, LEVEL_RELATIVE_CHOICES, MODULE_ID, OOCCHOICES } from './const';
 import { getGM, isOBS } from './helpers';
 import { ensureStore, getSetting, OBS_MODIFIABLE_SETTINGS, setSetting } from './settings.ts';
 import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
@@ -63,24 +63,39 @@ function createSetting(settingName: ClientSettings.KeyFor<'obs-utils'>, config: 
 }
 
 export function	initSettings() {
-	createSetting('minScale', {
-		default: 0.1,
+	// Framing limits are expressed in grid tiles rather than a scale multiplier,
+	// so they mean the same thing on any map and at any client resolution.
+	// Frame Margin leads the group because it is the control that answers
+	// "the camera is too tight on my party" directly.
+	createSetting('frameMargin', {
+		default: 1.5,
 		type: Number,
 		range: {
-			min: 0.01,
-			max: 5,
-			step: 0.01,
+			min: 0,
+			max: 20,
+			step: 0.5,
 		},
 		scope: 'world',
 		config: true,
 	});
-	createSetting('maxScale', {
-		default: 2,
+	createSetting('closestView', {
+		default: 10,
 		type: Number,
 		range: {
-			min: 0.01,
-			max: 5,
-			step: 0.01,
+			min: 2,
+			max: 200,
+			step: 1,
+		},
+		scope: 'world',
+		config: true,
+	});
+	createSetting('widestView', {
+		default: 40,
+		type: Number,
+		range: {
+			min: 2,
+			max: 200,
+			step: 1,
 		},
 		scope: 'world',
 		config: true,
@@ -91,6 +106,41 @@ export function	initSettings() {
 		type: Boolean,
 		scope: 'world',
 		config: false,
+	});
+
+	// Which floor the OBS client stands on, for the modes that have no inherent
+	// answer. Clone modes take it from the user they mirror; the single-token
+	// modes take it from their token.
+	createSetting('levelPolicy', {
+		default: 'relative',
+		type: String,
+		choices: LEVEL_POLICY_CHOICES,
+		scope: 'world',
+		config: true,
+		// Same as the mode settings: changing which floor to show has to
+		// re-evaluate immediately, not wait for the next token movement.
+		onChange: changeMode,
+	});
+	createSetting('levelRelativeRule', {
+		default: 'lowest',
+		type: String,
+		choices: LEVEL_RELATIVE_CHOICES,
+		scope: 'world',
+		config: true,
+		onChange: changeMode,
+	});
+	// Level and token ids only mean anything within one scene, so the pins are
+	// kept as a scene-keyed map rather than as flat world settings that would
+	// resolve to nothing the moment the GM changes scene.
+	createSetting('levelPins', {
+		default: {},
+		type: Object,
+		scope: 'world',
+		config: false,
+		// Re-evaluate on write too: picking a different floor or token in the
+		// Director has to move the camera now, not whenever something else
+		// happens to fire next.
+		onChange: changeMode,
 	});
 
 	createSetting('defaultOutOfCombat', {

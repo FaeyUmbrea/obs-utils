@@ -26,7 +26,18 @@
 			"pauseCameraTracking": "Pause Camera Tracking",
 			"manualOBSWarning": "You are running in OBS Mode. If you want to return to normal, press SHIFT + ALT + CONTROL + O (Default) or your custom keybind. Then reload the page.",
 			"disableOBSMode": "Disable OBS Mode",
-			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it."
+			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it.",
+			"toggleTokenTracking": "Toggle Token Tracking",
+			"toggleTokenTrackingHint": "Toggles the camera tracking state for the hovered or controlled tokens when using manual tracking.",
+			"tokenTrackingOn": "Now tracking {names}",
+			"tokenTrackingOff": "No longer tracking {names}",
+			"trackToken": "Track a Specific Token",
+			"levelPolicyRelative": "Follow the tracked tokens",
+			"levelPolicyToken": "Follow one token's floor",
+			"levelPolicyPinned": "Stay on a chosen floor",
+			"levelRelativeLowest": "Lowest occupied floor",
+			"levelRelativeMiddle": "Middle occupied floor",
+			"levelRelativeHighest": "Highest occupied floor"
 		},
 		"applications": {
 			"componentEditors": {
@@ -50,6 +61,12 @@
 				"icTypeHeader": "In Combat Type",
 				"oocTypeHeader": "Out of Combat Type",
 				"trackedPlayerHeader": "Tracked Player",
+				"levelsHeader": "Scene Levels",
+				"levelFollowToken": "Follow token",
+				"levelPinned": "Pinned floor",
+				"trackedToken": "Tracked token",
+				"levelNoSelection": "— none —",
+				"levelBlocked": "The OBS client cannot show {level} — it has no token there to see by.",
 				"forceOpenSettingsForOBSUser": "Force Open Settings Menu for OBS User",
 				"noGMWarning": "No GM is currently logged in, director settings cannot be changed",
 				"cameraSmoothingHeader": "Camera Smoothing",
@@ -532,13 +549,25 @@
 				"Name": "Disable OBS Mode for Everyone",
 				"Hint": "Kill switch. Disables OBS Mode on all clients. Use to recover a stuck browser."
 			},
-			"minScale": {
-				"Name": "Minimum Scale",
-				"Hint": "The lowest that the screen can zoom to"
+			"frameMargin": {
+				"Name": "Frame Margin",
+				"Hint": "At least this many tiles are kept between the tracked tokens and the edge of frame."
 			},
-			"maxScale": {
-				"Name": "Maximum Scale",
-				"Hint": "The highest that the screen can zoom to"
+			"closestView": {
+				"Name": "Closest View",
+				"Hint": "The camera will never show fewer than this many tiles across. Lower it to let the camera get closer."
+			},
+			"widestView": {
+				"Name": "Widest View",
+				"Hint": "The camera will never show more than this many tiles across. With canvas clamping on, the scene's own width is a further limit."
+			},
+			"levelPolicy": {
+				"Name": "Scene Level Choice",
+				"Hint": "Foundry v14 only. How the stream picks which floor to show when tracking a group, or in birdseye. Modes that follow one user or one token take their floor from it instead."
+			},
+			"levelRelativeRule": {
+				"Name": "Floor When Split",
+				"Hint": "Which floor to show when the tracked tokens are spread across several. Only floors that actually hold a tracked token are considered."
 			},
 			"defaultOutOfCombat": {
 				"Name": "Out Of Combat Mode",

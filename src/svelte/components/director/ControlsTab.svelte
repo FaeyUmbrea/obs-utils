@@ -2,6 +2,7 @@
 <script lang='ts'>
 	import { generateDataBlockFromSetting, settings } from '../../../utils/settings.ts';
 	import { sendOpenSettingsConfig } from '../../../utils/socket.ts';
+	import LevelsSection from './LevelsSection.svelte';
 
 	const { disabled = false } = $props<{ disabled?: boolean }>();
 
@@ -171,6 +172,9 @@
 				>
 			</div>
 		</div>
+		<!-- Renders nothing unless the active scene actually has floors, so v13
+			and single-level v14 scenes are unaffected. -->
+		<LevelsSection {disabled} />
 	</div>
 </div>
 
@@ -179,12 +183,18 @@
 		display grid
 		grid-template-columns 3fr 2fr
 		gap 12px
+		// The Director is a fixed 370px tall and shared by every tab, so the
+		// columns absorb overflow themselves rather than growing the window.
+		min-height 0
+		max-height 100%
 
 		.col
 			display flex
 			flex-direction column
 			gap 10px
 			min-width 0
+			min-height 0
+			overflow-y auto
 
 	// Radios/checkboxes/button-inputs are hidden — their <label> renders the
 	// visual button. Other input types stay visible so they don't ghost at (0,0).

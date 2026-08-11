@@ -1,5 +1,6 @@
 import type { CameraPreset } from './cameraPresets.ts';
 import type { SequenceController } from './cameraSequencePlayer.ts';
+import type { ViewportPayload } from './canvas';
 import type { OBSWebsocketSettings } from './types.ts';
 import { playSequence } from './cameraSequencePlayer.ts';
 import { clampAndApplyExternal, getCurrentUser, getLocalViewport, VIEWPORT_DATA, viewportChanged } from './canvas';
@@ -35,6 +36,8 @@ async function handleEvent({ eventType, targetUser, payload }: {
 		handlePlayPreset(payload);
 	} else if (eventType === 'stopPreset') {
 		handleStopPreset();
+	} else if (eventType === 'requestViewport') {
+		emitViewportNow();
 	}
 }
 
@@ -80,11 +83,13 @@ export function sendOBSSetting(user: string, settings: OBSWebsocketSettings | un
 	});
 }
 
-function changeViewport({ viewport, userId }: { viewport: { x: number; y: number; scale: number }; userId: string }) {
+function changeViewport({ viewport, userId }: { viewport: ViewportPayload; userId: string }) {
 	if (!isOBS()) return;
-	// First update the collection of viewport data
+	// Always record, even while paused. Pause means "don't move the camera",
+	// not "don't know where anyone is" — if the list stays empty through a
+	// pause, unpausing leaves the OBS client blind until someone happens to pan.
+	// The decision to apply lives in viewportChanged.
 	VIEWPORT_DATA.set(userId, viewport);
-	// Then immediately try to animate to that users position
 	viewportChanged(userId);
 }
 
@@ -98,14 +103,47 @@ export function deactivateViewportTracking() {
 	viewportTrackingActive = false;
 }
 
+/**
+ * The floor this client is currently displaying, or `undefined` on v13 where
+ * Scene Levels does not exist. Receivers treat an absent level as "no opinion",
+ * so v13 behaviour needs no version branch anywhere.
+ */
+function getLocalLevelId(): string | undefined {
+	// `canvas.level` is a v14 addition; fvtt-types is pinned to 13.x.
+	return (canvas as unknown as { level?: { id?: string } } | undefined)?.level?.id;
+}
+
 function socketCanvasInternal(position: Canvas.ViewPosition) {
-	if (!viewportTrackingActive || getSetting('pauseCameraTracking')) {
-		return;
-	}
+	if (!viewportTrackingActive) return;
 	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
 		eventType: 'viewport',
 		targetUser: undefined,
-		payload: { viewport: position, userId: getCurrentUser() },
+		payload: {
+			viewport: { ...position, level: getLocalLevelId() },
+			userId: getCurrentUser(),
+		},
+	});
+}
+
+/**
+ * Emit this client's current viewport once, outside the pan-driven pipeline.
+ *
+ * Two callers: our own `canvasReady`, so a client that joins and never touches
+ * the camera still announces itself, and `requestViewport`, so an OBS client
+ * that reloads can repopulate its list without waiting for someone to pan.
+ */
+export function emitViewportNow() {
+	if (!viewportTrackingActive) return;
+	const viewport = getLocalViewport();
+	if (!viewport) return;
+	flushNow(viewport);
+}
+
+/** Broadcast asking every client to announce its viewport. Sent by the OBS client. */
+export function sendRequestViewport() {
+	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+		eventType: 'requestViewport',
+		targetUser: undefined,
 	});
 }
 
@@ -200,6 +238,23 @@ export function socketCanvas(_canvas: Canvas, position: Canvas.ViewPosition) {
 	} else {
 		smoothedEmit(position);
 	}
+}
+
+/**
+ * Called from `canvasReady`. A redraw is the only thing that changes our level,
+ * so this is where a floor change becomes visible to other clients.
+ *
+ * The buffered positions are all pre-change, and averaging across a floor change
+ * produces a coordinate meaningless on either floor — so the smoothing window is
+ * discarded rather than carried over. Same discontinuity handling `SMOOTH_JUMP_PX`
+ * already does for programmatic pans, just triggered by a redraw instead.
+ */
+export function onCanvasReadyEmit() {
+	smoothBuf.length = 0;
+	// An OBS client that just reloaded has an empty VIEWPORT_DATA and no way to
+	// fill it until someone happens to pan. Ask everyone to announce instead.
+	if (isOBS()) sendRequestViewport();
+	emitViewportNow();
 }
 
 // ─── Multi-GM handover ────────────────────────────────────────────────────
