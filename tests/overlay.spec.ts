@@ -187,7 +187,11 @@ test.describe('WYSIWYG positioning', () => {
 
 		const actorId = await firstOverlayActorId(gmPage);
 		for (const c of wysiwyg!.components) {
-			const wrapper = obsPage.locator(`#actor${actorId} #wysiwyg-component-${wysiwyg!.overlayIndex}-${c.i}`);
+			// Placement lives on the component element itself. The wrapper div that
+			// used to carry it (`#wysiwyg-component-N-M`) was removed deliberately —
+			// it intercepted `[data-component-id]` CSS rules — and its frame styles
+			// were merged onto the component instead.
+			const wrapper = obsPage.locator(`#actor${actorId} #overlay${wysiwyg!.overlayIndex} #component${c.i}`);
 			await expect(wrapper).toHaveCSS('position', 'absolute');
 			await expect(wrapper).toHaveCSS('left', `${c.x}px`);
 			await expect(wrapper).toHaveCSS('top', `${c.y}px`);
@@ -257,7 +261,11 @@ test.describe('Render parity', () => {
 			return { actors, overlays };
 		});
 
-		expect(JSON.stringify(positions, null, '\t')).toMatchSnapshot('stream-positions.json');
+		// Trailing newline: the stored baseline has one and `JSON.stringify` never
+		// emits one, so without this the comparison fails on a single byte that
+		// carries no meaning. Matching the file convention is stabler than
+		// regenerating a baseline a formatter would just re-terminate.
+		expect(`${JSON.stringify(positions, null, '\t')}\n`).toMatchSnapshot('stream-positions.json');
 	});
 });
 
