@@ -1,647 +1,647 @@
 {
-  "obs-utils": {
-    "strings": {
-      "module": "OBS Utils",
-      "ic": "戦闘中",
-      "trackAll": "すべての所有トークンに追従",
-      "trackOne": "現在アクティブな所有トークンに追従",
-      "clonePlayer": "選択したプレイヤーのビューポートをクローン",
-      "cloneDM": "GMのビューポートをクローン",
-      "birdseye": "マップを画面に合わせる",
-      "cloneTurnPlayer": "手番プレイヤーのビューポートをクローン",
-      "ooc": "戦闘外",
-      "trackManual": "手動リストのトークンに追従",
-      "limitCanvas": "キャンバスを画面端に制限する",
-      "keypressInfo1": "切り替え先:",
-      "keypressInfo2": "モード:",
-      "avInputPlaceholder": "テキストを入力または検索",
-      "customGroup": "カスタム",
-      "triggerGroup": "トリガー",
-      "iconPlaceholder": "アイコン",
-      "true": "真",
-      "false": "偽",
-      "missingTypeNotice": "レガシーまたは欠落している種別。編集するには、ドロップダウンで新しい種別を選択する。",
-      "done": "完了",
-      "trackPlayerOwned": "プレイヤー所有トークンに追従",
-      "pauseCameraTracking": "カメラ追従を一時停止",
-      "manualOBSWarning": "あなたはOBSモードで実行中である。通常に戻りたい場合、SHIFT + ALT + CONTROL + O(デフォルト)またはカスタムのキーバインドを押す。その後、ページを再読み込みする。",
-      "disableOBSMode": "OBSモードを無効にする",
-      "disableOBSModeHint": "手動OBSモードから抜けられなくなった場合に、この設定をオフにする。"
-    },
-    "applications": {
-      "componentEditors": {
-        "valuePath": "値のパス",
-        "maxPath": "最大パス",
-        "iconWhenTrue": "真の場合のアイコン",
-        "iconWhenFalse": "偽の場合のアイコン",
-        "imageWhenTrue": "真の場合の画像",
-        "imageWhenFalse": "偽の場合の画像",
-        "filledIcon": "塗りつぶしアイコン",
-        "emptyIcon": "空のアイコン",
-        "filledImage": "塗りつぶし画像",
-        "emptyImage": "空の画像",
-        "dataDriven": "データ駆動",
-        "staticPlaceholder": "リテラル値を入力",
-        "staticImagePlaceholder": "画像URLまたはパス",
-        "triggerNotActive": "このオーバーレイにはまだトランジションがない。トリガーのペイロードでこの値を制御できるよう、アニメーションタブで追加する。"
-      },
-      "director": {
-        "name": "ディレクター",
-        "icTypeHeader": "戦闘中の種別",
-        "oocTypeHeader": "戦闘外の種別",
-        "trackedPlayerHeader": "追従中のプレイヤー",
-        "forceOpenSettingsForOBSUser": "OBSユーザーの設定メニューを強制的に開く",
-        "noGMWarning": "現在ログイン中のGMがいないため、ディレクター設定を変更できない",
-        "cameraSmoothingHeader": "カメラのスムージング",
-        "easing": "イージング",
-        "duration": "持続時間",
-        "easingDirect": "直接(イージングなし)",
-        "easingLinear": "線形",
-        "easingEaseOut": "イーズアウト(既定)",
-        "easingEaseInOut": "イーズイン／アウト(シネマティック)",
-        "easingEaseOutCosine": "コサイン・イーズアウト",
-        "easingEaseInOutCosine": "コサイン・イーズイン／アウト",
-        "trackingModeHeader": "追従モード",
-        "trackingModeRaw": "直接",
-        "trackingModeSmooth": "スムーズ",
-        "trackingModeDragRelease": "パン操作終了時",
-        "trackingModeRawTip": "スムージングなしのレート制限付き更新。最小の遅延。",
-        "trackingModeSmoothTip": "GMのパン移動経路に移動平均スムージングを適用する。",
-        "trackingModeDragReleaseTip": "GMがパン移動を停止するまで更新を保留し、その後に最終位置を1回だけ送信する。",
-        "coDMsHeader": "共同GM",
-        "coDMsEmpty": "このワールドでGM権限を持つのはあなただけである。少なくとももう1人のユーザーにゲームマスターまたはアシスタントの役割が与えられると、共同GMタブで他のGMにカメラ操作を委ねられるようになる。",
-        "codmInControl": "操作中",
-        "codmOffline": "オフライン",
-        "takeControl": "操作を引き継ぐ",
-        "tabControls": "操作",
-        "tabCoDMs": "共同GM",
-        "tabPresets": "プリセット",
-        "presetAdd": "プリセットを追加",
-        "presetAddStatic": "静止を追加",
-        "presetAddAnimation": "アニメーションを追加",
-        "presetKindStatic": "静止プリセット",
-        "presetKindAnimation": "アニメーション・プリセット",
-        "presetNotFound": "プリセットが見つからない。",
-        "presetPlay": "再生",
-        "presetPanTo": "パン先",
-        "presetApply": "適用(カメラをここへ移動)",
-        "presetUpdate": "現在のカメラに更新",
-        "presetDelete": "プリセットを削除",
-        "presetsNoScene": "シーンが読み込まれていない",
-        "presetsEmpty": "このシーンにはまだカメラプリセットが保存されていない。カメラをパンおよびズームしてから、プリセットを追加をクリックして保存する。",
-        "keyframeEditor": {
-          "convert": "キーフレーム・シーケンスに変換",
-          "total": "合計",
-          "duration": "持続時間 (ms)",
-          "durationTip": "アニメーションタイムラインの合計長。自動設定にするには0のままにする。",
-          "loop": "ループ",
-          "loopNone": "なし",
-          "loopRestart": "先頭から繰り返す",
-          "loopPingPong": "往復",
-          "play": "再生",
-          "stop": "停止",
-          "record": "記録",
-          "recordStop": "記録を停止",
-          "smoothing": "スムージング",
-          "smoothingTip": "停止時に適用する、手ブレを除去するための移動平均ウィンドウ(1 = なし、15 = 最大)。",
-          "zoomIn": "ズームイン(Ctrl+ホイール)",
-          "zoomOut": "ズームアウト(Ctrl+ホイール)",
-          "zoomReset": "ズームをリセット",
-          "close": "エディターを閉じる",
-          "expandLabel": "キーフレームを編集",
-          "addAtPlayhead": "再生ヘッド位置にキーフレームを追加",
-          "captureFromViewport": "現在のビューポートからキャプチャ",
-          "deleteKeyframe": "キーフレームを削除",
-          "selectedHeader": "選択中のキーフレーム",
-          "timeMs": "時間(ms)",
-          "easing": "イージング",
-          "keyframes": "キーフレーム",
-          "scale": "スケール",
-          "selectHint": "編集するキーフレームを選択する。",
-          "prevFrame": "前のフレーム",
-          "nextFrame": "次のフレーム",
-          "prevKeyframe": "前のキーフレーム",
-          "nextKeyframe": "次のキーフレーム",
-          "noKeyframes": "このプリセットにはまだキーフレームがない。"
-        }
-      },
-      "obsRemote": {
-        "name": "OBSリモート設定",
-        "sceneName": "シーン名",
-        "sourceName": "OBSソース名",
-        "switchScene": "シーンを切り替え",
-        "toggleSource": "ソースを切り替え",
-        "enableSource": "ソースを有効化",
-        "disableSource": "ソースを無効化",
-        "vttSceneLabel": "VTTシーン名",
-        "onLoad": "読み込み",
-        "onCombatStart": "戦闘開始",
-        "onCombatEnd": "戦闘終了",
-        "onPause": "一時停止",
-        "onUnpause": "一時停止を解除",
-        "onSceneLoad": "シーン読み込み",
-        "onStopStreaming": "配信を停止",
-        "instance": "設定済み",
-        "addInstance": "別の設定済みインスタンスを追加",
-        "removeInstance": "このインスタンスを削除",
-        "addAction": "OBSアクションを追加",
-        "noInstancesYet": "設定済みのインスタンスはまだない。+をクリックして追加。",
-        "tabConnection": "接続",
-        "tabEvents": "イベント"
-      },
-      "obsWebsocket": {
-        "urlLabel": "URL",
-        "portLabel": "ポート",
-        "passwordLabel": "パスワード",
-        "syncLabel": "同期先クライアント",
-        "saveButton": "保存",
-        "syncButton": "同期"
-      },
-      "actorSelect": {
-        "name": "アクター選択",
-        "searchPlaceholder": "検索",
-        "closeButton": "閉じる",
-        "resetButton": "リセット",
-        "userTokensHeader": "ユーザー・トークン",
-        "editCSS": "アクターごとのCSSを編集"
-      },
-      "globalCSSEditor": {
-        "name": "グローバルオーバーレイCSS",
-        "menuLabel": "グローバルCSS",
-        "saveButton": "保存して閉じる",
-        "intro": "グローバルCSSは、obs-utilsがレンダリングするすべてのオーバーレイに適用される。オーバーレイコンテナの範囲に限定するには.obs-utils、特定のアクターには#actor{...}、要素にはprogress、.my-classなどのセレクターを使用する。"
-      },
-      "overlayPreview": {
-        "name": "オーバーレイプレビュー",
-        "chatDeadzoneLabel": "チャットのデッドゾーン",
-        "toggleBboxes": "バウンディングボックス"
-      },
-      "overlayEditor": {
-        "name": "オーバーレイエディター",
-        "animationEditor": {
-          "header": "アニメーション",
-          "addAnimation": "アニメーションを追加",
-          "reEntryLabel": "再実行時の処理",
-          "reEntry": {
-            "restart": "最初から再生",
-            "replace": "置換",
-            "queue": "キュー",
-            "ignore": "無視",
-            "extend": "延長"
-          },
-          "stateDefault": "デフォルト",
-          "addState": "状態を追加",
-          "removeState": "状態を削除",
-          "entrance": "開始",
-          "steady": "定常",
-          "exit": "終了",
-          "defineEntrance": "+ 開始を定義",
-          "defineSteady": "+ 定常を定義",
-          "defineExit": "+ 終了を定義",
-          "duration": "持続時間 (ms)",
-          "loop": "ループ",
-          "loopNone": "なし",
-          "loopRestart": "先頭から繰り返す",
-          "loopPingPong": "往復",
-          "loopInfinite": "無限",
-          "ease": "イージング",
-          "keyframeAt": "次の位置のキーフレーム",
-          "offset": "オフセット (0..1)",
-          "transform": "変形",
-          "opacity": "不透明度",
-          "filter": "フィルター",
-          "customProperty": "カスタムプロパティ",
-          "propertyName": "プロパティ名",
-          "propertyValue": "値",
-          "addProperty": "プロパティを追加",
-          "addKeyframe": "+ 再生ヘッドの位置にキーフレームを追加",
-          "deleteKeyframe": "キーフレームを削除",
-          "testState": "状態をテスト",
-          "noComponent": "コンポーネントを選択してアニメーションを編集する。"
-        },
-        "triggerSection": {
-          "header": "トリガー",
-          "enable": "イベント駆動",
-          "event": "イベント",
-          "conditions": "条件",
-          "conditionEmpty": "(任意)",
-          "clearCondition": "クリア",
-          "duration": "持続時間 (ms、-1 = 固定)",
-          "showMs": "表示アニメーション (ms)",
-          "hideMs": "非表示アニメーション (ms)",
-          "transition": "トランジション",
-          "transitionFade": "フェード",
-          "transitionSlideUp": "上へスライド",
-          "transitionSlideDown": "下へスライド",
-          "transitionScale": "スケール",
-          "transitionFlash": "フラッシュ",
-          "test": "テスト",
-          "testHint": "現在の条件をペイロードとしてトリガーを発火する"
-        },
-        "previewActorLabel": "プレビュー対象",
-        "showFullPreview": "全体プレビュー",
-        "removeButton": "オーバーレイを削除",
-        "removeComponentButton": "コンポーネントを削除",
-        "importButton": "インポート",
-        "exportButton": "エクスポート",
-        "importStarterButton": "スターターオーバーレイをインポート",
-        "starterConfirm": "{count}個のスターターオーバーレイをこのワールドに追加する？",
-        "starterImported": "{count}個のスターターオーバーレイをインポートした。",
-        "starterEmpty": "利用可能なスターターオーバーレイはない。",
-        "addOverlayButton": "新しいオーバーレイを追加",
-        "previousComponent": "前のコンポーネント",
-        "nextComponent": "次のコンポーネント",
-        "componentNavLabel": "コンポーネント{current} / {total}",
-        "componentType": "コンポーネント種別",
-        "closeButton": "閉じる",
-        "layersHeader": "オーバーレイ",
-        "componentHeader": "コンポーネント",
-        "layerName": "名前",
-        "layerType": "種別",
-        "hideLayer": "オーバーレイを非表示",
-        "showLayer": "オーバーレイを表示",
-        "previewActorAll": "すべてのアクター",
-        "emptyLayers": "オーバーレイはまだない。+をクリックして追加する。",
-        "noLayerSelected": "オーバーレイを選択してプロパティを編集する。",
-        "selectLayerHint": "オーバーレイを選択して編集を開始する。",
-        "selectComponentHint": "キャンバス上のコンポーネントをクリックするか、パネルから追加する。",
-        "overlaySize": "サイズ",
-        "sizeHint": "背景には、オーバーレイのサイズに合わせた画像コンポーネントを追加する。",
-        "tileByLabel": "タイルの単位",
-        "tileByHint": "アクター: 紐付けられたアクターごとに1つ。プレイヤー: アクティブなプレイヤーごとに1つ。1回: コンテキストにかかわらず単一のインスタンス。",
-        "tileByActors": "アクター",
-        "tileByPlayers": "プレイヤー",
-        "tileByUsers": "ユーザー(GMを含む)",
-        "tileByOnce": "1回(単一インスタンス)",
-        "canvasWidth": "キャンバスの幅(px)",
-        "canvasHeight": "キャンバスの高さ(px)",
-        "customCSS": "このオーバーレイ用のカスタムCSS",
-        "tileBy": {
-          "actors": "アクター",
-          "players": "プレイヤー",
-          "once": "1回(単一インスタンス)"
-        },
-        "backgroundImage": "背景画像",
-        "componentData": "データ",
-        "componentsHeader": "コンポーネント",
-        "drawOrderHint": "(リストの先頭=最初に描画)",
-        "dragReorder": "ドラッグして並べ替え",
-        "emptyComponents": "コンポーネントはまだない。上で追加する。",
-        "simpleIntro": "シンプルなオーバーレイはコンポーネントをインラインで描画する。並べ替えてレイアウト順を変更する。",
-        "selectComponentHintSimple": "オーバーレイタブのリストからコンポーネントを選択する。",
-        "unknownType": "不明なオーバーレイ種別。",
-        "addComponent": "コンポーネントを追加",
-        "tabLayer": "オーバーレイ",
-        "tabComponent": "コンポーネント",
-        "tabStyle": "スタイル",
-        "styleNoTarget": "コンポーネントまたはオーバーレイを選択してスタイルを設定する。",
-        "stylingTarget": "スタイリング",
-        "easyHint": "手軽な視覚調整。これらは要素にインラインCSSとして適用される。",
-        "advancedHint": "セレクター、疑似要素、ネストを含む完全なCSS。ルールはこの対象に自動的にスコープ設定される。",
-        "previewReadOnly": "読み取り専用プレビュー",
-        "emptyTitle": "オーバーレイはまだない",
-        "emptyDescription": "オーバーレイは、あなたの配信に表示されるものの構成要素である。種別を選択して始める。後からいつでも追加できる。",
-        "overviewCrumb": "概要",
-        "overviewListTitle": "オーバーレイ",
-        "unnamedOverlay": "名前のないオーバーレイ",
-        "modeSettings": "設定",
-        "modeLayout": "レイアウト",
-        "modeAnimation": "アニメーション",
-        "modePreview": "プレビュー",
-        "menuBlank": "空白",
-        "menuFromTemplate": "テンプレートから",
-        "animationStub": "アニメーションエディターは近日公開。",
-        "previewStub": "プレビューワークスペースは近日公開。",
-        "animation": {
-          "intro": "アニメーションによりオーバーレイが反応する。トラックを追加し、トリガーで接続して、このオーバーレイに命を吹き込もう。",
-          "start": "アニメーションをセットアップする",
-          "tracks": "トラック",
-          "addTrack": "トラックを追加",
-          "removeTrack": "トラックを削除",
-          "initialTrack": "初期トラック(デフォルトでマウント済み)",
-          "useAsInitial": "初期トラックとして使用",
-          "initialShort": "初期",
-          "kfSelectHint": "キーフレームをクリックして編集する。",
-          "behavior": "挙動",
-          "behaviorStatic": "静的(再生なし)",
-          "behaviorLooping": "ループ",
-          "behaviorTransitionOnEnd": "終了時に別のトラックへ遷移",
-          "duration": "持続時間 (ms)",
-          "endTarget": "トラックへ移動",
-          "endTargetTime": "時刻(ms)",
-          "selectTrack": "編集するトラックを選択する。",
-          "playhead": "再生ヘッド",
-          "addKeyframe": "再生ヘッド位置にキーフレームを追加",
-          "deleteKeyframe": "キーフレームを削除",
-          "keyframe": "キーフレーム",
-          "time": "時間(ms)",
-          "opacity": "不透明度",
-          "rotation": "回転(度)",
-          "transitions": "遷移",
-          "endOfTrack": "トラック終了時",
-          "deleteAnimation": "アニメーションを削除",
-          "confirmDeleteAnimation": "このオーバーレイからアニメーション全体を削除する？トラック、キーフレーム、遷移は破棄される。",
-          "addTransition": "トリガー応答を追加",
-          "removeTransition": "トリガー応答を削除",
-          "trigger": "トリガー発動時",
-          "fromTrack": "トラックから",
-          "addZone": "条件を追加",
-          "removeZone": "条件を削除",
-          "zoneStart": "再生ヘッドが≥の場合",
-          "zoneEnd": "かつ<",
-          "zoneDestination": "その後",
-          "zoneIgnore": "何もしない",
-          "zoneGotoTrack": "トラックへジャンプ",
-          "zoneGotoTime": "開始位置",
-          "testFire": "発動テスト",
-          "noTriggersHint": "トリガーはトラックを接続する。まず2つ目のトラックを追加し、次にイベントで発動する遷移を追加する。",
-          "livePreview": "ライブプレビュー",
-          "prevFrame": "前のフレーム",
-          "nextFrame": "次のフレーム",
-          "prevKeyframe": "前のキーフレーム",
-          "nextKeyframe": "次のキーフレーム"
-        },
-        "preview": {
-          "testFires": "発動テスト",
-          "testFiresHint": "登録済みのトリガーを発動して、オーバーレイがどのように反応するか確認する。",
-          "noTriggers": "まだトリガーは登録されていない。"
-        },
-        "templates": {
-          "heading": "新しいオーバーレイを作成",
-          "hpBar": {
-            "label": "HPバー",
-            "description": "アクターのHPに紐づく進行バー。アクターごとに1つ。"
-          },
-          "namePlate": {
-            "label": "ネームプレート",
-            "description": "中央揃えのアクター名ラベル。アクターごとに1つ。"
-          },
-          "statusRow": {
-            "label": "ステータスアイコン",
-            "description": "アイコンのインライン行。各アイコンを状態フラグに紐づける。"
-          },
-          "customCanvas": {
-            "label": "カスタムキャンバス",
-            "description": "空の自由配置キャンバス。コンポーネントを自分で追加する。"
-          },
-          "customInline": {
-            "label": "カスタムインライン",
-            "description": "空白のインラインフロー・オーバーレイ。コンポーネントは左から右へ流れる。"
-          },
-          "starter": {
-            "description": "現在のゲームシステムに同梱されている。"
-          }
-        },
-        "toggleEnabled": "表示を切り替え",
-        "removeLayer": "オーバーレイを削除",
-        "manageActors": "アクターを管理",
-        "confirmTypeChange": "オーバーレイの種類を変更すると、既存コンポーネントの位置またはレンダリングデータが破棄される場合がある。続行するか？",
-        "importDialog": {
-          "title": "データをインポート: オーバーレイ",
-          "hint1": "エクスポートされたオーバーレイ設定をインポートしようとしている。同じシステムでエクスポートされたものであることを確認すること。そうでない場合、AV Overlaysが動作しない可能性がある。",
-          "hint2": "既存のオーバーレイを置き換えるか、インポートしたリストを追加するかを選択すること。",
-          "replaceButton": "置換",
-          "appendButton": "追加",
-          "fileError": "データファイルがアップロードされていない",
-          "versionError": "未対応のバージョン",
-          "formatError": "インポートしたファイルはOBS Utils Overlay Exportではない",
-          "cancelButton": "キャンセル",
-          "unknownType": "認識できないファイル。v1/v2オーバーレイエクスポートまたは.vmoverlayバンドルが必要。",
-          "bundleImported": "「{name}」をインポート — オーバーレイを{count}件追加。",
-          "bundleImageWarning": "一部のバンドル画像をアップロードできなかった: {names}",
-          "bundleValidationFailed": "バンドルの形式が不正: {reason}"
-        },
-        "exportDialog": {
-          "title": "設定をエクスポートするか？",
-          "content": "オーバーレイの設定をエクスポートするか？",
-          "yesButton": "JSON",
-          "bundleButton": "バンドル",
-          "noButton": "キャンセル",
-          "bundleFormTitle": "バンドルとしてエクスポート",
-          "bundleId": "バンドルID (slug)",
-          "bundleName": "表示名",
-          "bundleAuthor": "作者",
-          "bundleLicense": "ライセンス (SPDX)",
-          "bundleUrl": "URL (任意)"
-        }
-      },
-      "styleEditor": {
-        "name": "スタイルエディター",
-        "mode": {
-          "simple": "シンプル",
-          "advanced": "詳細"
-        },
-        "groupTypography": "タイポグラフィ",
-        "groupColor": "色",
-        "groupLayout": "レイアウトと間隔",
-        "groupBorder": "枠線",
-        "groupImage": "画像",
-        "fontFamily": "フォントファミリー",
-        "fontSize": "フォントサイズ",
-        "fontWeight": "フォントの太さ",
-        "color": "テキストの色",
-        "backgroundColor": "背景色",
-        "width": "幅",
-        "height": "高さ",
-        "display": "表示",
-        "padding": "パディング",
-        "margin": "マージン",
-        "textAlign": "テキストの配置",
-        "verticalAlign": "垂直方向の配置",
-        "lineHeight": "行の高さ",
-        "letterSpacing": "文字間隔",
-        "border": "枠線",
-        "borderRadius": "枠線の半径",
-        "objectFit": "画像のフィット",
-        "objectPosition": "画像の位置",
-        "preservedHeader": "保持されたCSS",
-        "preservedHint": "シンプルモードのフィールドセット外のルールはそのまま保持され、詳細設定でのみ表示される。",
-        "preservedExtras": "追加の保持されたルール",
-        "clear": "クリア",
-        "submitButton": "適用して閉じる"
-      }
-    },
-    "overlays": {
-      "plainText": {
-        "name": "テキスト"
-      },
-      "fontAwesomeIcon": {
-        "name": "アイコン"
-      },
-      "booleanAVIcon": {
-        "name": "条件付きアイコン"
-      },
-      "booleanAVImage": {
-        "name": "条件付き画像"
-      },
-      "image": {
-        "name": "画像"
-      },
-      "multiIconAV": {
-        "name": "アイコンカウンター"
-      },
-      "multiImageAV": {
-        "name": "画像カウンター"
-      },
-      "progressBar": {
-        "name": "進行バー"
-      },
-      "simpleOverlay": {
-        "name": "インライン"
-      },
-      "wysiwygOverlay": {
-        "name": "キャンバス"
-      }
-    },
-    "triggers": {
-      "core": {
-        "onPlayerRoll": {
-          "name": "プレイヤーのロール",
-          "fields": {
-            "actor": "ロールするアクター",
-            "roll": "ロール・オブジェクト",
-            "total": "ロール合計",
-            "formula": "ロール式",
-            "isCritical": "クリティカルか (出目20)",
-            "isFumble": "ファンブルか (出目1)"
-          }
-        },
-        "onChatMessage": {
-          "name": "チャットメッセージ",
-          "fields": {
-            "content": "メッセージ内容",
-            "speakerAlias": "話者名"
-          }
-        }
-      }
-    },
-    "settings": {
-      "forceStreamPageOBSMode": {
-        "Name": "/streamでOBSモードを強制する",
-        "Hint": "/streamページで常にオーバーレイを描画する。"
-      },
-      "obsMode": {
-        "Name": "このブラウザーをOBSモードに固定",
-        "Hint": "⚠ 無効化されるまで、すべてのタブでこのブラウザーをOBSモードに固定する。OBSブラウザーソースは自動検出されるため、手動設定の場合にのみ使用すること。"
-      },
-      "obsModeUser": {
-        "Name": "ユーザーをOBSクライアントとして指定",
-        "Hint": "選択したユーザーのブラウザーをOBSとして扱う—UIは非表示になり、オーバーレイが描画される。"
-      },
-      "obsModeGlobalDisable": {
-        "Name": "全員のOBSモードを無効化",
-        "Hint": "キルスイッチ。すべてのクライアントでOBSモードを無効化する。動作不能になったブラウザーを復旧するために使用する。"
-      },
-      "minScale": {
-        "Name": "最小スケール",
-        "Hint": "画面がズームできる最小値"
-      },
-      "maxScale": {
-        "Name": "最大スケール",
-        "Hint": "画面がズームできる最大値"
-      },
-      "defaultOutOfCombat": {
-        "Name": "戦闘外モード",
-        "Hint": "戦闘外カメラモード"
-      },
-      "defaultInCombat": {
-        "Name": "戦闘中モード",
-        "Hint": "戦闘中カメラモード"
-      },
-      "popupCloseDelay": {
-        "Name": "ポップアップの自動終了までの時間",
-        "Hint": "ポップアップが自動的に閉じるまでの秒数。無効化するには0"
-      },
-      "showTrackerInCombat": {
-        "Name": "戦闘中に戦闘トラッカーを表示する？",
-        "Hint": "チェックすると、戦闘トラッカーは戦闘ターン中に表示される"
-      },
-      "obsRemoteMenu": {
-        "Label": "メニューを開く",
-        "Name": "OBSリモート設定",
-        "Hint": "OBS Websocket接続とイベント駆動アクションを設定する"
-      },
-      "overlayEditor": {
-        "Label": "エディターを開く",
-        "Name": "オーバーレイ・エディター",
-        "Hint": "オーバーレイを編集する"
-      },
-      "enableOBSWebsocket": {
-        "Name": "OBS Websocketを有効化する？",
-        "Hint": "チェックすると、リモート操作にOBS Websocketを使用する"
-      },
-      "allowWebsocketAPI": {
-        "Name": "OBS Websocket APIアクセスを許可する？",
-        "Hint": "チェックすると、他のモジュールがOBS Websocketに直接アクセスできる"
-      },
-      "showAV": {
-        "Name": "ビデオオーバーレイを表示する？",
-        "Hint": "有効化すると、音声／ビデオチャットUIがOBS上に表示される (OBSでの再読み込みが必要になる場合がある)"
-      },
-      "showUserConfig": {
-        "Name": "ユーザー設定の描画を許可する？",
-        "Hint": "有効化すると、ユーザー設定ダイアログは抑制されない"
-      },
-      "fixedPopups": {
-        "Name": "固定ポップアップを使用する",
-        "Hint": "有効化すると、すべてのポップアップが設定済みの値に再配置・リサイズされる"
-      },
-      "fixedPopupX": {
-        "Name": "ポップアップX",
-        "Hint": "画面左端からの距離(ピクセル)"
-      },
-      "fixedPopupY": {
-        "Name": "ポップアップY",
-        "Hint": "画面上端からの距離(ピクセル)"
-      },
-      "fixedPopupWidth": {
-        "Name": "ポップアップ幅",
-        "Hint": "ポップアップの幅(ピクセル)"
-      },
-      "fixedPopupHeight": {
-        "Name": "ポップアップ高さ",
-        "Hint": "ポップアップの高さ(ピクセル)"
-      },
-      "showKeybindingPopup": {
-        "Name": "キーバインド通知を表示",
-        "Hint": "チェックすると、キーボードショートカットの使用時に選択されたモードを示す通知を表示する"
-      },
-      "diceSoNice": {
-        "Name": "Dice so Niceオーバーレイを有効化",
-        "Hint": "チェックすると、他のオーバーレイと並んでDice so Niceセクションを描画する"
-      },
-      "diceSoNiceOverlayWidth": {
-        "Name": "Dice so Niceオーバーレイ幅",
-        "Hint": "要素の幅(ピクセル)"
-      },
-      "diceSoNiceOverlayHeight": {
-        "Name": "Dice so Niceオーバーレイ高さ",
-        "Hint": "要素の高さ(ピクセル)"
-      },
-      "smoothUserCamera": {
-        "Name": "滑らかなカメラ移動",
-        "Hint": "有効にすると、更新頻度を下げることで手動のカメラ移動を滑らかにする"
-      },
-      "proxyOBSMessages": {
-        "Name": "OBSモードの通知をGMへ送信",
-        "Hint": "有効にすると、OBSビューで非表示の通知を、接続中のすべてのGMクライアントに表示する"
-      },
-      "showChatNotificationsOnCanvas": {
-        "Name": "ゲーム内でチャット通知を表示",
-        "Hint": "有効にすると、OBS表示だけでなく通常のゲーム画面(GM側UI)でもチャットメッセージの通知ポップアップが表示される"
-      },
-      "leftAlignChatNotifications": {
-        "Name": "チャット通知を左揃え",
-        "Hint": "有効にすると、チャットメッセージのポップアップを画面左側に揃える"
-      },
-      "trackObserverTokens": {
-        "Name": "オブザーバー・トークンを追跡",
-        "Hint": "有効にすると、ディレクターは所有トークンだけでなく、ユーザーがオブザーバー権限を持つトークンにも追従する"
-      },
-      "showDirectorInOBSMode": {
-        "Name": "OBSモードでディレクター操作を表示",
-        "Hint": "無効にすると、OBSモード中はディレクター操作を非表示にする"
-      }
-    }
-  }
+	"obs-utils": {
+		"strings": {
+			"module": "OBS Utils",
+			"ic": "戦闘中",
+			"trackAll": "すべての所有トークンに追従",
+			"trackOne": "現在アクティブな所有トークンに追従",
+			"clonePlayer": "選択したプレイヤーのビューポートをクローン",
+			"cloneDM": "GMのビューポートをクローン",
+			"birdseye": "マップを画面に合わせる",
+			"cloneTurnPlayer": "手番プレイヤーのビューポートをクローン",
+			"ooc": "戦闘外",
+			"trackManual": "手動リストのトークンに追従",
+			"limitCanvas": "キャンバスを画面端に制限する",
+			"keypressInfo1": "切り替え先:",
+			"keypressInfo2": "モード:",
+			"avInputPlaceholder": "テキストを入力または検索",
+			"customGroup": "カスタム",
+			"triggerGroup": "トリガー",
+			"iconPlaceholder": "アイコン",
+			"true": "真",
+			"false": "偽",
+			"missingTypeNotice": "レガシーまたは欠落している種別。編集するには、ドロップダウンで新しい種別を選択する。",
+			"done": "完了",
+			"trackPlayerOwned": "プレイヤー所有トークンに追従",
+			"pauseCameraTracking": "カメラ追従を一時停止",
+			"manualOBSWarning": "あなたはOBSモードで実行中である。通常に戻りたい場合、SHIFT + ALT + CONTROL + O(デフォルト)またはカスタムのキーバインドを押す。その後、ページを再読み込みする。",
+			"disableOBSMode": "OBSモードを無効にする",
+			"disableOBSModeHint": "手動OBSモードから抜けられなくなった場合に、この設定をオフにする。"
+		},
+		"applications": {
+			"componentEditors": {
+				"valuePath": "値のパス",
+				"maxPath": "最大パス",
+				"iconWhenTrue": "真の場合のアイコン",
+				"iconWhenFalse": "偽の場合のアイコン",
+				"imageWhenTrue": "真の場合の画像",
+				"imageWhenFalse": "偽の場合の画像",
+				"filledIcon": "塗りつぶしアイコン",
+				"emptyIcon": "空のアイコン",
+				"filledImage": "塗りつぶし画像",
+				"emptyImage": "空の画像",
+				"dataDriven": "データ駆動",
+				"staticPlaceholder": "リテラル値を入力",
+				"staticImagePlaceholder": "画像URLまたはパス",
+				"triggerNotActive": "このオーバーレイにはまだトランジションがない。トリガーのペイロードでこの値を制御できるよう、アニメーションタブで追加する。"
+			},
+			"director": {
+				"name": "ディレクター",
+				"icTypeHeader": "戦闘中の種別",
+				"oocTypeHeader": "戦闘外の種別",
+				"trackedPlayerHeader": "追従中のプレイヤー",
+				"forceOpenSettingsForOBSUser": "OBSユーザーの設定メニューを強制的に開く",
+				"noGMWarning": "現在ログイン中のGMがいないため、ディレクター設定を変更できない",
+				"cameraSmoothingHeader": "カメラのスムージング",
+				"easing": "イージング",
+				"duration": "持続時間",
+				"easingDirect": "直接(イージングなし)",
+				"easingLinear": "線形",
+				"easingEaseOut": "イーズアウト(既定)",
+				"easingEaseInOut": "イーズイン／アウト(シネマティック)",
+				"easingEaseOutCosine": "コサイン・イーズアウト",
+				"easingEaseInOutCosine": "コサイン・イーズイン／アウト",
+				"trackingModeHeader": "追従モード",
+				"trackingModeRaw": "直接",
+				"trackingModeSmooth": "スムーズ",
+				"trackingModeDragRelease": "パン操作終了時",
+				"trackingModeRawTip": "スムージングなしのレート制限付き更新。最小の遅延。",
+				"trackingModeSmoothTip": "GMのパン移動経路に移動平均スムージングを適用する。",
+				"trackingModeDragReleaseTip": "GMがパン移動を停止するまで更新を保留し、その後に最終位置を1回だけ送信する。",
+				"coDMsHeader": "共同GM",
+				"coDMsEmpty": "このワールドでGM権限を持つのはあなただけである。少なくとももう1人のユーザーにゲームマスターまたはアシスタントの役割が与えられると、共同GMタブで他のGMにカメラ操作を委ねられるようになる。",
+				"codmInControl": "操作中",
+				"codmOffline": "オフライン",
+				"takeControl": "操作を引き継ぐ",
+				"tabControls": "操作",
+				"tabCoDMs": "共同GM",
+				"tabPresets": "プリセット",
+				"presetAdd": "プリセットを追加",
+				"presetAddStatic": "静止を追加",
+				"presetAddAnimation": "アニメーションを追加",
+				"presetKindStatic": "静止プリセット",
+				"presetKindAnimation": "アニメーション・プリセット",
+				"presetNotFound": "プリセットが見つからない。",
+				"presetPlay": "再生",
+				"presetPanTo": "パン先",
+				"presetApply": "適用(カメラをここへ移動)",
+				"presetUpdate": "現在のカメラに更新",
+				"presetDelete": "プリセットを削除",
+				"presetsNoScene": "シーンが読み込まれていない",
+				"presetsEmpty": "このシーンにはまだカメラプリセットが保存されていない。カメラをパンおよびズームしてから、プリセットを追加をクリックして保存する。",
+				"keyframeEditor": {
+					"convert": "キーフレーム・シーケンスに変換",
+					"total": "合計",
+					"duration": "持続時間 (ms)",
+					"durationTip": "アニメーションタイムラインの合計長。自動設定にするには0のままにする。",
+					"loop": "ループ",
+					"loopNone": "なし",
+					"loopRestart": "先頭から繰り返す",
+					"loopPingPong": "往復",
+					"play": "再生",
+					"stop": "停止",
+					"record": "記録",
+					"recordStop": "記録を停止",
+					"smoothing": "スムージング",
+					"smoothingTip": "停止時に適用する、手ブレを除去するための移動平均ウィンドウ(1 = なし、15 = 最大)。",
+					"zoomIn": "ズームイン(Ctrl+ホイール)",
+					"zoomOut": "ズームアウト(Ctrl+ホイール)",
+					"zoomReset": "ズームをリセット",
+					"close": "エディターを閉じる",
+					"expandLabel": "キーフレームを編集",
+					"addAtPlayhead": "再生ヘッド位置にキーフレームを追加",
+					"captureFromViewport": "現在のビューポートからキャプチャ",
+					"deleteKeyframe": "キーフレームを削除",
+					"selectedHeader": "選択中のキーフレーム",
+					"timeMs": "時間(ms)",
+					"easing": "イージング",
+					"keyframes": "キーフレーム",
+					"scale": "スケール",
+					"selectHint": "編集するキーフレームを選択する。",
+					"prevFrame": "前のフレーム",
+					"nextFrame": "次のフレーム",
+					"prevKeyframe": "前のキーフレーム",
+					"nextKeyframe": "次のキーフレーム",
+					"noKeyframes": "このプリセットにはまだキーフレームがない。"
+				}
+			},
+			"obsRemote": {
+				"name": "OBSリモート設定",
+				"sceneName": "シーン名",
+				"sourceName": "OBSソース名",
+				"switchScene": "シーンを切り替え",
+				"toggleSource": "ソースを切り替え",
+				"enableSource": "ソースを有効化",
+				"disableSource": "ソースを無効化",
+				"vttSceneLabel": "VTTシーン名",
+				"onLoad": "読み込み",
+				"onCombatStart": "戦闘開始",
+				"onCombatEnd": "戦闘終了",
+				"onPause": "一時停止",
+				"onUnpause": "一時停止を解除",
+				"onSceneLoad": "シーン読み込み",
+				"onStopStreaming": "配信を停止",
+				"instance": "設定済み",
+				"addInstance": "別の設定済みインスタンスを追加",
+				"removeInstance": "このインスタンスを削除",
+				"addAction": "OBSアクションを追加",
+				"noInstancesYet": "設定済みのインスタンスはまだない。+をクリックして追加。",
+				"tabConnection": "接続",
+				"tabEvents": "イベント"
+			},
+			"obsWebsocket": {
+				"urlLabel": "URL",
+				"portLabel": "ポート",
+				"passwordLabel": "パスワード",
+				"syncLabel": "同期先クライアント",
+				"saveButton": "保存",
+				"syncButton": "同期"
+			},
+			"actorSelect": {
+				"name": "アクター選択",
+				"searchPlaceholder": "検索",
+				"closeButton": "閉じる",
+				"resetButton": "リセット",
+				"userTokensHeader": "ユーザー・トークン",
+				"editCSS": "アクターごとのCSSを編集"
+			},
+			"globalCSSEditor": {
+				"name": "グローバルオーバーレイCSS",
+				"menuLabel": "グローバルCSS",
+				"saveButton": "保存して閉じる",
+				"intro": "グローバルCSSは、obs-utilsがレンダリングするすべてのオーバーレイに適用される。オーバーレイコンテナの範囲に限定するには.obs-utils、特定のアクターには#actor{...}、要素にはprogress、.my-classなどのセレクターを使用する。"
+			},
+			"overlayPreview": {
+				"name": "オーバーレイプレビュー",
+				"chatDeadzoneLabel": "チャットのデッドゾーン",
+				"toggleBboxes": "バウンディングボックス"
+			},
+			"overlayEditor": {
+				"name": "オーバーレイエディター",
+				"animationEditor": {
+					"header": "アニメーション",
+					"addAnimation": "アニメーションを追加",
+					"reEntryLabel": "再実行時の処理",
+					"reEntry": {
+						"restart": "最初から再生",
+						"replace": "置換",
+						"queue": "キュー",
+						"ignore": "無視",
+						"extend": "延長"
+					},
+					"stateDefault": "デフォルト",
+					"addState": "状態を追加",
+					"removeState": "状態を削除",
+					"entrance": "開始",
+					"steady": "定常",
+					"exit": "終了",
+					"defineEntrance": "+ 開始を定義",
+					"defineSteady": "+ 定常を定義",
+					"defineExit": "+ 終了を定義",
+					"duration": "持続時間 (ms)",
+					"loop": "ループ",
+					"loopNone": "なし",
+					"loopRestart": "先頭から繰り返す",
+					"loopPingPong": "往復",
+					"loopInfinite": "無限",
+					"ease": "イージング",
+					"keyframeAt": "次の位置のキーフレーム",
+					"offset": "オフセット (0..1)",
+					"transform": "変形",
+					"opacity": "不透明度",
+					"filter": "フィルター",
+					"customProperty": "カスタムプロパティ",
+					"propertyName": "プロパティ名",
+					"propertyValue": "値",
+					"addProperty": "プロパティを追加",
+					"addKeyframe": "+ 再生ヘッドの位置にキーフレームを追加",
+					"deleteKeyframe": "キーフレームを削除",
+					"testState": "状態をテスト",
+					"noComponent": "コンポーネントを選択してアニメーションを編集する。"
+				},
+				"triggerSection": {
+					"header": "トリガー",
+					"enable": "イベント駆動",
+					"event": "イベント",
+					"conditions": "条件",
+					"conditionEmpty": "(任意)",
+					"clearCondition": "クリア",
+					"duration": "持続時間 (ms、-1 = 固定)",
+					"showMs": "表示アニメーション (ms)",
+					"hideMs": "非表示アニメーション (ms)",
+					"transition": "トランジション",
+					"transitionFade": "フェード",
+					"transitionSlideUp": "上へスライド",
+					"transitionSlideDown": "下へスライド",
+					"transitionScale": "スケール",
+					"transitionFlash": "フラッシュ",
+					"test": "テスト",
+					"testHint": "現在の条件をペイロードとしてトリガーを発火する"
+				},
+				"previewActorLabel": "プレビュー対象",
+				"showFullPreview": "全体プレビュー",
+				"removeButton": "オーバーレイを削除",
+				"removeComponentButton": "コンポーネントを削除",
+				"importButton": "インポート",
+				"exportButton": "エクスポート",
+				"importStarterButton": "スターターオーバーレイをインポート",
+				"starterConfirm": "{count}個のスターターオーバーレイをこのワールドに追加する？",
+				"starterImported": "{count}個のスターターオーバーレイをインポートした。",
+				"starterEmpty": "利用可能なスターターオーバーレイはない。",
+				"addOverlayButton": "新しいオーバーレイを追加",
+				"previousComponent": "前のコンポーネント",
+				"nextComponent": "次のコンポーネント",
+				"componentNavLabel": "コンポーネント{current} / {total}",
+				"componentType": "コンポーネント種別",
+				"closeButton": "閉じる",
+				"layersHeader": "オーバーレイ",
+				"componentHeader": "コンポーネント",
+				"layerName": "名前",
+				"layerType": "種別",
+				"hideLayer": "オーバーレイを非表示",
+				"showLayer": "オーバーレイを表示",
+				"previewActorAll": "すべてのアクター",
+				"emptyLayers": "オーバーレイはまだない。+をクリックして追加する。",
+				"noLayerSelected": "オーバーレイを選択してプロパティを編集する。",
+				"selectLayerHint": "オーバーレイを選択して編集を開始する。",
+				"selectComponentHint": "キャンバス上のコンポーネントをクリックするか、パネルから追加する。",
+				"overlaySize": "サイズ",
+				"sizeHint": "背景には、オーバーレイのサイズに合わせた画像コンポーネントを追加する。",
+				"tileByLabel": "タイルの単位",
+				"tileByHint": "アクター: 紐付けられたアクターごとに1つ。プレイヤー: アクティブなプレイヤーごとに1つ。1回: コンテキストにかかわらず単一のインスタンス。",
+				"tileByActors": "アクター",
+				"tileByPlayers": "プレイヤー",
+				"tileByUsers": "ユーザー(GMを含む)",
+				"tileByOnce": "1回(単一インスタンス)",
+				"canvasWidth": "キャンバスの幅(px)",
+				"canvasHeight": "キャンバスの高さ(px)",
+				"customCSS": "このオーバーレイ用のカスタムCSS",
+				"tileBy": {
+					"actors": "アクター",
+					"players": "プレイヤー",
+					"once": "1回(単一インスタンス)"
+				},
+				"backgroundImage": "背景画像",
+				"componentData": "データ",
+				"componentsHeader": "コンポーネント",
+				"drawOrderHint": "(リストの先頭=最初に描画)",
+				"dragReorder": "ドラッグして並べ替え",
+				"emptyComponents": "コンポーネントはまだない。上で追加する。",
+				"simpleIntro": "シンプルなオーバーレイはコンポーネントをインラインで描画する。並べ替えてレイアウト順を変更する。",
+				"selectComponentHintSimple": "オーバーレイタブのリストからコンポーネントを選択する。",
+				"unknownType": "不明なオーバーレイ種別。",
+				"addComponent": "コンポーネントを追加",
+				"tabLayer": "オーバーレイ",
+				"tabComponent": "コンポーネント",
+				"tabStyle": "スタイル",
+				"styleNoTarget": "コンポーネントまたはオーバーレイを選択してスタイルを設定する。",
+				"stylingTarget": "スタイリング",
+				"easyHint": "手軽な視覚調整。これらは要素にインラインCSSとして適用される。",
+				"advancedHint": "セレクター、疑似要素、ネストを含む完全なCSS。ルールはこの対象に自動的にスコープ設定される。",
+				"previewReadOnly": "読み取り専用プレビュー",
+				"emptyTitle": "オーバーレイはまだない",
+				"emptyDescription": "オーバーレイは、あなたの配信に表示されるものの構成要素である。種別を選択して始める。後からいつでも追加できる。",
+				"overviewCrumb": "概要",
+				"overviewListTitle": "オーバーレイ",
+				"unnamedOverlay": "名前のないオーバーレイ",
+				"modeSettings": "設定",
+				"modeLayout": "レイアウト",
+				"modeAnimation": "アニメーション",
+				"modePreview": "プレビュー",
+				"menuBlank": "空白",
+				"menuFromTemplate": "テンプレートから",
+				"animationStub": "アニメーションエディターは近日公開。",
+				"previewStub": "プレビューワークスペースは近日公開。",
+				"animation": {
+					"intro": "アニメーションによりオーバーレイが反応する。トラックを追加し、トリガーで接続して、このオーバーレイに命を吹き込もう。",
+					"start": "アニメーションをセットアップする",
+					"tracks": "トラック",
+					"addTrack": "トラックを追加",
+					"removeTrack": "トラックを削除",
+					"initialTrack": "初期トラック(デフォルトでマウント済み)",
+					"useAsInitial": "初期トラックとして使用",
+					"initialShort": "初期",
+					"kfSelectHint": "キーフレームをクリックして編集する。",
+					"behavior": "挙動",
+					"behaviorStatic": "静的(再生なし)",
+					"behaviorLooping": "ループ",
+					"behaviorTransitionOnEnd": "終了時に別のトラックへ遷移",
+					"duration": "持続時間 (ms)",
+					"endTarget": "トラックへ移動",
+					"endTargetTime": "時刻(ms)",
+					"selectTrack": "編集するトラックを選択する。",
+					"playhead": "再生ヘッド",
+					"addKeyframe": "再生ヘッド位置にキーフレームを追加",
+					"deleteKeyframe": "キーフレームを削除",
+					"keyframe": "キーフレーム",
+					"time": "時間(ms)",
+					"opacity": "不透明度",
+					"rotation": "回転(度)",
+					"transitions": "遷移",
+					"endOfTrack": "トラック終了時",
+					"deleteAnimation": "アニメーションを削除",
+					"confirmDeleteAnimation": "このオーバーレイからアニメーション全体を削除する？トラック、キーフレーム、遷移は破棄される。",
+					"addTransition": "トリガー応答を追加",
+					"removeTransition": "トリガー応答を削除",
+					"trigger": "トリガー発動時",
+					"fromTrack": "トラックから",
+					"addZone": "条件を追加",
+					"removeZone": "条件を削除",
+					"zoneStart": "再生ヘッドが≥の場合",
+					"zoneEnd": "かつ<",
+					"zoneDestination": "その後",
+					"zoneIgnore": "何もしない",
+					"zoneGotoTrack": "トラックへジャンプ",
+					"zoneGotoTime": "開始位置",
+					"testFire": "発動テスト",
+					"noTriggersHint": "トリガーはトラックを接続する。まず2つ目のトラックを追加し、次にイベントで発動する遷移を追加する。",
+					"livePreview": "ライブプレビュー",
+					"prevFrame": "前のフレーム",
+					"nextFrame": "次のフレーム",
+					"prevKeyframe": "前のキーフレーム",
+					"nextKeyframe": "次のキーフレーム"
+				},
+				"preview": {
+					"testFires": "発動テスト",
+					"testFiresHint": "登録済みのトリガーを発動して、オーバーレイがどのように反応するか確認する。",
+					"noTriggers": "まだトリガーは登録されていない。"
+				},
+				"templates": {
+					"heading": "新しいオーバーレイを作成",
+					"hpBar": {
+						"label": "HPバー",
+						"description": "アクターのHPに紐づく進行バー。アクターごとに1つ。"
+					},
+					"namePlate": {
+						"label": "ネームプレート",
+						"description": "中央揃えのアクター名ラベル。アクターごとに1つ。"
+					},
+					"statusRow": {
+						"label": "ステータスアイコン",
+						"description": "アイコンのインライン行。各アイコンを状態フラグに紐づける。"
+					},
+					"customCanvas": {
+						"label": "カスタムキャンバス",
+						"description": "空の自由配置キャンバス。コンポーネントを自分で追加する。"
+					},
+					"customInline": {
+						"label": "カスタムインライン",
+						"description": "空白のインラインフロー・オーバーレイ。コンポーネントは左から右へ流れる。"
+					},
+					"starter": {
+						"description": "現在のゲームシステムに同梱されている。"
+					}
+				},
+				"toggleEnabled": "表示を切り替え",
+				"removeLayer": "オーバーレイを削除",
+				"manageActors": "アクターを管理",
+				"confirmTypeChange": "オーバーレイの種類を変更すると、既存コンポーネントの位置またはレンダリングデータが破棄される場合がある。続行するか？",
+				"importDialog": {
+					"title": "データをインポート: オーバーレイ",
+					"hint1": "エクスポートされたオーバーレイ設定をインポートしようとしている。同じシステムでエクスポートされたものであることを確認すること。そうでない場合、AV Overlaysが動作しない可能性がある。",
+					"hint2": "既存のオーバーレイを置き換えるか、インポートしたリストを追加するかを選択すること。",
+					"replaceButton": "置換",
+					"appendButton": "追加",
+					"fileError": "データファイルがアップロードされていない",
+					"versionError": "未対応のバージョン",
+					"formatError": "インポートしたファイルはOBS Utils Overlay Exportではない",
+					"cancelButton": "キャンセル",
+					"unknownType": "認識できないファイル。v1/v2オーバーレイエクスポートまたは.vmoverlayバンドルが必要。",
+					"bundleImported": "「{name}」をインポート — オーバーレイを{count}件追加。",
+					"bundleImageWarning": "一部のバンドル画像をアップロードできなかった: {names}",
+					"bundleValidationFailed": "バンドルの形式が不正: {reason}"
+				},
+				"exportDialog": {
+					"title": "設定をエクスポートするか？",
+					"content": "オーバーレイの設定をエクスポートするか？",
+					"yesButton": "JSON",
+					"bundleButton": "バンドル",
+					"noButton": "キャンセル",
+					"bundleFormTitle": "バンドルとしてエクスポート",
+					"bundleId": "バンドルID (slug)",
+					"bundleName": "表示名",
+					"bundleAuthor": "作者",
+					"bundleLicense": "ライセンス (SPDX)",
+					"bundleUrl": "URL (任意)"
+				}
+			},
+			"styleEditor": {
+				"name": "スタイルエディター",
+				"mode": {
+					"simple": "シンプル",
+					"advanced": "詳細"
+				},
+				"groupTypography": "タイポグラフィ",
+				"groupColor": "色",
+				"groupLayout": "レイアウトと間隔",
+				"groupBorder": "枠線",
+				"groupImage": "画像",
+				"fontFamily": "フォントファミリー",
+				"fontSize": "フォントサイズ",
+				"fontWeight": "フォントの太さ",
+				"color": "テキストの色",
+				"backgroundColor": "背景色",
+				"width": "幅",
+				"height": "高さ",
+				"display": "表示",
+				"padding": "パディング",
+				"margin": "マージン",
+				"textAlign": "テキストの配置",
+				"verticalAlign": "垂直方向の配置",
+				"lineHeight": "行の高さ",
+				"letterSpacing": "文字間隔",
+				"border": "枠線",
+				"borderRadius": "枠線の半径",
+				"objectFit": "画像のフィット",
+				"objectPosition": "画像の位置",
+				"preservedHeader": "保持されたCSS",
+				"preservedHint": "シンプルモードのフィールドセット外のルールはそのまま保持され、詳細設定でのみ表示される。",
+				"preservedExtras": "追加の保持されたルール",
+				"clear": "クリア",
+				"submitButton": "適用して閉じる"
+			}
+		},
+		"overlays": {
+			"plainText": {
+				"name": "テキスト"
+			},
+			"fontAwesomeIcon": {
+				"name": "アイコン"
+			},
+			"booleanAVIcon": {
+				"name": "条件付きアイコン"
+			},
+			"booleanAVImage": {
+				"name": "条件付き画像"
+			},
+			"image": {
+				"name": "画像"
+			},
+			"multiIconAV": {
+				"name": "アイコンカウンター"
+			},
+			"multiImageAV": {
+				"name": "画像カウンター"
+			},
+			"progressBar": {
+				"name": "進行バー"
+			},
+			"simpleOverlay": {
+				"name": "インライン"
+			},
+			"wysiwygOverlay": {
+				"name": "キャンバス"
+			}
+		},
+		"triggers": {
+			"core": {
+				"onPlayerRoll": {
+					"name": "プレイヤーのロール",
+					"fields": {
+						"actor": "ロールするアクター",
+						"roll": "ロール・オブジェクト",
+						"total": "ロール合計",
+						"formula": "ロール式",
+						"isCritical": "クリティカルか (出目20)",
+						"isFumble": "ファンブルか (出目1)"
+					}
+				},
+				"onChatMessage": {
+					"name": "チャットメッセージ",
+					"fields": {
+						"content": "メッセージ内容",
+						"speakerAlias": "話者名"
+					}
+				}
+			}
+		},
+		"settings": {
+			"forceStreamPageOBSMode": {
+				"Name": "/streamでOBSモードを強制する",
+				"Hint": "/streamページで常にオーバーレイを描画する。"
+			},
+			"obsMode": {
+				"Name": "このブラウザーをOBSモードに固定",
+				"Hint": "⚠ 無効化されるまで、すべてのタブでこのブラウザーをOBSモードに固定する。OBSブラウザーソースは自動検出されるため、手動設定の場合にのみ使用すること。"
+			},
+			"obsModeUser": {
+				"Name": "ユーザーをOBSクライアントとして指定",
+				"Hint": "選択したユーザーのブラウザーをOBSとして扱う—UIは非表示になり、オーバーレイが描画される。"
+			},
+			"obsModeGlobalDisable": {
+				"Name": "全員のOBSモードを無効化",
+				"Hint": "キルスイッチ。すべてのクライアントでOBSモードを無効化する。動作不能になったブラウザーを復旧するために使用する。"
+			},
+			"minScale": {
+				"Name": "最小スケール",
+				"Hint": "画面がズームできる最小値"
+			},
+			"maxScale": {
+				"Name": "最大スケール",
+				"Hint": "画面がズームできる最大値"
+			},
+			"defaultOutOfCombat": {
+				"Name": "戦闘外モード",
+				"Hint": "戦闘外カメラモード"
+			},
+			"defaultInCombat": {
+				"Name": "戦闘中モード",
+				"Hint": "戦闘中カメラモード"
+			},
+			"popupCloseDelay": {
+				"Name": "ポップアップの自動終了までの時間",
+				"Hint": "ポップアップが自動的に閉じるまでの秒数。無効化するには0"
+			},
+			"showTrackerInCombat": {
+				"Name": "戦闘中に戦闘トラッカーを表示する？",
+				"Hint": "チェックすると、戦闘トラッカーは戦闘ターン中に表示される"
+			},
+			"obsRemoteMenu": {
+				"Label": "メニューを開く",
+				"Name": "OBSリモート設定",
+				"Hint": "OBS Websocket接続とイベント駆動アクションを設定する"
+			},
+			"overlayEditor": {
+				"Label": "エディターを開く",
+				"Name": "オーバーレイ・エディター",
+				"Hint": "オーバーレイを編集する"
+			},
+			"enableOBSWebsocket": {
+				"Name": "OBS Websocketを有効化する？",
+				"Hint": "チェックすると、リモート操作にOBS Websocketを使用する"
+			},
+			"allowWebsocketAPI": {
+				"Name": "OBS Websocket APIアクセスを許可する？",
+				"Hint": "チェックすると、他のモジュールがOBS Websocketに直接アクセスできる"
+			},
+			"showAV": {
+				"Name": "ビデオオーバーレイを表示する？",
+				"Hint": "有効化すると、音声／ビデオチャットUIがOBS上に表示される (OBSでの再読み込みが必要になる場合がある)"
+			},
+			"showUserConfig": {
+				"Name": "ユーザー設定の描画を許可する？",
+				"Hint": "有効化すると、ユーザー設定ダイアログは抑制されない"
+			},
+			"fixedPopups": {
+				"Name": "固定ポップアップを使用する",
+				"Hint": "有効化すると、すべてのポップアップが設定済みの値に再配置・リサイズされる"
+			},
+			"fixedPopupX": {
+				"Name": "ポップアップX",
+				"Hint": "画面左端からの距離(ピクセル)"
+			},
+			"fixedPopupY": {
+				"Name": "ポップアップY",
+				"Hint": "画面上端からの距離(ピクセル)"
+			},
+			"fixedPopupWidth": {
+				"Name": "ポップアップ幅",
+				"Hint": "ポップアップの幅(ピクセル)"
+			},
+			"fixedPopupHeight": {
+				"Name": "ポップアップ高さ",
+				"Hint": "ポップアップの高さ(ピクセル)"
+			},
+			"showKeybindingPopup": {
+				"Name": "キーバインド通知を表示",
+				"Hint": "チェックすると、キーボードショートカットの使用時に選択されたモードを示す通知を表示する"
+			},
+			"diceSoNice": {
+				"Name": "Dice so Niceオーバーレイを有効化",
+				"Hint": "チェックすると、他のオーバーレイと並んでDice so Niceセクションを描画する"
+			},
+			"diceSoNiceOverlayWidth": {
+				"Name": "Dice so Niceオーバーレイ幅",
+				"Hint": "要素の幅(ピクセル)"
+			},
+			"diceSoNiceOverlayHeight": {
+				"Name": "Dice so Niceオーバーレイ高さ",
+				"Hint": "要素の高さ(ピクセル)"
+			},
+			"smoothUserCamera": {
+				"Name": "滑らかなカメラ移動",
+				"Hint": "有効にすると、更新頻度を下げることで手動のカメラ移動を滑らかにする"
+			},
+			"proxyOBSMessages": {
+				"Name": "OBSモードの通知をGMへ送信",
+				"Hint": "有効にすると、OBSビューで非表示の通知を、接続中のすべてのGMクライアントに表示する"
+			},
+			"showChatNotificationsOnCanvas": {
+				"Name": "ゲーム内でチャット通知を表示",
+				"Hint": "有効にすると、OBS表示だけでなく通常のゲーム画面(GM側UI)でもチャットメッセージの通知ポップアップが表示される"
+			},
+			"leftAlignChatNotifications": {
+				"Name": "チャット通知を左揃え",
+				"Hint": "有効にすると、チャットメッセージのポップアップを画面左側に揃える"
+			},
+			"trackObserverTokens": {
+				"Name": "オブザーバー・トークンを追跡",
+				"Hint": "有効にすると、ディレクターは所有トークンだけでなく、ユーザーがオブザーバー権限を持つトークンにも追従する"
+			},
+			"showDirectorInOBSMode": {
+				"Name": "OBSモードでディレクター操作を表示",
+				"Hint": "無効にすると、OBSモード中はディレクター操作を非表示にする"
+			}
+		}
+	}
 }
