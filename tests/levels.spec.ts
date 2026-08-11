@@ -54,6 +54,17 @@ async function sceneIsSplit(page: Page) {
 }
 
 test.describe('Scene Levels', () => {
+	// These need a v14 world whose active scene has floors with tokens on more
+	// than one of them. Every other world — including v13, where Scene Levels
+	// does not exist — skips rather than fails.
+	test.beforeEach(async ({ pages: { gmPage } }) => {
+		const { levelCount, occupiedCount } = await sceneIsSplit(gmPage);
+		test.skip(
+			levelCount < 2 || occupiedCount < 2,
+			'active scene has no party split across floors',
+		);
+	});
+
 	test('the world under test actually has a split party', async ({ pages: { gmPage } }) => {
 		const { levelCount, occupiedCount } = await sceneIsSplit(gmPage);
 		expect(levelCount, 'active scene needs multiple floors').toBeGreaterThan(1);
