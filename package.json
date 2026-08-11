@@ -73,7 +73,9 @@
 	},
 	"resolutions": {
 		"ip-address": "^10",
+		"nodemailer": "^9",
 		"tar": "^7",
-		"uuid": "^11"
+		"uuid": "^11",
+		"ws": "^8.21.0"
 	}
 }
