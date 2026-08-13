@@ -25,6 +25,7 @@
 		"test": "yarn test:e2e && yarn test:unit &&  yarn coverage:merge",
 		"test:unit": "vitest run",
 		"test:e2e": "yarn playwright test",
+		"seed": "SEED=1 yarn playwright test tests/seed.spec.ts",
 		"test:e2e:headed": "yarn playwright test --headed",
 		"coverage:merge": "node tools/merge-coverage.js",
 		"watch": "vite build --watch",
