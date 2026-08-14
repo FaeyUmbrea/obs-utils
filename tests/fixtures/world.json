@@ -1,0 +1,3611 @@
+{
+	"_comment": "Declarative fixture for the E2E suite. Apply with `yarn seed`. Ids are never stored - actors, tokens, journals and ownership are matched by name - so this can seed an empty world on any Foundry version. Actors carry their items because derived values the overlays read (max HP) come from class/ancestry items. Ownership matters too: the stream client only tracks tokens it owns or observes, so without it the tracked set is empty and the camera never moves.",
+	"users": [
+		{
+			"name": "GM2",
+			"role": 4,
+			"character": null
+		},
+		{
+			"name": "Gamemaster",
+			"role": 4,
+			"character": null
+		},
+		{
+			"name": "Player2",
+			"role": 1,
+			"character": null
+		},
+		{
+			"name": "Player3",
+			"role": 1,
+			"character": "Test 2"
+		},
+		{
+			"name": "Player4",
+			"role": 1,
+			"character": null
+		}
+	],
+	"actors": [
+		{
+			"name": "Test",
+			"type": "character",
+			"img": "systems/pf2e/icons/default-icons/character.svg",
+			"system": {
+				"attributes": {
+					"hp": {
+						"value": 5,
+						"temp": 0
+					}
+				},
+				"initiative": {
+					"statistic": "perception"
+				},
+				"details": {
+					"languages": {
+						"value": [],
+						"details": ""
+					},
+					"level": {
+						"value": 1
+					},
+					"biography": {
+						"appearance": "",
+						"backstory": "",
+						"birthPlace": "",
+						"attitude": "",
+						"beliefs": "",
+						"anathema": [],
+						"edicts": [],
+						"likes": "",
+						"dislikes": "",
+						"catchphrases": "",
+						"campaignNotes": "",
+						"allies": "",
+						"enemies": "",
+						"organizations": "",
+						"visibility": {
+							"appearance": true,
+							"backstory": false,
+							"personality": false,
+							"campaign": false
+						}
+					},
+					"keyability": {
+						"value": "str"
+					},
+					"xp": {
+						"value": 0,
+						"min": 0,
+						"max": 1000,
+						"pct": 0
+					},
+					"age": {
+						"value": ""
+					},
+					"height": {
+						"value": ""
+					},
+					"weight": {
+						"value": ""
+					},
+					"gender": {
+						"value": ""
+					},
+					"ethnicity": {
+						"value": ""
+					},
+					"nationality": {
+						"value": ""
+					},
+					"alliance": "party"
+				},
+				"resources": {
+					"heroPoints": {
+						"value": 1,
+						"max": 3
+					}
+				},
+				"_migration": {
+					"version": 0.959,
+					"previous": {
+						"schema": 0.955,
+						"foundry": "14.361",
+						"system": "8.1.1"
+					}
+				},
+				"abilities": null,
+				"skills": {},
+				"pfs": {
+					"playerNumber": null,
+					"characterNumber": null,
+					"levelBump": false,
+					"currentFaction": "EA",
+					"school": null,
+					"reputation": {
+						"EA": null,
+						"GA": null,
+						"HH": null,
+						"VS": null,
+						"RO": null,
+						"VW": null
+					}
+				},
+				"exploration": []
+			},
+			"items": [
+				{
+					"img": "systems/pf2e/icons/default-icons/alternatives/ancestries/android.svg",
+					"name": "Android",
+					"system": {
+						"description": {
+							"gm": "",
+							"value": "<p><em>Technological wonders from another world, androids have synthetic bodies and living souls. Their dual nature makes them quick-thinking and calm under pressure, but comfortable in stillness and solitude.</em></p>\n<p><em>@UUID[Compendium.pf2e.journals.JournalEntry.45SK8rdbbxvEHfMn.JournalEntryPage.dyusFHHyaQOaQhZ0]{Android}</em></p>"
+						},
+						"rules": [],
+						"slug": "android",
+						"_migration": {
+							"version": 0.959,
+							"lastMigration": null,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"traits": {
+							"otherTags": [],
+							"value": [
+								"android",
+								"humanoid"
+							],
+							"rarity": "rare"
+						},
+						"publication": {
+							"title": "Pathfinder Lost Omens Ancestry Guide",
+							"authors": "",
+							"license": "OGL",
+							"remaster": false
+						},
+						"hp": 8,
+						"size": "med",
+						"hands": 2,
+						"reach": 5,
+						"speed": 25,
+						"boosts": {
+							"0": {
+								"value": [
+									"dex"
+								]
+							},
+							"1": {
+								"value": [
+									"int"
+								]
+							},
+							"2": {
+								"value": [
+									"str",
+									"dex",
+									"con",
+									"int",
+									"wis",
+									"cha"
+								]
+							}
+						},
+						"flaws": {
+							"0": {
+								"value": [
+									"cha"
+								]
+							}
+						},
+						"languages": {
+							"value": [
+								"androffan",
+								"common"
+							],
+							"custom": ""
+						},
+						"additionalLanguages": {
+							"count": 0,
+							"value": [
+								"chthonian",
+								"draconic",
+								"dwarven",
+								"empyrean",
+								"sakvroth",
+								"utopian"
+							],
+							"custom": ""
+						},
+						"items": {
+							"fvpio": {
+								"img": "systems/pf2e/icons/default-icons/feat.svg",
+								"level": 1,
+								"name": "Emotionally Unaware",
+								"uuid": "Compendium.pf2e.ancestryfeatures.Item.uSAYmU7PO2QoOWhB"
+							},
+							"ouwoo": {
+								"img": "systems/pf2e/icons/default-icons/feat.svg",
+								"level": 1,
+								"name": "Constructed",
+								"uuid": "Compendium.pf2e.ancestryfeatures.Item.mnhmhOKWLiOD0lev"
+							}
+						},
+						"vision": "low-light-vision"
+					},
+					"type": "ancestry",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.ancestries.Item.GfLwE884NoRC7cRi",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659785597,
+						"modifiedTime": 1778066584395,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "bV8adTcMop63IzTu"
+				},
+				{
+					"img": "icons/magic/control/fear-fright-white.webp",
+					"name": "Emotionally Unaware",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "ancestryfeature",
+						"description": {
+							"value": "<p>You find it difficult to understand and express complex emotions. You take a -1 circumstance penalty to Diplomacy and Performance checks, and on Perception checks to @UUID[Compendium.pf2e.actionspf2e.Item.1xRFPTFtWtGJ9ELw]{Sense Motive}.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "OGL",
+							"remaster": false,
+							"title": "Pathfinder Lost Omens Ancestry Guide",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "FlatModifier",
+								"predicate": [
+									{
+										"or": [
+											{
+												"nor": [
+													"check:statistic:perception",
+													"check:statistic:initiative"
+												]
+											},
+											"action:sense-motive"
+										]
+									}
+								],
+								"selector": [
+									"diplomacy",
+									"performance",
+									"perception"
+								],
+								"type": "circumstance",
+								"value": -1
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"android"
+							],
+							"otherTags": []
+						},
+						"slug": "emotionally-unaware",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "bV8adTcMop63IzTu"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.ancestryfeatures.Item.uSAYmU7PO2QoOWhB",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659785597,
+						"modifiedTime": 1778066584395,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "ngoopgZlIYJMOHHl"
+				},
+				{
+					"img": "systems/pf2e/icons/features/feats/effect-repair-module.webp",
+					"name": "Constructed",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "ancestryfeature",
+						"description": {
+							"value": "<p>Your synthetic body resists ailments better than those of purely biological organisms. You gain a +1 circumstance bonus to saving throws against diseases, poisons, and radiation.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "OGL",
+							"remaster": false,
+							"title": "Pathfinder Lost Omens Ancestry Guide",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "FlatModifier",
+								"predicate": [
+									{
+										"or": [
+											"item:trait:disease",
+											"item:trait:poison",
+											"item:trait:radiation"
+										]
+									}
+								],
+								"selector": "saving-throw",
+								"type": "circumstance",
+								"value": 1
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"android"
+							],
+							"otherTags": []
+						},
+						"slug": "constructed",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "bV8adTcMop63IzTu"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.ancestryfeatures.Item.mnhmhOKWLiOD0lev",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659785597,
+						"modifiedTime": 1778066584396,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "w7jnqr0Q3oESbeTy"
+				},
+				{
+					"img": "systems/pf2e/icons/default-icons/background.svg",
+					"name": "Academic Scion",
+					"system": {
+						"description": {
+							"gm": "",
+							"value": "<p>You were born to famed scholars of magic; your childhood was filled with old books, ink-stained lesson papers, and casual dinners with your parents' brilliant colleagues. This erudite upbringing eases your academic journey, as you were introduced early on to seminal texts and foundational theories that granted you a preternatural instinct and affinity for magic, but that also exposed you to massive pressures from familial expectations.</p>\n<p>Choose two attribute boosts. One must be to <strong>Charisma</strong> or <strong>Intelligence</strong>, and one is a free attribute boost.</p>\n<p>You're trained in Arcana. You're also trained in the Academia Lore skill or a Lore skill associated with your school. You gain the Arcane Sense skill feat.</p>"
+						},
+						"rules": [],
+						"slug": "academic-scion",
+						"_migration": {
+							"version": 0.959,
+							"lastMigration": null,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"traits": {
+							"otherTags": [],
+							"value": [],
+							"rarity": "uncommon"
+						},
+						"publication": {
+							"title": "Pathfinder Lost Omens Rival Academies",
+							"authors": "",
+							"license": "ORC",
+							"remaster": true
+						},
+						"boosts": {
+							"0": {
+								"value": [
+									"cha",
+									"int"
+								]
+							},
+							"1": {
+								"value": [
+									"cha",
+									"con",
+									"dex",
+									"int",
+									"str",
+									"wis"
+								]
+							}
+						},
+						"items": {
+							"b07v0": {
+								"img": "icons/sundries/books/book-red-exclamation.webp",
+								"level": 1,
+								"name": "Arcane Sense",
+								"uuid": "Compendium.pf2e.feats-srd.Item.blMeVamjGz4ODWxq"
+							}
+						},
+						"trainedSkills": {
+							"value": [
+								"arcana"
+							],
+							"lore": [
+								"Academia Lore"
+							]
+						}
+					},
+					"type": "background",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.backgrounds.Item.Y0ht4JteTUS5pace",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659793648,
+						"modifiedTime": 1778066584396,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "lLrf6n5B4p8NyLxj"
+				},
+				{
+					"folder": "y1yqadf5jPHJk1jW",
+					"img": "icons/sundries/books/book-red-exclamation.webp",
+					"name": "Arcane Sense",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "skill",
+						"description": {
+							"value": "<p>Your study of magic allows you to instinctively sense its presence. You can cast 1st-rank @UUID[Compendium.pf2e.spells-srd.Item.gpzpAAAJ1Lza2JVl]{Detect Magic} at will as an arcane innate spell. If you're a master in Arcana, the spell is heightened to 3rd rank; if you're legendary, it is heightened to 4th rank.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": [
+								{
+									"value": "trained in Arcana"
+								}
+							]
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Player Core",
+							"authors": ""
+						},
+						"rules": [],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"general",
+								"skill"
+							],
+							"otherTags": []
+						},
+						"slug": "arcane-sense",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "lLrf6n5B4p8NyLxj"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.feats-srd.Item.blMeVamjGz4ODWxq",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659793648,
+						"modifiedTime": 1778066584396,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "DQIUtJnE9pupZtfv"
+				},
+				{
+					"img": "systems/pf2e/icons/classes/inventor.webp",
+					"name": "Inventor",
+					"system": {
+						"description": {
+							"gm": "",
+							"value": "<p><em>Any tinkerer can follow a diagram to make a device, but you invent the impossible! Every strange contraption you dream up is a unique experiment pushing the edge of possibility, a mysterious machine that seems to work for only you. You're always on the verge of the next great breakthrough, and every trial and tribulation is another opportunity to test and tune. If you can dream it, you can build it.</em></p>\n<p><em>@UUID[Compendium.pf2e.journals.JournalEntry.kzxu2dI7tFxv6Ix6.JournalEntryPage.gcRmL4Id1ggKDhvg]{Inventor}</em></p>"
+						},
+						"rules": [
+							{
+								"key": "ActiveEffectLike",
+								"mode": "override",
+								"path": "flags.pf2e.inventor.explode",
+								"priority": 49,
+								"value": "fire"
+							},
+							{
+								"key": "Note",
+								"predicate": [
+									"self:action:trait:unstable"
+								],
+								"selector": "strike-attack-roll",
+								"text": "PF2E.SpecificRule.Inventor.Unstable.Note",
+								"title": "PF2E.TraitUnstable"
+							},
+							{
+								"key": "Note",
+								"outcome": [
+									"failure"
+								],
+								"predicate": [
+									"unstable-check"
+								],
+								"selector": [
+									"flat-check"
+								],
+								"text": "PF2E.SpecificRule.Inventor.Unstable.FlatCheck.Failure",
+								"title": "PF2E.Check.Result.Degree.Check.failure"
+							},
+							{
+								"key": "Note",
+								"outcome": [
+									"criticalFailure"
+								],
+								"predicate": [
+									"unstable-check"
+								],
+								"selector": [
+									"flat-check"
+								],
+								"text": "PF2E.SpecificRule.Inventor.Unstable.FlatCheck.CriticalFailure",
+								"title": "PF2E.Check.Result.Degree.Check.criticalFailure"
+							}
+						],
+						"slug": "inventor",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"traits": {
+							"otherTags": [],
+							"rarity": "uncommon"
+						},
+						"publication": {
+							"title": "Pathfinder Guns & Gears",
+							"authors": "",
+							"license": "ORC",
+							"remaster": true
+						},
+						"keyAbility": {
+							"value": [
+								"int"
+							],
+							"selected": null
+						},
+						"items": {
+							"1doue": {
+								"img": "systems/pf2e/icons/features/classes/weapon-expertise.webp",
+								"level": 5,
+								"name": "Inventor Weapon Expertise",
+								"uuid": "Compendium.pf2e.classfeatures.Item.0NyPgi6UACMTmAGE"
+							},
+							"1hSW2": {
+								"img": "icons/skills/trades/smithing-anvil-silver-red.webp",
+								"level": 17,
+								"name": "Anvil's Hardness",
+								"uuid": "Compendium.pf2e.classfeatures.Item.O04RZa20X6fcbLAy"
+							},
+							"43sk5": {
+								"img": "systems/pf2e/icons/features/classes/peerless-inventor.webp",
+								"level": 1,
+								"name": "Peerless Inventor",
+								"uuid": "Compendium.pf2e.classfeatures.Item.JH6um0St37UrjLNG"
+							},
+							"5prut": {
+								"img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+								"level": 11,
+								"name": "Medium Armor Expertise (Inventor)",
+								"uuid": "Compendium.pf2e.classfeatures.Item.esyKPSDbFQPB4lhq"
+							},
+							"6Qexc": {
+								"img": "icons/creatures/eyes/human-single-blue.webp",
+								"level": 13,
+								"name": "Perception Expertise",
+								"uuid": "Compendium.pf2e.classfeatures.Item.JCqACxgrm5ixX0Jy"
+							},
+							"72ph9": {
+								"img": "systems/pf2e/icons/features/classes/complete-reconfiguration.webp",
+								"level": 13,
+								"name": "Complete Reconfiguration",
+								"uuid": "Compendium.pf2e.classfeatures.Item.j0klWHkH3AxUAgok"
+							},
+							"7aqni": {
+								"img": "systems/pf2e/icons/features/classes/master-overdrive.webp",
+								"level": 7,
+								"name": "Master Overdrive",
+								"uuid": "Compendium.pf2e.classfeatures.Item.SXv9bJFbntDOMRIL"
+							},
+							"XFLRf": {
+								"img": "systems/pf2e/icons/features/classes/offensive-boost.webp",
+								"level": 9,
+								"name": "Offensive Boost",
+								"uuid": "Compendium.pf2e.classfeatures.Item.F8oXHnu9iNTcpXbJ"
+							},
+							"XTXsD": {
+								"img": "icons/magic/symbols/symbol-lightning-bolt.webp",
+								"level": 7,
+								"name": "Reflex Expertise",
+								"uuid": "Compendium.pf2e.classfeatures.Item.TUOeATt52P43r5W0"
+							},
+							"cqq8h": {
+								"img": "icons/equipment/chest/breastplate-collared-steel.webp",
+								"level": 19,
+								"name": "Medium Armor Mastery",
+								"uuid": "Compendium.pf2e.classfeatures.Item.cGMSYAErbUG5E8X2"
+							},
+							"d0g4j": {
+								"img": "icons/skills/melee/hand-grip-sword-orange.webp",
+								"level": 15,
+								"name": "Greater Weapon Specialization (Level 15)",
+								"uuid": "Compendium.pf2e.classfeatures.Item.Z7HX6TeFsaup7Dx9"
+							},
+							"ebysz": {
+								"img": "systems/pf2e/icons/features/classes/revolutionary-innovation.webp",
+								"level": 15,
+								"name": "Revolutionary Innovation",
+								"uuid": "Compendium.pf2e.classfeatures.Item.tXbadIT3LzwuSR19"
+							},
+							"f46jt": {
+								"img": "systems/pf2e/icons/features/classes/inventive-mastery.webp",
+								"level": 17,
+								"name": "Inventive Mastery",
+								"uuid": "Compendium.pf2e.classfeatures.Item.Uu8VnpAo3XZZEKPd"
+							},
+							"g4pqo": {
+								"img": "systems/pf2e/icons/features/classes/weapon-specialization.webp",
+								"level": 7,
+								"name": "Weapon Specialization",
+								"uuid": "Compendium.pf2e.classfeatures.Item.9EqIasqfI8YIM3Pt"
+							},
+							"havjj": {
+								"img": "icons/equipment/shield/round-wooden-boss-gold-brown.webp",
+								"level": 1,
+								"name": "Shield Block",
+								"uuid": "Compendium.pf2e.classfeatures.Item.eZNCckLzbH3GyncH"
+							},
+							"hu0ip": {
+								"img": "systems/pf2e/icons/features/classes/breakthrough-innovation.webp",
+								"level": 7,
+								"name": "Breakthrough Innovation",
+								"uuid": "Compendium.pf2e.classfeatures.Item.78HIjRbGoONMpF31"
+							},
+							"ihpyc": {
+								"img": "systems/pf2e/icons/features/classes/inventive-expertise.webp",
+								"level": 9,
+								"name": "Inventive Expertise",
+								"uuid": "Compendium.pf2e.classfeatures.Item.mQVC1iDyNi2tfsF8"
+							},
+							"n7f3b": {
+								"img": "systems/pf2e/icons/features/classes/legendary-overdrive.webp",
+								"level": 15,
+								"name": "Legendary Overdrive",
+								"uuid": "Compendium.pf2e.classfeatures.Item.o1omL2LdHvjEwh3P"
+							},
+							"ng6mg": {
+								"img": "systems/pf2e/icons/features/classes/infinite-invention.webp",
+								"level": 19,
+								"name": "Infinite Invention",
+								"uuid": "Compendium.pf2e.classfeatures.Item.rOaLbipkComjc6qh"
+							},
+							"p0u0x": {
+								"img": "systems/pf2e/icons/features/classes/explode.webp",
+								"level": 1,
+								"name": "Explode",
+								"uuid": "Compendium.pf2e.classfeatures.Item.pEm1RTNuzzQVKkR0"
+							},
+							"paomt": {
+								"img": "systems/pf2e/icons/features/classes/overdrive.webp",
+								"level": 1,
+								"name": "Overdrive",
+								"uuid": "Compendium.pf2e.classfeatures.Item.oP5zM5Yu41xcx3iu"
+							},
+							"ptf4a": {
+								"img": "systems/pf2e/icons/features/classes/reconfigure.webp",
+								"level": 3,
+								"name": "Reconfigure",
+								"uuid": "Compendium.pf2e.classfeatures.Item.J46wcNqKXvtokBD1"
+							},
+							"tkc99": {
+								"img": "systems/pf2e/icons/features/classes/expert-overdrive.webp",
+								"level": 3,
+								"name": "Expert Overdrive",
+								"uuid": "Compendium.pf2e.classfeatures.Item.YMKxN56w617BYwu4"
+							},
+							"wAhlB": {
+								"img": "icons/commodities/tech/cog-brass.webp",
+								"level": 11,
+								"name": "Churning Mind",
+								"uuid": "Compendium.pf2e.classfeatures.Item.VSbNezLoWtWRDok7"
+							},
+							"wg9yw": {
+								"img": "systems/pf2e/icons/features/classes/weapon-mastery.webp",
+								"level": 13,
+								"name": "Inventor Weapon Mastery",
+								"uuid": "Compendium.pf2e.classfeatures.Item.mJpPaoVlNmTK47x1"
+							},
+							"y9fo7": {
+								"img": "icons/commodities/tech/bulb.webp",
+								"level": 1,
+								"name": "Innovation",
+								"uuid": "Compendium.pf2e.classfeatures.Item.jIAgXe2FetAKBwt7"
+							}
+						},
+						"hp": 8,
+						"trainedSkills": {
+							"value": [
+								"crafting"
+							],
+							"additional": 3
+						},
+						"perception": 1,
+						"savingThrows": {
+							"fortitude": 2,
+							"reflex": 1,
+							"will": 2
+						},
+						"attacks": {
+							"simple": 1,
+							"martial": 1,
+							"advanced": 0,
+							"unarmed": 1,
+							"other": {
+								"name": "",
+								"rank": 0
+							}
+						},
+						"defenses": {
+							"unarmored": 1,
+							"light": 1,
+							"medium": 1,
+							"heavy": 0
+						},
+						"spellcasting": 0,
+						"ancestryFeatLevels": {
+							"value": [
+								1,
+								5,
+								9,
+								13,
+								17
+							]
+						},
+						"classFeatLevels": {
+							"value": [
+								1,
+								2,
+								4,
+								6,
+								8,
+								10,
+								12,
+								14,
+								16,
+								18,
+								20
+							]
+						},
+						"generalFeatLevels": {
+							"value": [
+								3,
+								7,
+								11,
+								15,
+								19
+							]
+						},
+						"skillFeatLevels": {
+							"value": [
+								2,
+								4,
+								6,
+								8,
+								10,
+								12,
+								14,
+								16,
+								18,
+								20
+							]
+						},
+						"skillIncreaseLevels": {
+							"value": [
+								3,
+								5,
+								7,
+								9,
+								11,
+								13,
+								15,
+								17,
+								19
+							]
+						}
+					},
+					"type": "class",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classes.Item.30qVs46dVNflgQNx",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584397,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "qbFnwgHux2Uc3cnG"
+				},
+				{
+					"img": "systems/pf2e/icons/features/classes/peerless-inventor.webp",
+					"name": "Peerless Inventor",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "classfeature",
+						"description": {
+							"value": "<p>You are constantly inventing, and your skill at crafting is unimpeachable. You gain the @UUID[Compendium.pf2e.feats-srd.Item.XR95taODq1sq82Du]{Inventor} skill feat, even if you don't meet its prerequisites.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "GrantItem",
+								"uuid": "Compendium.pf2e.feats-srd.Item.XR95taODq1sq82Du",
+								"flag": "inventor"
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"inventor"
+							],
+							"otherTags": []
+						},
+						"slug": "peerless-inventor",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "qbFnwgHux2Uc3cnG"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classfeatures.Item.JH6um0St37UrjLNG",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584397,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"itemGrants": {
+								"inventor": {
+									"id": "pEn4zg58rdAm40Ek",
+									"onDelete": "detach"
+								}
+							}
+						}
+					},
+					"_id": "K05Qc77LcxrN2jjd"
+				},
+				{
+					"img": "icons/equipment/shield/round-wooden-boss-gold-brown.webp",
+					"name": "Shield Block",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "classfeature",
+						"description": {
+							"value": "<p>You gain the @UUID[Compendium.pf2e.feats-srd.Item.jM72TjJ965jocBV8]{Shield Block} general feat, a reaction that lets you reduce damage with your shield.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Player Core",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "GrantItem",
+								"uuid": "Compendium.pf2e.feats-srd.Item.jM72TjJ965jocBV8",
+								"flag": "shieldBlock"
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"champion",
+								"druid",
+								"exemplar",
+								"fighter",
+								"inventor"
+							],
+							"otherTags": []
+						},
+						"slug": "shield-block",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "qbFnwgHux2Uc3cnG"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classfeatures.Item.eZNCckLzbH3GyncH",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584397,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 100,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"itemGrants": {
+								"shieldBlock": {
+									"id": "qwplrJcScZuD3fTe",
+									"onDelete": "detach"
+								}
+							}
+						}
+					},
+					"_id": "59Pi38Xeczy8p8sH"
+				},
+				{
+					"img": "icons/magic/fire/explosion-mushroom-nuke-orange.webp",
+					"name": "Explode",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "classfeature",
+						"description": {
+							"value": "<p>Your innovation is a creation barely held together by your own engineering, always on the edge of completely falling apart. Though this adds risk, it also means you can coax it to perform far beyond its design specifications using special unstable actions. See the definition of the unstable trait and how it affects your innovation.</p>\n<p>While inventors can learn various unstable actions over their career, all at least know how to make their innovation @UUID[Compendium.pf2e.actionspf2e.Item.naKVqd8POxcnGclz]{Explode}.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "GrantItem",
+								"uuid": "Compendium.pf2e.actionspf2e.Item.naKVqd8POxcnGclz",
+								"flag": "explode"
+							},
+							{
+								"itemType": "feat",
+								"key": "ItemAlteration",
+								"label": "PF2E.TraitUnstable",
+								"mode": "add",
+								"predicate": [
+									"item:trait:unstable",
+									{
+										"not": "self:effect:unstable-check-failure"
+									}
+								],
+								"property": "description",
+								"value": [
+									{
+										"text": "PF2E.SpecificRule.Inventor.Unstable.Note"
+									}
+								]
+							},
+							{
+								"itemType": "action",
+								"key": "ItemAlteration",
+								"label": "PF2E.TraitUnstable",
+								"mode": "add",
+								"predicate": [
+									"item:trait:unstable",
+									{
+										"not": "self:effect:unstable-check-failure"
+									}
+								],
+								"property": "description",
+								"value": [
+									{
+										"text": "PF2E.SpecificRule.Inventor.Unstable.Note"
+									}
+								]
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"inventor"
+							],
+							"otherTags": []
+						},
+						"slug": "explode",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "qbFnwgHux2Uc3cnG"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classfeatures.Item.pEm1RTNuzzQVKkR0",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584397,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 200,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"itemGrants": {
+								"explode": {
+									"id": "H3SHjybykZ1fpYYm",
+									"onDelete": "detach"
+								}
+							}
+						}
+					},
+					"_id": "EAM4JRrOotMzC8SF"
+				},
+				{
+					"img": "systems/pf2e/icons/features/classes/overdrive.webp",
+					"name": "Overdrive",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "classfeature",
+						"description": {
+							"value": "<p>You have a bevy of smaller devices of your own invention, from muscle stimulants to concussive pistons. When it's necessary, you can throw them into @UUID[Compendium.pf2e.actionspf2e.Item.3D9kGfwg4LUZBR9A]{Overdrive}.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "GrantItem",
+								"uuid": "Compendium.pf2e.actionspf2e.Item.3D9kGfwg4LUZBR9A",
+								"flag": "overdrive"
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"inventor"
+							],
+							"otherTags": []
+						},
+						"slug": "overdrive",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "qbFnwgHux2Uc3cnG"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classfeatures.Item.oP5zM5Yu41xcx3iu",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584398,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 300,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"itemGrants": {
+								"overdrive": {
+									"id": "tGYGb3QRxvaQPBvL",
+									"onDelete": "detach"
+								}
+							}
+						}
+					},
+					"_id": "CdGgZ2ZwgyiFrZY2"
+				},
+				{
+					"img": "icons/commodities/tech/bulb.webp",
+					"name": "Innovation",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "classfeature",
+						"description": {
+							"value": "<p>While you're always creating inventions, there's one that represents your preeminent work, the one that you hope- with refinement-might change the world. Choose one of the below innovations. Your innovation's level is equal to your level. If your innovation is destroyed, you can spend 1 day of downtime and attempt a Crafting check with a high DC for your level; on a success, you rebuild it. An innovation only works due to your constant maintenance and tinkering, and therefore has no market Price.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"adjustName": false,
+								"choices": {
+									"filter": [
+										"item:tag:inventor-innovation",
+										{
+											"or": [
+												{
+													"and": [
+														"class:inventor",
+														"item:tag:inventor-innovation"
+													]
+												},
+												{
+													"and": [
+														"item:tag:inventor-innovation",
+														{
+															"not": "item:tag:class-archetype"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								"flag": "innovation",
+								"key": "ChoiceSet",
+								"prompt": "PF2E.SpecificRule.Inventor.Innovation.Prompt",
+								"selection": "Compendium.pf2e.classfeatures.Item.o70O2FysDd7BS9e0"
+							},
+							{
+								"key": "GrantItem",
+								"uuid": "{item|flags.pf2e.rulesSelections.innovation}",
+								"flag": "constructInnovation"
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"inventor"
+							],
+							"otherTags": []
+						},
+						"slug": "innovation",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": "qbFnwgHux2Uc3cnG"
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classfeatures.Item.jIAgXe2FetAKBwt7",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584398,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 400,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"itemGrants": {
+								"constructInnovation": {
+									"id": "0z6InB5sS5Slf7Jp",
+									"onDelete": "detach"
+								}
+							}
+						}
+					},
+					"_id": "IzhQ6KDZdI3nL70c"
+				},
+				{
+					"folder": "y1yqadf5jPHJk1jW",
+					"img": "icons/sundries/books/book-red-exclamation.webp",
+					"name": "Inventor",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "skill",
+						"description": {
+							"value": "<p>You are a genius at Crafting, easily able to determine how things are made and create new inventions. You can spend downtime to invent a common formula that you don't know. This works just like the Craft activity: you spend half the Price of the formula up front, attempt a Crafting check, and on a success either finish the formula by paying the difference or work for longer to decrease the Price. The difference is that you spend the additional time in research, design, and development, rather than in creating an item. Once it's complete, you add the new formula you invented to your formula book.</p>\n<p>The GM might allow you to invent uncommon or rare formulas, typically with an increased DC. You need the Alchemical Crafting feat to invent alchemical formulas and the Magical Crafting feat to invent magical formulas.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 2
+						},
+						"prerequisites": {
+							"value": [
+								{
+									"value": "expert in Crafting"
+								}
+							]
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Player Core",
+							"authors": ""
+						},
+						"rules": [],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"downtime",
+								"general",
+								"skill"
+							],
+							"otherTags": []
+						},
+						"slug": "inventor",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": null
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.feats-srd.Item.XR95taODq1sq82Du",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584398,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"grantedBy": {
+								"id": "K05Qc77LcxrN2jjd",
+								"onDelete": "cascade"
+							}
+						}
+					},
+					"_id": "pEn4zg58rdAm40Ek"
+				},
+				{
+					"folder": "waujsnHrfCsPk0zO",
+					"img": "icons/sundries/books/book-red-exclamation.webp",
+					"name": "Shield Block",
+					"system": {
+						"actionType": {
+							"value": "reaction"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "general",
+						"description": {
+							"value": "<p><strong>Trigger</strong> While you have your shield raised, you would take physical damage (bludgeoning, piercing, or slashing) from an attack.</p>\n<hr />\n<p>You snap your shield in place to ward off a blow. Your shield prevents you from taking an amount of damage up to the shield's Hardness. You and the shield each take any remaining damage, possibly breaking or destroying the shield.</p>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Player Core",
+							"authors": ""
+						},
+						"rules": [],
+						"traits": {
+							"rarity": "common",
+							"value": [
+								"general"
+							],
+							"otherTags": []
+						},
+						"slug": "shield-block",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": null
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.feats-srd.Item.jM72TjJ965jocBV8",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584398,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"grantedBy": {
+								"id": "59Pi38Xeczy8p8sH",
+								"onDelete": "cascade"
+							}
+						}
+					},
+					"_id": "qwplrJcScZuD3fTe"
+				},
+				{
+					"img": "systems/pf2e/icons/actions/TwoActions.webp",
+					"name": "Explode",
+					"system": {
+						"actionType": {
+							"value": "action"
+						},
+						"actions": {
+							"value": 2
+						},
+						"category": "interaction",
+						"description": {
+							"value": "<p>You intentionally take your innovation beyond normal safety limits, making it explode and damage nearby creatures without damaging the innovation... hopefully. The explosion deals @Damage[max(2, @actor.level)d6[@actor.flags.pf2e.inventor.explode]|options:area-damage] damage with a @Check[reflex|against:inventor|basic|options:area-effect] to all creatures in a @Template[emanation|distance:5] around you (if you're wearing or holding the innovation) or around your innovation (if your innovation is a minion).</p>\n<p>At 3rd level, and every level thereafter, increase your explosion's damage by 1d6.</p>\n<p>If you have the breakthrough innovation class feature, you can choose either a 5-foot or @Template[emanation|distance:10] for the area when you use Explode; if you have the revolutionary innovation class feature, you can choose a 5-foot, 10-foot, or @Template[emanation|distance:15].</p>",
+							"gm": ""
+						},
+						"publication": {
+							"license": "OGL",
+							"remaster": false,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [],
+						"traits": {
+							"value": [
+								"fire",
+								"inventor",
+								"manipulate",
+								"unstable"
+							],
+							"otherTags": []
+						},
+						"slug": "explode",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						}
+					},
+					"type": "action",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.actionspf2e.Item.naKVqd8POxcnGclz",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584398,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"grantedBy": {
+								"id": "EAM4JRrOotMzC8SF",
+								"onDelete": "cascade"
+							}
+						}
+					},
+					"_id": "H3SHjybykZ1fpYYm"
+				},
+				{
+					"img": "systems/pf2e/icons/actions/OneAction.webp",
+					"name": "Overdrive",
+					"system": {
+						"actionType": {
+							"value": "action"
+						},
+						"actions": {
+							"value": 1
+						},
+						"category": "offensive",
+						"description": {
+							"value": "<p><strong>Frequency</strong> once per round</p><hr /><p>Temporarily cranking the gizmos on your body into overdrive, you try to add greater power to your attacks. Attempt a @Check[crafting|dc:@self.level] check that has a standard DC for your level.</p>\n<p>@UUID[Compendium.pf2e.feat-effects.Item.1XlJ9xLzL19GHoOL]{Effect: Overdrive}</p><hr /><p><strong>Critical Success</strong> Your gizmos go into a state of incredible efficiency called critical overdrive, adding great power to your attacks. Your Strikes deal additional damage equal to your Intelligence modifier for 1 minute. After the Overdrive ends, your gizmos become unusable as they cool down or reset, and you can't use Overdrive for 1 minute.</p>\n<p><strong>Success</strong> Your gizmos go into overdrive, adding power to your attacks. As critical success, except the additional damage is equal to half your Intelligence modifier.</p>\n<p><strong>Failure</strong> Your gizmos whine concerningly and begin to smoke. Your Strikes deal 1 additional fire damage.</p>\n<p><strong>Critical Failure</strong> Whoops! Something explodes. You take fire damage equal to half your level (rounded up), and you can't use Overdrive again for [[/r 1d4 #Recharge Overdrive]] rounds as your gizmos reset.</p><hr /><p><strong>Special</strong> When under the effects of Overdrive, you can still use the Overdrive action. You can't extend your Overdrive's duration this way, but you can turn an overdrive into a critical overdrive if you critically succeed. A failure has no effect on your current Overdrive, and you end your Overdrive on a critical failure.</p>",
+							"gm": ""
+						},
+						"frequency": {
+							"max": 1,
+							"per": "round"
+						},
+						"publication": {
+							"license": "ORC",
+							"remaster": true,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "Note",
+								"outcome": [
+									"criticalSuccess"
+								],
+								"predicate": [
+									"self:action:slug:overdrive"
+								],
+								"selector": "crafting",
+								"text": "PF2E.SpecificRule.Inventor.Overdrive.CriticalSuccess",
+								"title": "PF2E.Check.Result.Degree.Check.criticalSuccess"
+							},
+							{
+								"key": "Note",
+								"outcome": [
+									"success"
+								],
+								"predicate": [
+									"self:action:slug:overdrive"
+								],
+								"selector": "crafting",
+								"text": "PF2E.SpecificRule.Inventor.Overdrive.Success",
+								"title": "PF2E.Check.Result.Degree.Check.success"
+							},
+							{
+								"key": "Note",
+								"outcome": [
+									"failure"
+								],
+								"predicate": [
+									"self:action:slug:overdrive"
+								],
+								"selector": "crafting",
+								"text": "PF2E.SpecificRule.Inventor.Overdrive.Failure",
+								"title": "PF2E.Check.Result.Degree.Check.failure"
+							},
+							{
+								"key": "Note",
+								"outcome": [
+									"criticalFailure"
+								],
+								"predicate": [
+									"self:action:slug:overdrive"
+								],
+								"selector": "crafting",
+								"text": "PF2E.SpecificRule.Inventor.Overdrive.CriticalFailure",
+								"title": "PF2E.Check.Result.Degree.Check.criticalFailure"
+							}
+						],
+						"traits": {
+							"value": [
+								"inventor",
+								"manipulate"
+							],
+							"otherTags": []
+						},
+						"slug": "overdrive",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						}
+					},
+					"type": "action",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.actionspf2e.Item.3D9kGfwg4LUZBR9A",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584398,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"grantedBy": {
+								"id": "CdGgZ2ZwgyiFrZY2",
+								"onDelete": "cascade"
+							}
+						}
+					},
+					"_id": "tGYGb3QRxvaQPBvL"
+				},
+				{
+					"img": "systems/pf2e/icons/features/classes/construct-innovation.webp",
+					"name": "Construct Innovation",
+					"system": {
+						"actionType": {
+							"value": "passive"
+						},
+						"actions": {
+							"value": null
+						},
+						"category": "classfeature",
+						"description": {
+							"value": "<p>Your innovation is a mechanical creature, such as a clockwork construct made of cogs and gears. It's a prototype construct companion, and you can adjust most of its base statistics by taking feats at higher levels, such as Advanced Companion. If you use the Overdrive action, your construct gains the same Overdrive benefits you do, and it also takes the same amount of fire damage on a critical failure.</p>\n<p>You know how to spend additional time directing, controlling, or programming your construct innovation for a more complex plan of action. You can spend 2 actions to Command instead of 1 when commanding your construct companion; your construct companion can then use an additional action (normally 3 actions, rather than 2).</p>\n<p>Choose one initial construct modification to apply to your innovation, either from the following or from other initial construct modifications to which you have access. These modifications alter the construct's abilities or form.</p>\n<ul>\n<li><strong>Accelerated Mobility</strong> Actuated legs, efficient gears in the wheels or treads, or add-on boosters make your construct faster. Your innovation's Speed increases to 40 feet.</li>\n<li><strong>Amphibious Construction</strong> Increased buoyancy, rudders, and a means of propulsion like a fluked tail or powerful propeller make your construct able to travel in water. Your innovation gains a swim Speed of 25 feet.</li>\n<li><strong>Increased Size</strong> You built your construct innovation bigger than most. Your construct is Large. If you have this modification and your construct innovation becomes an advanced construct companion or otherwise gains the ability to become Large, you can immediately change increased size to a different initial construct modification.</li>\n<li><strong>Manual Dexterity</strong> Your construct innovation has articulated hands or similar appendages with significant manual dexterity. It can perform manipulate actions with up to two of its limbs. As normal for a companion, it still can't wield weapons or held items that don't have the companion trait, and it can't activate items.</li>\n<li><strong>Projectile Launcher</strong> Your construct has a mounted dart launcher, embedded cannon, or similar armament. Your innovation gains a ranged unarmed attack that deals 1d4 bludgeoning or piercing damage (you choose when you pick this modification). The attack has the propulsive trait and a range increment of 30 feet.</li>\n<li><strong>Sensory Array</strong> Additional sensory devices give your innovation low-light vision and darkvision, as well as imprecise tremorsense out to a range of 30 feet.</li>\n<li><strong>Wonder Gears</strong> You map specialized skills into your construct's crude intelligence. Your innovation becomes trained in Intimidation, Stealth, and Survival.</li>\n</ul>",
+							"gm": ""
+						},
+						"level": {
+							"value": 1
+						},
+						"prerequisites": {
+							"value": []
+						},
+						"publication": {
+							"license": "OGL",
+							"remaster": false,
+							"title": "Pathfinder Guns & Gears",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "ActiveEffectLike",
+								"mode": "override",
+								"path": "flags.pf2e.innovationId",
+								"value": null
+							}
+						],
+						"traits": {
+							"otherTags": [
+								"inventor-innovation"
+							],
+							"rarity": "common",
+							"value": [
+								"inventor"
+							]
+						},
+						"slug": "construct-innovation",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"onlyLevel1": false,
+						"maxTakable": 1,
+						"subfeatures": {
+							"proficiencies": {},
+							"senses": {},
+							"suppressedFeatures": []
+						},
+						"location": null
+					},
+					"type": "feat",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.classfeatures.Item.o70O2FysDd7BS9e0",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659807062,
+						"modifiedTime": 1778066584399,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"folder": null,
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {
+						"pf2e": {
+							"grantedBy": {
+								"id": "IzhQ6KDZdI3nL70c",
+								"onDelete": "cascade"
+							}
+						}
+					},
+					"_id": "0z6InB5sS5Slf7Jp"
+				},
+				{
+					"folder": "SUr2V7rryBTohlSG",
+					"img": "systems/pf2e/icons/default-icons/heritage.svg",
+					"name": "Impersonator Android",
+					"system": {
+						"ancestry": {
+							"name": "Android",
+							"slug": "android",
+							"uuid": "Compendium.pf2e.ancestries.Item.GfLwE884NoRC7cRi"
+						},
+						"description": {
+							"value": "<p>Your body was augmented with processes and an appearance intended to blend in with humans more easily.</p>\n<p>You become trained in Deception (or another skill if you're already trained in Deception). You don't require a disguise kit when attempting Deception checks to @UUID[Compendium.pf2e.actionspf2e.Item.AJstokjdG6iDjVjE]{Impersonate} a human.</p>\n<p>In addition, you gain a +4 circumstance bonus to Impersonate checks to pretend that you're a human version of yourself, rather than an android. This bonus doesn't apply to other checks to Impersonate humans.</p>",
+							"gm": ""
+						},
+						"publication": {
+							"license": "OGL",
+							"remaster": false,
+							"title": "Pathfinder Lost Omens Ancestry Guide",
+							"authors": ""
+						},
+						"rules": [
+							{
+								"key": "FlatModifier",
+								"label": "Impersonator Android (to Impersonate a human version of yourself)",
+								"predicate": [
+									"action:impersonate",
+									"disguise:human-self"
+								],
+								"selector": "deception",
+								"type": "circumstance",
+								"value": 4
+							},
+							{
+								"key": "ActiveEffectLike",
+								"mode": "upgrade",
+								"path": "system.skills.deception.rank",
+								"value": 1
+							}
+						],
+						"traits": {
+							"rarity": "common",
+							"value": [],
+							"otherTags": []
+						},
+						"slug": "impersonator-android",
+						"_migration": {
+							"version": 0.959,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						}
+					},
+					"type": "heritage",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.heritages.Item.Mmezbef0c1fbJaVV",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659817420,
+						"modifiedTime": 1778066584399,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "oLbZzm9IPwene6Fl"
+				},
+				{
+					"folder": "98K8lEyJ9px2hw6W",
+					"img": "systems/pf2e/icons/default-icons/deity.svg",
+					"name": "Cihua Coatl",
+					"system": {
+						"description": {
+							"gm": "",
+							"value": "<p>Cihua Coatl (SEE-wah coh-AHtl) is a dualistic coatl god. They support all those who defend others in the name of righteous causes. Their typical appearance is that of two coatls sharing a single body. One of these is a tletli coatl, powerful coatls known for their destructive might and righteous fury, while the other is a chicome coatl, coatls known for their ability to restore nature in areas that have been ravaged by evil. While Cihua Coatl has two distinct heads and tails, they share a pair of arms, with one holding a spear and the other a shield. Cihua Coatl teaches that conflict is inevitable, and one must be ready to defend others when such conflicts arise. The spear and shield represent the dualistic aspects of these teachings. The spear is the symbol of might: one can fight back in times of conflict, standing between aggressors and the innocent. The shield is the symbol of protection: caring for others is something that occurs at all times, not just during conflict. A follower can help others by offering services and kindness to their community.</p>\n<p><strong>Title</strong> The War Children</p>\n<p><strong>Areas of Concern</strong> Childbirth, protection, warfare</p>\n<p><strong>Edicts</strong> Aid in the rearing of children; prepare your body, mind, and community for eventual conflict; support your community</p>\n<p><strong>Anathema</strong> Engage in mindless war, refuse to answer a genuine plea for protection</p>\n<p><strong>Religious Symbol</strong> two coatls consuming each other's tails with their wings overlapping in the center</p>\n<p><strong>Sacred Animal</strong> armadillo</p>\n<p><strong>Sacred Colors</strong> gold</p>"
+						},
+						"rules": [],
+						"slug": "cihua-coatl",
+						"_migration": {
+							"version": 0.959,
+							"lastMigration": null,
+							"previous": {
+								"schema": 0.955,
+								"foundry": "14.361",
+								"system": "8.1.1"
+							}
+						},
+						"traits": {
+							"otherTags": []
+						},
+						"publication": {
+							"title": "Pathfinder Lost Omens Divine Mysteries",
+							"authors": "",
+							"license": "ORC",
+							"remaster": true
+						},
+						"category": "deity",
+						"sanctification": {
+							"modal": "can",
+							"what": [
+								"holy"
+							]
+						},
+						"domains": {
+							"primary": [
+								"healing",
+								"might",
+								"protection",
+								"zeal"
+							],
+							"alternate": [
+								"duty",
+								"repose",
+								"vigil"
+							]
+						},
+						"font": [
+							"harm",
+							"heal"
+						],
+						"attribute": [
+							"wis",
+							"str"
+						],
+						"skill": [
+							"athletics"
+						],
+						"weapons": [
+							"spear"
+						],
+						"spells": {
+							"1": "Compendium.pf2e.spells-srd.Item.Gb7SeieEvd0pL2Eh",
+							"4": "Compendium.pf2e.spells-srd.Item.2BV2yYPfVJ5zirZt",
+							"7": "Compendium.pf2e.spells-srd.Item.AlbpWWN87yGegoAF"
+						}
+					},
+					"type": "deity",
+					"_stats": {
+						"compendiumSource": "Compendium.pf2e.deities.Item.fZ5caXxpdV1MErsa",
+						"duplicateSource": null,
+						"coreVersion": "14.361",
+						"systemId": "pf2e",
+						"systemVersion": "8.1.1",
+						"createdTime": 1747659837099,
+						"modifiedTime": 1778066584399,
+						"lastModifiedBy": "bpNteJcGhYU91GM3",
+						"exportSource": null
+					},
+					"effects": [],
+					"sort": 0,
+					"ownership": {
+						"default": 0,
+						"bpNteJcGhYU91GM3": 3
+					},
+					"flags": {},
+					"_id": "V5xmYJpSFmJDYT1a"
+				}
+			],
+			"prototypeToken": {
+				"displayName": 20,
+				"displayBars": 20,
+				"flags": {
+					"pf2e": {
+						"linkToActorSize": true,
+						"autoscale": true
+					}
+				},
+				"height": 1,
+				"width": 1,
+				"actorLink": true,
+				"sight": {
+					"enabled": true,
+					"range": 0,
+					"angle": 360,
+					"visionMode": "basic",
+					"color": null,
+					"attenuation": 0.1,
+					"brightness": 0,
+					"saturation": 0,
+					"contrast": 0
+				},
+				"name": "Test",
+				"appendNumber": false,
+				"prependAdjective": false,
+				"texture": {
+					"src": "systems/pf2e/icons/default-icons/character.svg",
+					"anchorX": 0.5,
+					"anchorY": 0.5,
+					"fit": "contain",
+					"scaleX": 1,
+					"scaleY": 1,
+					"tint": "#ffffff",
+					"alphaThreshold": 0.75
+				},
+				"lockRotation": false,
+				"rotation": 0,
+				"alpha": 1,
+				"disposition": -1,
+				"bar1": {
+					"attribute": "attributes.hp"
+				},
+				"bar2": {
+					"attribute": null
+				},
+				"light": {
+					"negative": false,
+					"priority": 0,
+					"alpha": 0.5,
+					"angle": 360,
+					"bright": 0,
+					"color": null,
+					"coloration": 1,
+					"dim": 0,
+					"attenuation": 0.5,
+					"luminosity": 0.5,
+					"saturation": 0,
+					"contrast": 0,
+					"shadows": 0,
+					"animation": {
+						"type": null,
+						"speed": 5,
+						"intensity": 5,
+						"reverse": false
+					},
+					"darkness": {
+						"min": 0,
+						"max": 1
+					}
+				},
+				"detectionModes": {},
+				"occludable": {
+					"radius": 0
+				},
+				"ring": {
+					"enabled": false,
+					"colors": {
+						"ring": null,
+						"background": null
+					},
+					"effects": 0,
+					"subject": {
+						"scale": 1,
+						"texture": null
+					}
+				},
+				"randomImg": false,
+				"turnMarker": {
+					"mode": 1,
+					"animation": null,
+					"src": null,
+					"disposition": false
+				},
+				"movementAction": null,
+				"depth": 1
+			},
+			"ownershipByUserName": {
+				"default": 1,
+				"Gamemaster": 3,
+				"Player2": 3,
+				"Player4": 3
+			}
+		},
+		{
+			"name": "Test 2",
+			"type": "character",
+			"img": "systems/pf2e/icons/default-icons/character.svg",
+			"system": {
+				"attributes": {
+					"hp": {
+						"value": 0,
+						"temp": 0
+					}
+				},
+				"initiative": {
+					"statistic": "perception"
+				},
+				"details": {
+					"languages": {
+						"value": [],
+						"details": ""
+					},
+					"level": {
+						"value": 1
+					},
+					"biography": {
+						"appearance": "",
+						"backstory": "",
+						"birthPlace": "",
+						"attitude": "",
+						"beliefs": "",
+						"anathema": [],
+						"edicts": [],
+						"likes": "",
+						"dislikes": "",
+						"catchphrases": "",
+						"campaignNotes": "",
+						"allies": "",
+						"enemies": "",
+						"organizations": "",
+						"visibility": {
+							"appearance": true,
+							"backstory": false,
+							"personality": false,
+							"campaign": false
+						}
+					},
+					"keyability": {
+						"value": "str"
+					},
+					"xp": {
+						"value": 0,
+						"min": 0,
+						"max": 1000,
+						"pct": 0
+					},
+					"age": {
+						"value": ""
+					},
+					"height": {
+						"value": ""
+					},
+					"weight": {
+						"value": ""
+					},
+					"gender": {
+						"value": ""
+					},
+					"ethnicity": {
+						"value": ""
+					},
+					"nationality": {
+						"value": ""
+					},
+					"alliance": "party"
+				},
+				"resources": {
+					"heroPoints": {
+						"value": 1,
+						"max": 3
+					}
+				},
+				"_migration": {
+					"version": 0.959,
+					"previous": {
+						"schema": 0.955,
+						"foundry": "14.361",
+						"system": "8.1.1"
+					}
+				},
+				"abilities": null,
+				"skills": {},
+				"pfs": {
+					"playerNumber": null,
+					"characterNumber": null,
+					"levelBump": false,
+					"currentFaction": "EA",
+					"school": null,
+					"reputation": {
+						"EA": null,
+						"GA": null,
+						"HH": null,
+						"VS": null,
+						"RO": null,
+						"VW": null
+					}
+				},
+				"exploration": []
+			},
+			"items": [],
+			"prototypeToken": {
+				"displayName": 20,
+				"displayBars": 20,
+				"flags": {
+					"pf2e": {
+						"linkToActorSize": true,
+						"autoscale": true
+					}
+				},
+				"height": 1,
+				"width": 1,
+				"actorLink": true,
+				"sight": {
+					"enabled": true,
+					"range": 0,
+					"angle": 360,
+					"visionMode": "basic",
+					"color": null,
+					"attenuation": 0.1,
+					"brightness": 0,
+					"saturation": 0,
+					"contrast": 0
+				},
+				"name": "Test 2",
+				"appendNumber": false,
+				"prependAdjective": false,
+				"texture": {
+					"src": "systems/pf2e/icons/default-icons/character.svg",
+					"anchorX": 0.5,
+					"anchorY": 0.5,
+					"fit": "contain",
+					"scaleX": 1,
+					"scaleY": 1,
+					"tint": "#ffffff",
+					"alphaThreshold": 0.75
+				},
+				"lockRotation": false,
+				"rotation": 0,
+				"alpha": 1,
+				"disposition": -1,
+				"bar1": {
+					"attribute": "attributes.hp"
+				},
+				"bar2": {
+					"attribute": null
+				},
+				"light": {
+					"negative": false,
+					"priority": 0,
+					"alpha": 0.5,
+					"angle": 360,
+					"bright": 0,
+					"color": null,
+					"coloration": 1,
+					"dim": 0,
+					"attenuation": 0.5,
+					"luminosity": 0.5,
+					"saturation": 0,
+					"contrast": 0,
+					"shadows": 0,
+					"animation": {
+						"type": null,
+						"speed": 5,
+						"intensity": 5,
+						"reverse": false
+					},
+					"darkness": {
+						"min": 0,
+						"max": 1
+					}
+				},
+				"detectionModes": {},
+				"occludable": {
+					"radius": 0
+				},
+				"ring": {
+					"enabled": false,
+					"colors": {
+						"ring": null,
+						"background": null
+					},
+					"effects": 1,
+					"subject": {
+						"scale": 1,
+						"texture": null
+					}
+				},
+				"randomImg": false,
+				"turnMarker": {
+					"mode": 1,
+					"animation": null,
+					"src": null,
+					"disposition": false
+				},
+				"movementAction": null,
+				"depth": 1
+			},
+			"ownershipByUserName": {
+				"default": 1,
+				"Gamemaster": 3,
+				"Player2": 2,
+				"Player3": 3,
+				"Player4": 3
+			}
+		}
+	],
+	"scene": {
+		"name": "Scene",
+		"width": 4000,
+		"height": 3000,
+		"gridSize": 100,
+		"tokens": [
+			{
+				"name": "Test",
+				"x": 2900,
+				"y": 1800,
+				"actor": "Test"
+			},
+			{
+				"name": "Test 2",
+				"x": 3200,
+				"y": 1900,
+				"actor": "Test 2"
+			}
+		],
+		"flags": {
+			"obs-utils": {
+				"cameraPresets": "{\"version\":1,\"presets\":[{\"id\":\"SNEQyW1puIo3PEhn\",\"name\":\"Test Keyframed\",\"x\":1000,\"y\":1000,\"scale\":1,\"keyframes\":[{\"time\":0,\"x\":1000,\"y\":1000,\"scale\":1,\"easing\":\"linear\"},{\"time\":1000,\"x\":1500,\"y\":1500,\"scale\":1.5,\"easing\":\"easeInOut\"}],\"loop\":\"none\",\"durationMs\":2000}]}"
+			}
+		}
+	},
+	"settings": {
+		"frameMargin": 1.5,
+		"closestView": 10,
+		"widestView": 40,
+		"clampCanvas": false,
+		"levelPolicy": "relative",
+		"levelRelativeRule": "lowest",
+		"defaultOutOfCombat": "birdseye",
+		"defaultInCombat": "cloneDM",
+		"popupCloseDelay": 10,
+		"showTrackerInCombat": true,
+		"streamOverlays": [
+			{
+				"type": "sl",
+				"components": [
+					{
+						"type": "pt",
+						"data": "name",
+						"style": "",
+						"customCSS": "font-size: 20px;\ncolor: #ffd470;\nfont-weight: 700;\nletter-spacing: 0.5px;",
+						"id": "uIS9KH1p5skamgCi"
+					},
+					{
+						"type": "fai",
+						"data": "fas fa-heart",
+						"style": "",
+						"customCSS": "i {\n  color: #ff5577;\n  font-size: 22px;\n  filter: drop-shadow(0 0 6px rgba(255,85,119,0.6));\n}",
+						"id": "2ApEXYu47MJ8OFAm"
+					},
+					{
+						"type": "bav",
+						"data": "prototypeToken.sight.enabled;fas fa-check;fas fa-x",
+						"style": "",
+						"customCSS": "i { color: #58e8a0; font-size: 18px; }",
+						"id": "9Mlr843Qvqd1vADT"
+					},
+					{
+						"type": "bavimg",
+						"data": "prototypeToken.ring.enabled;https://picsum.photos/id/236/50;https://picsum.photos/id/237/50",
+						"style": "",
+						"customCSS": "img {\n  border-radius: 50%;\n  box-shadow: 0 0 6px rgba(0, 200, 255, 0.5);\n  border: 2px solid #00c8ff;\n}",
+						"id": "tM2NQKUW5e85OdiL"
+					},
+					{
+						"type": "img",
+						"data": "https://picsum.photos/id/235/50/50",
+						"style": "",
+						"customCSS": "img {\n  border-radius: 8px;\n  object-fit: cover;\n  transform: rotate(-2deg);\n}",
+						"id": "14dVQwIGEXruo0xI"
+					},
+					{
+						"type": "micoav",
+						"data": "system.attributes.hp.value;fas fa-heart;system.attributes.hp.max;fa-regular fa-heart",
+						"style": "",
+						"customCSS": "i {\n  margin: 0 2px;\n  font-size: 18px;\n}\ni.fa-heart { color: #ff5577; }\ni.fa-heart-broken { color: rgba(255,255,255,0.35); }",
+						"id": "byt7y6IfUbU180gM"
+					},
+					{
+						"type": "mimgav",
+						"data": "system.attributes.hp.value;https://picsum.photos/id/2/15;system.attributes.hp.max;https://picsum.photos/id/3/15",
+						"style": "",
+						"customCSS": "img {\n  margin: 0 1px;\n  filter: hue-rotate(45deg);\n}",
+						"id": "hQUiqk1V3qVlE8v9"
+					},
+					{
+						"type": "pb",
+						"data": "system.attributes.hp.value;system.attributes.hp.max",
+						"style": "",
+						"customCSS": "progress {\n  width: 240px;\n  height: 14px;\n  border-radius: 7px;\n  overflow: hidden;\n}\nprogress::-webkit-progress-bar {\n  background: rgba(255,255,255,0.12);\n  border-radius: 7px;\n}\nprogress::-webkit-progress-value {\n  background: linear-gradient(90deg, #f55, #ff5);\n  border-radius: 7px;\n}",
+						"id": "8qZy99uqmaTIKUbe"
+					}
+				],
+				"style": "",
+				"customCSS": "padding: 6px 10px;\nborder: 1px solid rgba(255, 255, 255, 0.4);\nborder-radius: 6px;\nbackground-color: rgba(0, 0, 0, 0.35);\nfont-size: 18px;",
+				"id": "tiRqO45r3ugkzmE3"
+			},
+			{
+				"type": "wysiwyg",
+				"components": [
+					{
+						"type": "pt",
+						"data": "name",
+						"style": "",
+						"customCSS": "padding: 4px 8px;\nbackground: rgba(0, 0, 0, 0.35);\nborder-radius: 4px;\nfont-size: 20px;\ncolor: #ffd470;\nfont-weight: 700;\nletter-spacing: 0.5px;",
+						"id": "w1ptNameAAAAAAAA",
+						"x": 20,
+						"y": 20,
+						"w": 400,
+						"h": 40,
+						"animation": {
+							"defaultState": {
+								"entrance": {
+									"duration": 500,
+									"keyframes": [
+										{
+											"offset": 0,
+											"opacity": 0
+										},
+										{
+											"offset": 1,
+											"opacity": 1
+										}
+									],
+									"ease": "linear",
+									"loop": "none"
+								}
+							},
+							"triggeredStates": {},
+							"reEntry": "restart"
+						}
+					},
+					{
+						"type": "fai",
+						"data": "fas fa-heart",
+						"style": "",
+						"customCSS": "i {\n  color: #ff5577;\n  font-size: 28px;\n  filter: drop-shadow(0 0 6px rgba(255,85,119,0.6));\n}",
+						"id": "w2faiHeartBBBBBB",
+						"x": 460,
+						"y": 20,
+						"w": 40,
+						"h": 40
+					},
+					{
+						"type": "bav",
+						"data": "prototypeToken.sight.enabled;fas fa-check;fas fa-x",
+						"style": "",
+						"customCSS": "i { color: #58e8a0; font-size: 22px; }",
+						"id": "w3bavSightCCCCCC",
+						"x": 20,
+						"y": 100,
+						"w": 40,
+						"h": 40
+					},
+					{
+						"type": "bavimg",
+						"data": "prototypeToken.ring.enabled;https://picsum.photos/id/236/50;https://picsum.photos/id/237/50",
+						"style": "",
+						"customCSS": "img {\n  border-radius: 50%;\n  box-shadow: 0 0 6px rgba(0, 200, 255, 0.5);\n  border: 2px solid #00c8ff;\n}",
+						"id": "w4bavimgRingDDDD",
+						"x": 80,
+						"y": 100,
+						"w": 50,
+						"h": 50
+					},
+					{
+						"type": "img",
+						"data": "https://picsum.photos/id/235/50/50",
+						"style": "",
+						"customCSS": "img {\n  border-radius: 8px;\n  object-fit: cover;\n  transform: rotate(-2deg);\n  width: 100%;\n  height: 100%;\n}",
+						"id": "w5imgStaticEEEEE",
+						"x": 160,
+						"y": 100,
+						"w": 50,
+						"h": 50
+					},
+					{
+						"type": "micoav",
+						"data": "system.attributes.hp.value;fas fa-heart;system.attributes.hp.max;fa-regular fa-heart",
+						"style": "",
+						"customCSS": "i {\n  margin: 0 2px;\n  font-size: 18px;\n}",
+						"id": "w6micoavHpFFFFFF",
+						"x": 20,
+						"y": 200,
+						"w": 400,
+						"h": 20
+					},
+					{
+						"type": "mimgav",
+						"data": "system.attributes.hp.value;https://picsum.photos/id/2/15;system.attributes.hp.max;https://picsum.photos/id/3/15",
+						"style": "",
+						"customCSS": "img { margin: 0 1px; filter: hue-rotate(45deg); }",
+						"id": "w7mimgavHpGGGGGG",
+						"x": 20,
+						"y": 240,
+						"w": 400,
+						"h": 20
+					},
+					{
+						"type": "pb",
+						"data": "system.attributes.hp.value;system.attributes.hp.max",
+						"style": "",
+						"customCSS": "progress {\n  width: 100%;\n  height: 100%;\n  border-radius: 7px;\n  overflow: hidden;\n}\nprogress::-webkit-progress-bar { background: rgba(255,255,255,0.12); }\nprogress::-webkit-progress-value { background: linear-gradient(90deg, #f55, #ff5); }",
+						"id": "w8pbHpHHHHHHHHHH",
+						"x": 20,
+						"y": 1020,
+						"w": 600,
+						"h": 30
+					}
+				],
+				"style": "",
+				"customCSS": "background: linear-gradient(135deg, rgba(20,20,40,0.4), rgba(0,0,0,0));",
+				"config": {
+					"w": 1920,
+					"h": 1080
+				},
+				"id": "wysiwygOverlayAAA"
+			},
+			{
+				"id": "cjAiXGHHcR3astzW",
+				"type": "wysiwyg",
+				"name": "Test Trigger Roll",
+				"enabled": true,
+				"style": "",
+				"components": [
+					{
+						"id": "N2Y8Xwcml2YPRpXN",
+						"type": "pt",
+						"data": "trigger.total",
+						"style": "",
+						"x": 100,
+						"y": 100,
+						"w": 200,
+						"h": 40
+					},
+					{
+						"id": "63wa2KvHzHJzvEvH",
+						"type": "pt",
+						"data": "trigger.actor.name",
+						"style": "",
+						"x": 100,
+						"y": 150,
+						"w": 400,
+						"h": 40
+					}
+				],
+				"trigger": {
+					"eventKey": "core.onPlayerRoll",
+					"conditions": {},
+					"duration": 2000,
+					"showMs": 200,
+					"hideMs": 200,
+					"transition": "fade"
+				},
+				"config": {
+					"w": 1920,
+					"h": 1080
+				}
+			},
+			{
+				"id": "RpAkYydD0PX8x2oj",
+				"type": "wysiwyg",
+				"name": "Test Trigger Crit Only",
+				"enabled": true,
+				"style": "",
+				"components": [
+					{
+						"id": "qEMsiGN7BH40bUHg",
+						"type": "pt",
+						"data": "trigger.actor.name",
+						"style": "",
+						"x": 100,
+						"y": 100,
+						"w": 400,
+						"h": 40
+					}
+				],
+				"trigger": {
+					"eventKey": "core.onPlayerRoll",
+					"conditions": {
+						"isCritical": true
+					},
+					"duration": 1500,
+					"showMs": 100,
+					"hideMs": 100,
+					"transition": "flash"
+				},
+				"config": {
+					"w": 1920,
+					"h": 1080
+				}
+			},
+			{
+				"id": "test-roll-banner",
+				"name": "Roll Banner",
+				"type": "sl",
+				"tileBy": "players",
+				"enabled": true,
+				"style": "",
+				"config": {},
+				"customCSS": "/* roll-banner overlay css */",
+				"components": [
+					{
+						"id": "tN7zSZNiA3m5LZLf",
+						"type": "pt",
+						"data": "trigger.actor.name",
+						"style": "",
+						"customCSS": "font-weight: bold; color: #ffce80;"
+					},
+					{
+						"id": "8zQjaPhTPdFsmo8Q",
+						"type": "pt",
+						"data": "trigger.total",
+						"style": "font-size: 24px; color: #fff;",
+						"customCSS": "* { text-shadow: 0 0 6px rgba(255,200,80,0.6); }"
+					}
+				],
+				"animation": {
+					"initialTrackId": "3Gx3JFqmrLtC3yZ4",
+					"tracks": [
+						{
+							"id": "3Gx3JFqmrLtC3yZ4",
+							"name": "Idle",
+							"durationMs": 0,
+							"behavior": {
+								"type": "static"
+							},
+							"lanes": [
+								{
+									"componentId": "tN7zSZNiA3m5LZLf",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0
+											}
+										]
+									}
+								},
+								{
+									"componentId": "8zQjaPhTPdFsmo8Q",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0
+											}
+										]
+									}
+								}
+							]
+						},
+						{
+							"id": "4jwrHolxKbjVpgYH",
+							"name": "Show",
+							"durationMs": 2500,
+							"behavior": {
+								"type": "transition-on-end",
+								"toTrackId": "3Gx3JFqmrLtC3yZ4",
+								"toTime": 0
+							},
+							"lanes": [
+								{
+									"componentId": "tN7zSZNiA3m5LZLf",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 300,
+												"v": 1,
+												"easing": {
+													"interpolation": "linear"
+												}
+											},
+											{
+												"t": 2000,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "cubic",
+													"direction": "in"
+												}
+											},
+											{
+												"t": 2500,
+												"v": 0,
+												"easing": {
+													"interpolation": "constant"
+												}
+											}
+										],
+										"y": [
+											{
+												"t": 0,
+												"v": -30,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "back",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 400,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										]
+									}
+								},
+								{
+									"componentId": "8zQjaPhTPdFsmo8Q",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 500,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "bounce",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 2000,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "cubic",
+													"direction": "in"
+												}
+											},
+											{
+												"t": 2500,
+												"v": 0,
+												"easing": {
+													"interpolation": "constant"
+												}
+											}
+										],
+										"scaleX": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "elastic",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 600,
+												"v": 1.2,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "quadratic",
+													"direction": "inout"
+												}
+											},
+											{
+												"t": 1000,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal",
+													"direction": "auto"
+												}
+											}
+										],
+										"scaleY": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "elastic",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 600,
+												"v": 1.2,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "quadratic",
+													"direction": "inout"
+												}
+											},
+											{
+												"t": 1000,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal",
+													"direction": "auto"
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					],
+					"transitions": [
+						{
+							"triggerKey": "core.onPlayerRoll",
+							"fromTrackId": "3Gx3JFqmrLtC3yZ4",
+							"zones": [
+								{
+									"startT": 0,
+									"endT": 1,
+									"destination": {
+										"type": "goto",
+										"toTrackId": "4jwrHolxKbjVpgYH",
+										"toTime": 0
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "test-hp-pulse",
+				"name": "HP Pulse",
+				"type": "sl",
+				"tileBy": "actors",
+				"enabled": true,
+				"style": "",
+				"config": {},
+				"components": [
+					{
+						"id": "9ga01gZZMVM7xbfu",
+						"type": "pt",
+						"data": "actor.system.attributes.hp.value",
+						"style": "color: #ff6060; font-weight: bold;"
+					}
+				],
+				"animation": {
+					"initialTrackId": "5Ywxz2kfmtg1c0qh",
+					"tracks": [
+						{
+							"id": "5Ywxz2kfmtg1c0qh",
+							"name": "Pulse",
+							"durationMs": 1500,
+							"behavior": {
+								"type": "looping"
+							},
+							"lanes": [
+								{
+									"componentId": "9ga01gZZMVM7xbfu",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0.4,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal",
+													"direction": "inout"
+												}
+											},
+											{
+												"t": 750,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "quartic",
+													"direction": "inout"
+												}
+											},
+											{
+												"t": 1500,
+												"v": 0.4,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "quintic",
+													"direction": "inout"
+												}
+											}
+										],
+										"scaleX": [
+											{
+												"t": 0,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "bounce",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 750,
+												"v": 1.3,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "exponential",
+													"direction": "in"
+												}
+											},
+											{
+												"t": 1500,
+												"v": 1,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										],
+										"scaleY": [
+											{
+												"t": 0,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "circular",
+													"direction": "inout"
+												}
+											},
+											{
+												"t": 750,
+												"v": 1.3,
+												"easing": {
+													"interpolation": "constant"
+												}
+											},
+											{
+												"t": 1500,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "back",
+													"direction": "out"
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					],
+					"transitions": []
+				}
+			},
+			{
+				"id": "test-scene-title",
+				"name": "Scene Title",
+				"type": "wysiwyg",
+				"tileBy": "once",
+				"enabled": true,
+				"style": "",
+				"config": {
+					"w": 1920,
+					"h": 1080
+				},
+				"customCSS": ".obs-utils.overlay .overlay-row { /* singleton overlay row css */ }",
+				"components": [
+					{
+						"id": "zQIfjbFiOc082T3c",
+						"type": "pt",
+						"data": "Welcome to the Test World",
+						"style": "font-size: 36px; color: white;",
+						"x": 660,
+						"y": 100,
+						"w": 600,
+						"h": 80,
+						"rotation": 0,
+						"customCSS": "* { text-shadow: 0 0 8px rgba(0,0,0,0.8); }"
+					}
+				],
+				"animation": {
+					"initialTrackId": "VB1JtXOHlmpCMeq8",
+					"tracks": [
+						{
+							"id": "VB1JtXOHlmpCMeq8",
+							"name": "Idle",
+							"durationMs": 0,
+							"behavior": {
+								"type": "static"
+							},
+							"lanes": []
+						}
+					],
+					"transitions": []
+				}
+			},
+			{
+				"id": "test-chat-banner",
+				"name": "Chat Banner",
+				"type": "wysiwyg",
+				"tileBy": "users",
+				"enabled": true,
+				"style": "",
+				"config": {
+					"w": 400,
+					"h": 120
+				},
+				"components": [
+					{
+						"id": "hkjnIZft4FyVGQUZ",
+						"type": "pt",
+						"data": "trigger.speakerAlias",
+						"style": "font-weight: bold; color: #ffce80;",
+						"x": 10,
+						"y": 10,
+						"w": 380,
+						"h": 28,
+						"rotation": 0
+					},
+					{
+						"id": "BQ3mwzAgwJoa6W2M",
+						"type": "pt",
+						"data": "trigger.content",
+						"style": "color: #fff;",
+						"x": 10,
+						"y": 44,
+						"w": 380,
+						"h": 64,
+						"rotation": 0
+					}
+				],
+				"animation": {
+					"initialTrackId": "wDBR66hA5Zk4LQAk",
+					"tracks": [
+						{
+							"id": "wDBR66hA5Zk4LQAk",
+							"name": "Idle",
+							"durationMs": 0,
+							"behavior": {
+								"type": "static"
+							},
+							"lanes": [
+								{
+									"componentId": "hkjnIZft4FyVGQUZ",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0
+											}
+										]
+									}
+								},
+								{
+									"componentId": "BQ3mwzAgwJoa6W2M",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0
+											}
+										]
+									}
+								}
+							]
+						},
+						{
+							"id": "VDHTkffJcOnsRcWn",
+							"name": "Show",
+							"durationMs": 3000,
+							"behavior": {
+								"type": "transition-on-end",
+								"toTrackId": "wDBR66hA5Zk4LQAk",
+								"toTime": 0
+							},
+							"lanes": [
+								{
+									"componentId": "hkjnIZft4FyVGQUZ",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											},
+											{
+												"t": 200,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal"
+												}
+											},
+											{
+												"t": 2500,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal"
+												}
+											},
+											{
+												"t": 3000,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										],
+										"x": [
+											{
+												"t": 0,
+												"v": -100,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "back",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 300,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										]
+									}
+								},
+								{
+									"componentId": "BQ3mwzAgwJoa6W2M",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											},
+											{
+												"t": 400,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal"
+												}
+											},
+											{
+												"t": 2500,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal"
+												}
+											},
+											{
+												"t": 3000,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					],
+					"transitions": [
+						{
+							"triggerKey": "core.onChatMessage",
+							"fromTrackId": "wDBR66hA5Zk4LQAk",
+							"zones": [
+								{
+									"startT": 0,
+									"endT": 1,
+									"destination": {
+										"type": "goto",
+										"toTrackId": "VDHTkffJcOnsRcWn",
+										"toTime": 0
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "test-legacy-mixed-kfs",
+				"name": "Legacy Mixed KFs",
+				"type": "sl",
+				"tileBy": "actors",
+				"enabled": true,
+				"style": "",
+				"config": {},
+				"components": [
+					{
+						"id": "cW23bem5C85sGTac",
+						"type": "pt",
+						"data": "actor.name",
+						"style": ""
+					}
+				],
+				"animation": {
+					"initialTrackId": "1y4oByoVNTMAk2hN",
+					"tracks": [
+						{
+							"id": "1y4oByoVNTMAk2hN",
+							"name": "Legacy",
+							"durationMs": 2000,
+							"behavior": {
+								"type": "looping"
+							},
+							"lanes": [
+								{
+									"componentId": "cW23bem5C85sGTac",
+									"keyframes": [
+										{
+											"t": 0,
+											"opacity": 0.6,
+											"x": 0,
+											"y": 0,
+											"rotation": 0,
+											"scaleX": 1,
+											"scaleY": 1
+										},
+										{
+											"t": 1000,
+											"opacity": 1,
+											"x": 0,
+											"y": -10,
+											"rotation": 5,
+											"scaleX": 1.1,
+											"scaleY": 1.1
+										},
+										{
+											"t": 2000,
+											"opacity": 0.6,
+											"x": 0,
+											"y": 0,
+											"rotation": 0,
+											"scaleX": 1,
+											"scaleY": 1
+										}
+									]
+								}
+							]
+						}
+					],
+					"transitions": []
+				}
+			},
+			{
+				"id": "test-crit-pulse",
+				"name": "Crit Pulse",
+				"type": "sl",
+				"tileBy": "actors",
+				"enabled": true,
+				"style": "",
+				"config": {},
+				"components": [
+					{
+						"id": "JmeipqZfvYj5tiY2",
+						"type": "pt",
+						"data": "CRIT!",
+						"style": "color: gold; font-weight: 900; font-size: 28px;"
+					}
+				],
+				"animation": {
+					"initialTrackId": "v70Ruuw2BvbLa3Vl",
+					"tracks": [
+						{
+							"id": "v70Ruuw2BvbLa3Vl",
+							"name": "Idle",
+							"durationMs": 0,
+							"behavior": {
+								"type": "static"
+							},
+							"lanes": [
+								{
+									"componentId": "JmeipqZfvYj5tiY2",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0
+											}
+										]
+									}
+								}
+							]
+						},
+						{
+							"id": "hU3O0n1T3UhIUx0r",
+							"name": "Pop",
+							"durationMs": 1200,
+							"behavior": {
+								"type": "transition-on-end",
+								"toTrackId": "v70Ruuw2BvbLa3Vl",
+								"toTime": 0
+							},
+							"lanes": [
+								{
+									"componentId": "JmeipqZfvYj5tiY2",
+									"keyframes": [],
+									"propertyKeyframes": {
+										"opacity": [
+											{
+												"t": 0,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											},
+											{
+												"t": 100,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "back",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 800,
+												"v": 1,
+												"easing": {
+													"interpolation": "linear"
+												}
+											},
+											{
+												"t": 1200,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										],
+										"scaleX": [
+											{
+												"t": 0,
+												"v": 0.2,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "elastic",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 500,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal"
+												}
+											}
+										],
+										"scaleY": [
+											{
+												"t": 0,
+												"v": 0.2,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "elastic",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 500,
+												"v": 1,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "sinusoidal"
+												}
+											}
+										],
+										"rotation": [
+											{
+												"t": 0,
+												"v": -15,
+												"easing": {
+													"interpolation": "bezier",
+													"equation": "back",
+													"direction": "out"
+												}
+											},
+											{
+												"t": 500,
+												"v": 0,
+												"easing": {
+													"interpolation": "linear"
+												}
+											}
+										]
+									}
+								}
+							]
+						}
+					],
+					"transitions": [
+						{
+							"triggerKey": "core.onPlayerRoll",
+							"fromTrackId": "v70Ruuw2BvbLa3Vl",
+							"zones": [
+								{
+									"startT": 0,
+									"endT": 1,
+									"destination": {
+										"type": "goto",
+										"toTrackId": "hU3O0n1T3UhIUx0r",
+										"toTime": 0
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"overlayActorsModified": true,
+		"globalOverlayCSS": ".obs-utils.overlay { gap: 24px; }",
+		"actorOverlayCSS": {
+			"PxZYRAgdxBLBEnWb": "outline: 2px dashed rgba(0, 255, 200, 0.35); outline-offset: 4px;"
+		},
+		"showAV": false,
+		"showUserConfig": false,
+		"diceSoNice": false,
+		"diceSoNiceOverlayWidth": 500,
+		"diceSoNiceOverlayHeight": 500,
+		"fixedPopups": false,
+		"fixedPopupX": 1000,
+		"fixedPopupY": 1000,
+		"fixedPopupWidth": 1000,
+		"fixedPopupHeight": 800,
+		"forceStreamPageOBSMode": false,
+		"showKeybindingPopup": true,
+		"cameraTrackingMode": "smooth",
+		"cameraSmoothing": 400,
+		"cameraEasing": "easeOutCircle",
+		"proxyOBSMessages": false,
+		"showChatNotificationsOnCanvas": true,
+		"leftAlignChatNotifications": true,
+		"trackObserverTokens": false,
+		"showDirectorInOBSMode": false
+	},
+	"settingsByActorName": {
+		"overlayActors": [
+			"Test",
+			"Test 2"
+		]
+	},
+	"journals": [
+		{
+			"name": "tes",
+			"pages": [
+				{
+					"name": "tes",
+					"type": "text",
+					"text": ""
+				}
+			]
+		}
+	]
+}
