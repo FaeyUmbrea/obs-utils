@@ -2,19 +2,19 @@
 
 ### Added
 
-- **Scene Levels support (Foundry v14).** The stream client now follows the party between floors. Modes that mirror a user take that user's floor; single-token modes take their token's. For the group modes and birdseye, a new **Scene Level Choice** in the Director decides: follow the tracked tokens (lowest, middle or highest occupied floor), follow one nominated token's floor, or stay on a floor you pin. Framing is restricted to tokens on the chosen floor, so a party split across two floors no longer gets a shot centred between them. Nothing here appears on v13 or on scenes without floors.
-- **Track a Specific Token** — an out-of-combat camera mode that follows one token you nominate in the Director. The in-combat single-token mode follows the turn order and had no out-of-combat counterpart.
-- **A keybind for manual camera tracking** (Shift+T by default). Toggles tracking on the selected tokens, or the one under the cursor if nothing is selected, the way targeting works. GM only, and it reports what it changed — manual tracking has no visible state on the token unless its HUD is open.
+- Scene Levels support (Foundry V14). The stream client follows the party between floors. Clone modes take the mirrored user's floor, single-token modes take their token's. Group modes and birdseye use the new Scene Level Choice in the Director: follow the tracked tokens (lowest, middle or highest occupied floor), follow one token's floor, or pin a floor.
+- Track a Specific Token. Out-of-combat camera mode that follows one token nominated in the Director.
+- Keybind to toggle manual camera tracking (Shift+T). Applies to the selected tokens, or the hovered one if nothing is selected. GM only.
 
 ### Changed
 
-- Camera framing limits are now set in grid tiles instead of a scale multiplier. **Closest View** and **Widest View** cap how near and how wide the camera may go, and the new **Frame Margin** controls how much space is kept around the tracked tokens — previously a fixed 300 pixels, which meant three tiles of room on a 50px-grid map and three quarters of a tile on a 200px one. Because tiles are read from the scene, the same setting now frames the same way on every map and at every client resolution.
-- **Minimum Scale** and **Maximum Scale** are removed and are not migrated. A scale value cannot be converted to a tile count without knowing the grid size and the viewport width it was tuned against, and neither is recoverable, so any conversion would be a guess. Set the new limits once after updating — and not five minutes before going live.
+- Camera framing limits are set in grid tiles instead of a scale multiplier. Closest View and Widest View cap how near and how wide the camera goes; Frame Margin sets the space kept around the tracked tokens.
+- Minimum Scale and Maximum Scale are removed and are not migrated. Set the new limits after updating.
 
 ### Fixed
 
-- The stream client no longer sits on a stale view when a client joins, or when OBS itself reloads, without anyone touching the camera. Every client announces its viewport once on load, and a stream client that reloads asks everyone to re-announce rather than waiting for someone to pan.
-- Pausing camera tracking no longer makes the stream client forget where everyone is. It keeps recording positions while paused and simply declines to move, so unpausing picks up immediately instead of waiting for the next pan.
+- Clients announce their viewport on load, and a reloading stream client asks the others to re-announce. A client that joined without panning, or an OBS source that restarted, previously left the camera on a stale view.
+- Paused camera tracking keeps recording viewport positions instead of dropping them, so unpausing picks up immediately.
 
 ## Version 5.2.0
 
