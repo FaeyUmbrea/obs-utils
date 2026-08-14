@@ -26,7 +26,18 @@
 			"pauseCameraTracking": "カメラ追従を一時停止",
 			"manualOBSWarning": "あなたはOBSモードで実行中である。通常に戻りたい場合、SHIFT + ALT + CONTROL + O(デフォルト)またはカスタムのキーバインドを押す。その後、ページを再読み込みする。",
 			"disableOBSMode": "OBSモードを無効にする",
-			"disableOBSModeHint": "手動OBSモードから抜けられなくなった場合に、この設定をオフにする。"
+			"disableOBSModeHint": "手動OBSモードから抜けられなくなった場合に、この設定をオフにする。",
+			"toggleTokenTracking": "トークン追跡の切り替え",
+			"toggleTokenTrackingHint": "手動追跡の使用時に、選択中またはカーソル下のトークンのカメラ追跡を切り替えます。",
+			"tokenTrackingOn": "{names} の追跡を開始しました",
+			"tokenTrackingOff": "{names} の追跡を解除しました",
+			"trackToken": "特定のトークンを追跡",
+			"levelPolicyRelative": "追跡中のトークンに従う",
+			"levelPolicyToken": "特定トークンの階層に従う",
+			"levelPolicyPinned": "指定した階層に留まる",
+			"levelRelativeLowest": "最も低い使用中の階層",
+			"levelRelativeMiddle": "中間の使用中の階層",
+			"levelRelativeHighest": "最も高い使用中の階層"
 		},
 		"applications": {
 			"componentEditors": {
@@ -50,6 +61,21 @@
 				"icTypeHeader": "戦闘中の種別",
 				"oocTypeHeader": "戦闘外の種別",
 				"trackedPlayerHeader": "追従中のプレイヤー",
+				"actionsHeader": "操作",
+				"levelsHeader": "シーン階層",
+				"levelChoice": "階層の選択",
+				"levelSplit": "分散時の階層",
+				"levelFollowToken": "追従するトークン",
+				"levelFollowTokenShort": "追従",
+				"levelPinned": "固定する階層",
+				"levelPinnedShort": "階層",
+				"trackedToken": "追跡トークン",
+				"trackedTokenShort": "追跡",
+				"levelChoiceShort": "選択",
+				"levelSplitShort": "分散時",
+				"levelNoSelection": "— なし —",
+				"levelBlocked": "OBS クライアントは {level} を表示できません。そこに視認できるトークンがありません。",
+				"levelBlockedShort": "{level} は表示不可",
 				"forceOpenSettingsForOBSUser": "OBSユーザーの設定メニューを強制的に開く",
 				"noGMWarning": "現在ログイン中のGMがいないため、ディレクター設定を変更できない",
 				"cameraSmoothingHeader": "カメラのスムージング",
@@ -532,13 +558,17 @@
 				"Name": "全員のOBSモードを無効化",
 				"Hint": "キルスイッチ。すべてのクライアントでOBSモードを無効化する。動作不能になったブラウザーを復旧するために使用する。"
 			},
-			"minScale": {
-				"Name": "最小スケール",
-				"Hint": "画面がズームできる最小値"
+			"frameMargin": {
+				"Name": "フレーム余白",
+				"Hint": "追跡中のトークンと画面端の間に、少なくともこのマス数の余白を確保します。"
 			},
-			"maxScale": {
-				"Name": "最大スケール",
-				"Hint": "画面がズームできる最大値"
+			"closestView": {
+				"Name": "最も近い表示",
+				"Hint": "カメラは横幅がこのマス数を下回るまで寄りません。値を下げるとより近づけます。"
+			},
+			"widestView": {
+				"Name": "最も広い表示",
+				"Hint": "カメラは横幅がこのマス数を超えるまで引きません。キャンバス制限が有効な場合、シーン幅がさらに制限となります。"
 			},
 			"defaultOutOfCombat": {
 				"Name": "戦闘外モード",
