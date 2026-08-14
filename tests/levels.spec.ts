@@ -42,14 +42,21 @@ async function otherOccupiedLevelId(page: Page) {
 	});
 }
 
-/** Floors present, and at least two tokens on different ones. */
+/**
+ * Floors present, and at least two tokens on different ones.
+ *
+ * Scene Levels is v14-only, so `scene.levels` is absent on v13 — this reports
+ * "no floors" there instead of throwing, or the guard below fails the suite
+ * rather than skipping it.
+ */
 async function sceneIsSplit(page: Page) {
 	return page.evaluate(() => {
 		// @ts-expect-error run in plain js
-		const levels = [...window.canvas.scene.levels];
+		const levels = window.canvas.scene.levels;
+		if (!levels) return { levelCount: 0, occupiedCount: 0 };
 		// @ts-expect-error run in plain js
-		const tokenLevels = new Set(window.canvas.tokens.objects.children.map(t => t.document._source.level));
-		return { levelCount: levels.length, occupiedCount: tokenLevels.size };
+		const tokenLevels = new Set(window.canvas.tokens.objects.children.map(t => t.document._source.level).filter(Boolean));
+		return { levelCount: [...levels].length, occupiedCount: tokenLevels.size };
 	});
 }
 

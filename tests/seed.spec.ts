@@ -21,10 +21,7 @@ interface Fixture {
 	actors: {
 		name: string;
 		type: string;
-		img?: string;
-		system?: Record<string, unknown>;
-		items?: { name: string; type: string }[];
-		prototypeToken?: Record<string, unknown>;
+		hp?: { value: number; max: number };
 		ownershipByUserName?: Record<string, number>;
 	}[];
 	journals: { name: string; pages: { name: string; type: string; text: string | null }[] }[];
@@ -33,7 +30,7 @@ interface Fixture {
 		width: number;
 		height: number;
 		gridSize: number;
-		tokens: { name: string; x: number; y: number; actor: string | null }[];
+		tokens: { name: string; x: number; y: number; actor: string | null; flags?: Record<string, Record<string, unknown>> }[];
 		flags?: Record<string, Record<string, unknown>>;
 	};
 	settings: Record<string, unknown>;
@@ -90,35 +87,20 @@ test('seed the world from fixtures/world.json', async ({ page }) => {
 
 		// Actors before tokens, so tokens can link to them by name.
 		//
-		// Items are not optional decoration: the overlays read derived values like
-		// max HP, and those come from the class and ancestry items rather than
-		// from stored system data. An actor seeded without them has 0 max HP, and
-		// the system then clamps any stored HP value to 0.
+		// HP is written to `system.attributes.hp`, which is where the overlay
+		// components resolve it. Stored as plain numbers rather than a captured
+		// system blob: a blob would tie this fixture to one game system, and only
+		// dnd5e spans both v13 and v14.
 		for (const a of fx.actors) {
+			const data: Record<string, unknown> = { name: a.name, type: a.type };
+			if (a.hp) data.system = { attributes: { hp: { value: a.hp.value, max: a.hp.max } } };
 			const existing = g.actors.getName(a.name);
 			if (!existing) {
-				await g.actors.documentClass.create({
-					name: a.name,
-					type: a.type,
-					img: a.img,
-					system: a.system ?? {},
-					items: a.items ?? [],
-					prototypeToken: a.prototypeToken,
-				});
+				await g.actors.documentClass.create(data);
 				made.push(`actor:${a.name}`);
-				continue;
-			}
-			// Converge rather than only create, so re-seeding repairs an actor made
-			// against an earlier version of this fixture.
-			const wantItems = a.items ?? [];
-			const missing = wantItems.filter(i => !existing.items.getName(i.name));
-			if (missing.length) {
-				await existing.createEmbeddedDocuments('Item', missing);
-				made.push(`actor-items:${a.name}:${missing.length}`);
-			}
-			if (a.system) {
-				await existing.update({ system: a.system });
-				made.push(`actor-system:${a.name}`);
+			} else if (a.hp) {
+				await existing.update({ system: (data as any).system });
+				made.push(`actor-hp:${a.name}`);
 			}
 		}
 
@@ -184,6 +166,7 @@ test('seed the world from fixtures/world.json', async ({ page }) => {
 					y: t.y,
 					actorId: actor?.id ?? null,
 					actorLink: !!actor,
+					flags: t.flags ?? {},
 				}]);
 				made.push(`token:${t.name}`);
 				continue;
@@ -193,6 +176,10 @@ test('seed the world from fixtures/world.json', async ({ page }) => {
 			if (actor && existing.actorId !== actor.id) {
 				await existing.update({ actorId: actor.id, actorLink: true });
 				made.push(`token-relink:${t.name}`);
+			}
+			if (t.flags) {
+				await existing.update({ flags: t.flags });
+				made.push(`token-flags:${t.name}`);
 			}
 		}
 

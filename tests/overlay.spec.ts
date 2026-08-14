@@ -265,7 +265,17 @@ test.describe('Render parity', () => {
 		// emits one, so without this the comparison fails on a single byte that
 		// carries no meaning. Matching the file convention is stabler than
 		// regenerating a baseline a formatter would just re-terminate.
-		expect(`${JSON.stringify(positions, null, '\t')}\n`).toMatchSnapshot('stream-positions.json');
+		// Keyed by Foundry generation: this is a pixel-position baseline and the
+		// same world renders differently across major versions, so one shared
+		// file cannot serve both.
+		const generation = await obsPage.evaluate(() =>
+			// @ts-expect-error run in plain js
+			String(window.game.release?.generation ?? String(window.game.version).split('.')[0]));
+
+		// Trailing newline: the stored baseline has one and `JSON.stringify` never
+		// emits one, so without it the comparison fails on a byte that carries no
+		// meaning.
+		expect(`${JSON.stringify(positions, null, '\t')}\n`).toMatchSnapshot(`stream-positions-v${generation}.json`);
 	});
 });
 
