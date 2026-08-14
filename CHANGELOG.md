@@ -1,4 +1,4 @@
-## Version 5.2.0
+## Version 5.3.0
 
 ### Added
 
@@ -6,19 +6,29 @@
 - **Track a Specific Token** — an out-of-combat camera mode that follows one token you nominate in the Director. The in-combat single-token mode follows the turn order and had no out-of-combat counterpart.
 - **A keybind for manual camera tracking** (Shift+T by default). Toggles tracking on the selected tokens, or the one under the cursor if nothing is selected, the way targeting works. GM only, and it reports what it changed — manual tracking has no visible state on the token unless its HUD is open.
 
-- `registerDirectorTabSvelte5` — register a Director tab whose UI your module mounts itself. Svelte 5 modules can finally add Director tabs: the old component-based registration mounted them inside OBS Utils' own Svelte runtime, where their runes resolved against the wrong bundle and threw `effect_orphan`, leaving the tab blank.
-
 ### Changed
 
 - Camera framing limits are now set in grid tiles instead of a scale multiplier. **Closest View** and **Widest View** cap how near and how wide the camera may go, and the new **Frame Margin** controls how much space is kept around the tracked tokens — previously a fixed 300 pixels, which meant three tiles of room on a 50px-grid map and three quarters of a tile on a 200px one. Because tiles are read from the scene, the same setting now frames the same way on every map and at every client resolution.
 - **Minimum Scale** and **Maximum Scale** are removed and are not migrated. A scale value cannot be converted to a tile count without knowing the grid size and the viewport width it was tuned against, and neither is recoverable, so any conversion would be a guess. Set the new limits once after updating — and not five minutes before going live.
-- `registerUniqueOverlaySvelte5` now takes a `mount(target) => cleanup` callback instead of a component. The registering module mounts its overlay with its own Svelte `mount()`, the only way a Svelte 5 component from another bundle runs correctly.
-- `registerDirectorTab` (component form) is deprecated for external modules in favour of `registerDirectorTabSvelte5`. It still works for OBS Utils' own same-bundle tabs.
 
 ### Fixed
 
 - The stream client no longer sits on a stale view when a client joins, or when OBS itself reloads, without anyone touching the camera. Every client announces its viewport once on load, and a stream client that reloads asks everyone to re-announce rather than waiting for someone to pan.
 - Pausing camera tracking no longer makes the stream client forget where everyone is. It keeps recording positions while paused and simply declines to move, so unpausing picks up immediately instead of waiting for the next pan.
+
+## Version 5.2.0
+
+### Added
+
+- `registerDirectorTabSvelte5` — register a Director tab whose UI your module mounts itself. Svelte 5 modules can finally add Director tabs: the old component-based registration mounted them inside OBS Utils' own Svelte runtime, where their runes resolved against the wrong bundle and threw `effect_orphan`, leaving the tab blank.
+
+### Changed
+
+- `registerUniqueOverlaySvelte5` now takes a `mount(target) => cleanup` callback instead of a component. The registering module mounts its overlay with its own Svelte `mount()`, the only way a Svelte 5 component from another bundle runs correctly.
+- `registerDirectorTab` (component form) is deprecated for external modules in favour of `registerDirectorTabSvelte5`. It still works for OBS Utils' own same-bundle tabs.
+
+### Fixed
+
 - External Svelte 5 components — Director tabs and unique stream overlays — no longer throw `effect_orphan` or render blank. OBS Utils now hands the module a DOM node and lets it mount with its own runtime instead of mounting it from OBS Utils' runtime.
 
 ## Version 5.1.1
