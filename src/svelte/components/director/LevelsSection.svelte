@@ -18,7 +18,6 @@
 	const levelPolicy = settings.getStore('levelPolicy');
 	const levelRelativeRule = settings.getStore('levelRelativeRule');
 	const levelPins = settings.getStore('levelPins');
-	const currentOOC = settings.getStore('defaultOutOfCombat');
 	const obsModeUser = settings.getStore('obsModeUser');
 
 	// Scene-dependent lists have to be rebuilt on every redraw: floors, tokens
@@ -113,7 +112,7 @@
 		<b>{game.i18n?.localize('obs-utils.applications.director.levelsHeader')}</b>
 
 		<div class='row'>
-			<span class='inline-label' title={game.i18n?.localize('obs-utils.settings.levelPolicy.Name')}>{game.i18n?.localize('obs-utils.applications.director.levelChoiceShort')}</span>
+			<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.levelChoice')}>{game.i18n?.localize('obs-utils.applications.director.levelChoiceShort')}</span>
 			<select bind:value={$levelPolicy} {disabled}>
 				{#each policyOptions as opt (opt.value)}
 					<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
@@ -123,7 +122,7 @@
 
 		{#if $levelPolicy === 'relative'}
 			<div class='row'>
-				<span class='inline-label' title={game.i18n?.localize('obs-utils.settings.levelRelativeRule.Name')}>{game.i18n?.localize('obs-utils.applications.director.levelSplitShort')}</span>
+				<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.levelSplit')}>{game.i18n?.localize('obs-utils.applications.director.levelSplitShort')}</span>
 				<select bind:value={$levelRelativeRule} {disabled}>
 					{#each ruleOptions as opt (opt.value)}
 						<option value={opt.value}>{game.i18n?.localize(opt.labelKey)}</option>
@@ -160,21 +159,22 @@
 			</div>
 		{/if}
 
-		{#if $currentOOC === 'trackToken'}
-			<div class='row'>
-				<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.trackedToken')}>{game.i18n?.localize('obs-utils.applications.director.trackedTokenShort')}</span>
-				<select
-					value={pins.trackedToken ?? ''}
-					onchange={e => setScenePin({ trackedToken: (e.currentTarget as HTMLSelectElement).value || undefined })}
-					{disabled}
-				>
-					<option value=''>{game.i18n?.localize('obs-utils.applications.director.levelNoSelection')}</option>
-					{#each tokens as t (t.id)}
-						<option value={t.id}>{t.name} — {levelNameOf(t.level)}</option>
-					{/each}
-				</select>
-			</div>
-		{/if}
+		<!-- Persistent. The nominated token is scene state the GM sets ahead of
+			switching to that mode, so hiding it until the mode is already active
+			makes it unreachable exactly when it is needed. -->
+		<div class='row'>
+			<span class='inline-label' title={game.i18n?.localize('obs-utils.applications.director.trackedToken')}>{game.i18n?.localize('obs-utils.applications.director.trackedTokenShort')}</span>
+			<select
+				value={pins.trackedToken ?? ''}
+				onchange={e => setScenePin({ trackedToken: (e.currentTarget as HTMLSelectElement).value || undefined })}
+				{disabled}
+			>
+				<option value=''>{game.i18n?.localize('obs-utils.applications.director.levelNoSelection')}</option>
+				{#each tokens as t (t.id)}
+					<option value={t.id}>{t.name} — {levelNameOf(t.level)}</option>
+				{/each}
+			</select>
+		</div>
 
 		{#if blocked}
 			<!-- One line, full text on hover. A wrapped paragraph here costs more

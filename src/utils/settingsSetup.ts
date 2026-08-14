@@ -116,7 +116,9 @@ export function	initSettings() {
 		type: String,
 		choices: LEVEL_POLICY_CHOICES,
 		scope: 'world',
-		config: true,
+		// Director-only, like clampCanvas and pauseCameraTracking: this is
+		// operational, changed as a scene demands rather than set up once.
+		config: false,
 		// Same as the mode settings: changing which floor to show has to
 		// re-evaluate immediately, not wait for the next token movement.
 		onChange: changeMode,
@@ -126,7 +128,7 @@ export function	initSettings() {
 		type: String,
 		choices: LEVEL_RELATIVE_CHOICES,
 		scope: 'world',
-		config: true,
+		config: false,
 		onChange: changeMode,
 	});
 	// Level and token ids only mean anything within one scene, so the pins are

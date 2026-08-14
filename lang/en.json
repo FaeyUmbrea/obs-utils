@@ -63,6 +63,8 @@
 				"trackedPlayerHeader": "Tracked Player",
 				"actionsHeader": "Actions",
 				"levelsHeader": "Scene Levels",
+				"levelChoice": "Scene Level Choice",
+				"levelSplit": "Floor When Split",
 				"levelFollowToken": "Follow token",
 				"levelFollowTokenShort": "Follow",
 				"levelPinned": "Pinned floor",
@@ -567,14 +569,6 @@
 			"widestView": {
 				"Name": "Widest View",
 				"Hint": "The camera will never show more than this many tiles across. With canvas clamping on, the scene's own width is a further limit."
-			},
-			"levelPolicy": {
-				"Name": "Scene Level Choice",
-				"Hint": "Foundry v14 only. How the stream picks which floor to show when tracking a group, or in birdseye. Modes that follow one user or one token take their floor from it instead."
-			},
-			"levelRelativeRule": {
-				"Name": "Floor When Split",
-				"Hint": "Which floor to show when the tracked tokens are spread across several. Only floors that actually hold a tracked token are considered."
 			},
 			"defaultOutOfCombat": {
 				"Name": "Out Of Combat Mode",
