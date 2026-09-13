@@ -2,6 +2,7 @@
 <script lang='ts'>
 	import { getDataPickerGroups } from '../../../utils/helpers';
 	import Select from '../select/Select.svelte';
+	import IconInputField from './IconInputField.svelte';
 
 	let { data = $bindable(';;') } = $props<{ data: string }>();
 
@@ -30,8 +31,7 @@
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.iconWhenTrue')}</span>
-		<input
-			type='text'
+		<IconInputField
 			onchange={onChange}
 			bind:value={icon1}
 			placeholder={game.i18n?.localize('obs-utils.strings.iconPlaceholder')}
@@ -39,8 +39,7 @@
 	</label>
 	<label class='row'>
 		<span class='lbl'>{game.i18n?.localize('obs-utils.applications.componentEditors.iconWhenFalse')}</span>
-		<input
-			type='text'
+		<IconInputField
 			onchange={onChange}
 			bind:value={icon2}
 			placeholder={game.i18n?.localize('obs-utils.strings.iconPlaceholder')}
@@ -64,16 +63,4 @@
 		opacity 0.7
 		letter-spacing 0.3px
 
-	input
-		height 32px
-		padding 0 8px
-		font-size 13px
-		border 1px solid rgba(255, 255, 255, 0.15)
-		border-radius 3px
-		background var(--sidebar-background, transparent)
-		color inherit
-
-		&:focus
-			outline none
-			border-color rgba(255, 144, 0, 0.6)
 </style>

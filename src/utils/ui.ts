@@ -4,6 +4,7 @@ import OverlayEditor from '../applications/overlayeditor.ts';
 import AVEditor from '../svelte/components/editors/AVEditor.svelte';
 import BooleanEditor from '../svelte/components/editors/BooleanEditor.svelte';
 import BooleanImageEditor from '../svelte/components/editors/BooleanImageEditor.svelte';
+import FAIconEditor from '../svelte/components/editors/FAIconEditor.svelte';
 import ImageEditor from '../svelte/components/editors/ImageEditor.svelte';
 import MultiAVEditor from '../svelte/components/editors/MultiAVEditor.svelte';
 import MultiAVIconEditor from '../svelte/components/editors/MultiAVIconEditor.svelte';
@@ -47,7 +48,7 @@ export function registerUI() {
 		const t = getApi().overlayTypes.get(overlayKey);
 		if (!t) continue;
 		t.registerComponentEditor('pt', AVEditor);
-		t.registerComponentEditor('fai', AVEditor);
+		t.registerComponentEditor('fai', FAIconEditor);
 		t.registerComponentEditor('img', ImageEditor);
 		t.registerComponentEditor('bav', BooleanEditor, true);
 		t.registerComponentEditor('bavimg', BooleanImageEditor, true);
