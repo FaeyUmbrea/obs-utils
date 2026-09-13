@@ -2,14 +2,11 @@
 	"id": "obs-utils",
 	"title": "OBS Utils",
 	"description": "",
-	"version": "This is auto replaced",
-	"library": "false",
-	"persistentStorage": true,
-	"manifestPlusVersion": "1.2.0",
+	"version": "0.0.0",
 	"compatibility": {
-		"minimum": 13.344,
-		"verified": 14,
-		"maximum": 14
+		"minimum": "13.344",
+		"verified": "14",
+		"maximum": "14"
 	},
 	"authors": [
 		{
@@ -19,15 +16,19 @@
 		}
 	],
 	"relationships": {
-		"systems": [],
 		"requires": [
 			{
 				"id": "lib-wrapper"
 			}
-		]
+		],
+		"systems": []
 	},
-	"esmodules": ["dist/obs-utils.js"],
-	"styles": ["dist/obs-utils.css"],
+	"esmodules": [
+		"dist/obs-utils.js"
+	],
+	"styles": [
+		"dist/obs-utils.css"
+	],
 	"languages": [
 		{
 			"lang": "en",
@@ -36,7 +37,7 @@
 		},
 		{
 			"lang": "pt-BR",
-			"name": "Português (Brasil)",
+			"name": "Portugu\u00eas (Brasil)",
 			"path": "lang/pt_BR.json"
 		},
 		{
@@ -46,27 +47,27 @@
 		},
 		{
 			"lang": "ja",
-			"name": "日本語",
+			"name": "\u65e5\u672c\u8a9e",
 			"path": "lang/ja.json"
 		},
 		{
 			"lang": "nb-NO",
-			"name": "Bokmål",
+			"name": "Bokm\u00e5l",
 			"path": "lang/nb_NO.json"
 		},
 		{
 			"lang": "fr",
-			"name": "Français",
+			"name": "Fran\u00e7ais",
 			"path": "lang/fr.json"
 		},
 		{
 			"lang": "ru",
-			"name": "Pусский",
+			"name": "P\u0443\u0441\u0441\u043a\u0438\u0439",
 			"path": "lang/ru.json"
 		},
 		{
 			"lang": "es",
-			"name": "Español",
+			"name": "Espa\u00f1ol",
 			"path": "lang/es.json"
 		},
 		{
@@ -75,16 +76,18 @@
 			"path": "lang/fi.json"
 		}
 	],
-	"url": "This is auto replaced",
-	"socket": true,
-	"manifest": "This is auto replaced",
-	"download": "This is auto replaced",
+	"url": "https://github.com/FaeyUmbrea/obs-utils",
+	"manifest": "https://github.com/FaeyUmbrea/obs-utils/releases/latest/download/module.json",
+	"download": "https://github.com/FaeyUmbrea/obs-utils/releases/latest/download/module.zip",
+	"readme": "https://github.com/FaeyUmbrea/obs-utils/blob/main/README.md",
 	"license": "AGPL-3.0-only",
-	"readme": "https://github.com/FaeyUmbrea/obs-utils/blob/master/README.md",
+	"socket": true,
+	"persistentStorage": true,
+	"library": false,
 	"media": [
 		{
 			"type": "icon",
-			"url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+			"url": "https://avatars2.githubusercontent.com/u/71292812?s=400\u0026u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41\u0026v=4"
 		}
 	]
 }

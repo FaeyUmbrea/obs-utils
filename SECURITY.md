@@ -8,7 +8,7 @@
 
 ## Reporting a Vulnerability
 
-Please report vulnerabilities as encrypted e-mails to faey@void.monster
+Please report vulnerabilities as encrypted e-mails to {{AUTHOR_EMAIL}}
 
 Do NOT post issues about security vulnerabilities.
 

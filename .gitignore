@@ -149,8 +149,3 @@ vite.config.js.timestamp-*
 .idea/**/runConfigurations
 *.iml
 *.iws
-
-reviews/
-
-# Claude Code local state (settings + ephemeral worktree gitlinks)
-.claude/

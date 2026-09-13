@@ -35,6 +35,6 @@ Add any other context about the problem here.
 **Checklist**
 Please mark each element as completed by adding an x between the brackets like this: [x]
 [ ] I have read the docs
-[ ] I have checked if the problem persists if only obs utils is enabled
+[ ] I have checked if the problem persists if only this module is enabled
 [ ] I have checked that the problem does not occurr if no modules are enabled
 [ ] I have made sure the problem is reproducable in a regular browser

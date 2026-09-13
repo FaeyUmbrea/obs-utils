@@ -1,0 +1,63 @@
+# Changes here are managed by Copier. Re-answer questions with `copier update`.
+_commit: v1.0.2
+_src_path: /Volumes/USBSSD/Projects/obs-utils/module-template
+additional_languages:
+-   lang: pt-BR
+    name: Português (Brasil)
+    path: lang/pt_BR.json
+-   lang: de-DE
+    name: Deutsch
+    path: lang/de_DE.json
+-   lang: ja
+    name: 日本語
+    path: lang/ja.json
+-   lang: nb-NO
+    name: Bokmål
+    path: lang/nb_NO.json
+-   lang: fr
+    name: Français
+    path: lang/fr.json
+-   lang: ru
+    name: Pусский
+    path: lang/ru.json
+-   lang: es
+    name: Español
+    path: lang/es.json
+-   lang: fi
+    name: Suomi
+    path: lang/fi.json
+adopt_existing_module: true
+author_discord: Faey#0001
+author_name: Faey Umbrea
+author_url: https://github.com/FaeyUmbrea
+browser_tests: true
+default_branch: main
+exports_api_types: true
+foundry_maximum: '14'
+foundry_minimum: '13.344'
+foundry_verified: '14'
+github_owner: FaeyUmbrea
+has_packs: false
+is_library: false
+localization: true
+module_description: ''
+module_id: obs-utils
+module_kind: code
+module_license: AGPL-3.0-only
+module_media:
+-   type: icon
+    url: https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4
+module_packs: []
+module_relationships:
+    requires:
+    -   id: lib-wrapper
+    systems: []
+module_scripts: []
+module_title: OBS Utils
+persistent_storage: true
+release_strategy: custom
+repository_name: obs-utils
+unit_tests: true
+uses_socket: true
+uses_styles: true
+uses_svelte: true
