@@ -1,5 +1,5 @@
 # Changes here are managed by Copier. Re-answer questions with `copier update`.
-_commit: v1.0.2
+_commit: v1.0.4
 _src_path: /Volumes/USBSSD/Projects/obs-utils/module-template
 additional_languages:
 -   lang: pt-BR
