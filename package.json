@@ -32,7 +32,8 @@
 		"dev": "vite --host",
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
-		"linkFoundry": "node tools/foundryLink.js"
+		"linkFoundry": "node tools/foundryLink.js",
+		"build:api-types": "node tools/build-api-types.mjs"
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^9.0.0",

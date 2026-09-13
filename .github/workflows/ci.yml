@@ -39,6 +39,13 @@ jobs:
       - name: Build distribution
         run: yarn run build
 
+      - name: Build API type artifact
+        env:
+          API_TYPES_VERSION: ${{ github.ref_name }}
+        run: |
+          yarn build:api-types
+          tar -czf ./obs-utils-api-types.tgz -C .release/api-types package
+
       # Create a zip file with all files required by the module to add to the release.
       - name: Bundle into ZIP file
         run: zip -r ./module.zip module.json assets/ templates/ dist/ lang/ packs/ LICENSE
@@ -55,7 +62,7 @@ jobs:
           name: ${{ github.event.release.name }}
           tag: ${{ github.event.release.tag_name }}
           body: ${{ github.event.release.body }}
-          artifacts: './module.json, ./module.zip'
+          artifacts: './module.json, ./module.zip, ./obs-utils-api-types.tgz'
           omitDraftDuringUpdate: true
           omitPrereleaseDuringUpdate: true
           token: '${{secrets.RELEASE_TOKEN}}'
