@@ -4,6 +4,18 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing release tag to rebuild
+        required: true
+        type: string
+      source_ref:
+        description: Source ref to build instead of the release tag
+        required: false
+        type: string
+
+run-name: Release OBS Utils ${{ inputs.tag || github.ref_name }}
 
 permissions:
   contents: read
@@ -11,8 +23,18 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_ref || inputs.tag || github.ref_name }}
+
+      - name: Validate manual release
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release view "$RELEASE_TAG" >/dev/null
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -20,7 +42,7 @@ jobs:
 
       - name: Extract version from tag without the v
         id: get-version
-        run: echo "v=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+        run: echo "v=${RELEASE_TAG#v}" >> "$GITHUB_OUTPUT"
 
       - name: Substitute Manifest and Download Links For Versioned Ones
         id: sub_manifest_link_version
@@ -31,20 +53,13 @@ jobs:
           version: ${{ steps.get-version.outputs.v }}
           url: https://github.com/${{github.repository}}
           manifest: https://github.com/${{github.repository}}/releases/latest/download/module.json
-          download: https://github.com/${{github.repository}}/releases/download/${{github.ref_name}}/module.zip
+          download: https://github.com/${{github.repository}}/releases/download/${{env.RELEASE_TAG}}/module.zip
 
       - name: Install packages
         run: yarn install
 
       - name: Build distribution
         run: yarn run build
-
-      - name: Build API type artifact
-        env:
-          API_TYPES_VERSION: ${{ github.ref_name }}
-        run: |
-          yarn build:api-types
-          tar -czf ./obs-utils-api-types.tgz -C .release/api-types package
 
       # Create a zip file with all files required by the module to add to the release.
       - name: Bundle into ZIP file
@@ -59,10 +74,9 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true # Set this to false if you want to prevent updating existing releases.
-          name: ${{ github.event.release.name }}
-          tag: ${{ github.event.release.tag_name }}
-          body: ${{ github.event.release.body }}
-          artifacts: './module.json, ./module.zip, ./obs-utils-api-types.tgz'
+          name: ${{ env.RELEASE_TAG }}
+          tag: ${{ env.RELEASE_TAG }}
+          artifacts: './module.json, ./module.zip'
           omitDraftDuringUpdate: true
           omitPrereleaseDuringUpdate: true
           token: '${{secrets.RELEASE_TOKEN}}'

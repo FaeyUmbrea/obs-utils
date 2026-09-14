@@ -243,8 +243,8 @@ export class ObsUtilsApi {
 		this.singleInstanceOverlaysSvelte5.add(mount);
 	}
 
-	getSelectedActors() {
-		return (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'overlayActors');
+	getSelectedActors(): string[] | undefined {
+		return (game as ReadyGame | undefined)?.settings?.get(MODULE_ID, 'overlayActors') as string[] | undefined;
 	}
 
 	async setSelectedActors(actorArray: string[]) {

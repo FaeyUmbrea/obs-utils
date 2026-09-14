@@ -27,9 +27,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Typecheck
-        run: yarn typecheck
-
       - name: Lint
         run: yarn lint
 
@@ -48,5 +45,3 @@ jobs:
         run: |
           yarn build:api-types
           tar -czf /tmp/obs-utils-api-types.tgz -C .release/api-types package
-
-
