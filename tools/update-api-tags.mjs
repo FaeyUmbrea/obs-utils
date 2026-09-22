@@ -28,13 +28,13 @@ function compareVersions(left, right) {
 
 async function main() {
 	const channel = process.env.RELEASE_CHANNEL;
-	if (channel !== 'ea' && channel !== 'public') {
-		throw new Error('RELEASE_CHANNEL must be either ea or public');
+	if (channel !== 'premium' && channel !== 'public') {
+		throw new Error('RELEASE_CHANNEL must be either premium or public');
 	}
 	const manifest = JSON.parse(await readFile(path.join(packageDirectory, 'package.json'), 'utf8'));
 	const result = run('npm', ['view', manifest.name, 'dist-tags', '--json'], { capture: true });
 	const currentTags = JSON.parse(result.stdout || '{}');
-	const tags = channel === 'ea' ? ['latest', 'ea'] : ['public'];
+	const tags = channel === 'premium' ? ['latest', 'ea'] : ['public'];
 
 	for (const tag of tags) {
 		const current = currentTags[tag];

@@ -24,6 +24,10 @@ async function main() {
 		'src/public-api.ts',
 	], { stdio: 'inherit' });
 	if (result.status !== 0) process.exit(result.status ?? 1);
+	const peerDependencies = {};
+	for (const dependency of [
+		'svelte',
+	]) peerDependencies[dependency] = sourcePackage.devDependencies[dependency];
 
 	const artifactPackage = {
 		...apiPackage,
@@ -33,9 +37,7 @@ async function main() {
 				types: './public-api.d.ts',
 			},
 		},
-		peerDependencies: {
-			svelte: sourcePackage.devDependencies.svelte,
-		},
+		peerDependencies,
 		sideEffects: false,
 	};
 

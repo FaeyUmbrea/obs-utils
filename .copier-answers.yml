@@ -1,5 +1,5 @@
 # Changes here are managed by Copier. Re-answer questions with `copier update`.
-_commit: v1.0.4-4-g2b9a4e0
+_commit: v1.0.4-7-g9a7264e
 _src_path: gh:FaeyUmbrea/module-template
 additional_languages:
 -   lang: pt-BR
@@ -27,6 +27,9 @@ additional_languages:
     name: Suomi
     path: lang/fi.json
 adopt_existing_module: true
+api_types_build: bundle
+api_types_peer_dependencies:
+- svelte
 author_discord: Faey#0001
 author_name: Faey Umbrea
 author_url: https://github.com/FaeyUmbrea

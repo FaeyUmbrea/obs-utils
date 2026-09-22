@@ -19,7 +19,8 @@ on:
         default: false
         type: boolean
 
-run-name: API types for OBS Utils ${{ inputs.tag || github.event.release.tag_name }}
+run-name: >-
+  API types for OBS Utils ${{ inputs.tag || github.event.release.tag_name }}
 
 permissions:
   contents: write
@@ -57,18 +58,18 @@ jobs:
         id: api
         run: yarn check:api-types
 
-      - name: Require EA to publish new API definitions first
+      - name: Require premium to publish new API definitions first
         if: env.RELEASE_CHANNEL == 'public' && steps.api.outputs.api_status == 'new'
         run: |
-          echo "This API version is not on npm. Publish it through the EA release workflow first." >&2
+          echo "This API version is not on npm. Publish it through the premium release workflow first." >&2
           exit 1
 
       - name: Use an npm CLI with trusted publishing support
-        if: env.RELEASE_CHANNEL == 'ea' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
+        if: env.RELEASE_CHANNEL == 'premium' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
         run: npm install --global npm@11
 
       - name: Publish new API definitions
-        if: env.RELEASE_CHANNEL == 'ea' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
+        if: env.RELEASE_CHANNEL == 'premium' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
         run: npm publish .release/api-types/package --access public --provenance --tag ea
 
       - name: Update API channel labels
