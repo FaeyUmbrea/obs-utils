@@ -1,9 +1,8 @@
 name: API Types
 
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
   workflow_dispatch:
     inputs:
       tag:
@@ -12,29 +11,36 @@ on:
         type: string
       source_ref:
         description: Source ref containing the API declarations
-        required: true
-        default: main
+        required: false
         type: string
+      update_registry:
+        description: Publish or update npm labels during this manual repair
+        required: true
+        default: false
+        type: boolean
 
-run-name: API types for OBS Utils ${{ inputs.tag || github.ref_name }}
+run-name: API types for OBS Utils ${{ inputs.tag || github.event.release.tag_name }}
 
 permissions:
   contents: write
+  id-token: write
 
 jobs:
   api-types:
     runs-on: ubuntu-latest
     env:
-      RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      RELEASE_CHANNEL: ${{ vars.RELEASE_CHANNEL || 'public' }}
+      RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_ref || github.ref_name }}
+          ref: ${{ inputs.source_ref || inputs.tag || github.event.release.tag_name }}
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: yarn
+          registry-url: https://registry.npmjs.org
 
       - name: Enable Corepack
         run: corepack enable
@@ -42,28 +48,36 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Build API type artifact
-        env:
-          API_TYPES_VERSION: ${{ env.RELEASE_TAG }}
+      - name: Build API type package
         run: |
           yarn build:api-types
           tar -czf obs-utils-api-types.tgz -C .release/api-types package
-          test "$(tar -xOf obs-utils-api-types.tgz package/package.json | jq -r .version)" = "${RELEASE_TAG#v}"
+
+      - name: Compare API type package with npm
+        id: api
+        run: yarn check:api-types
+
+      - name: Require EA to publish new API definitions first
+        if: env.RELEASE_CHANNEL == 'public' && steps.api.outputs.api_status == 'new'
+        run: |
+          echo "This API version is not on npm. Publish it through the EA release workflow first." >&2
+          exit 1
+
+      - name: Use an npm CLI with trusted publishing support
+        if: env.RELEASE_CHANNEL == 'ea' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
+        run: npm install --global npm@11
+
+      - name: Publish new API definitions
+        if: env.RELEASE_CHANNEL == 'ea' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
+        run: npm publish .release/api-types/package --access public --provenance --tag ea
+
+      - name: Update API channel labels
+        if: github.event_name == 'release' || inputs.update_registry
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_DIST_TAG_TOKEN }}
+        run: yarn tag:api-types
 
       - name: Upload API type artifact
         env:
           GH_TOKEN: ${{ github.token }}
-        run: |
-          if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then
-            gh release view "$RELEASE_TAG" >/dev/null
-          fi
-
-          for upload_attempt in {1..12}; do
-            if gh release upload "$RELEASE_TAG" obs-utils-api-types.tgz --clobber; then
-              exit 0
-            fi
-            if [ "$upload_attempt" -lt 12 ]; then
-              sleep 10
-            fi
-          done
-          exit 1
+        run: gh release upload "$RELEASE_TAG" obs-utils-api-types.tgz --clobber

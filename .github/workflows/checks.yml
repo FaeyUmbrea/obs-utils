@@ -40,8 +40,7 @@ jobs:
 
 
       - name: Build API type artifact
-        env:
-          API_TYPES_VERSION: 0.0.0-dev
         run: |
           yarn build:api-types
+          yarn check:api-types
           tar -czf /tmp/obs-utils-api-types.tgz -C .release/api-types package

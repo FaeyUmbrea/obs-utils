@@ -20,4 +20,4 @@ jobs:
         run: |
           yarn
           yarn lint
-          API_TYPES_VERSION=0.0.0-dev yarn build:api-types
+          yarn build:api-types

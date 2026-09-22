@@ -33,7 +33,9 @@
 		"lint": "eslint .",
 		"lint:fix": "eslint . --fix",
 		"linkFoundry": "node tools/foundryLink.js",
-		"build:api-types": "node tools/build-api-types.mjs"
+		"build:api-types": "node tools/build-api-types.mjs",
+		"check:api-types": "node tools/check-api-package.mjs",
+		"tag:api-types": "node tools/update-api-tags.mjs"
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^9.0.0",
@@ -50,6 +52,7 @@
 		"@vitest/coverage-istanbul": "4.1.6",
 		"autoprefixer": "^10.5.0",
 		"cssnano": "^8.0.1",
+		"dts-bundle-generator": "9.5.1",
 		"esbuild": "^0.28.0",
 		"eslint": "^10.4.0",
 		"eslint-plugin-svelte": "^3.17.1",
@@ -77,6 +80,7 @@
 		"ip-address": "^10",
 		"nodemailer": "^9",
 		"tar": "^7",
+		"typescript": "6.0.3",
 		"uuid": "^11",
 		"ws": "^8.21.0"
 	}

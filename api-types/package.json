@@ -1,0 +1,13 @@
+{
+	"name": "@faeyumbrea/obs-utils-api-types",
+	"version": "1.0.0",
+	"description": "Public TypeScript definitions for the OBS Utils module API",
+	"license": "AGPL-3.0-only",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/FaeyUmbrea/obs-utils.git"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}
