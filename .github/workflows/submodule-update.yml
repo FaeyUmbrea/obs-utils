@@ -1,19 +1,20 @@
-name: Notify Main Repository
+name: Notify documentation repository
 
 on:
   push:
     branches:
-      - main # or master, depending on your default branch
+      - "main"
 
 permissions:
   contents: read
 
 jobs:
   notify:
+    if: vars.RELEASE_CHANNEL != 'premium'
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger submodule update
-        uses: peter-evans/repository-dispatch@v2
+      - name: Trigger documentation update
+        uses: peter-evans/repository-dispatch@v4
         with:
           token: ${{ secrets.PAT_TOKEN }}
           repository: FaeyUmbrea/module-docs

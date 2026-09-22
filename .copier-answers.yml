@@ -1,5 +1,5 @@
 # Changes here are managed by Copier. Re-answer questions with `copier update`.
-_commit: v1.0.4-3-g614f28d
+_commit: v1.0.4-4-g2b9a4e0
 _src_path: gh:FaeyUmbrea/module-template
 additional_languages:
 -   lang: pt-BR
@@ -34,6 +34,7 @@ browser_tests: true
 checks_workflow: true
 community_files: true
 default_branch: main
+docs_repository: FaeyUmbrea/module-docs
 exports_api_types: true
 foundry_maximum: '14'
 foundry_minimum: '13.344'
