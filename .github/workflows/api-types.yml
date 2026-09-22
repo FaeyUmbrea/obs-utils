@@ -64,11 +64,11 @@ jobs:
 
       - name: Publish premium API prerelease
         if: env.RELEASE_CHANNEL == 'premium' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
-        run: npm publish .release/api-types/package --access public --provenance --tag ea
+        run: npm publish .release/api-types/package --access public --tag ea
 
       - name: Publish public API release
         if: env.RELEASE_CHANNEL == 'public' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
-        run: npm publish .release/api-types/package --access public --provenance
+        run: npm publish .release/api-types/package --access public
 
       - name: Upload API type artifact
         env:
