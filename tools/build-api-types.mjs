@@ -7,6 +7,20 @@ async function main() {
 	const outputDirectory = path.resolve('.release/api-types/package');
 	const sourcePackage = JSON.parse(await readFile('package.json', 'utf8'));
 	const apiPackage = JSON.parse(await readFile('api-types/package.json', 'utf8'));
+	const releaseChannel = process.env.RELEASE_CHANNEL ?? 'public';
+	const releaseTag = process.env.RELEASE_TAG;
+	if (releaseChannel !== 'public' && releaseChannel !== 'premium') {
+		throw new Error('RELEASE_CHANNEL must be either public or premium');
+	}
+	if (!/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(apiPackage.version)) {
+		throw new Error(`API version must be plain semver, received ${apiPackage.version}`);
+	}
+	if (releaseChannel === 'premium' && !releaseTag) {
+		throw new Error('RELEASE_TAG is required for premium API builds');
+	}
+	if (releaseTag && !/^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)$/.test(releaseTag)) {
+		throw new Error(`Release tag must be plain semver, received ${releaseTag}`);
+	}
 
 	await rm(path.dirname(outputDirectory), { recursive: true, force: true });
 	await mkdir(outputDirectory, { recursive: true });
@@ -31,6 +45,9 @@ async function main() {
 
 	const artifactPackage = {
 		...apiPackage,
+		version: releaseChannel === 'premium'
+			? `${apiPackage.version}-ea.${releaseTag}`
+			: apiPackage.version,
 		types: './public-api.d.ts',
 		exports: {
 			'.': {
@@ -40,6 +57,12 @@ async function main() {
 		peerDependencies,
 		sideEffects: false,
 	};
+	if (releaseChannel === 'premium' && process.env.GITHUB_REPOSITORY) {
+		artifactPackage.repository = {
+			type: 'git',
+			url: `git+https://github.com/${process.env.GITHUB_REPOSITORY}.git`,
+		};
+	}
 
 	await writeFile(
 		path.join(outputDirectory, 'package.json'),

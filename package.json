@@ -34,8 +34,7 @@
 		"lint:fix": "eslint . --fix",
 		"linkFoundry": "node tools/foundryLink.js",
 		"build:api-types": "node tools/build-api-types.mjs",
-		"check:api-types": "node tools/check-api-package.mjs",
-		"tag:api-types": "node tools/update-api-tags.mjs"
+		"check:api-types": "node tools/check-api-package.mjs"
 	},
 	"dependencies": {
 		"@antfu/eslint-config": "^9.0.0",

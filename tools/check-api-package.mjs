@@ -31,13 +31,14 @@ async function listFiles(directory, prefix = '') {
 	return files.sort();
 }
 
-async function fingerprint(directory, { ignoreVersion = false } = {}) {
+async function fingerprint(directory, { ignoreReleaseMetadata = false } = {}) {
 	const hash = createHash('sha256');
 	for (const relative of await listFiles(directory)) {
 		let contents = await readFile(path.join(directory, relative));
-		if (ignoreVersion && relative === 'package.json') {
+		if (ignoreReleaseMetadata && relative === 'package.json') {
 			const manifest = JSON.parse(contents.toString('utf8'));
 			delete manifest.version;
+			delete manifest.repository;
 			contents = Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`);
 		}
 		hash.update(relative);
@@ -46,6 +47,21 @@ async function fingerprint(directory, { ignoreVersion = false } = {}) {
 		hash.update('\0');
 	}
 	return hash.digest('hex');
+}
+
+function baseVersion(version) {
+	const match = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-[a-z\d.-]+)?$/i.exec(version);
+	if (!match) throw new Error(`Invalid API version ${version}`);
+	return match.slice(1, 4).join('.');
+}
+
+function compareBaseVersions(left, right) {
+	const a = baseVersion(left).split('.').map(Number);
+	const b = baseVersion(right).split('.').map(Number);
+	for (let index = 0; index < a.length; index++) {
+		if (a[index] !== b[index]) return a[index] - b[index];
+	}
+	return 0;
 }
 
 function isMissingPackage(result) {
@@ -88,6 +104,10 @@ async function emit(status, manifest) {
 
 async function main() {
 	const manifest = JSON.parse(await readFile(path.join(packageDirectory, 'package.json'), 'utf8'));
+	const channel = process.env.RELEASE_CHANNEL ?? 'public';
+	if (channel !== 'public' && channel !== 'premium') {
+		throw new Error('RELEASE_CHANNEL must be either public or premium');
+	}
 	const workspace = await mkdtemp(path.join(os.tmpdir(), 'api-package-check-'));
 	try {
 		const npmEnvironment = { ...process.env, npm_config_cache: path.join(workspace, 'npm-cache') };
@@ -102,12 +122,23 @@ async function main() {
 			return;
 		}
 
-		const latestVersion = viewVersion(`${manifest.name}@latest`, npmEnvironment);
-		if (latestVersion) {
-			const latest = await packedDirectory(`${manifest.name}@${latestVersion}`, workspace, 'latest', npmEnvironment);
-			if (await fingerprint(local, { ignoreVersion: true }) === await fingerprint(latest, { ignoreVersion: true })) {
-				throw new Error(`${manifest.name}@${manifest.version} changes only the version; remove the empty API bump`);
+		const referenceTag = channel === 'premium' ? 'ea' : 'latest';
+		const referenceVersion = viewVersion(`${manifest.name}@${referenceTag}`, npmEnvironment);
+		if (referenceVersion) {
+			const reference = await packedDirectory(`${manifest.name}@${referenceVersion}`, workspace, referenceTag, npmEnvironment);
+			if (await fingerprint(local, { ignoreReleaseMetadata: true }) === await fingerprint(reference, { ignoreReleaseMetadata: true })) {
+				if (baseVersion(manifest.version) !== baseVersion(referenceVersion)) {
+					throw new Error(`${manifest.name}@${manifest.version} changes only the version; remove the empty API bump`);
+				}
+				await emit('unchanged', manifest);
+				return;
 			}
+		}
+		const latestVersion = referenceTag === 'latest'
+			? referenceVersion
+			: viewVersion(`${manifest.name}@latest`, npmEnvironment);
+		if (latestVersion && compareBaseVersions(manifest.version, latestVersion) <= 0) {
+			throw new Error(`${manifest.name}@${manifest.version} changes API declarations without advancing the public API version beyond ${latestVersion}`);
 		}
 
 		await emit('new', manifest);

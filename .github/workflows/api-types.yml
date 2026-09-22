@@ -14,7 +14,7 @@ on:
         required: false
         type: string
       update_registry:
-        description: Publish or update npm labels during this manual repair
+        description: Publish the API package during this manual repair
         required: true
         default: false
         type: boolean
@@ -58,25 +58,17 @@ jobs:
         id: api
         run: yarn check:api-types
 
-      - name: Require premium to publish new API definitions first
-        if: env.RELEASE_CHANNEL == 'public' && steps.api.outputs.api_status == 'new'
-        run: |
-          echo "This API version is not on npm. Publish it through the premium release workflow first." >&2
-          exit 1
-
       - name: Use an npm CLI with trusted publishing support
-        if: env.RELEASE_CHANNEL == 'premium' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
+        if: steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
         run: npm install --global npm@11
 
-      - name: Publish new API definitions
+      - name: Publish premium API prerelease
         if: env.RELEASE_CHANNEL == 'premium' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
         run: npm publish .release/api-types/package --access public --provenance --tag ea
 
-      - name: Update API channel labels
-        if: github.event_name == 'release' || inputs.update_registry
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_DIST_TAG_TOKEN }}
-        run: yarn tag:api-types
+      - name: Publish public API release
+        if: env.RELEASE_CHANNEL == 'public' && steps.api.outputs.api_status == 'new' && (github.event_name == 'release' || inputs.update_registry)
+        run: npm publish .release/api-types/package --access public --provenance
 
       - name: Upload API type artifact
         env:
