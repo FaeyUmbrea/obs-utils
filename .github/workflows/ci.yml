@@ -25,6 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+      RELEASE_CHANNEL: ${{ vars.RELEASE_CHANNEL || 'public' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -60,6 +61,12 @@ jobs:
 
       - name: Build distribution
         run: yarn run build
+
+      - name: Apply distribution license
+        run: node tools/apply-distribution-license.mjs module.json LICENSE
+
+      - name: Verify distribution license
+        run: node --test tools/apply-distribution-license.test.mjs
 
       # Create a zip file with all files required by the module to add to the release.
       - name: Bundle into ZIP file
