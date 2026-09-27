@@ -4,13 +4,14 @@ import type { ViewportPayload } from './canvas';
 import type { OBSWebsocketSettings } from './types.ts';
 import { playSequence } from './cameraSequencePlayer.ts';
 import { clampAndApplyExternal, getCurrentUser, getLocalViewport, VIEWPORT_DATA, viewportChanged } from './canvas';
+import { PACKAGE_ID } from './const.ts';
 import { isOBS } from './helpers.ts';
 import { getSetting, setSetting } from './settings.ts';
 
 type NotifyOptions = foundry.applications.ui.Notifications.NotifyOptions;
 
 Hooks.once('init', () => {
-	(game as ReadyGame | undefined)?.socket?.on('module.obs-utils', handleEvent);
+	(game as ReadyGame | undefined)?.socket?.on(`module.${PACKAGE_ID}`, handleEvent);
 });
 
 async function handleEvent({ eventType, targetUser, payload }: {
@@ -51,7 +52,7 @@ function showProxiedNotification(payload: { message: string; type: NotificationT
 }
 
 export function proxyNotification(message: string, type: string = 'info', options: NotificationOptions = {}) {
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'notification',
 		targetUser: undefined,
 		payload: { message, type, options },
@@ -59,7 +60,7 @@ export function proxyNotification(message: string, type: string = 'info', option
 }
 
 export function sendOpenSettingsConfig() {
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'openSettingsConfig',
 		targetUser: undefined,
 	});
@@ -76,7 +77,7 @@ async function changeOBSSettings(settings: OBSWebsocketSettings) {
 }
 
 export function sendOBSSetting(user: string, settings: OBSWebsocketSettings | undefined) {
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'websocketSettings',
 		targetUser: user,
 		payload: settings,
@@ -115,7 +116,7 @@ function getLocalLevelId(): string | undefined {
 
 function socketCanvasInternal(position: Canvas.ViewPosition) {
 	if (!viewportTrackingActive) return;
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'viewport',
 		targetUser: undefined,
 		payload: {
@@ -141,7 +142,7 @@ export function emitViewportNow() {
 
 /** Broadcast asking every client to announce its viewport. Sent by the OBS client. */
 export function sendRequestViewport() {
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'requestViewport',
 		targetUser: undefined,
 	});
@@ -269,7 +270,7 @@ interface GMHandoverGrantPayload { viewport: { x: number; y: number; scale: numb
 export function requestGMHandover(fromUserId: string) {
 	const me = (game as ReadyGame).user?.id;
 	if (!me) return;
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'gmHandoverRequest',
 		targetUser: fromUserId,
 		payload: { fromUserId, toUserId: me } satisfies GMHandoverRequestPayload,
@@ -280,7 +281,7 @@ async function handleGMHandoverRequest(payload: GMHandoverRequestPayload) {
 	if (!(game as ReadyGame).user?.isGM) return;
 	const viewport = getLocalViewport();
 	if (!viewport) return;
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'gmHandoverGrant',
 		targetUser: payload.toUserId,
 		payload: { viewport, toUserId: payload.toUserId } satisfies GMHandoverGrantPayload,
@@ -309,7 +310,7 @@ interface PlayPresetPayload { preset: CameraPreset }
 let activePresetController: SequenceController | null = null;
 
 export function broadcastPlayPreset(preset: CameraPreset) {
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'playPreset',
 		targetUser: undefined,
 		payload: { preset } satisfies PlayPresetPayload,
@@ -317,7 +318,7 @@ export function broadcastPlayPreset(preset: CameraPreset) {
 }
 
 export function broadcastStopPreset() {
-	(game as ReadyGame | undefined)?.socket?.emit('module.obs-utils', {
+	(game as ReadyGame | undefined)?.socket?.emit(`module.${PACKAGE_ID}`, {
 		eventType: 'stopPreset',
 		targetUser: undefined,
 		payload: {},

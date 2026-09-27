@@ -1,6 +1,7 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import { ObsUtilsApi, registerDefaultTypes } from './utils/api.js';
 import { expandTokenHud, isGM } from './utils/canvas.ts';
+import { PACKAGE_ID } from './utils/const.ts';
 import { backfillIds } from './utils/cssInjection.ts';
 import { initDirectorStateBridge } from './utils/directorState.ts';
 import { isManualOBS, isOBS, removeBG } from './utils/helpers.js';
@@ -29,7 +30,7 @@ async function start() {
 	removeBG();
 	Hooks.once('init', async () => {
 		// Register API
-		const moduleData = (game as ReadyGame | undefined)?.modules?.get('obs-utils');
+		const moduleData = (game as ReadyGame | undefined)?.modules?.get(PACKAGE_ID);
 		if (moduleData) {
 			moduleData.api = new ObsUtilsApi();
 			registerDefaultTypes();
@@ -98,7 +99,7 @@ async function start() {
 
 	// Public rolls fire core.onPlayerRoll (crit/fumble from the first d20); all public messages fire core.onChatMessage.
 	Hooks.on('createChatMessage', (message: any) => {
-		const api = (game as ReadyGame | undefined)?.modules?.get('obs-utils')?.api as ObsUtilsApi | undefined;
+		const api = (game as ReadyGame | undefined)?.modules?.get(PACKAGE_ID)?.api as ObsUtilsApi | undefined;
 		if (!api) return;
 		if (message.whisper?.length) return;
 		const actor = (game as ReadyGame | undefined)?.actors?.get(message.speaker?.actor) ?? undefined;

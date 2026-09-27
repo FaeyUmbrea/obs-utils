@@ -10,7 +10,7 @@ Except as necessary for that installation and use, no part of this software may 
 `;
 }
 
-export async function applyDistributionLicense(channel, manifestPath, licensePath) {
+export async function applyDistributionMetadata(channel, manifestPath, licensePath) {
 	if (channel !== 'public' && channel !== 'premium') {
 		throw new Error('RELEASE_CHANNEL must be either public or premium');
 	}
@@ -19,7 +19,10 @@ export async function applyDistributionLicense(channel, manifestPath, licensePat
 	const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 	const author = manifest.authors?.[0]?.name;
 	if (!author) throw new Error('The premium manifest must declare a primary author');
+	if (!manifest.id || !manifest.title) throw new Error('The premium manifest must declare an id and title');
 
+	manifest.id = `${manifest.id}-premium`;
+	manifest.title = `${manifest.title} Premium`;
 	manifest.license = 'All Rights Reserved';
 	await Promise.all([
 		writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8'),
@@ -30,9 +33,9 @@ export async function applyDistributionLicense(channel, manifestPath, licensePat
 async function main() {
 	const [manifestPath, licensePath] = process.argv.slice(2);
 	if (!manifestPath || !licensePath) {
-		throw new Error('Usage: node tools/apply-distribution-license.mjs MANIFEST LICENSE');
+		throw new Error('Usage: node tools/apply-distribution-metadata.mjs MANIFEST LICENSE');
 	}
-	await applyDistributionLicense(process.env.RELEASE_CHANNEL ?? 'public', manifestPath, licensePath);
+	await applyDistributionMetadata(process.env.RELEASE_CHANNEL ?? 'public', manifestPath, licensePath);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

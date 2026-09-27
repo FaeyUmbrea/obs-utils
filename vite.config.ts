@@ -8,7 +8,12 @@ import moduleJSON from './module.json' with { type: 'json' };
 // ATTENTION!
 // Please modify the below s_SVELTE_HASH_ID variable appropriately.
 
-const s_PACKAGE_ID = `modules/${moduleJSON.id}`;
+const releaseChannel = process.env.RELEASE_CHANNEL ?? 'public';
+if (releaseChannel !== 'public' && releaseChannel !== 'premium') {
+	throw new Error('RELEASE_CHANNEL must be either public or premium');
+}
+const moduleId = releaseChannel === 'premium' ? `${moduleJSON.id}-premium` : moduleJSON.id;
+const s_PACKAGE_ID = `modules/${moduleId}`;
 
 // A short additional string to add to Svelte CSS hash values to make yours unique. This reduces the amount of
 // duplicated framework CSS overlap between many TRL packages enabled on Foundry VTT at the same time. 'tst' is chosen
@@ -34,6 +39,9 @@ export default defineConfig(({ mode }) => {
 		base: `/${s_PACKAGE_ID}/dist`, // Base module path that 30001 / served dev directory.
 		publicDir: false, // No public resources to copy.
 		cacheDir: '../.vite-cache', // Relative from root directory.
+		define: {
+			__MODULE_ID__: JSON.stringify(moduleId),
+		},
 
 		resolve: {
 			conditions: ['browser', 'import'],

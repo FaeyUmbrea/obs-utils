@@ -1,7 +1,7 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import type { Readable, Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
-import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES } from './const';
+import { ICCHOICES, MODULE_ID, NAME_TO_ICON, OOCCHOICES, PACKAGE_ID } from './const';
 import { isOBS } from './helpers';
 
 export const OBSAction = {
@@ -49,7 +49,7 @@ export async function setSetting<K extends ClientSettings.KeyFor<'obs-utils'>>(s
 		if (!hasActiveGM) {
 			return;
 		}
-		game.socket?.emit(`module.${MODULE_ID}`, {
+		game.socket?.emit(`module.${PACKAGE_ID}`, {
 			action: 'setPlayerModifiableSetting',
 			settingName,
 			value,

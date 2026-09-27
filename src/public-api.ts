@@ -1,4 +1,6 @@
 /** Public compile-time contract for modules integrating with OBS Utils. */
+export type ObsUtilsModuleId = 'obs-utils' | 'obs-utils-premium';
+
 export type {
 	DirectorTabRegistration,
 	DirectorTabSvelte5Registration,

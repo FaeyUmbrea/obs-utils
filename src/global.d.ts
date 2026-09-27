@@ -21,6 +21,9 @@ declare global {
 		'obs-utils': {
 			api: ObsUtilsApi;
 		};
+		'obs-utils-premium': {
+			api: ObsUtilsApi;
+		};
 	}
 
 	interface CharacterDataSource {

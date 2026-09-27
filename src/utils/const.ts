@@ -1,4 +1,7 @@
+declare const __MODULE_ID__: 'obs-utils' | 'obs-utils-premium';
+
 export const MODULE_ID = 'obs-utils';
+export const PACKAGE_ID = __MODULE_ID__;
 
 export interface StringMap {
 	[key: string]: string;

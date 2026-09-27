@@ -1,5 +1,5 @@
 import type { OverlayData } from './types.ts';
-import { MODULE_ID } from './const.ts';
+import { PACKAGE_ID } from './const.ts';
 import { getApi } from './helpers.ts';
 
 interface VMOverlayBundle {
@@ -77,7 +77,7 @@ export async function importBundle(bundle: VMOverlayBundle): Promise<ImportBundl
 				const blob = await fetch(dataUrl).then(r => r.blob());
 				const file = new File([blob], filename, { type: blob.type });
 				const result = await (FilePicker as any).uploadPersistent(
-					MODULE_ID,
+					PACKAGE_ID,
 					`bundles/${bundle.manifest.id}`,
 					file,
 				) as { path: string };

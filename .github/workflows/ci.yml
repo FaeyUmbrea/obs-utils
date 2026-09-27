@@ -62,11 +62,11 @@ jobs:
       - name: Build distribution
         run: yarn run build
 
-      - name: Apply distribution license
-        run: node tools/apply-distribution-license.mjs module.json LICENSE
+      - name: Apply distribution metadata
+        run: node tools/apply-distribution-metadata.mjs module.json LICENSE
 
-      - name: Verify distribution license
-        run: node --test tools/apply-distribution-license.test.mjs
+      - name: Verify distribution metadata
+        run: node --test tools/apply-distribution-metadata.test.mjs
 
       # Create a zip file with all files required by the module to add to the release.
       - name: Bundle into ZIP file

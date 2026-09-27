@@ -1,5 +1,5 @@
 import { toggleToken } from './canvas.ts';
-import { ICCHOICES, MODULE_ID, OOCCHOICES } from './const.js';
+import { ICCHOICES, OOCCHOICES, PACKAGE_ID } from './const.js';
 import { getSetting, setSetting } from './settings.ts';
 
 export function registerKeybindings() {
@@ -23,7 +23,7 @@ export function registerKeybindings() {
 			'defaultOutOfCombat',
 		);
 	});
-	(game as ReadyGame).keybindings.register(MODULE_ID, 'disableOBSMode', {
+	(game as ReadyGame).keybindings.register(PACKAGE_ID, 'disableOBSMode', {
 		editable: [{ key: 'KeyO', modifiers: [foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.ALT, foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT, foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.CONTROL] }],
 		name: 'obs-utils.strings.disableOBSMode',
 		hint: 'obs-utils.strings.disableOBSModeHint',
@@ -31,7 +31,7 @@ export function registerKeybindings() {
 			setSetting('obsMode', false).then();
 		},
 	});
-	(game as ReadyGame).keybindings.register(MODULE_ID, 'toggleTokenTracking', {
+	(game as ReadyGame).keybindings.register(PACKAGE_ID, 'toggleTokenTracking', {
 		editable: [{ key: 'KeyT', modifiers: [foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS.SHIFT] }],
 		// The flag write is a document update, so this is GM-only for the same
 		// reason the token HUD toggle is. `restricted` also hides it from a
@@ -70,7 +70,7 @@ export function registerKeybindings() {
 }
 
 function registerKeybinding<K extends ClientSettings.KeyFor<'obs-utils'>>(choice: ClientSettings.SettingCreateData<'obs-utils', K>, name: string, hint: string, key: string, modifiers: (foundry.helpers.interaction.KeyboardManager.MODIFIER_KEYS | keyof foundry.helpers.interaction.KeyboardManager.ModifierKeys)[], setting: K) {
-	(game as ReadyGame | undefined)?.keybindings?.register(MODULE_ID, name, {
+	(game as ReadyGame | undefined)?.keybindings?.register(PACKAGE_ID, name, {
 		editable: [{ key, modifiers }],
 		restricted: true,
 		name,

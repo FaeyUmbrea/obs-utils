@@ -1,6 +1,6 @@
 import type { ReadyGame } from 'fvtt-types/configuration';
 import { scaleToFit, tokenMoved, viewportChanged } from './canvas';
-import { ICCHOICES, LEVEL_POLICY_CHOICES, LEVEL_RELATIVE_CHOICES, MODULE_ID, OOCCHOICES } from './const';
+import { ICCHOICES, LEVEL_POLICY_CHOICES, LEVEL_RELATIVE_CHOICES, MODULE_ID, OOCCHOICES, PACKAGE_ID } from './const';
 import { getGM, isOBS } from './helpers';
 import { ensureStore, getSetting, OBS_MODIFIABLE_SETTINGS, setSetting } from './settings.ts';
 import { OBSRemoteSettings, OBSWebsocketSettings } from './types.ts';
@@ -16,7 +16,7 @@ async function changeMode() {
 }
 
 function setupOBSModifiableSettingsSocket() {
-	(game as ReadyGame)?.socket?.on(`module.${MODULE_ID}`, async (data: any) => {
+	(game as ReadyGame)?.socket?.on(`module.${PACKAGE_ID}`, async (data: any) => {
 	// Only GMs should process these requests
 		if (!(game as ReadyGame).user?.isGM) return;
 		if (data.action !== 'setPlayerModifiableSetting') {

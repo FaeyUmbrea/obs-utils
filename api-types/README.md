@@ -3,10 +3,10 @@
 TypeScript definitions for the public API exposed by the OBS Utils Foundry VTT module.
 
 ```sh
-npm install --save-dev @faeyumbrea/obs-utils-api-types@public
+npm install --save-dev @faeyumbrea/obs-utils-api-types
 ```
 
-Use `@public` for the current community release. `@ea` and `@latest` track the newest early-access API.
+`latest` tracks the current community API. Use `@ea` for definitions from the newest premium prerelease.
 
 ```ts
 import type { ObsUtilsApi } from '@faeyumbrea/obs-utils-api-types';
