@@ -72,8 +72,8 @@
 		"svelte": "^5.55.7",
 		"svelte-preprocess": "^6.0.3",
 		"typescript": "^6.0.3",
-		"vite": "^8.1.0",
-		"vitest": "^4.1.6"
+		"vite": "^8.1.1",
+		"vitest": "^5.0.2"
 	},
 	"resolutions": {
 		"ip-address": "^10",
