@@ -7,9 +7,11 @@
 
 	let icons = $state<string[]>([]);
 	let filter = $state('');
+	let searchInput: HTMLInputElement;
 
 	onMount(() => {
 		icons = getFontAwesomeIcons();
+		searchInput.focus();
 	});
 
 	const filteredIcons = $derived(
@@ -29,7 +31,7 @@
 <div class='icon-picker-backdrop' onclick={onClose}>
 	<div class='icon-picker-modal' onclick={e => e.stopPropagation()}>
 		<header>
-			<input type='text' placeholder='Search icons...' bind:value={filter} autofocus />
+			<input type='text' placeholder='Search icons...' bind:value={filter} bind:this={searchInput} />
 			<button class='close-btn' type='button' onclick={onClose} title='Close'>
 				<i class='fas fa-times'></i>
 			</button>
