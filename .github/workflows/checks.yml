@@ -44,3 +44,22 @@ jobs:
           yarn build:api-types
           yarn check:api-types
           tar -czf /tmp/obs-utils-api-types.tgz -C .release/api-types package
+
+  # Yarn lockfiles lose dependency scopes in GitHub's static graph. Submit the
+  # resolved graph so shared runtime/development packages retain runtime scope.
+  dependency-scopes:
+    name: Submit dependency scopes
+    if: github.event_name != 'pull_request' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Submit resolved Yarn dependency graph
+        uses: advanced-security/component-detection-dependency-submission-action@9b10cd206e0c4ee6ba213dbd3489e1a2e0e3a8e4
+        with:
+          detectorsFilter: Yarn
+          fail-on-empty: 'true'
+          correlator: yarn-dependency-scopes
