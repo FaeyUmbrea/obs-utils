@@ -29,7 +29,7 @@
 			"disableOBSModeHint": "Turns off the manual OBS Mode setting if you are stuck in it.",
 			"toggleTokenTracking": "Token-Verfolgung umschalten",
 			"toggleTokenTrackingHint": "Schaltet die Kameraverfolgung für die anvisierten oder ausgewählten Tokens um, wenn manuelle Verfolgung genutzt wird.",
-			"tokenTrackingOn": "Verfolge jetzt {names}",
+			"tokenTrackingOn": "Kamera folgt jetzt {names}",
 			"tokenTrackingOff": "Verfolge {names} nicht mehr",
 			"trackToken": "Ein bestimmtes Token verfolgen",
 			"levelPolicyRelative": "Den verfolgten Tokens folgen",
