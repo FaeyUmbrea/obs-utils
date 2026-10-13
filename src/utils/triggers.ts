@@ -50,7 +50,7 @@ export class TriggerRegistry {
 	private readonly currentPayloads = new Map<string, unknown>();
 	private readonly subscribers = new Map<string, Set<Subscriber<unknown>>>();
 	private readonly stores = new Map<string, ReturnType<typeof writable<unknown>>>();
-	private readonly foundryHooks: Array<{ hook: string; id: number }> = [];
+	private readonly foundryHooks = new Map<string, Array<{ hook: string; id: number }>>();
 
 	register<P>(reg: TriggerRegistration<P>): void {
 		if (this.registrations.has(reg.key)) {
@@ -60,13 +60,15 @@ export class TriggerRegistry {
 		this.stores.set(reg.key, writable<unknown>(undefined));
 		this.subscribers.set(reg.key, new Set());
 
+		const hooks: Array<{ hook: string; id: number }> = [];
+		this.foundryHooks.set(reg.key, hooks);
 		for (const bridge of reg.bridges ?? []) {
 			const id = Hooks.on(bridge.hook, (...args: unknown[]) => {
 				const payload = bridge.map(...args);
 				if (payload === undefined) return;
 				this.fire(reg.key, payload);
 			});
-			this.foundryHooks.push({ hook: bridge.hook, id });
+			hooks.push({ hook: bridge.hook, id });
 		}
 
 		if (reg.bootstrap) {
@@ -79,6 +81,8 @@ export class TriggerRegistry {
 
 	unregister(key: string): void {
 		if (!this.registrations.has(key)) return;
+		for (const { hook, id } of this.foundryHooks.get(key) ?? []) Hooks.off(hook, id);
+		this.foundryHooks.delete(key);
 		this.registrations.delete(key);
 		this.currentPayloads.delete(key);
 		this.subscribers.delete(key);
@@ -143,11 +147,6 @@ export class TriggerRegistry {
 	}
 
 	destroy(): void {
-		for (const { hook, id } of this.foundryHooks) Hooks.off(hook, id);
-		this.foundryHooks.length = 0;
-		this.registrations.clear();
-		this.currentPayloads.clear();
-		this.subscribers.clear();
-		this.stores.clear();
+		for (const key of this.registrations.keys()) this.unregister(key);
 	}
 }

@@ -59,6 +59,7 @@ export class PlaybackEngine {
 
 	start(): void {
 		if (this.running) return;
+		for (const state of this.states.values()) this.subscribeTransitions(state.overlay);
 		this.running = true;
 		this.scheduleTick();
 	}
@@ -71,6 +72,7 @@ export class PlaybackEngine {
 		}
 		for (const unsub of this.perTriggerUnsubs) unsub();
 		this.perTriggerUnsubs.length = 0;
+		this.subscribedTriggers.clear();
 	}
 
 	private readonly subscribedTriggers = new Set<string>();

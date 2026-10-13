@@ -1,3 +1,17 @@
+## 5.3.1
+
+### Fixed
+
+- Imported overlay bundles keep their component animation references.
+- Overlay event playback resumes after stopping and restarting.
+- Unregistering an event removes its Foundry hook bridges.
+- Partial camera pan updates retain omitted position and zoom values.
+- Actor name and portrait fields initialize their editors in data-driven mode.
+
+### Changed
+
+- Distributions temporarily include English and German only while community translation verification is clarified with Foundry. Existing community translations remain in the repository.
+
 ## Version 5.3.0
 
 ### Added

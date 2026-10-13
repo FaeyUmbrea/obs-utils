@@ -96,12 +96,19 @@ export async function importBundle(bundle: VMOverlayBundle): Promise<ImportBundl
 		overlay.id = foundry.utils.randomID();
 
 		const overlayType = getApi().overlayTypes.get(overlay.type);
-		for (const component of overlay.components) {
+		const componentIds = new Map<string, string>();
+		for (const [index, component] of overlay.components.entries()) {
+			const previousId = component.id ?? `comp-${index}`;
 			component.id = foundry.utils.randomID();
+			componentIds.set(previousId, component.id);
 
 			const handlers = overlayType?.overlayComponentImageSlots.get(component.type);
 			if (!handlers) continue;
 			component.data = handlers.rewrite(component.data ?? '', uploadedPaths);
+		}
+		// Rewrite animation lanes to use the newly assigned component IDs.
+		for (const track of overlay.animation?.tracks ?? []) {
+			for (const lane of track.lanes) lane.componentId = componentIds.get(lane.componentId) ?? lane.componentId;
 		}
 	}
 

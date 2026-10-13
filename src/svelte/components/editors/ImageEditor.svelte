@@ -5,8 +5,12 @@
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
+	const actorValues = getActorValues();
+
+	/** Recognize curated image fields and raw data paths while keeping image URLs static. */
 	function looksLikePath(v: string): boolean {
 		if (!v) return false;
+		if (actorValues.some(entry => entry.value === v)) return true;
 		if (v.startsWith('trigger.')) return true;
 		return v.includes('.') && /^[\w.]+$/.test(v) && !v.includes('/');
 	}
@@ -15,7 +19,7 @@
 
 	let options = $state<{ value: string; label: string }[]>(
 		(() => {
-			const base = getActorValues().slice();
+			const base = actorValues.slice();
 			if (data && !base.some(v => v.value === data)) {
 				base.push({ value: data, label: data });
 			}

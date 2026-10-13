@@ -209,4 +209,31 @@ describe('importBundle', () => {
 		expect(result.uploadedPaths.size).toBe(1);
 		expect(result.failedImages).toEqual(['broken.png']);
 	});
+	it('remaps animation lanes to imported component IDs without changing the source bundle', async () => {
+		vi.mocked(getApi).mockReturnValue(makeApi({ wysiwyg: {} }) as any);
+		const original = overlay('wysiwyg', [{ type: 'pt', data: 'name' }]);
+		original.animation = {
+			initialTrackId: 'idle',
+			transitions: [],
+			tracks: [{ id: 'idle', name: 'Idle', durationMs: 0, behavior: { type: 'static' }, lanes: [{ componentId: 'orig-c0', keyframes: [{ t: 0, opacity: 0 }] }] }],
+		};
+		const result = await importBundle(makeBundle({ overlays: [original] }) as any);
+		const imported = result.overlays[0];
+		expect(imported.animation?.tracks[0].lanes[0].componentId).toBe(imported.components[0].id);
+		expect(imported.components[0].id).not.toBe('orig-c0');
+		expect(original.animation.tracks[0].lanes[0].componentId).toBe('orig-c0');
+		expect(original.components[0].id).toBe('orig-c0');
+	});
+	it('remaps lanes using fallback IDs from components without saved IDs', async () => {
+		vi.mocked(getApi).mockReturnValue(makeApi({ wysiwyg: {} }) as any);
+		const original = overlay('wysiwyg', [{ type: 'pt', data: 'name' }]);
+		delete original.components[0].id;
+		original.animation = {
+			initialTrackId: 'idle',
+			transitions: [],
+			tracks: [{ id: 'idle', name: 'Idle', durationMs: 0, behavior: { type: 'static' }, lanes: [{ componentId: 'comp-0', keyframes: [] }] }],
+		};
+		const { overlays } = await importBundle(makeBundle({ overlays: [original] }) as any);
+		expect(overlays[0].animation?.tracks[0].lanes[0].componentId).toBe(overlays[0].components[0].id);
+	});
 });

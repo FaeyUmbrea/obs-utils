@@ -2,7 +2,7 @@
 	"id": "obs-utils",
 	"title": "OBS Utils",
 	"description": "",
-	"version": "This is auto replaced",
+	"version": "5.3.1",
 	"library": "false",
 	"persistentStorage": true,
 	"manifestPlusVersion": "1.2.0",
@@ -26,8 +26,12 @@
 			}
 		]
 	},
-	"esmodules": ["dist/obs-utils.js"],
-	"styles": ["dist/obs-utils.css"],
+	"esmodules": [
+		"dist/obs-utils.js"
+	],
+	"styles": [
+		"dist/obs-utils.css"
+	],
 	"languages": [
 		{
 			"lang": "en",
@@ -35,44 +39,9 @@
 			"path": "lang/en.json"
 		},
 		{
-			"lang": "pt-BR",
-			"name": "Português (Brasil)",
-			"path": "lang/pt_BR.json"
-		},
-		{
 			"lang": "de-DE",
 			"name": "Deutsch",
 			"path": "lang/de_DE.json"
-		},
-		{
-			"lang": "ja",
-			"name": "日本語",
-			"path": "lang/ja.json"
-		},
-		{
-			"lang": "nb-NO",
-			"name": "Bokmål",
-			"path": "lang/nb_NO.json"
-		},
-		{
-			"lang": "fr",
-			"name": "Français",
-			"path": "lang/fr.json"
-		},
-		{
-			"lang": "ru",
-			"name": "Pусский",
-			"path": "lang/ru.json"
-		},
-		{
-			"lang": "es",
-			"name": "Español",
-			"path": "lang/es.json"
-		},
-		{
-			"lang": "fi",
-			"name": "Suomi",
-			"path": "lang/fi.json"
 		}
 	],
 	"url": "This is auto replaced",

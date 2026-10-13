@@ -229,15 +229,19 @@ function dragReleaseEmit(p: Canvas.ViewPosition) {
 	}, DRAG_SETTLE_MS);
 }
 
+/** Complete partial pan updates from the current viewport before broadcasting them. */
 export function socketCanvas(_canvas: Canvas, position: Canvas.ViewPosition) {
+	const local = getLocalViewport();
+	const x = position.x ?? local?.x;
+	const y = position.y ?? local?.y;
+	const scale = position.scale ?? local?.scale;
+	if (typeof x !== 'number' || typeof y !== 'number' || typeof scale !== 'number') return;
+	if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(scale)) return;
+	const viewport = { x, y, scale };
 	const mode = (getSetting('cameraTrackingMode') as 'raw' | 'smooth' | 'dragRelease') ?? 'smooth';
-	if (mode === 'dragRelease') {
-		dragReleaseEmit(position);
-	} else if (mode === 'raw') {
-		throttledEmit(position);
-	} else {
-		smoothedEmit(position);
-	}
+	if (mode === 'dragRelease') dragReleaseEmit(viewport);
+	else if (mode === 'raw') throttledEmit(viewport);
+	else smoothedEmit(viewport);
 }
 
 /**
