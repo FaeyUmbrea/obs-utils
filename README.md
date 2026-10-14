@@ -51,7 +51,13 @@ Check the [Wiki](https://docs.void.monster)!
 
 ## Translation
 
-Help translate the module on [Void Monster Translations](https://translate.void.monster/projects/obs-utils/module/). Please submit human translations in languages you know.
+Translations are managed on [Void Monster Translations](https://translate.void.monster/projects/obs-utils/module/). Contributions are invitation-only.
+
+1. Contact me on [Discord](https://discord.com/invite/WfMaKPPdeM) or by [email](mailto:contact@void.monster). Tell me which languages you speak fluently and confirm in writing that you will only submit translations you manually write or personally review in full.
+2. I'll invite you to Weblate with translation and review access for those confirmed languages.
+3. Accept the contributor confirmation in Weblate, then translate or review existing strings. Only approve strings you have personally reviewed.
+
+Only approved translations are submitted to the repositories. You can help bring back existing community translations by reviewing them.
 
 [![Translation status](https://translate.void.monster/widget/obs-utils/module/open-graph.png)](https://translate.void.monster/projects/obs-utils/module/)
 
