@@ -1,3 +1,13 @@
+## Version 5.3.2
+
+### Fixed
+
+- Fixed an issue with player filtering in the roll overlay.
+- Fixed an issue with roll data going missing on `/stream`.
+- Event overlays retain each player’s or actor’s event data when another event arrives.
+- Data pickers open correctly when groups share a display label.
+- Text and image editors recognize root actor fields such as `name` and `img` as data sources.
+
 ## Version 5.3.0
 
 ### Added

@@ -240,3 +240,36 @@ describe('selectDropdown.svelte', () => {
 		unmount(instance);
 	});
 });
+
+it('renders distinct groups with the same display label', async () => {
+	const target = document.createElement('div');
+	document.body.replaceChildren(target);
+	const groups = [
+		{ label: 'Shared', items: [{ value: 'a', label: 'First' }] },
+		{ label: 'Shared', items: [{ value: 'b', label: 'Second' }] },
+	];
+	const instance = mount(SelectDropdown, {
+		target,
+		props: {
+			groups,
+			positionStyle: '',
+			searchable: false,
+			searchText: '',
+			highlightedIdx: -1,
+			flatItems: groups.flatMap(group => group.items),
+			showCreate: false,
+			createValue: '',
+			isSelected: () => false,
+			onSelect: vi.fn(),
+			onHover: vi.fn(),
+			onKeyDown: vi.fn(),
+			onBlur: vi.fn(),
+		},
+	});
+	try {
+		expect([...document.querySelectorAll('.ouselect-item')].map(item => item.textContent?.trim())).toEqual(['First', 'Second']);
+	} finally {
+		await unmount(instance);
+		document.body.replaceChildren();
+	}
+});

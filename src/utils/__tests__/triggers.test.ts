@@ -84,6 +84,37 @@ describe('getByTriggerOrDataPath', () => {
 		const payload = { roll: { total: 18 } };
 		expect(helpers.getByTriggerOrDataPath(null, payload, 'trigger.roll.total')).toBe(18);
 	});
+	it('renders current actor data while preserving each tile’s temporary event summary', async () => {
+		await loadModules();
+		const { buildRenderTree } = await import('../render.ts');
+		const actorA = { id: 'a', system: { attributes: { hp: { value: 20 } } } };
+		const actorB = { id: 'b', system: { attributes: { hp: { value: 30 } } } };
+		const overlay = {
+			id: 'ribbon',
+			type: 'wysiwyg',
+			tileBy: 'actors',
+			config: {},
+			style: '',
+			components: [
+				{ id: 'hp', type: 'pt', data: 'system.attributes.hp.value', style: '' },
+				{ id: 'event', type: 'pt', data: 'trigger.summary', style: '' },
+			],
+		};
+		const frame = (actor: typeof actorA, summary: string) => ({ activeTrackId: 'event', playheadT: 100, components: new Map(), triggerKey: 'resource', triggerPayload: { actor, summary } });
+		const state = {
+			actors: new Map([['a', actorA], ['b', actorB]]),
+			users: new Map(),
+			frames: new Map([['ribbon:actor:a', frame(actorA, 'First event')], ['ribbon:actor:b', frame(actorB, 'Second event')]]),
+			triggerPayloads: new Map([['resource', { actor: actorB, summary: 'Most recent event' }]]),
+		};
+		actorA.system.attributes.hp.value = 12;
+		let tree = buildRenderTree([overlay as any], state, { actorIds: ['a', 'b'] });
+		expect(tree.overlays[0].components.map(component => component.values.value)).toEqual(['12', 'First event']);
+		expect(tree.overlays[1].components.map(component => component.values.value)).toEqual(['30', 'Second event']);
+		actorA.system.attributes.hp.value = 8;
+		tree = buildRenderTree([overlay as any], state, { actorIds: ['a', 'b'] });
+		expect(tree.overlays[0].components.map(component => component.values.value)).toEqual(['8', 'First event']);
+	});
 });
 
 describe('obsUtilsApi overlay triggers', () => {

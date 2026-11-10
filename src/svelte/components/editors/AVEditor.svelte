@@ -5,15 +5,17 @@
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
-	// `actor.system.hp` / `trigger.actor.name` look like paths; anything else stays static.
+	const groups = getDataPickerGroups();
+
+	// Catalogue entries also include root actor fields such as name.
 	function looksLikePath(v: string): boolean {
 		if (!v) return false;
+		if (groups.some(group => group.items.some(entry => entry.value === v))) return true;
 		if (v.startsWith('trigger.')) return true;
 		return v.includes('.') && /^[\w.]+$/.test(v);
 	}
 
 	let dataDriven = $state(looksLikePath(data ?? ''));
-	const groups = getDataPickerGroups();
 </script>
 
 <div class='av-editor'>

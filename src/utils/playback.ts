@@ -2,6 +2,7 @@ import type { OverlayTrack, ZoneDestination } from './overlayAnimation.ts';
 import type { ComponentFrame, OverlayFrame } from './render.ts';
 import type { TriggerRegistry } from './triggers.ts';
 import type { OverlayData } from './types.ts';
+import { getEventUserId } from './eventUser.ts';
 import { computeTrackFrame, findActiveZone } from './overlayAnimation.ts';
 
 interface TileState {
@@ -10,6 +11,7 @@ interface TileState {
 	currentTrackId: string;
 	startWall: number;
 	lastTriggerKey?: string;
+	lastTriggerPayload?: Record<string, unknown>;
 }
 
 function stateKey(overlayId: string, tileKey: string): string {
@@ -83,14 +85,15 @@ export class PlaybackEngine {
 			try {
 				this.registry.register({ key: tr.triggerKey });
 			} catch { /* already registered */ }
-			const unsub = this.registry.subscribe(tr.triggerKey, () => this.handleTriggerFire(tr.triggerKey));
+			const unsub = this.registry.subscribe(tr.triggerKey, payload => this.handleTriggerFire(tr.triggerKey, payload));
 			this.perTriggerUnsubs.push(unsub);
 		}
 	}
 
-	private handleTriggerFire(key: string): void {
+	private handleTriggerFire(key: string, payload: unknown): void {
 		const now = performance.now();
 		for (const state of this.states.values()) {
+			if (!this.matchesTile(state, payload)) continue;
 			const track = this.getTrack(state);
 			// Static tracks have no advancing playhead — pin to 0 so [0, x) zones match.
 			const playheadT = track?.behavior.type === 'static'
@@ -99,16 +102,35 @@ export class PlaybackEngine {
 			const transitions = state.overlay.animation?.transitions ?? [];
 			for (const tr of transitions) {
 				if (tr.triggerKey !== key) continue;
+				const event = payload && typeof payload === 'object' ? payload as Record<string, unknown> : {};
 				if (tr.fromTrackId !== state.currentTrackId) continue;
 				let zone = findActiveZone(tr, playheadT);
 				// Static tracks: fall back to first zone when explicit matching fails.
 				if (!zone && track?.behavior.type === 'static') zone = tr.zones[0];
 				if (!zone) continue;
 				state.lastTriggerKey = key;
+				state.lastTriggerPayload = event;
 				this.applyDestination(state, zone.destination, now);
+				break;
 			}
 		}
 		this.onFramesChanged();
+	}
+
+	private matchesTile(state: TileState, payload: unknown): boolean {
+		if (state.tileKey === 'singleton') return true;
+		if (!payload || typeof payload !== 'object') return true;
+		const event = payload as {
+			actor?: { id?: string };
+			user?: { id?: string };
+			message?: { speaker?: { actor?: string }; user?: { id?: string } };
+		};
+		const actorId = event.actor?.id ?? event.message?.speaker?.actor;
+		const userId = getEventUserId(payload as Record<string, unknown>);
+		// Events without a target (including editor test events) remain global.
+		if (state.tileKey.startsWith('actor:')) return !actorId || state.tileKey === `actor:${actorId}`;
+		if (state.tileKey.startsWith('user:')) return !userId || state.tileKey === `user:${userId}`;
+		return true;
 	}
 
 	private applyDestination(state: TileState, dest: ZoneDestination, now: number): void {
@@ -167,6 +189,7 @@ export class PlaybackEngine {
 			playheadT,
 			components: componentFrames,
 			triggerKey: state.lastTriggerKey,
+			triggerPayload: state.lastTriggerPayload,
 		};
 		this.frames.set(stateKey(state.overlay.id ?? '', state.tileKey), frame);
 		return frame;

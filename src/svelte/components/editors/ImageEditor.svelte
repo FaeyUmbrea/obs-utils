@@ -1,12 +1,15 @@
 <svelte:options runes={true} />
 <script lang='ts'>
-	import { getActorValues } from '../../../utils/helpers';
+	import { getActorValues, getDataPickerGroups } from '../../../utils/helpers';
 	import Select from '../select/Select.svelte';
 
 	let { data = $bindable('') } = $props<{ data: string }>();
 
+	const groups = getDataPickerGroups();
+
 	function looksLikePath(v: string): boolean {
 		if (!v) return false;
+		if (groups.some(group => group.items.some(entry => entry.value === v))) return true;
 		if (v.startsWith('trigger.')) return true;
 		return v.includes('.') && /^[\w.]+$/.test(v) && !v.includes('/');
 	}

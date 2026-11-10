@@ -71,7 +71,7 @@
 		/>
 	{/if}
 	<div class='ouselect-list' role='presentation' onmousedown={onListMouseDown}>
-		{#each groups as group, gi (group.label || `__g${gi}__`)}
+		{#each groups as group, gi (group)}
 			{#if group.label}<div class='ouselect-group-label'>{group.label}</div>{/if}
 			{#each group.items as item, i (item.value)}
 				{@const idx = groupOffsets[gi] + i}

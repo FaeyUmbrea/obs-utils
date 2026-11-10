@@ -103,6 +103,8 @@ async function start() {
 		if (!api) return;
 		if (message.whisper?.length) return;
 		const actor = (game as ReadyGame | undefined)?.actors?.get(message.speaker?.actor) ?? undefined;
+		const sender = message.author ?? message.user;
+		const user = typeof sender === 'string' ? (game as ReadyGame).users.get(sender) : sender;
 		const rolls = message.rolls ?? (message.roll ? [message.roll] : []);
 		if (message.isRoll && rolls.length > 0) {
 			const total = rolls.reduce((sum: number, r: any) => sum + (Number(r.total) || 0), 0);
@@ -111,7 +113,7 @@ async function start() {
 			const firstD20 = d20?.results?.[0]?.result;
 			api.fireOverlayTrigger('core.onPlayerRoll', {
 				actor,
-				user: message.user,
+				user,
 				roll: rolls[0],
 				total,
 				formula,
@@ -122,7 +124,7 @@ async function start() {
 		api.fireOverlayTrigger('core.onChatMessage', {
 			message,
 			actor,
-			user: message.user,
+			user,
 			content: message.content ?? '',
 			speakerAlias: message.speaker?.alias ?? '',
 		});

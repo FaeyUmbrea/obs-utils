@@ -1,4 +1,5 @@
 import type { OverlayComponentData, OverlayData } from './types.ts';
+import { getEventUserId } from './eventUser.ts';
 import { getByTriggerOrDataPath } from './helpers.ts';
 
 export type TileMode = 'actors' | 'players' | 'users' | 'once';
@@ -22,6 +23,7 @@ export interface OverlayFrame {
 	playheadT: number;
 	components: Map<string, ComponentFrame>;
 	triggerKey?: string;
+	triggerPayload?: Record<string, unknown>;
 }
 
 export interface ComponentFrame {
@@ -220,13 +222,11 @@ function resolveTriggerPayload(
 		}
 		const tileUserId = context.user?.id;
 		if (!tileUserId) return false;
-		const payloadUserId
-			= payload.user?.id
-				?? payload.message?.user?.id
-				?? null;
+		const payloadUserId = getEventUserId(payload);
 		return payloadUserId === tileUserId;
 	};
 
+	if (matchesContext(frame?.triggerPayload)) return frame?.triggerPayload;
 	if (frame?.triggerKey) {
 		const p = state.triggerPayloads.get(frame.triggerKey);
 		if (matchesContext(p as Record<string, any> | undefined)) return p;
